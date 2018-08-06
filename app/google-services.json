@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "611411436297",
+    "firebase_url": "https://deductive-wine-taster.firebaseio.com",
+    "project_id": "deductive-wine-taster",
+    "storage_bucket": "deductive-wine-taster.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611411436297:android:c5f75e0ab92ae886",
+        "android_client_info": {
+          "package_name": "com.nverno.deductivewinetaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzQL6g_QIuAVZrvH2Uvd0CDrHYAKjIF0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
