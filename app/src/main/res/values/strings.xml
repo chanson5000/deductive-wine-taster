@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Deductive Wine Taster</string>
+    <string name="blind_taste">Blind Taste</string>
+    <string name="button_red_wine">RED WINE</string>
+    <string name="button_white_wine">WHITE WINE</string>
+    <string name="button_statistics">STATISTICS</string>
 </resources>
