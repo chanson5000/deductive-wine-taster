@@ -6,6 +6,7 @@
     <string name="button_statistics">STATISTICS</string>
 
     <!-- Descriptors -->
+    <!-- Sight -->
     <string name="clarity">Clarity/Visible Sediment</string>
     <string name="clear">Clear</string>
     <string name="hazy">Hazy</string>
@@ -17,24 +18,24 @@
     <string name="deep">Deep</string>
 
     <string name="color">Color</string>
-    <string name="red_purple">Purple</string>
-    <string name="red_ruby">Ruby</string>
-    <string name="red_red">Red</string>
-    <string name="red_garnet">Garnet</string>
-    <string name="white_white">Water White</string>
-    <string name="white_straw">Straw</string>
-    <string name="white_yellow">Yellow</string>
-    <string name="white_gold">Gold</string>
+    <string name="purple">Purple</string>
+    <string name="ruby">Ruby</string>
+    <string name="red">Red</string>
+    <string name="garnet">Garnet</string>
+    <string name="water_white">Water White</string>
+    <string name="straw">Straw</string>
+    <string name="yellow">Yellow</string>
+    <string name="gold">Gold</string>
 
     <string name="secondary_color">Secondary Color</string>
-    <string name="red_orange">Orange</string>
-    <string name="red_blue">Blue</string>
+    <string name="orange">Orange</string>
+    <string name="blue">Blue</string>
     <!--  Ruby  -->
     <!-- Garnet -->
-    <string name="red_brown">Brown</string>
-    <string name="white_silver">Silver</string>
-    <string name="white_green">Green</string>
-    <string name="white_copper">Copper</string>
+    <string name="brown">Brown</string>
+    <string name="silver">Silver</string>
+    <string name="green">Green</string>
+    <string name="copper">Copper</string>
 
     <string name="rim_variation">Rim Variation</string>
     <string name="yes">Yes</string>
@@ -55,11 +56,162 @@
     <!-- Yes -->
     <!--  No -->
 
+    <!-- Nose -->
+    <string name="faulty">Faulty</string>
+    <string name="fault_tca">TCA</string>
+    <string name="fault_hydrogen_sulfide">Hydrogen Sulfide</string>
+    <string name="fault_volatile_acidity">Volatile Acidity</string>
+    <string name="fault_ethyl_acetate">Ethyl Acetate</string>
+    <string name="fault_brett">Brett</string>
+    <string name="fault_Oxidization">Oxidization</string>
+    <string name="fault_other">Other</string>
+
+    <string name="intensity">Intensity</string>
+    <string name="delicate">Delicate</string>
+    <string name="moderate">Moderate</string>
+    <string name="powerful">Powerful</string>
+
+    <string name="age_assessment">Age Assessment</string>
+    <string name="youthful">Youthful</string>
+    <string name="developing">Developing</string>
+    <string name="vinous">Vinous</string>
+
+    <string name="fruit">Fruit</string>
+    <!-- Red -->
+    <string name="black">Black</string>
+    <!-- Blue -->
+    <string name="citrus">Citrus</string>
+    <string name="apple_pear">Apple/Pear</string>
+    <string name="stone_pit">Stone/Pit</string>
+    <string name="tropical">Tropical</string>
+    <string name="melon">Melon</string>
+
+    <string name="fruit_character">Fruit Character</string>
+    <string name="ripe">Ripe</string>
+    <string name="fresh">Fresh</string>
+    <string name="tart">Tart</string>
+    <string name="baked">Baked</string>
+    <string name="stewed">Stewed</string>
+    <string name="dried">Dried</string>
+    <string name="desiccated">Desiccated</string>
+    <string name="bruised">Bruised</string>
+    <string name="jammy">Jammy</string>
+
+    <string name="non_fruit">Non-Fruit</string>
+    <string name="floral">Floral</string>
+    <string name="vegetal">Vegetal</string>
+    <string name="herbal">Herbal</string>
+    <string name="spice">Spice</string>
+    <string name="animal">Animal</string>
+    <string name="barn">Barn</string>
+    <string name="petrol">Petrol</string>
+    <string name="fermentation">Fermentation</string>
+
+    <string name="earth">Earth</string>
+    <string name="forest_floor">Forest Floor</string>
+    <string name="compost">Compost</string>
+    <string name="mushrooms">Mushrooms</string>
+    <string name="potting_soil">Potting Soil</string>
+
+    <string name="mineral">Mineral</string>
+    <!-- Mineral -->
+    <string name="wet_stone">Wet Stone</string>
+    <string name="limestone">Limestone</string>
+    <string name="chalk">Chalk</string>
+    <string name="slate">Slate</string>
+    <string name="flint">Flint</string>
+
+    <string name="wood">Wood</string>
+    <!-- None -->
+    <string name="old">Old</string>
+    <string name="word_new">New</string>
+    <string name="large">Large</string>
+    <string name="small">Small</string>
+    <string name="french">French</string>
+    <string name="american">American</string>
+
+    <!-- Palate -->
+    <string name="palate">Palate</string>
+    <string name="sweetness">Sweetness</string>
+    <string name="bone_dry">Bone Dry</string>
+    <string name="dry">Dry</string>
+    <string name="off_dry">Off-Dry</string>
+    <string name="medium_sweet">Medium Sweet</string>
+    <string name="sweet">Sweet</string>
+    <string name="lusciously_sweet">Lusciously Sweet</string>
+
+    <!-- Fruit -->
+    <!-- Red, Black, Blue -->
+    <!-- Citrus, Apple/Pear, Stone/Pit, Tropical, Melon -->
+
+    <!-- Fruit Character, etc -->
+
+    <!-- Non-Fruit, etc -->
+    <!-- ... -->
+
+    <!-- Palate cont... -->
+    <string name="phenolic_bitter">Phenolic/Bitter</string> <!-- White Wine -->
+    <!-- Yes/No -->
+    <string name="tannin">Tannin</string> <!-- Red Wine -->
+    <string name="acid">Acid</string>
+    <string name="alcohol">Alcohol</string>
     <string name="low">Low</string>
     <string name="med_minus">Med-</string>
     <string name="med">Med</string>
     <string name="med_plus">Med+</string>
     <string name="high">High</string>
+
+    <string name="body">Body</string>
+    <!-- Light/Medium -->
+    <string name="full">Full</string>
+
+    <string name="texture">Texture</string>
+    <string name="creamy">Creamy</string>
+    <string name="round">Round</string>
+    <string name="lean">Lean</string>
+
+    <string name="balanced">Balanced</string>
+    <!-- Yes/No -->
+
+    <string name="length_finish">Length/Finish</string>
+    <string name="word_short">Short</string>
+    <!-- Med-, Medium, Med+ -->
+    <string name="word_long">Long</string>
+
+    <string name="complexity">Complexity</string>
+    <!-- Low, Med-, Medium, Med+, High -->
+
+    <string name="initial_conclusion">Initial Conclusion</string>
+    <string name="possible_grape_varieties">Possible Grape Varieties</string>
+    <string name="new_world">New World</string>
+    <string name="old_world">Old World</string>
+    <string name="climate">Climate</string>
+    <string name="cool">Cool</string>
+    <!-- Moderate -->
+    <string name="warm">Warm</string>
+    <string name="possible_countries">Possible Countries</string>
+    <string name="age_range">Age Range</string>
+    <string name="one_to_three_years">1–3 years</string>
+    <string name="three_to_five_years">3–5 years</string>
+    <string name="five_to_ten_years">5–10 years</string>
+    <string name="ten_plus_years">10+ years</string>
+
+    <string name="final_conclusion">Final Conclusion</string>
+    <string name="grape_variety_blend">Grape Variety/Blend</string>
+    <string name="country_of_origin">Country of Origin</string>
+    <string name="region_appellation">Region/Appellation</string>
+    <string name="quality_regional_hierarchy">Quality/Regional Hierarchy</string>
+    <string name="vintage">Vintage</string>
+
+
+
+
+
+
+
+
+
+
 
 
 
