@@ -1,7 +1,9 @@
-package com.nverno.deductivewinetaster;
+package com.nverno.deductivewinetaster.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.nverno.deductivewinetaster.R;
 
 public class MainActivity extends AppCompatActivity {
 
