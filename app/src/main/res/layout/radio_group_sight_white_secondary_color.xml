@@ -15,16 +15,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_silver" />
+            android:text="@string/silver" />
         <RadioButton android:id="@+id/radio_secondary_color_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_green" />
+            android:text="@string/green" />
         <RadioButton android:id="@+id/radio_secondary_color_copper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_copper" />
+            android:text="@string/copper" />
     </RadioGroup>
 </merge>

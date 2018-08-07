@@ -18,27 +18,27 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/white_white" />
+            android:text="@string/water_white" />
 
         <RadioButton
             android:id="@+id/radio_color_straw"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/white_straw" />
+            android:text="@string/straw" />
 
         <RadioButton
             android:id="@+id/radio_color_yellow"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/white_yellow" />
+            android:text="@string/yellow" />
 
         <RadioButton
             android:id="@+id/radio_color_gold"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/white_gold" />
+            android:text="@string/gold" />
     </RadioGroup>
 </merge>
