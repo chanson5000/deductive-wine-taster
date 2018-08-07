@@ -28,6 +28,13 @@
             android:text="@string/red_ruby" />
 
         <RadioButton
+            android:id="@+id/radio_color_red"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/red_red" />
+
+        <RadioButton
             android:id="@+id/radio_color_garnet"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"

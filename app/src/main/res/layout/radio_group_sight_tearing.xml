@@ -5,47 +5,34 @@
         style="@style/AppTheme.Text.Descriptor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/viscosity_tears" />
+        android:text="@string/tearing" />
 
     <RadioGroup
         style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radio_viscosity_tears_low"
+            android:id="@+id/radio_tearing_light"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/low" />
+            android:text="@string/light" />
 
         <RadioButton
-            android:id="@+id/radio_viscosity_tears_med_minus"
+            android:id="@+id/radio_tearing_medium"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/med_minus" />
+            android:text="@string/medium" />
 
         <RadioButton
-            android:id="@+id/radio_viscosity_tears_med"
+            android:id="@+id/radio_tearing_heavy"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/med" />
+            android:text="@string/heavy" />
 
-        <RadioButton
-            android:id="@+id/radio_viscosity_tears_med_plus"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/med_plus" />
-
-        <RadioButton
-            android:id="@+id/radio_viscosity_tears_high"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/high" />
     </RadioGroup>
 </merge>

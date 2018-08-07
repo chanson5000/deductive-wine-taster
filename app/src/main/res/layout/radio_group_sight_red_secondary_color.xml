@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:text="@string/hue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/secondary_color" />
+
+    <RadioGroup
         style="@style/AppTheme.RadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-        <RadioButton android:id="@+id/radio_hue_silver"
+
+        <RadioButton
+            android:id="@+id/radio_secondary_color_orange"
+            style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/red_orange" />
+
+        <RadioButton
+            android:id="@+id/radio_secondary_color_blue"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_silver" />
-        <RadioButton android:id="@+id/radio_hue_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/red_blue" />
+
+        <RadioButton
+            android:id="@+id/radio_secondary_color_ruby"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_green" />
-        <RadioButton android:id="@+id/radio_hue_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/red_ruby" />
+
+        <RadioButton
+            android:id="@+id/radio_secondary_color_garnet"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:text="@string/white_orange" />
-        <RadioButton android:id="@+id/radio_hue_brown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/red_garnet" />
+
+        <RadioButton
+            android:id="@+id/radio_secondary_color_brown"
             style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/red_brown" />
     </RadioGroup>
 </merge>

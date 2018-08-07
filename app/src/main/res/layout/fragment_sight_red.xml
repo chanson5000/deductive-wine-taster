@@ -16,25 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_brightness" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
-
         <include layout="@layout/radio_group_sight_concentration" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
-
-        <include layout="@layout/radio_group_sight_gas_evidence" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
-
-        <include layout="@layout/radio_group_sight_sediment_particles" />
 
         <Space
             android:layout_width="wrap_content"
@@ -46,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_red_hue" />
+        <include layout="@layout/radio_group_sight_red_secondary_color" />
 
         <Space
             android:layout_width="wrap_content"
@@ -64,7 +46,13 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_viscosity_tears" />
+        <include layout="@layout/radio_group_sight_tearing" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_sight_gas_evidence" />
 
         <Space
             android:layout_width="wrap_content"

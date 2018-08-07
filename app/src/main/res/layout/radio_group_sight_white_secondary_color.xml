@@ -1,44 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
     <TextView
         style="@style/AppTheme.Text.Descriptor"
+        android:text="@string/secondary_color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hue" />
+        android:layout_height="wrap_content" />
 
     <RadioGroup
-        style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/AppTheme.RadioGroup"
         android:orientation="vertical">
-
-        <RadioButton
-            android:id="@+id/radio_hue_blue"
-            style="@style/AppTheme.RadioGroup.RadioButton"
+        <RadioButton android:id="@+id/radio_secondary_color_silver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/red_blue" />
-
-        <RadioButton
-            android:id="@+id/radio_hue_ruby"
             style="@style/AppTheme.RadioGroup.RadioButton"
+            android:text="@string/white_silver" />
+        <RadioButton android:id="@+id/radio_secondary_color_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/red_ruby" />
-
-        <RadioButton
-            android:id="@+id/radio_hue_garnet"
             style="@style/AppTheme.RadioGroup.RadioButton"
+            android:text="@string/white_green" />
+        <RadioButton android:id="@+id/radio_secondary_color_copper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/red_garnet" />
-
-        <RadioButton
-            android:id="@+id/radio_hue_brown"
             style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/red_brown" />
+            android:text="@string/white_copper" />
     </RadioGroup>
 </merge>
