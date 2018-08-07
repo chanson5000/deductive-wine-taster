@@ -4,4 +4,60 @@
     <string name="button_red_wine">RED WINE</string>
     <string name="button_white_wine">WHITE WINE</string>
     <string name="button_statistics">STATISTICS</string>
+
+    <!-- Descriptors -->
+    <string name="clarity">Clarity</string>
+    <string name="clear">Clear</string>
+    <string name="slightly_cloudy">Slightly Cloudy</string>
+    <string name="cloudy">Cloudy</string>
+
+    <string name="brightness">Brightness</string>
+    <string name="dull">Dull</string>
+    <string name="bright">Bright</string>
+    <string name="star_bright">Star Bright (Brilliant)</string>
+
+    <string name="concentration">Concentration</string>
+    <string name="pale">Pale</string>
+    <string name="medium">Medium</string>
+    <string name="deep">Deep</string>
+    <string name="translucent">Translucent</string>
+    <string name="opaque">Opaque</string>
+
+    <string name="gas_evidence">Gas Evidence</string>
+    <string name="sediment_particles">Sediment/Particles</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="color">Color</string>
+    <string name="red_purple">Purple</string>
+    <string name="red_ruby">Ruby</string>
+    <string name="red_garnet">Garnet</string>
+    <string name="white_straw">Straw</string>
+    <string name="white_yellow">Yellow</string>
+    <string name="white_gold">Gold</string>
+
+    <string name="hue">Hue</string>
+    <string name="red_blue">Blue</string>
+    <string name="red_brown">Brown</string>
+    <string name="white_silver">Silver</string>
+    <string name="white_green">Green</string>
+    <string name="white_orange">Orange</string>
+
+    <string name="rim_variation">Rim Variation</string>
+    <string name="small">Small</string>
+    <string name="large">Large</string>
+
+    <string name="extract_stain">Extract/Stain</string>
+    <string name="none">None</string>
+    <string name="light">Light</string>
+    <string name="heavy">Heavy</string>
+
+    <string name="viscosity_tears">Viscosity/Tears</string>
+    <string name="low">Low</string>
+    <string name="med_minus">Med-</string>
+    <string name="med">Med</string>
+    <string name="med_plus">Med+</string>
+    <string name="high">High</string>
+
+
 </resources>
