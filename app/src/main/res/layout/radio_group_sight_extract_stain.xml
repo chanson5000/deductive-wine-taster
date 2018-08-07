@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/extract_stain" />
+
+    <RadioGroup
+        style="@style/AppTheme.RadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_extract_stain_none"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/none" />
+
+        <RadioButton
+            android:id="@+id/radio_extract_stain_light"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/light" />
+
+        <RadioButton
+            android:id="@+id/radio_extract_stain_medium"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medium" />
+
+        <RadioButton
+            android:id="@+id/radio_extract_stain_heavy"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/heavy" />
+    </RadioGroup>
+</merge>
