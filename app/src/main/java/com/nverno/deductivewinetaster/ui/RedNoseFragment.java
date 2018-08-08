@@ -1,6 +1,5 @@
 package com.nverno.deductivewinetaster.ui;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,11 +11,11 @@ import android.view.ViewGroup;
 
 import com.nverno.deductivewinetaster.R;
 
-public class RedSightFragment extends Fragment {
+public class RedNoseFragment extends Fragment {
 
     private FragmentActivity mFragmentActivity;
 
-    public RedSightFragment() {
+    public RedNoseFragment() {
     }
 
     @Override
@@ -34,7 +33,7 @@ public class RedSightFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_sight_red,
+        View rootView = inflater.inflate(R.layout.fragment_nose_red,
                 container, false);
 
         return rootView;
@@ -44,6 +43,4 @@ public class RedSightFragment extends Fragment {
     public void onResume() {
         super.onResume();
     }
-
-
 }
