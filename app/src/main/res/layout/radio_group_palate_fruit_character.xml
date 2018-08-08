@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fruit_character" />
+
+    <RadioGroup
+        style="@style/AppTheme.RadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_ripe"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tart" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_fresh"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fresh" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_tart"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tart" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_baked"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/baked" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_stewed"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stewed" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_dried"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dried" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_desiccated"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/desiccated" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_bruised"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bruised" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_fruit_character_jammy"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jammy" />
+
+    </RadioGroup>
+
+</merge>

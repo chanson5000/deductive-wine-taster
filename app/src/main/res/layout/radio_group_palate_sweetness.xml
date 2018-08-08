@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sweetness" />
+
+    <RadioGroup
+        style="@style/AppTheme.RadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_bone_dry"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bone_dry" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_dry"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dry" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_off_dry"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/off_dry" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_medium_sweet"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medium_sweet" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_sweet"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sweet" />
+
+        <RadioButton
+            android:id="@+id/radio_palate_sweetness_lusciously_sweet"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lusciously_sweet" />
+
+    </RadioGroup>
+
+</merge>
