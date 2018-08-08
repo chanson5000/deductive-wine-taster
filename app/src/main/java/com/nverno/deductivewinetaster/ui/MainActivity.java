@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.nverno.deductivewinetaster.R;
-import com.nverno.deductivewinetaster.util.IntentContract;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonWhiteWine(View view) {
         Intent intent = new Intent(this, RedDeductionFormActivity.class);
-        intent.putExtra(IntentContract.IS_RED_WINE, false);
+        // TODO: Launch white wine deduction activity.
     }
 }
