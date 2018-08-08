@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_red_fruit" />
+        <include layout="@layout/radio_group_nose_white_fruit" />
 
         <Space
             android:layout_width="wrap_content"

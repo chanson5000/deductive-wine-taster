@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/standard_margin">
+
+        <include layout="@layout/radio_group_palate_sweetness" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_red_fruit" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_fruit_character" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_non_fruit" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_earth" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_mineral" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_wood" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_tannin" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_acid" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_alcohol" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_body" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_texture" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_balance" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_length_finish" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+        <include layout="@layout/radio_group_palate_complexity" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/standard_margin" />
+
+
+    </LinearLayout>
+
+</ScrollView>
