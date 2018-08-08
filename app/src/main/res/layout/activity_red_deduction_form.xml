@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.RedDeductionFormActivity">
 
-    <fragment
-        android:id="@+id/fragment_sight_red"
-        android:name="com.nverno.deductivewinetaster.ui.RedSightFragment"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_red_deduction"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_sight_red" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
