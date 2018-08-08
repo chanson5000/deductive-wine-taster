@@ -63,7 +63,7 @@
     <string name="fault_volatile_acidity">Volatile Acidity</string>
     <string name="fault_ethyl_acetate">Ethyl Acetate</string>
     <string name="fault_brett">Brett</string>
-    <string name="fault_Oxidization">Oxidization</string>
+    <string name="fault_oxidization">Oxidization</string>
     <string name="fault_other">Other</string>
 
     <string name="intensity">Intensity</string>
