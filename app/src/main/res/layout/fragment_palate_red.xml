@@ -10,96 +10,95 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/standard_margin">
 
-        <include layout="@layout/radio_group_palate_sweetness" />
+        <include layout="@layout/sg_palate_sweetness_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_red_fruit" />
+        <include layout="@layout/sg_palate_fruit_redwine_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_fruit_character" />
+        <include layout="@layout/sg_palate_fruitcharacter_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_non_fruit" />
+        <include layout="@layout/sg_palate_nonfruit_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_earth" />
+        <include layout="@layout/sg_palate_earth_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_mineral" />
+        <include layout="@layout/sg_palate_mineral_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_wood" />
+        <include layout="@layout/sg_palate_wood_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_tannin" />
+        <include layout="@layout/sg_palate_tannin_redwine_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_acid" />
+        <include layout="@layout/sg_palate_acid_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_alcohol" />
+        <include layout="@layout/sg_palate_alcohol_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_body" />
+        <include layout="@layout/sg_palate_body_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_texture" />
+        <include layout="@layout/sg_palate_texture_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_balance" />
+        <include layout="@layout/sg_palate_balance_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_length_finish" />
+        <include layout="@layout/sg_palate_lengthfinish_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_palate_complexity" />
+        <include layout="@layout/sg_palate_complexity_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
-
 
     </LinearLayout>
 

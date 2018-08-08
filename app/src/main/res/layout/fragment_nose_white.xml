@@ -10,55 +10,55 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/standard_margin">
 
-        <include layout="@layout/radio_group_nose_faulty" />
+        <include layout="@layout/sg_nose_faulty_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_intensity" />
+        <include layout="@layout/sg_nose_intensity_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_age_assessment" />
+        <include layout="@layout/sg_nose_ageassessment_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_white_fruit" />
+        <include layout="@layout/sg_nose_fruit_whitewine_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_fruit_character" />
+        <include layout="@layout/sg_nose_fruitcharacter_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_non_fruit" />
+        <include layout="@layout/sg_nose_nonfruit_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_earth" />
+        <include layout="@layout/sg_nose_earth_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_mineral" />
+        <include layout="@layout/sg_nose_mineral_check" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_nose_wood" />
+        <include layout="@layout/sg_nose_wood_radio" />
 
         <Space
             android:layout_width="wrap_content"

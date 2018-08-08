@@ -10,49 +10,49 @@
         android:paddingBottom="@dimen/standard_margin"
         android:layout_margin="@dimen/standard_margin">
 
-        <include layout="@layout/radio_group_sight_clarity" />
+        <include layout="@layout/sg_sight_clarity_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_concentration" />
+        <include layout="@layout/sg_sight_concentration_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_red_color" />
+        <include layout="@layout/sg_sight_color_redwine_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_red_secondary_color" />
+        <include layout="@layout/sg_sight_colorsecondary_redwine_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_rim_variation" />
+        <include layout="@layout/sg_sight_rimvariation_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_extract_stain" />
+        <include layout="@layout/sg_sight_extractstain_redwine_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_tearing" />
+        <include layout="@layout/sg_sight_tearing_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/radio_group_sight_gas_evidence" />
+        <include layout="@layout/sg_sight_gasevidence_radio" />
 
         <Space
             android:layout_width="wrap_content"
