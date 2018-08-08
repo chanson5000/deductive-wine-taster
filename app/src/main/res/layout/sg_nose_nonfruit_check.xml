@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/non_fruit" />
+
+    <LinearLayout
+        style="@style/AppTheme.RadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_floral"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/floral" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_vegetal"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/vegetal" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_herbal"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/herbal" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_spice"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/spice" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_animal"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/animal" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_barn"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/barn" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_petrol"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/petrol" />
+
+        <CheckBox
+            android:id="@+id/check_nose_non_fruit_fermentation"
+            style="@style/AppTheme.RadioGroup.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxButtonClicked"
+            android:text="@string/fermentation" />
+    </LinearLayout>
+</merge>
