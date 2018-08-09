@@ -41,12 +41,12 @@ public class RedSightFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mFragmentActivity = getActivity();
-        sharedPreferences =
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
@@ -57,8 +57,6 @@ public class RedSightFragment extends Fragment {
                 container, false);
 
         ButterKnife.bind(this, rootView);
-
-
 
         return rootView;
     }
@@ -75,5 +73,17 @@ public class RedSightFragment extends Fragment {
         super.onResume();
     }
 
+    public void onRadioButtonClicked(View view) {
+
+    }
+
+    public void setRadioGroupListeners() {
+        mRadioGroupClarity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+            }
+        });
+    }
 
 }

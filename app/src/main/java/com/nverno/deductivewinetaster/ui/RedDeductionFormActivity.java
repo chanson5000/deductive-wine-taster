@@ -133,43 +133,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
 
         setSelectionState(view.getId(), checked);
 
-        switch (view.getId()) {
-            case R.id.radio_clarity_clear:
-                if (checked) {
-                    setSelectionState(CLARITY, CLEAR);
-                }
-                break;
-            case R.id.radio_clarity_hazy:
-                if (checked) {
-                    setSelectionState(CLARITY, HAZY);
-                }
-                break;
-            case R.id.radio_clarity_turbid:
-                if (checked) {
-                    setSelectionState(CLARITY, TURBID);
-                }
-                break;
-            case R.id.radio_concentration_pale:
-                if (checked) {
-                    setSelectionState(CONCENTRATION, PALE);
-                }
-                break;
-            case R.id.radio_concentration_medium:
-                if (checked) {
-                    setSelectionState(CONCENTRATION, MEDIUM);
-                }
-                break;
-            case R.id.radio_concentration_deep:
-                if (checked) {
-                    setSelectionState(CONCENTRATION, DEEP);
-                }
-                break;
 
-
-            default:
-                break;
-
-        }
     }
 
     class RedDeductionFormPagerAdapter extends FragmentPagerAdapter {
