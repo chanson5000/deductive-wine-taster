@@ -1,6 +1,5 @@
 package com.nverno.deductivewinetaster.ui;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,15 +12,16 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.nverno.deductivewinetaster.R;
+import com.nverno.deductivewinetaster.util.RedWineContract;
+import com.nverno.deductivewinetaster.util.RedWineFormHandler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RedSightFragment extends Fragment {
+public class RedSightFragment extends Fragment implements RedWineContract, RedWineFormHandler {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor sharedEditor;
 
     @BindView(R.id.radio_group_clarity)
     RadioGroup mRadioGroupClarity;
@@ -33,6 +33,12 @@ public class RedSightFragment extends Fragment {
     RadioGroup mRadioGroupSecondaryColor;
     @BindView(R.id.radio_group_rimvariation)
     RadioGroup mRadioGroupRimVariation;
+    @BindView(R.id.radio_group_extractstain_redwine)
+    RadioGroup mRadioGroupExtractStain;
+    @BindView(R.id.radio_group_tearing)
+    RadioGroup mRadioGroupTearing;
+    @BindView(R.id.radio_group_gasevidence)
+    RadioGroup mRadioGroupGasEvidence;
 
     public RedSightFragment() {
     }
@@ -62,28 +68,114 @@ public class RedSightFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        loadAllSelectionStates();
+        setSelectionListeners();
     }
 
-    public void onRadioButtonClicked(View view) {
-
+    private void setSelectionState(String key, int state) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key, state);
+        editor.apply();
     }
 
-    public void setRadioGroupListeners() {
+    private int getSelectionState(String key) {
+        return sharedPreferences.getInt(key, NOT_CHECKED);
+    }
+
+    private void loadAllSelectionStates() {
+        mRadioGroupClarity.check(getSelectionState(CLARITY));
+        mRadioGroupConcentration.check(getSelectionState(CONCENTRATION));
+        mRadioGroupColor.check(getSelectionState(COLOR));
+        mRadioGroupSecondaryColor.check(getSelectionState(SECONDARY_COLOR));
+        mRadioGroupRimVariation.check(getSelectionState(RIM_VARIATION));
+        mRadioGroupExtractStain.check(getSelectionState(EXTRACT_STAINING));
+        mRadioGroupTearing.check(getSelectionState(TEARING));
+        mRadioGroupGasEvidence.check(getSelectionState(GAS_EVIDENCE));
+    }
+
+    private void clearAllSelectionStates() {
+        mRadioGroupClarity.clearCheck();
+        mRadioGroupConcentration.clearCheck();
+        mRadioGroupColor.clearCheck();
+        mRadioGroupSecondaryColor.clearCheck();
+        mRadioGroupRimVariation.clearCheck();
+        mRadioGroupExtractStain.clearCheck();
+        mRadioGroupTearing.clearCheck();
+        mRadioGroupGasEvidence.clearCheck();
+    }
+
+    private void wipeSharedPreferences() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void resetView() {
+        clearAllSelectionStates();
+    }
+
+    public void setSelectionListeners() {
         mRadioGroupClarity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(CLARITY, checkedId);
+            }
+        });
 
+        mRadioGroupConcentration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(CONCENTRATION, checkedId);
+            }
+        });
+
+        mRadioGroupColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(COLOR, checkedId);
+            }
+        });
+
+        mRadioGroupSecondaryColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(SECONDARY_COLOR, checkedId);
+            }
+        });
+
+        mRadioGroupRimVariation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(RIM_VARIATION, checkedId);
+            }
+        });
+
+        mRadioGroupExtractStain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(EXTRACT_STAINING, checkedId);
+            }
+        });
+
+        mRadioGroupTearing.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(TEARING, checkedId);
+            }
+        });
+
+        mRadioGroupGasEvidence.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSelectionState(GAS_EVIDENCE, checkedId);
             }
         });
     }
-
 }
