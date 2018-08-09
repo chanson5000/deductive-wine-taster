@@ -30,14 +30,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedEditor;
 
-
-    private RadioGroup mRadioGroupClarity;
-    private RadioGroup mRadioGroupConcentration;
-    private RadioGroup mRadioGroupColor;
-    private RadioGroup mRadioGroupSecondaryColor;
-    private RadioGroup mRadioGroupRimVariation;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +39,9 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         mPager = findViewById(R.id.view_pager_red_deduction);
-        PagerAdapter pagerAdapter = new RedDeductionFromPagerAdapter(getSupportFragmentManager());
+        PagerAdapter pagerAdapter = new RedDeductionFormPagerAdapter(getSupportFragmentManager());
 
         mPager.setAdapter(pagerAdapter);
-
-        mRadioGroupClarity = findViewById(R.id.radio_group_clarity);
-        mRadioGroupConcentration = findViewById(R.id.radio_group_concentration);
-        mRadioGroupColor = findViewById(R.id.radio_group_color_redwine);
-        mRadioGroupSecondaryColor = findViewById(R.id.radio_group_colorsecondary_redwine);
-        mRadioGroupRimVariation = findViewById(R.id.radio_group_rimvariation);
-
-
 
         setTitle("Sight");
 
@@ -185,11 +169,11 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
             default:
                 break;
 
-
+        }
     }
 
-    class RedDeductionFromPagerAdapter extends FragmentPagerAdapter {
-        RedDeductionFromPagerAdapter(FragmentManager fragmentManager) {
+    class RedDeductionFormPagerAdapter extends FragmentPagerAdapter {
+        RedDeductionFormPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -213,5 +197,5 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
             return null;
         }
     }
-
 }
+
