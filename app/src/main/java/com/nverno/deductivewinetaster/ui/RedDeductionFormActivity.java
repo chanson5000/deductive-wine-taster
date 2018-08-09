@@ -9,15 +9,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.nverno.deductivewinetaster.R;
 import com.nverno.deductivewinetaster.util.RedWineContract;
-
-import java.util.Map;
-
 
 public class RedDeductionFormActivity extends AppCompatActivity implements RedWineContract {
 
@@ -28,7 +25,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     private int mCurrentPage;
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor sharedEditor;
+
+    RedSightFragment mRedWineSightFragment;
+    RedNoseFragment mRedWineNoseFragment;
+    RedPalateFragment mRedWinePalateFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
                         break;
                     case 2:
                         mCurrentPage = 2;
-                        mRadioGroupConcentration.clearCheck();
                         setTitle("Palate");
                         break;
                     default:
@@ -79,18 +78,27 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         });
     }
 
-    private int getSelectionState(String key) {
-        return sharedPreferences.getInt(CLARITY, 0);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.wine_deduction_menu, menu);
+        return true;
     }
 
-    private Map<String, ?> getAllState() {
-        return sharedPreferences.getAll();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clear_selections:
+                mRedWineSightFragment.resetView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        setSelectionState(CURRENT_PAGE, mCurrentPage);
     }
 
     @Override
@@ -98,7 +106,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         super.onResume();
         mCurrentPage = sharedPreferences.getInt(CURRENT_PAGE, 0);
         mPager.setCurrentItem(mCurrentPage);
-        loadSelectionState();
     }
 
     @Override
@@ -108,32 +115,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
-    }
-
-    public void loadSelectionState() {
-        Map<String, ?> allEntries = getAllState();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-//            findViewById(entry.getKey(), );
-
-        }
-    }
-
-    private void setSelectionState(int key, Boolean state) {
-        sharedEditor = sharedPreferences.edit();
-        sharedEditor.putBoolean(Integer.toString(key), state);
-        sharedEditor.apply();
-    }
-
-    private void setRadioButtonState(RadioGroup radioGroup, int checkedInt) {
-        radioGroup.check(checkedInt);
-    }
-
-    public void onRadioButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        setSelectionState(view.getId(), checked);
-
-
     }
 
     class RedDeductionFormPagerAdapter extends FragmentPagerAdapter {
@@ -150,11 +131,14 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new RedSightFragment();
+                    mRedWineSightFragment = new RedSightFragment();
+                    return mRedWineSightFragment;
                 case 1:
-                    return new RedNoseFragment();
+                    mRedWineNoseFragment = new RedNoseFragment();
+                    return mRedWineNoseFragment;
                 case 2:
-                    return new RedPalateFragment();
+                    mRedWinePalateFragment = new RedPalateFragment();
+                    return mRedWinePalateFragment;
                 default:
                     break;
             }
