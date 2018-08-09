@@ -6,24 +6,37 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
-import android.widget.Toast;
+import android.widget.RadioGroup;
 
 import com.nverno.deductivewinetaster.R;
 import com.nverno.deductivewinetaster.util.RedWineContract;
 
+import java.util.Map;
+
+
 public class RedDeductionFormActivity extends AppCompatActivity implements RedWineContract {
 
-    private static final int NUM_PAGES = 2;
+    private static final int NUM_PAGES = 3;
 
     private ViewPager mPager;
     private Context mContext;
     private int mCurrentPage;
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedEditor;
+
+
+    private RadioGroup mRadioGroupClarity;
+    private RadioGroup mRadioGroupConcentration;
+    private RadioGroup mRadioGroupColor;
+    private RadioGroup mRadioGroupSecondaryColor;
+    private RadioGroup mRadioGroupRimVariation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +47,17 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         mPager = findViewById(R.id.view_pager_red_deduction);
-        mPager.setAdapter(new RedDeductionFromPagerAdapter(getSupportFragmentManager()));
+        PagerAdapter pagerAdapter = new RedDeductionFromPagerAdapter(getSupportFragmentManager());
+
+        mPager.setAdapter(pagerAdapter);
+
+        mRadioGroupClarity = findViewById(R.id.radio_group_clarity);
+        mRadioGroupConcentration = findViewById(R.id.radio_group_concentration);
+        mRadioGroupColor = findViewById(R.id.radio_group_color_redwine);
+        mRadioGroupSecondaryColor = findViewById(R.id.radio_group_colorsecondary_redwine);
+        mRadioGroupRimVariation = findViewById(R.id.radio_group_rimvariation);
+
+
 
         setTitle("Sight");
 
@@ -55,6 +78,11 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
                         mCurrentPage = 1;
                         setTitle("Nose");
                         break;
+                    case 2:
+                        mCurrentPage = 2;
+                        mRadioGroupConcentration.clearCheck();
+                        setTitle("Palate");
+                        break;
                     default:
                         break;
                 }
@@ -67,12 +95,18 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         });
     }
 
+    private int getSelectionState(String key) {
+        return sharedPreferences.getInt(CLARITY, 0);
+    }
+
+    private Map<String, ?> getAllState() {
+        return sharedPreferences.getAll();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(CURRENT_PAGE, mCurrentPage);
-        editor.apply();
+        setSelectionState(CURRENT_PAGE, mCurrentPage);
     }
 
     @Override
@@ -80,6 +114,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         super.onResume();
         mCurrentPage = sharedPreferences.getInt(CURRENT_PAGE, 0);
         mPager.setCurrentItem(mCurrentPage);
+        loadSelectionState();
     }
 
     @Override
@@ -91,18 +126,66 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         }
     }
 
+    public void loadSelectionState() {
+        Map<String, ?> allEntries = getAllState();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            findViewById(entry.getKey(), );
+        }
+    }
+
+    private void setSelectionState(int key, Boolean state) {
+        sharedEditor = sharedPreferences.edit();
+        sharedEditor.putBoolean(Integer.toString(key), state);
+        sharedEditor.apply();
+    }
+
+    private void setRadioButtonState(RadioGroup radioGroup, int checkedInt) {
+        radioGroup.check(checkedInt);
+    }
+
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
-        switch (view.getId()) {
-            case R.id.radio_clarity_clear:
+        setSelectionState(view.getId(), checked);
+
+//        switch (view.getId()) {
 
 
+//            case R.id.radio_clarity_clear:
+//                if (checked) {
+//                    setSelectionState(R.id.radio_clarity_clear, CLEAR);
+//                }
+//                break;
+//            case R.id.radio_clarity_hazy:
+//                if (checked) {
+//                    setSelectionState(CLARITY, HAZY);
+//                }
+//                break;
+//            case R.id.radio_clarity_turbid:
+//                if (checked) {
+//                    setSelectionState(CLARITY, TURBID);
+//                }
+//                break;
+//            case R.id.radio_concentration_pale:
+//                if (checked) {
+//                    setSelectionState(CONCENTRATION, PALE);
+//                }
+//                break;
+//            case R.id.radio_concentration_medium:
+//                if (checked) {
+//                    setSelectionState(CONCENTRATION, MEDIUM);
+//                }
+//                break;
+//            case R.id.radio_concentration_deep:
+//                if (checked) {
+//                    setSelectionState(CONCENTRATION, DEEP);
+//                }
+//                break;
+//
+//
+//            default:
+//                break;
 
-            case R.id.radio_nose_earth_forest_floor:
-                if (checked)
-                    Toast.makeText(mContext, "It Worked!", Toast.LENGTH_SHORT).show();
-                break;
         }
     }
 
@@ -123,6 +206,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
                     return new RedSightFragment();
                 case 1:
                     return new RedNoseFragment();
+                case 2:
+                    return new RedPalateFragment();
                 default:
                     break;
             }
