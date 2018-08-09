@@ -8,8 +8,8 @@
         android:text="@string/gas_evidence" />
 
     <RadioGroup
-        style="@style/AppTheme.RadioGroup"
         android:id="@+id/radio_group_gasevidence"
+        style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

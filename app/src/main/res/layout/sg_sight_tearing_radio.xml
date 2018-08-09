@@ -8,6 +8,7 @@
         android:text="@string/tearing" />
 
     <RadioGroup
+        android:id="@+id/radio_group_tearing"
         style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
