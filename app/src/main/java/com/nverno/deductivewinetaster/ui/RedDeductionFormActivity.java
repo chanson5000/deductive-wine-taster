@@ -106,7 +106,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     @Override
     public void onPause() {
         super.onPause();
-        setSelectionState(CURRENT_PAGE, mCurrentPage);
+//        setSelectionState(CURRENT_PAGE, mCurrentPage);
     }
 
     @Override
@@ -129,7 +129,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     public void loadSelectionState() {
         Map<String, ?> allEntries = getAllState();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            findViewById(entry.getKey(), );
+//            findViewById(entry.getKey(), );
+
         }
     }
 
@@ -148,48 +149,46 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
 
         setSelectionState(view.getId(), checked);
 
-//        switch (view.getId()) {
+        switch (view.getId()) {
+            case R.id.radio_clarity_clear:
+                if (checked) {
+                    setSelectionState(CLARITY, CLEAR);
+                }
+                break;
+            case R.id.radio_clarity_hazy:
+                if (checked) {
+                    setSelectionState(CLARITY, HAZY);
+                }
+                break;
+            case R.id.radio_clarity_turbid:
+                if (checked) {
+                    setSelectionState(CLARITY, TURBID);
+                }
+                break;
+            case R.id.radio_concentration_pale:
+                if (checked) {
+                    setSelectionState(CONCENTRATION, PALE);
+                }
+                break;
+            case R.id.radio_concentration_medium:
+                if (checked) {
+                    setSelectionState(CONCENTRATION, MEDIUM);
+                }
+                break;
+            case R.id.radio_concentration_deep:
+                if (checked) {
+                    setSelectionState(CONCENTRATION, DEEP);
+                }
+                break;
 
 
-//            case R.id.radio_clarity_clear:
-//                if (checked) {
-//                    setSelectionState(R.id.radio_clarity_clear, CLEAR);
-//                }
-//                break;
-//            case R.id.radio_clarity_hazy:
-//                if (checked) {
-//                    setSelectionState(CLARITY, HAZY);
-//                }
-//                break;
-//            case R.id.radio_clarity_turbid:
-//                if (checked) {
-//                    setSelectionState(CLARITY, TURBID);
-//                }
-//                break;
-//            case R.id.radio_concentration_pale:
-//                if (checked) {
-//                    setSelectionState(CONCENTRATION, PALE);
-//                }
-//                break;
-//            case R.id.radio_concentration_medium:
-//                if (checked) {
-//                    setSelectionState(CONCENTRATION, MEDIUM);
-//                }
-//                break;
-//            case R.id.radio_concentration_deep:
-//                if (checked) {
-//                    setSelectionState(CONCENTRATION, DEEP);
-//                }
-//                break;
-//
-//
-//            default:
-//                break;
+            default:
+                break;
 
-        }
+
     }
 
-    private class RedDeductionFromPagerAdapter extends FragmentPagerAdapter {
+    class RedDeductionFromPagerAdapter extends FragmentPagerAdapter {
         RedDeductionFromPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }

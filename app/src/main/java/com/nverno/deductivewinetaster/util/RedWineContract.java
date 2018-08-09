@@ -13,7 +13,7 @@ public interface RedWineContract {
 
     int NOT_SET = 0;
 
-    String CLARITY = "R.id.radio_group_clarity";
+    String CLARITY = "CLARITY";
     int CLEAR = 1;
     int HAZY = 2;
     int TURBID = 3;
