@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.nverno.deductivewinetaster.R;
@@ -27,6 +28,8 @@ public class RedNoseFragment extends Fragment implements RedWineContract {
     private RedDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
+    @BindView(R.id.scrollView_nose_red)
+    ScrollView mScrollViewNoseRed;
     @BindView(R.id.check_faulty_tca)
     CheckBox mCheckFaultyTca;
     @BindView(R.id.check_faulty_hydrogen_sulfide)
@@ -156,6 +159,8 @@ public class RedNoseFragment extends Fragment implements RedWineContract {
 
         ButterKnife.bind(this, rootView);
 
+        setSelectionListeners();
+
         return rootView;
     }
 
@@ -165,14 +170,41 @@ public class RedNoseFragment extends Fragment implements RedWineContract {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPositionState(mScrollViewNoseRed.getScrollX(), mScrollViewNoseRed.getScrollY());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         loadAllSelectionStates();
-        setSelectionListeners();
+        syncScrollPositionFromState();
     }
 
     public void resetView() {
         clearAllSelectionStates();
+        saveScrollPositionState(0, 0);
+        mScrollViewNoseRed.scrollTo(0, 0);
+    }
+
+    private void syncScrollPositionFromState() {
+        mScrollViewNoseRed.scrollTo(getSavedScrollXPositionState(), getSavedScrollYPositionState());
+    }
+
+    private int getSavedScrollXPositionState() {
+        return mSharedPreferences.getInt(SCROLL_X_POS, 0);
+    }
+
+    private int getSavedScrollYPositionState() {
+        return mSharedPreferences.getInt(SCROLL_Y_POS, 0);
+    }
+
+    private void saveScrollPositionState(int x, int y) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(SCROLL_X_POS, x);
+        editor.putInt(SCROLL_Y_POS, y);
+        editor.apply();
     }
 
     private int getRadioGroupState(String key) {

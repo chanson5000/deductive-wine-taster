@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.nverno.deductivewinetaster.R;
 
@@ -21,6 +22,8 @@ public class RedSightFragment extends Fragment implements RedWineContract {
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
+    @BindView(R.id.scrollView_sight_red)
+    ScrollView mScrollViewSightRed;
     @BindView(R.id.radio_group_clarity)
     RadioGroup mRadioGroupClarity;
     @BindView(R.id.radio_group_concentration)
@@ -62,6 +65,8 @@ public class RedSightFragment extends Fragment implements RedWineContract {
 
         ButterKnife.bind(this, rootView);
 
+        setSelectionListeners();
+
         return rootView;
     }
 
@@ -71,14 +76,41 @@ public class RedSightFragment extends Fragment implements RedWineContract {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPositionState(mScrollViewSightRed.getScrollX(), mScrollViewSightRed.getScrollY());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         loadAllSelectionStates();
-        setSelectionListeners();
+        syncScrollPositionFromState();
     }
 
     public void resetView() {
         clearAllSelectionStates();
+        saveScrollPositionState(0, 0);
+        mScrollViewSightRed.scrollTo(0, 0);
+    }
+
+    private void syncScrollPositionFromState() {
+        mScrollViewSightRed.scrollTo(getSavedScrollXPositionState(), getSavedScrollYPositionState());
+    }
+
+    private int getSavedScrollXPositionState() {
+        return mSharedPreferences.getInt(SCROLL_X_POS, 0);
+    }
+
+    private int getSavedScrollYPositionState() {
+        return mSharedPreferences.getInt(SCROLL_Y_POS, 0);
+    }
+
+    private void saveScrollPositionState(int x, int y) {
+         SharedPreferences.Editor editor = mSharedPreferences.edit();
+         editor.putInt(SCROLL_X_POS, x);
+         editor.putInt(SCROLL_Y_POS, y);
+         editor.apply();
     }
 
     private void getRadioGroupState(String key, int state) {
@@ -90,7 +122,6 @@ public class RedSightFragment extends Fragment implements RedWineContract {
     private int saveRadioGroupState(String key) {
         return mSharedPreferences.getInt(key, NONE_SELECTED);
     }
-
 
     private void loadAllSelectionStates() {
         mRadioGroupClarity.check(saveRadioGroupState(CLARITY));
