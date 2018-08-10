@@ -12,19 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.nverno.deductivewinetaster.R;
-import com.nverno.deductivewinetaster.util.RedWineContract;
 
 public class RedDeductionFormActivity extends AppCompatActivity implements RedWineContract {
 
     private static final int NUM_PAGES = 3;
 
     private ViewPager mPager;
-    private Context mContext;
     private int mCurrentPage;
 
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     RedSightFragment mRedWineSightFragment;
     RedNoseFragment mRedWineNoseFragment;
@@ -35,36 +35,34 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_red_deduction_form);
 
-        mContext = this;
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        mSharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         mPager = findViewById(R.id.view_pager_red_deduction);
         PagerAdapter pagerAdapter = new RedDeductionFormPagerAdapter(getSupportFragmentManager());
 
         mPager.setAdapter(pagerAdapter);
 
-        setTitle("Sight");
+        setTitle(RED_SIGHT_PAGE_TITLE);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0:
-                        mCurrentPage = 0;
-                        setTitle("Sight");
+                    case RED_SIGHT_PAGE:
+                        mCurrentPage = RED_SIGHT_PAGE;
+                        setTitle(RED_SIGHT_PAGE_TITLE);
                         break;
-                    case 1:
-                        mCurrentPage = 1;
-                        setTitle("Nose");
+                    case RED_NOSE_PAGE:
+                        mCurrentPage = RED_NOSE_PAGE;
+                        setTitle(RED_NOSE_PAGE_TITLE);
                         break;
-                    case 2:
-                        mCurrentPage = 2;
-                        setTitle("Palate");
+                    case RED_PALATE_PAGE:
+                        mCurrentPage = RED_PALATE_PAGE;
+                        setTitle(RED_PALATE_PAGE_TITLE);
                         break;
                     default:
                         break;
@@ -73,7 +71,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -90,6 +87,9 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         switch (item.getItemId()) {
             case R.id.clear_selections:
                 mRedWineSightFragment.resetView();
+                mRedWineNoseFragment.resetView();
+                mPager.setCurrentItem(0);
+                Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -99,12 +99,13 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     @Override
     public void onPause() {
         super.onPause();
+        saveCurrentPageSelection();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mCurrentPage = sharedPreferences.getInt(CURRENT_PAGE, 0);
+        mCurrentPage = mSharedPreferences.getInt(CURRENT_PAGE, 0);
         mPager.setCurrentItem(mCurrentPage);
     }
 
@@ -115,6 +116,25 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
+    }
+
+    private void saveCurrentPageSelection() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(CURRENT_PAGE, mCurrentPage);
+        editor.apply();
+    }
+
+    private void wipeSharedPreferences() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void onRadioButtonClicked(View view) {
+    }
+
+    public void onCheckBoxClicked(View view) {
+
     }
 
     class RedDeductionFormPagerAdapter extends FragmentPagerAdapter {

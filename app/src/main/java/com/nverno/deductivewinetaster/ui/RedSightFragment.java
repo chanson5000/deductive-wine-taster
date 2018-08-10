@@ -12,16 +12,14 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.nverno.deductivewinetaster.R;
-import com.nverno.deductivewinetaster.util.RedWineContract;
-import com.nverno.deductivewinetaster.util.RedWineFormHandler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RedSightFragment extends Fragment implements RedWineContract, RedWineFormHandler {
+public class RedSightFragment extends Fragment implements RedWineContract {
 
     private FragmentActivity mFragmentActivity;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @BindView(R.id.radio_group_clarity)
     RadioGroup mRadioGroupClarity;
@@ -52,7 +50,7 @@ public class RedSightFragment extends Fragment implements RedWineContract, RedWi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+        mSharedPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
@@ -79,25 +77,30 @@ public class RedSightFragment extends Fragment implements RedWineContract, RedWi
         setSelectionListeners();
     }
 
-    private void setSelectionState(String key, int state) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    public void resetView() {
+        clearAllSelectionStates();
+    }
+
+    private void getRadioGroupState(String key, int state) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(key, state);
         editor.apply();
     }
 
-    private int getSelectionState(String key) {
-        return sharedPreferences.getInt(key, NOT_CHECKED);
+    private int saveRadioGroupState(String key) {
+        return mSharedPreferences.getInt(key, NONE_SELECTED);
     }
 
+
     private void loadAllSelectionStates() {
-        mRadioGroupClarity.check(getSelectionState(CLARITY));
-        mRadioGroupConcentration.check(getSelectionState(CONCENTRATION));
-        mRadioGroupColor.check(getSelectionState(COLOR));
-        mRadioGroupSecondaryColor.check(getSelectionState(SECONDARY_COLOR));
-        mRadioGroupRimVariation.check(getSelectionState(RIM_VARIATION));
-        mRadioGroupExtractStain.check(getSelectionState(EXTRACT_STAINING));
-        mRadioGroupTearing.check(getSelectionState(TEARING));
-        mRadioGroupGasEvidence.check(getSelectionState(GAS_EVIDENCE));
+        mRadioGroupClarity.check(saveRadioGroupState(CLARITY));
+        mRadioGroupConcentration.check(saveRadioGroupState(CONCENTRATION));
+        mRadioGroupColor.check(saveRadioGroupState(COLOR));
+        mRadioGroupSecondaryColor.check(saveRadioGroupState(SECONDARY_COLOR));
+        mRadioGroupRimVariation.check(saveRadioGroupState(RIM_VARIATION));
+        mRadioGroupExtractStain.check(saveRadioGroupState(EXTRACT_STAINING));
+        mRadioGroupTearing.check(saveRadioGroupState(TEARING));
+        mRadioGroupGasEvidence.check(saveRadioGroupState(GAS_EVIDENCE));
     }
 
     private void clearAllSelectionStates() {
@@ -111,70 +114,60 @@ public class RedSightFragment extends Fragment implements RedWineContract, RedWi
         mRadioGroupGasEvidence.clearCheck();
     }
 
-    private void wipeSharedPreferences() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-    }
-
-    public void resetView() {
-        clearAllSelectionStates();
-    }
-
-    public void setSelectionListeners() {
+    private void setSelectionListeners() {
         mRadioGroupClarity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(CLARITY, checkedId);
+                getRadioGroupState(CLARITY, checkedId);
             }
         });
 
         mRadioGroupConcentration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(CONCENTRATION, checkedId);
+                getRadioGroupState(CONCENTRATION, checkedId);
             }
         });
 
         mRadioGroupColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(COLOR, checkedId);
+                getRadioGroupState(COLOR, checkedId);
             }
         });
 
         mRadioGroupSecondaryColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(SECONDARY_COLOR, checkedId);
+                getRadioGroupState(SECONDARY_COLOR, checkedId);
             }
         });
 
         mRadioGroupRimVariation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(RIM_VARIATION, checkedId);
+                getRadioGroupState(RIM_VARIATION, checkedId);
             }
         });
 
         mRadioGroupExtractStain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(EXTRACT_STAINING, checkedId);
+                getRadioGroupState(EXTRACT_STAINING, checkedId);
             }
         });
 
         mRadioGroupTearing.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(TEARING, checkedId);
+                getRadioGroupState(TEARING, checkedId);
             }
         });
 
         mRadioGroupGasEvidence.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSelectionState(GAS_EVIDENCE, checkedId);
+                getRadioGroupState(GAS_EVIDENCE, checkedId);
             }
         });
     }
