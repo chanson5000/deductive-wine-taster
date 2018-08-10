@@ -7,21 +7,21 @@
         android:layout_height="wrap_content"
         android:text="@string/wood" />
 
-    <RadioGroup
+    <LinearLayout
         style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radio_nose_wood_none"
+        <Switch
+            android:id="@+id/switch_nose_wood"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
-            android:text="@string/none" />
+            android:text="@string/oak" />
 
         <RadioGroup
+            android:id="@+id/radio_group_wood_old_vs_new"
             style="@style/AppTheme.RadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +45,7 @@
         </RadioGroup>
 
         <RadioGroup
+            android:id="@+id/radio_group_wood_large_vs_small"
             style="@style/AppTheme.RadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,6 +69,7 @@
         </RadioGroup>
 
         <RadioGroup
+            android:id="@+id/radio_group_wood_french_vs_american"
             style="@style/AppTheme.RadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,5 +91,5 @@
                 android:onClick="onRadioButtonClicked"
                 android:text="@string/american" />
         </RadioGroup>
-    </RadioGroup>
+    </LinearLayout>
 </merge>

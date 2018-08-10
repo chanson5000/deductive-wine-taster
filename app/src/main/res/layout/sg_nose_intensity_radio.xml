@@ -8,6 +8,7 @@
         android:text="@string/intensity" />
 
     <RadioGroup
+        android:id="@+id/radio_group_nose_intensity"
         style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

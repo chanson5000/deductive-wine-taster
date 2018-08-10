@@ -22,7 +22,7 @@
             android:text="@string/mineral" />
 
         <CheckBox
-            android:id="@+id/check_nose_wet_mineral_stone"
+            android:id="@+id/check_nose_mineral_wet_stone"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
