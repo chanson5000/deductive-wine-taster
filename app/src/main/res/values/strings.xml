@@ -123,6 +123,7 @@
     <string name="flint">Flint</string>
 
     <string name="wood">Wood</string>
+    <string name="oak">Oak</string>
     <!-- None -->
     <string name="old">Old</string>
     <string name="word_new">New</string>
