@@ -22,8 +22,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     private static final int NUM_PAGES = 3;
 
     private ViewPager mPager;
-    private int mCurrentPage;
-
     private SharedPreferences mSharedPreferences;
 
     RedSightFragment mRedWineSightFragment;
@@ -42,7 +40,6 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
 
         mPager.setAdapter(pagerAdapter);
 
-        setTitle(RED_SIGHT_PAGE_TITLE);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -51,22 +48,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
 
             @Override
             public void onPageSelected(int position) {
-                switch (position) {
-                    case RED_SIGHT_PAGE:
-                        mCurrentPage = RED_SIGHT_PAGE;
-                        setTitle(RED_SIGHT_PAGE_TITLE);
-                        break;
-                    case RED_NOSE_PAGE:
-                        mCurrentPage = RED_NOSE_PAGE;
-                        setTitle(RED_NOSE_PAGE_TITLE);
-                        break;
-                    case RED_PALATE_PAGE:
-                        mCurrentPage = RED_PALATE_PAGE;
-                        setTitle(RED_PALATE_PAGE_TITLE);
-                        break;
-                    default:
-                        break;
-                }
+                syncCurrentTitle();
             }
 
             @Override
@@ -88,6 +70,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
             case R.id.clear_selections:
                 mRedWineSightFragment.resetView();
                 mRedWineNoseFragment.resetView();
+                mRedWinePalateFragment.resetView();
                 mPager.setCurrentItem(0);
                 Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
                 return true;
@@ -105,8 +88,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
     @Override
     public void onResume() {
         super.onResume();
-        mCurrentPage = mSharedPreferences.getInt(CURRENT_PAGE, 0);
-        mPager.setCurrentItem(mCurrentPage);
+        mPager.setCurrentItem(mSharedPreferences.getInt(CURRENT_PAGE, 0));
+        syncCurrentTitle();
     }
 
     @Override
@@ -118,9 +101,26 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         }
     }
 
+    private void syncCurrentTitle() {
+        switch (mPager.getCurrentItem()) {
+            case RED_SIGHT_PAGE:
+                setTitle(RED_SIGHT_PAGE_TITLE);
+                break;
+            case RED_NOSE_PAGE:
+                setTitle(RED_NOSE_PAGE_TITLE);
+                break;
+            case RED_PALATE_PAGE:
+                setTitle(RED_PALATE_PAGE_TITLE);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void saveCurrentPageSelection() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(CURRENT_PAGE, mCurrentPage);
+
+        editor.putInt(CURRENT_PAGE, mPager.getCurrentItem());
         editor.apply();
     }
 
