@@ -18,7 +18,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/mineral" />
 
         <CheckBox
@@ -26,7 +26,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/wet_stone" />
 
         <CheckBox
@@ -34,7 +34,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/limestone" />
 
         <CheckBox
@@ -42,7 +42,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/chalk" />
 
         <CheckBox
@@ -50,7 +50,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/slate" />
 
         <CheckBox
@@ -58,7 +58,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/flint" />
     </LinearLayout>
 </merge>

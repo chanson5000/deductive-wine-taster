@@ -18,7 +18,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/tart" />
 
         <CheckBox
@@ -26,7 +26,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/fresh" />
 
         <CheckBox
@@ -34,7 +34,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/tart" />
 
         <CheckBox
@@ -42,7 +42,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/baked" />
 
         <CheckBox
@@ -50,7 +50,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/stewed" />
 
         <CheckBox
@@ -58,7 +58,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/dried" />
 
         <CheckBox
@@ -66,7 +66,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/desiccated" />
 
         <CheckBox
@@ -74,7 +74,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/bruised" />
 
         <CheckBox
@@ -82,7 +82,7 @@
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onCheckBoxClicked"
+            android:onClick="onCheckBoxButtonClicked"
             android:text="@string/jammy" />
     </LinearLayout>
 </merge>
