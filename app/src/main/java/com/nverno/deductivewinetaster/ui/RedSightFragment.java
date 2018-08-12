@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
@@ -19,8 +19,13 @@ import butterknife.ButterKnife;
 
 public class RedSightFragment extends Fragment implements RedWineContract {
 
-    private FragmentActivity mFragmentActivity;
+    private RedDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
+    private Context mContext;
+    private View mRootView;
+
+    // We keep a strong reference to the listener in order to prevent being garbage collected.
+    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
     @BindView(R.id.scrollView_sight_red)
     ScrollView mScrollViewSightRed;
@@ -47,27 +52,27 @@ public class RedSightFragment extends Fragment implements RedWineContract {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = getActivity();
+        mFragmentActivity = (RedDeductionFormActivity) getActivity();
+        mContext = context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+        mSharedPreferences = mFragmentActivity
+                .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_sight_red,
+        mRootView = inflater.inflate(R.layout.fragment_sight_red,
                 container, false);
 
-        ButterKnife.bind(this, rootView);
+        ButterKnife.bind(this, mRootView);
 
-        setSelectionListeners();
-
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -78,128 +83,103 @@ public class RedSightFragment extends Fragment implements RedWineContract {
     @Override
     public void onPause() {
         super.onPause();
-        saveScrollPositionState(mScrollViewSightRed.getScrollX(), mScrollViewSightRed.getScrollY());
+//        unRegisterSharedPreferencesListener();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadAllSelectionStates();
-        syncScrollPositionFromState();
+        setUiState();
+//        registerViewListeners();
+//        registerPreferencesListener();
     }
 
-    public void resetView() {
-        clearAllSelectionStates();
-        saveScrollPositionState(0, 0);
-        mScrollViewSightRed.scrollTo(0, 0);
+    private int getRadioGroupState(int key) {
+        return mSharedPreferences.getInt(Integer.toString(key), NONE_SELECTED);
     }
 
-    private void syncScrollPositionFromState() {
-        mScrollViewSightRed.scrollTo(getSavedScrollXPositionState(), getSavedScrollYPositionState());
-    }
-
-    private int getSavedScrollXPositionState() {
-        return mSharedPreferences.getInt(SCROLL_X_POS, 0);
-    }
-
-    private int getSavedScrollYPositionState() {
-        return mSharedPreferences.getInt(SCROLL_Y_POS, 0);
-    }
-
-    private void saveScrollPositionState(int x, int y) {
-         SharedPreferences.Editor editor = mSharedPreferences.edit();
-         editor.putInt(SCROLL_X_POS, x);
-         editor.putInt(SCROLL_Y_POS, y);
-         editor.apply();
-    }
-
-    private void getRadioGroupState(String key, int state) {
+    private void saveRadioGroupState(int key, int state) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(key, state);
+        editor.putInt(Integer.toString(key), state);
         editor.apply();
     }
 
-    private int saveRadioGroupState(String key) {
-        return mSharedPreferences.getInt(key, NONE_SELECTED);
+    private void setUiState() {
+        mRadioGroupClarity.check(getRadioGroupState(CLARITY));
+        mRadioGroupConcentration.check(getRadioGroupState(CONCENTRATION));
+        mRadioGroupColor.check(getRadioGroupState(COLOR));
+        mRadioGroupSecondaryColor.check(getRadioGroupState(SECONDARY_COLOR));
+        mRadioGroupRimVariation.check(getRadioGroupState(RIM_VARIATION));
+        mRadioGroupExtractStain.check(getRadioGroupState(EXTRACT_STAINING));
+        mRadioGroupTearing.check(getRadioGroupState(TEARING));
+        mRadioGroupGasEvidence.check(getRadioGroupState(GAS_EVIDENCE));
     }
 
-    private void loadAllSelectionStates() {
-        mRadioGroupClarity.check(saveRadioGroupState(CLARITY));
-        mRadioGroupConcentration.check(saveRadioGroupState(CONCENTRATION));
-        mRadioGroupColor.check(saveRadioGroupState(COLOR));
-        mRadioGroupSecondaryColor.check(saveRadioGroupState(SECONDARY_COLOR));
-        mRadioGroupRimVariation.check(saveRadioGroupState(RIM_VARIATION));
-        mRadioGroupExtractStain.check(saveRadioGroupState(EXTRACT_STAINING));
-        mRadioGroupTearing.check(saveRadioGroupState(TEARING));
-        mRadioGroupGasEvidence.check(saveRadioGroupState(GAS_EVIDENCE));
-    }
+//    private void registerPreferencesListener() {
+//        mSharedPreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
+//                = (sharedPreferences, key) -> {
+//
+//            View view = mRootView.findViewById(Integer.parseInt(key));
+//
+//            if (view instanceof RadioGroup) {
+//                RadioGroup radioGroup = (RadioGroup) view;
+//                radioGroup.check(sharedPreferences.getInt(key, 0));
+//            }
+//        });
+//    }
 
-    private void clearAllSelectionStates() {
-        mRadioGroupClarity.clearCheck();
-        mRadioGroupConcentration.clearCheck();
-        mRadioGroupColor.clearCheck();
-        mRadioGroupSecondaryColor.clearCheck();
-        mRadioGroupRimVariation.clearCheck();
-        mRadioGroupExtractStain.clearCheck();
-        mRadioGroupTearing.clearCheck();
-        mRadioGroupGasEvidence.clearCheck();
-    }
+//    private void unRegisterSharedPreferencesListener() {
+//        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+//    }
 
-    private void setSelectionListeners() {
-        mRadioGroupClarity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(CLARITY, checkedId);
-            }
-        });
 
-        mRadioGroupConcentration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(CONCENTRATION, checkedId);
-            }
-        });
 
-        mRadioGroupColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(COLOR, checkedId);
-            }
-        });
+//    private void registerViewListeners() {
+//
+//        mRadioGroupClarity.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(CLARITY, checkedId));
+//
+//        mRadioGroupConcentration.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(CONCENTRATION, checkedId));
+//
+//        mRadioGroupColor.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(COLOR, checkedId));
+//
+//        mRadioGroupSecondaryColor.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(SECONDARY_COLOR, checkedId));
+//
+//        mRadioGroupRimVariation.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(RIM_VARIATION, checkedId));
+//
+//        mRadioGroupExtractStain.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(EXTRACT_STAINING, checkedId));
+//
+//        mRadioGroupTearing.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(TEARING, checkedId));
+//
+//        mRadioGroupGasEvidence.setOnCheckedChangeListener((group, checkedId) ->
+//                saveRadioGroupState(GAS_EVIDENCE, checkedId));
+//    }
 
-        mRadioGroupSecondaryColor.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(SECONDARY_COLOR, checkedId);
-            }
-        });
-
-        mRadioGroupRimVariation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(RIM_VARIATION, checkedId);
-            }
-        });
-
-        mRadioGroupExtractStain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(EXTRACT_STAINING, checkedId);
-            }
-        });
-
-        mRadioGroupTearing.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(TEARING, checkedId);
-            }
-        });
-
-        mRadioGroupGasEvidence.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                getRadioGroupState(GAS_EVIDENCE, checkedId);
-            }
-        });
-    }
+//    private void clearAllSelectionStates() {
+//        mRadioGroupClarity.clearCheck();
+//        mRadioGroupConcentration.clearCheck();
+//        mRadioGroupColor.clearCheck();
+//        mRadioGroupSecondaryColor.clearCheck();
+//        mRadioGroupRimVariation.clearCheck();
+//        mRadioGroupExtractStain.clearCheck();
+//        mRadioGroupTearing.clearCheck();
+//        mRadioGroupGasEvidence.clearCheck();
+//    }
+//
+//    private void clearAllSharedPreferenceStates() {
+//        saveRadioGroupState(CLARITY, NONE_SELECTED);
+//        saveRadioGroupState(CONCENTRATION, NONE_SELECTED);
+//        saveRadioGroupState(COLOR, NONE_SELECTED);
+//        saveRadioGroupState(SECONDARY_COLOR, NONE_SELECTED);
+//        saveRadioGroupState(RIM_VARIATION, NONE_SELECTED);
+//        saveRadioGroupState(EXTRACT_STAINING, NONE_SELECTED);
+//        saveRadioGroupState(TEARING, NONE_SELECTED);
+//        saveRadioGroupState(GAS_EVIDENCE, NONE_SELECTED);
+//    }
 }

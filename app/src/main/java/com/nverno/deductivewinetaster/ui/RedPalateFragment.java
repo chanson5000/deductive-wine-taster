@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -106,19 +105,9 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
             R.id.radio_palate_wood_french, R.id.radio_palate_wood_american})
     List<RadioButton> mRadioGroupsPalateWood;
 
-    static final ButterKnife.Action<RadioButton> WOOD_ENABLE = new ButterKnife.Action<RadioButton>() {
-        @Override
-        public void apply(@NonNull RadioButton view, int index) {
-            view.setEnabled(true);
-        }
-    };
+    static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) -> view.setEnabled(true);
 
-    static final ButterKnife.Action<RadioButton> WOOD_DISABLE = new ButterKnife.Action<RadioButton>() {
-        @Override
-        public void apply(@NonNull RadioButton view, int index) {
-            view.setEnabled(false);
-        }
-    };
+    static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) -> view.setEnabled(false);
 
     public RedPalateFragment() {
     }
@@ -132,7 +121,8 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+        mSharedPreferences = mFragmentActivity
+                .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -144,7 +134,7 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
 
         ButterKnife.bind(this, rootView);
 
-        setSelectionListeners();
+//        setSelectionListeners();
 
         return rootView;
     }
@@ -152,66 +142,47 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
     @Override
     public void onPause() {
         super.onPause();
-        saveScrollPositionState(mScrollViewPalateRed.getScrollX(), mScrollViewPalateRed.getScrollY());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadAllSelectionStates();
-        syncScrollPositionFromState();
+        setUiState();
     }
 
-    public void resetView() {
-        clearAllSelectionStates();
-        saveScrollPositionState(0, 0);
-        mScrollViewPalateRed.scrollTo(0, 0);
+    private int getRadioGroupState(int key) {
+        return mSharedPreferences.getInt(Integer.toString(key), NOT_CHECKED);
     }
 
-    public void syncScrollPositionFromState() {
-        mScrollViewPalateRed.scrollTo(getSavedScrollXPositionState(), getSavedScrollYPositionState());
-    }
-
-    private int getSavedScrollXPositionState() {
-        return mSharedPreferences.getInt(SCROLL_X_POS, 0);
-    }
-
-    private int getSavedScrollYPositionState() {
-        return mSharedPreferences.getInt(SCROLL_Y_POS, 0);
-    }
-
-    private void saveScrollPositionState(int x, int y) {
+    private void saveRadioGroupState(int key, int state) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(SCROLL_X_POS, x);
-        editor.putInt(SCROLL_Y_POS, y);
+        editor.putInt(Integer.toString(key), state);
         editor.apply();
     }
 
-    private int getRadioGroupState(String key) {
-        return mSharedPreferences.getInt(key, NOT_CHECKED);
+    private boolean getCheckBoxState(int key) {
+        return mSharedPreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
-    private void saveRadioGroupState(String key, int state) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(key, state);
-        editor.apply();
-    }
+    // These next two methods give us options for saving the
+    // CheckBox state based on boolean or int.
+//    private void saveCheckBoxState(int key, boolean checked) {
+//        SharedPreferences.Editor editor = mSharedPreferences.edit();
+//        if (checked) {
+//            editor.putInt(key, CHECKED);
+//        } else {
+//            editor.putInt(key, NOT_CHECKED);
+//        }
+//        editor.apply();
+//    }
 
-    private boolean getCheckBoxState(String key) {
-        return mSharedPreferences.getInt(key, NOT_CHECKED) == 1;
-    }
+//    private void saveCheckBoxState(int key, int checkedInt) {
+//        SharedPreferences.Editor editor = mSharedPreferences.edit();
+//        editor.putInt(key, checkedInt);
+//        editor.apply();
+//    }
 
-    private void saveCheckBoxState(String key, boolean checked) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        if (checked) {
-            editor.putInt(key, CHECKED);
-        } else {
-            editor.putInt(key, NOT_CHECKED);
-        }
-        editor.apply();
-    }
-
-    private void loadAllSelectionStates() {
+    private void setUiState() {
         mRadioGroupPalateSweetness.check(getRadioGroupState(PALATE_SWEETNESS));
         mCheckPalateFruitRed.setChecked(getCheckBoxState(PALATE_FRUIT_RED));
         mCheckPalateFruitBlack.setChecked(getCheckBoxState(PALATE_FRUIT_BLACK));
@@ -296,255 +267,293 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
         mRadioGroupPalateWoodFrenchVsAmerican.clearCheck();
     }
 
-    private void setSelectionListeners() {
-        mRadioGroupPalateSweetness.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                saveRadioGroupState(PALATE_SWEETNESS, checkedId);
-            }
-        });
+//    private void clearAllSharedPreferenceStates() {
+//        saveRadioGroupState(PALATE_SWEETNESS, NONE_SELECTED);
+//        saveCheckBoxState(PALATE_FRUIT_RED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_BLACK, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_BLUE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_RIPE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_FRESH, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_TART, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_BAKED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_STEWED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_DRIED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_DESICATTED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_BRUISED, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_FRUIT_CHARACTER_JAMMY, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_FLORAL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_VEGETAL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_HERBAL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_SPICE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_ANIMAL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_BARN, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_PETROL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_NON_FRUIT_FERMENTATION, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_EARTH_FOREST_FLOOR, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_EARTH_COMPOST, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_EARTH_MUSHROOMS, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_EARTH_POTTING_SOIL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_MINERAL, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_WET_STONE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_LIMESTONE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_CHALK, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_SLATE, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_MINERAL_FLINT, NOT_CHECKED);
+//        saveCheckBoxState(PALATE_WOOD, NOT_CHECKED);
+//        saveRadioGroupState(PALATE_WOOD_OLD_VS_NEW, NONE_SELECTED);
+//        saveRadioGroupState(PALATE_WOOD_LARGE_VS_SMALL, NONE_SELECTED);
+//        saveRadioGroupState(PALATE_WOOD_FRENCH_VS_AMERICAN, NONE_SELECTED);
+//    }
 
-        mCheckPalateFruitRed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_RED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitBlack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_BLACK, isChecked);
-            }
-        });
-
-        mCheckPalateFruitBlue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_BLUE, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterRipe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_RIPE, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterFresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_FRESH, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterTart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_TART, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterBaked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_BAKED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterStewed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_STEWED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterDried.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_DRIED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterDesiccated.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_DESICATTED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterBruised.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_BRUISED, isChecked);
-            }
-        });
-
-        mCheckPalateFruitCharacterJammy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_FRUIT_CHARACTER_JAMMY, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitFloral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_FLORAL, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitVegetal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_VEGETAL, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitHerbal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_HERBAL, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitSpice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_SPICE, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitAnimal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_ANIMAL, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitBarn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_BARN, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitPetrol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_PETROL, isChecked);
-            }
-        });
-
-        mCheckPalateNonFruitFermentation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_NON_FRUIT_FERMENTATION, isChecked);
-            }
-        });
-
-        mCheckPalateEarthForestFloor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_EARTH_FOREST_FLOOR, isChecked);
-            }
-        });
-
-        mCheckPalateEarthCompost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_EARTH_COMPOST, isChecked);
-            }
-        });
-
-        mCheckPalateEarthMushrooms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_EARTH_MUSHROOMS, isChecked);
-            }
-        });
-
-        mCheckPalateEarthPottingSoil.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_EARTH_POTTING_SOIL, isChecked);
-            }
-        });
-
-        mCheckPalateMineralMineral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_MINERAL, isChecked);
-            }
-        });
-
-        mCheckPalateMineralWetStone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_WET_STONE, isChecked);
-            }
-        });
-
-        mCheckPalateMineralLimestone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_LIMESTONE, isChecked);
-            }
-        });
-
-        mCheckPalateMineralChalk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_CHALK, isChecked);
-            }
-        });
-
-        mCheckPalateMineralSlate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_SLATE, isChecked);
-            }
-        });
-
-        mCheckPalateMineralFlint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_MINERAL_FLINT, isChecked);
-            }
-        });
-
-        mSwitchPalateWood.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                saveCheckBoxState(PALATE_WOOD, isChecked);
-                if (isChecked) {
-                    ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
-                } else {
-                    ButterKnife.apply(mRadioGroupsPalateWood, WOOD_DISABLE);
-                }
-            }
-        });
-
-        mRadioGroupPalateWoodOldVsNew.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                saveRadioGroupState(PALATE_WOOD_OLD_VS_NEW, checkedId);
-            }
-        });
-
-        mRadioGroupPalateWoodLargeVsSmall.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                saveRadioGroupState(PALATE_WOOD_LARGE_VS_SMALL, checkedId);
-            }
-        });
-
-        mRadioGroupPalateWoodFrenchVsAmerican.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                saveRadioGroupState(PALATE_WOOD_FRENCH_VS_AMERICAN, checkedId);
-            }
-        });
-    }
+//    private void setSelectionListeners() {
+//        mRadioGroupPalateSweetness.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                saveRadioGroupState(PALATE_SWEETNESS, checkedId);
+//            }
+//        });
+//
+//        mCheckPalateFruitRed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_RED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitBlack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_BLACK, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitBlue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_BLUE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterRipe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_RIPE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterFresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_FRESH, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterTart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_TART, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterBaked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_BAKED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterStewed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_STEWED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterDried.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_DRIED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterDesiccated.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_DESICATTED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterBruised.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_BRUISED, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateFruitCharacterJammy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_FRUIT_CHARACTER_JAMMY, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitFloral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_FLORAL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitVegetal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_VEGETAL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitHerbal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_HERBAL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitSpice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_SPICE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitAnimal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_ANIMAL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitBarn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_BARN, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitPetrol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_PETROL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateNonFruitFermentation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_NON_FRUIT_FERMENTATION, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateEarthForestFloor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_EARTH_FOREST_FLOOR, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateEarthCompost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_EARTH_COMPOST, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateEarthMushrooms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_EARTH_MUSHROOMS, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateEarthPottingSoil.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_EARTH_POTTING_SOIL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralMineral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_MINERAL, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralWetStone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_WET_STONE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralLimestone.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_LIMESTONE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralChalk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_CHALK, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralSlate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_SLATE, isChecked);
+//            }
+//        });
+//
+//        mCheckPalateMineralFlint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_MINERAL_FLINT, isChecked);
+//            }
+//        });
+//
+//        mSwitchPalateWood.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                saveCheckBoxState(PALATE_WOOD, isChecked);
+//                if (isChecked) {
+//                    ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
+//                } else {
+//                    ButterKnife.apply(mRadioGroupsPalateWood, WOOD_DISABLE);
+//                }
+//            }
+//        });
+//
+//        mRadioGroupPalateWoodOldVsNew.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                saveRadioGroupState(PALATE_WOOD_OLD_VS_NEW, checkedId);
+//            }
+//        });
+//
+//        mRadioGroupPalateWoodLargeVsSmall.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                saveRadioGroupState(PALATE_WOOD_LARGE_VS_SMALL, checkedId);
+//            }
+//        });
+//
+//        mRadioGroupPalateWoodFrenchVsAmerican.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                saveRadioGroupState(PALATE_WOOD_FRENCH_VS_AMERICAN, checkedId);
+//            }
+//        });
+//    }
 }
