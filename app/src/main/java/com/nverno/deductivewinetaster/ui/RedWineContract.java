@@ -2,8 +2,11 @@ package com.nverno.deductivewinetaster.ui;
 
 import com.nverno.deductivewinetaster.R;
 
-public interface RedWineContract {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+public interface RedWineContract {
 
     String CURRENT_PAGE = "CURRENT_PAGE";
     int RED_SIGHT_PAGE = 0;
@@ -16,73 +19,27 @@ public interface RedWineContract {
 
     String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
 
-    String SCROLL_X_POS = "SCROLL_X_POS";
-    String SCROLL_Y_POS = "SCROLL_Y_POS";
-
-    int NOT_SET = 0;
     int NOT_CHECKED = 0;
-    int CHECKED = 1;
     int NONE_SELECTED = -1;
 
-//    String CLARITY = "CLARITY";
     int CLARITY = R.id.radio_group_clarity;
-    int CLARITY_CLEAR = R.id.radio_clarity_clear;
-    int CLARITY_HAZY = R.id.radio_clarity_hazy;
-    int CLARITY_TURBID = R.id.radio_clarity_turbid;
-
     int CONCENTRATION = R.id.radio_group_concentration;
-    int CONCENTRATION_PALE = R.id.radio_concentration_pale;
-    int CONCENTRATION_MEDIUM = R.id.radio_concentration_medium;
-    int CONCENTRATION_DEEP = R.id.radio_concentration_deep;
-
     int COLOR = R.id.radio_group_color_redwine;
-    int COLOR_PURPLE = R.id.radio_color_purple;
-    int COLOR_RUBY = R.id.radio_color_ruby;
-    int COLOR_RED = R.id.radio_color_red;
-    int COLOR_GARNET = R.id.radio_color_garnet;
-    int COLOR_WATER_WHITE = R.id.radio_color_white;
-    int COLOR_STRAW = R.id.radio_color_straw;
-    int COLOR_YELLOW = R.id.radio_color_yellow;
-    int COLOR_GOLD = R.id.radio_color_gold;
-
     int SECONDARY_COLOR = R.id.radio_group_colorsecondary_redwine;
-    int SECONDARY_COLOR_ORANGE = R.id.radio_secondary_color_orange;
-    int SECONDARY_COLOR_BLUE = R.id.radio_secondary_color_blue;
-    int SECONDARY_COLOR_RUBY = R.id.radio_secondary_color_ruby;
-    int SECONDARY_COLOR_GARNET = R.id.radio_secondary_color_garnet;
-    int SECONDARY_COLOR_BROWN = R.id.radio_secondary_color_brown;
-    int SECONDARY_COLOR_SILVER = R.id.radio_secondary_color_silver;
-    int SECONDARY_COLOR_GREEN = R.id.radio_secondary_color_green;
-    int SECONDARY_COLOR_COPPER = R.id.radio_secondary_color_copper;
-
     int RIM_VARIATION = R.id.radio_group_rimvariation;
-
     int EXTRACT_STAINING = R.id.radio_group_extractstain_redwine;
-
     int TEARING = R.id.radio_group_tearing;
-
-    int GAS_EVIDENCE = R.id.radio_group_tearing;
-
-    String FAULTY = "FAULTY";
-//    String FAULTY_TCA = "FAULTY_TCA";
+    int GAS_EVIDENCE = R.id.radio_group_gasevidence;
     int FAULTY_TCA = R.id.check_faulty_tca;
-//    String FAULTY_HYDROGEN_SULFIDE = "FAULTY_HYDROGEN_SULFIDE";
     int FAULTY_HYDROGEN_SULFIDE = R.id.check_faulty_hydrogen_sulfide;
-//    String FAULTY_VOLATILE_ACIDITY = "FAULTY_VOLATILE_ACIDITY";
     int FAULTY_VOLATILE_ACIDITY = R.id.check_faulty_volatile_acidity;
-//    String FAULTY_ETHYL_ACETATE = "FAULTY_ETHYL_ACETATE";
     int FAULTY_ETHYL_ACETATE = R.id.check_faulty_ethyl_acetate;
-//    String FAULTY_BRETT = "FAULTY_BRETT";
     int FAULTY_BRETT = R.id.check_faulty_brett;
-//    String FAULTY_OXIDIZATION = "FAULTY_OXIDIZATION";
     int FAULTY_OXIDIZATION = R.id.check_faulty_oxidization;
-//    String FAULTY_OTHER = "FAULTY_OTHER";
     int FAULTY_OTHER = R.id.check_faulty_other;
-
     int NOSE_INTENSITY = R.id.radio_group_nose_intensity;
-
     int NOSE_AGE_ASSESSMENT = R.id.radio_group_nose_age_assessment;
-    String NOSE_FRUIT = "NOSE_FRUIT";
+
     int NOSE_FRUIT_RED = R.id.check_nose_fruit_red;
     int NOSE_FRUIT_BLACK = R.id.check_nose_fruit_black;
     int NOSE_FRUIT_BLUE = R.id.check_nose_fruit_blue;
@@ -153,5 +110,92 @@ public interface RedWineContract {
     int PALATE_WOOD_OLD_VS_NEW = R.id.radio_group_wood_old_vs_new;
     int PALATE_WOOD_LARGE_VS_SMALL = R.id.radio_group_wood_large_vs_small;
     int PALATE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_wood_french_vs_american;
+    // TODO: Add the rest of the views from above.
 
+    List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION, COLOR,
+            SECONDARY_COLOR, RIM_VARIATION, EXTRACT_STAINING, TEARING, GAS_EVIDENCE, NOSE_INTENSITY,
+            NOSE_AGE_ASSESSMENT, NOSE_WOOD_OLD_VS_NEW, NOSE_WOOD_LARGE_VS_SMALL,
+            NOSE_WOOD_FRENCH_VS_AMERICAN, PALATE_SWEETNESS, PALATE_WOOD_OLD_VS_NEW,
+            PALATE_WOOD_LARGE_VS_SMALL, PALATE_WOOD_FRENCH_VS_AMERICAN));
+
+    List<Integer> AllSwitches = new ArrayList<>(Arrays.asList(NOSE_WOOD, PALATE_WOOD));
+
+    List<Integer> AllCheckBoxes = new ArrayList<>(Arrays.asList(FAULTY_TCA, FAULTY_HYDROGEN_SULFIDE,
+            FAULTY_VOLATILE_ACIDITY, FAULTY_ETHYL_ACETATE, FAULTY_BRETT, FAULTY_OXIDIZATION,
+            FAULTY_OTHER, NOSE_FRUIT_RED, NOSE_FRUIT_BLACK, NOSE_FRUIT_BLUE,
+            NOSE_FRUIT_CHARACTER_RIPE, NOSE_FRUIT_CHARACTER_FRESH, NOSE_FRUIT_CHARACTER_TART,
+            NOSE_FRUIT_CHARACTER_BAKED, NOSE_FRUIT_CHARACTER_STEWED, NOSE_FRUIT_CHARACTER_DRIED,
+            NOSE_FRUIT_CHARACTER_DESICATTED, NOSE_FRUIT_CHARACTER_BRUISED,
+            NOSE_FRUIT_CHARACTER_JAMMY, NOSE_NON_FRUIT_FLORAL, NOSE_NON_FRUIT_VEGETAL,
+            NOSE_NON_FRUIT_HERBAL, NOSE_NON_FRUIT_SPICE, NOSE_NON_FRUIT_ANIMAL, NOSE_NON_FRUIT_BARN,
+            NOSE_NON_FRUIT_PETROL, NOSE_NON_FRUIT_FERMENTATION, NOSE_EARTH_FOREST_FLOOR,
+            NOSE_EARTH_COMPOST,NOSE_EARTH_MUSHROOMS, NOSE_EARTH_POTTING_SOIL, NOSE_MINERAL_MINERAL,
+            NOSE_MINERAL_WET_STONE, NOSE_MINERAL_LIMESTONE, NOSE_MINERAL_CHALK, NOSE_MINERAL_SLATE,
+            NOSE_MINERAL_FLINT, PALATE_FRUIT_RED, PALATE_FRUIT_BLACK, PALATE_FRUIT_BLUE,
+            PALATE_FRUIT_CHARACTER_RIPE, PALATE_FRUIT_CHARACTER_FRESH, PALATE_FRUIT_CHARACTER_TART,
+            PALATE_FRUIT_CHARACTER_BAKED, PALATE_FRUIT_CHARACTER_STEWED,
+            PALATE_FRUIT_CHARACTER_DRIED, PALATE_FRUIT_CHARACTER_DESICATTED,
+            PALATE_FRUIT_CHARACTER_BRUISED, PALATE_FRUIT_CHARACTER_JAMMY, PALATE_NON_FRUIT_FLORAL,
+            PALATE_NON_FRUIT_VEGETAL, PALATE_NON_FRUIT_HERBAL, PALATE_NON_FRUIT_SPICE,
+            PALATE_NON_FRUIT_ANIMAL, PALATE_NON_FRUIT_BARN, PALATE_NON_FRUIT_PETROL,
+            PALATE_NON_FRUIT_FERMENTATION, PALATE_EARTH_FOREST_FLOOR, PALATE_EARTH_COMPOST,
+            PALATE_EARTH_MUSHROOMS, PALATE_EARTH_POTTING_SOIL, PALATE_MINERAL_MINERAL,
+            PALATE_MINERAL_WET_STONE, PALATE_MINERAL_LIMESTONE, PALATE_MINERAL_CHALK,
+            PALATE_MINERAL_SLATE, PALATE_MINERAL_FLINT));
+
+    List<Integer> redSightViews = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION, COLOR,
+            SECONDARY_COLOR, RIM_VARIATION, EXTRACT_STAINING, TEARING, GAS_EVIDENCE));
+
+    List<Integer> redNoseViews = new ArrayList<>(Arrays.asList(FAULTY_TCA, FAULTY_HYDROGEN_SULFIDE,
+            FAULTY_HYDROGEN_SULFIDE, FAULTY_VOLATILE_ACIDITY, FAULTY_ETHYL_ACETATE, FAULTY_BRETT,
+            FAULTY_OXIDIZATION, FAULTY_OTHER, NOSE_INTENSITY, NOSE_AGE_ASSESSMENT, NOSE_FRUIT_RED,
+            NOSE_FRUIT_BLACK, NOSE_FRUIT_BLUE, NOSE_FRUIT_CHARACTER_RIPE, NOSE_FRUIT_CHARACTER_FRESH,
+            NOSE_FRUIT_CHARACTER_TART, NOSE_FRUIT_CHARACTER_BAKED, NOSE_FRUIT_CHARACTER_STEWED,
+            NOSE_FRUIT_CHARACTER_DRIED, NOSE_FRUIT_CHARACTER_DESICATTED,
+            NOSE_FRUIT_CHARACTER_BRUISED, NOSE_FRUIT_CHARACTER_JAMMY, NOSE_NON_FRUIT_FLORAL,
+            NOSE_NON_FRUIT_VEGETAL, NOSE_NON_FRUIT_HERBAL, NOSE_NON_FRUIT_SPICE,
+            NOSE_NON_FRUIT_ANIMAL, NOSE_NON_FRUIT_BARN, NOSE_NON_FRUIT_PETROL,
+            NOSE_NON_FRUIT_FERMENTATION, NOSE_EARTH_FOREST_FLOOR, NOSE_EARTH_COMPOST,
+            NOSE_EARTH_MUSHROOMS, NOSE_EARTH_POTTING_SOIL, NOSE_MINERAL_MINERAL,
+            NOSE_MINERAL_WET_STONE, NOSE_MINERAL_LIMESTONE, NOSE_MINERAL_CHALK, NOSE_MINERAL_SLATE,
+            NOSE_MINERAL_FLINT, NOSE_WOOD, NOSE_WOOD_OLD_VS_NEW, NOSE_WOOD_LARGE_VS_SMALL,
+            NOSE_WOOD_FRENCH_VS_AMERICAN));
+
+    List<Integer> redPalateViews = new ArrayList<>(Arrays.asList(PALATE_SWEETNESS, PALATE_FRUIT_RED,
+            PALATE_FRUIT_BLACK, PALATE_FRUIT_BLUE, PALATE_FRUIT_CHARACTER_RIPE,
+            PALATE_FRUIT_CHARACTER_FRESH, PALATE_FRUIT_CHARACTER_TART, PALATE_FRUIT_CHARACTER_BAKED,
+            PALATE_FRUIT_CHARACTER_STEWED, PALATE_FRUIT_CHARACTER_DRIED,
+            PALATE_FRUIT_CHARACTER_DESICATTED, PALATE_FRUIT_CHARACTER_BRUISED,
+            PALATE_FRUIT_CHARACTER_JAMMY, PALATE_NON_FRUIT_FLORAL, PALATE_NON_FRUIT_VEGETAL,
+            PALATE_NON_FRUIT_HERBAL, PALATE_NON_FRUIT_SPICE, PALATE_NON_FRUIT_ANIMAL,
+            PALATE_NON_FRUIT_BARN, PALATE_NON_FRUIT_PETROL, PALATE_NON_FRUIT_FERMENTATION,
+            PALATE_EARTH_FOREST_FLOOR, PALATE_EARTH_COMPOST, PALATE_EARTH_MUSHROOMS,
+            PALATE_EARTH_POTTING_SOIL, PALATE_MINERAL_MINERAL, PALATE_MINERAL_WET_STONE,
+            PALATE_MINERAL_LIMESTONE, PALATE_MINERAL_CHALK, PALATE_MINERAL_SLATE,
+            PALATE_MINERAL_FLINT, PALATE_WOOD, PALATE_WOOD_OLD_VS_NEW, PALATE_WOOD_LARGE_VS_SMALL,
+            PALATE_WOOD_FRENCH_VS_AMERICAN));
+
+    // May or may not want these for later.
+//    int CLARITY_CLEAR = R.id.radio_clarity_clear;
+//    int CLARITY_HAZY = R.id.radio_clarity_hazy;
+//    int CLARITY_TURBID = R.id.radio_clarity_turbid;
+//    int CONCENTRATION_PALE = R.id.radio_concentration_pale;
+//    int CONCENTRATION_MEDIUM = R.id.radio_concentration_medium;
+//    int CONCENTRATION_DEEP = R.id.radio_concentration_deep;
+//    int COLOR_PURPLE = R.id.radio_color_purple;
+//    int COLOR_RUBY = R.id.radio_color_ruby;
+//    int COLOR_RED = R.id.radio_color_red;
+//    int COLOR_GARNET = R.id.radio_color_garnet;
+//    int COLOR_WATER_WHITE = R.id.radio_color_white;
+//    int COLOR_STRAW = R.id.radio_color_straw;
+//    int COLOR_YELLOW = R.id.radio_color_yellow;
+//    int COLOR_GOLD = R.id.radio_color_gold;
+//    int SECONDARY_COLOR_ORANGE = R.id.radio_secondary_color_orange;
+//    int SECONDARY_COLOR_BLUE = R.id.radio_secondary_color_blue;
+//    int SECONDARY_COLOR_RUBY = R.id.radio_secondary_color_ruby;
+//    int SECONDARY_COLOR_GARNET = R.id.radio_secondary_color_garnet;
+//    int SECONDARY_COLOR_BROWN = R.id.radio_secondary_color_brown;
+//    int SECONDARY_COLOR_SILVER = R.id.radio_secondary_color_silver;
+//    int SECONDARY_COLOR_GREEN = R.id.radio_secondary_color_green;
+//    int SECONDARY_COLOR_COPPER = R.id.radio_secondary_color_copper;
 }
