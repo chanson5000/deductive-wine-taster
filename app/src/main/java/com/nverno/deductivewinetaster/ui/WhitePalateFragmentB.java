@@ -18,35 +18,35 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RedPalateFragmentB extends Fragment implements DeductionFormContract {
+public class WhitePalateFragmentB extends Fragment implements DeductionFormContract {
 
-    private RedDeductionFormActivity mFragmentActivity;
+    private WhiteDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
-    @BindView(R.id.scrollView_palate_red_b)
-    ScrollView mScrollViewPalateRedB;
+    @BindView(R.id.scrollView_palate_white_b)
+    ScrollView mScrollViewPalateWhiteB;
 
-    public RedPalateFragmentB() {
+    public WhitePalateFragmentB() {
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = (RedDeductionFormActivity) getActivity();
+        mFragmentActivity = (WhiteDeductionFormActivity) getActivity();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSharedPreferences = mFragmentActivity
-                .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+                .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_palate_red_b,
+        View rootView = inflater.inflate(R.layout.fragment_palate_white_b,
                 container, false);
 
         ButterKnife.bind(this, rootView);
@@ -73,7 +73,7 @@ public class RedPalateFragmentB extends Fragment implements DeductionFormContrac
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int key = castKey(entry.getKey());
 
-            if (redPalateViewsB.contains(key) && AllRadioGroups.contains(key)) {
+            if (whitePalateViewsB.contains(key) && AllRadioGroups.contains(key)) {
                 ((RadioGroup) mFragmentActivity.findViewById(key))
                         .check(parseEntryValue(entry.getValue()));
             }

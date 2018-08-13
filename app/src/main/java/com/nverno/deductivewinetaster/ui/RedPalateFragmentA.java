@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +23,9 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class RedPalateFragmentA extends Fragment implements RedWineContract {
+public class RedPalateFragmentA extends Fragment implements DeductionFormContract {
 
-    private FragmentActivity mFragmentActivity;
+    private RedDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
     @BindView(R.id.scrollView_palate_red_a)
@@ -48,7 +47,7 @@ public class RedPalateFragmentA extends Fragment implements RedWineContract {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = getActivity();
+        mFragmentActivity = (RedDeductionFormActivity) getActivity();
     }
 
     @Override
@@ -96,7 +95,7 @@ public class RedPalateFragmentA extends Fragment implements RedWineContract {
             if (redPalateViewsA.contains(key)) {
                 if (AllRadioGroups.contains(key)) {
                     ((RadioGroup) mFragmentActivity.findViewById(key))
-                            .check(Integer.parseInt(entry.getValue().toString()));
+                            .check(parseEntryValue(entry.getValue()));
                 } else if (AllCheckBoxes.contains(key)) {
                     ((CheckBox) mFragmentActivity.findViewById(key))
                             .setChecked(castChecked(parseEntryValue(entry.getValue())));
@@ -106,14 +105,14 @@ public class RedPalateFragmentA extends Fragment implements RedWineContract {
                 }
             }
         }
-        syncRedPalateWoodRadioState();
+        syncWoodRadioState();
     }
 
     private boolean getCheckBoxState(int key) {
         return mSharedPreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
-    public void syncRedPalateWoodRadioState() {
+    public void syncWoodRadioState() {
         if (getCheckBoxState(PALATE_WOOD)) {
             ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
         } else {

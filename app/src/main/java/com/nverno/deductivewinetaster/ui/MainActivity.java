@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonWhiteWine(View view) {
-        Intent intent = new Intent(this, RedDeductionFormActivity.class);
-        // TODO: Launch white wine deduction activity.
+        Intent intent = new Intent(this, WhiteDeductionFormActivity.class);
+        startActivity(intent);
     }
 }

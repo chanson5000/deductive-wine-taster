@@ -22,7 +22,7 @@ import com.nverno.deductivewinetaster.R;
 
 import java.util.Map;
 
-public class RedDeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
+public class WhiteDeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
 
     private static final int NUM_PAGES = 4;
 
@@ -31,24 +31,24 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
     private SharedPreferences mActivityPreferences;
     private boolean mResettingScrollView;
 
-    // Set a strong reference to the listener so that it avoids garbage collection.
+    // Set a strong reference to the listener so that it avoids garbage collection;
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
-    RedSightFragment mRedWineSightFragment;
-    RedNoseFragment mRedWineNoseFragment;
-    RedPalateFragmentA mRedWinePalateFragmentA;
-    RedPalateFragmentB mRedWinePalateFragmentB;
+    WhiteSightFragment mWhiteWineSightFragment;
+    WhiteNoseFragment mWhiteWineNoseFragment;
+    WhitePalateFragmentA mWhiteWinePalateFragmentA;
+    WhitePalateFragmentB mWhiteWinePalateFragmentB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_red_deduction_form);
+        setContentView(R.layout.activity_white_deduction_form);
 
-        mSharedPreferences = getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+        mSharedPreferences = getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        mPager = findViewById(R.id.view_pager_red_deduction);
-        PagerAdapter pagerAdapter = new RedDeductionFormPagerAdapter(getSupportFragmentManager());
+        mPager = findViewById(R.id.view_pager_white_deduction);
+        PagerAdapter pagerAdapter = new WhiteDeductionFormPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -59,10 +59,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
             @Override
             public void onPageSelected(int position) {
                 // TODO: Get the scrollY to reset after a rotation. (ScrollView returns null)
-                if (mRedWineSightFragment.mScrollViewSightRed != null
+                if (mWhiteWineSightFragment.mScrollViewSightWhite != null
                         && mResettingScrollView
                         && position == 0) {
-                    mRedWineSightFragment.mScrollViewSightRed.scrollTo(0, 0);
+                    mWhiteWineSightFragment.mScrollViewSightWhite.scrollTo(0, 0);
                     mResettingScrollView = false;
                 }
                 syncCurrentTitle();
@@ -201,9 +201,9 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
         boolean checked = switchToggle.isChecked();
         saveCheckBoxState(switchId, castChecked(checked));
         if (switchId == NOSE_WOOD) {
-            mRedWineNoseFragment.syncWoodRadioState();
+            mWhiteWineNoseFragment.syncWoodRadioState();
         } else if (switchId == PALATE_WOOD) {
-            mRedWinePalateFragmentA.syncWoodRadioState();
+            mWhiteWinePalateFragmentA.syncWoodRadioState();
         }
     }
 
@@ -216,29 +216,29 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
-                setTitle(RED_SIGHT_PAGE_TITLE);
+                setTitle(WHITE_SIGHT_PAGE_TITLE);
                 break;
             case NOSE_PAGE:
-                setTitle(RED_NOSE_PAGE_TITLE);
+                setTitle(WHITE_NOSE_PAGE_TITLE);
                 break;
             case PALATE_PAGE_A:
-                setTitle(RED_PALATE_PAGE_TITLE);
+                setTitle(WHITE_PALATE_PAGE_TITLE);
                 break;
             case PALATE_PAGE_B:
-                setTitle(RED_PALATE_PAGE_TITLE);
+                setTitle(WHITE_PALATE_PAGE_TITLE);
                 break;
             default:
                 break;
         }
     }
 
-    class RedDeductionFormPagerAdapter extends FragmentPagerAdapter {
-        RedDeductionFormPagerAdapter(FragmentManager fragmentManager) {
+    class WhiteDeductionFormPagerAdapter extends FragmentPagerAdapter {
+        WhiteDeductionFormPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            mRedWineSightFragment = new RedSightFragment();
-            mRedWineNoseFragment = new RedNoseFragment();
-            mRedWinePalateFragmentA = new RedPalateFragmentA();
-            mRedWinePalateFragmentB = new RedPalateFragmentB();
+            mWhiteWineSightFragment = new WhiteSightFragment();
+            mWhiteWineNoseFragment = new WhiteNoseFragment();
+            mWhiteWinePalateFragmentA = new WhitePalateFragmentA();
+            mWhiteWinePalateFragmentB = new WhitePalateFragmentB();
         }
 
         @Override
@@ -250,13 +250,13 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
         public Fragment getItem(int position) {
             switch (position) {
                 case SIGHT_PAGE:
-                    return mRedWineSightFragment;
+                    return mWhiteWineSightFragment;
                 case NOSE_PAGE:
-                    return mRedWineNoseFragment;
+                    return mWhiteWineNoseFragment;
                 case PALATE_PAGE_A:
-                    return mRedWinePalateFragmentA;
+                    return mWhiteWinePalateFragmentA;
                 case PALATE_PAGE_B:
-                    return mRedWinePalateFragmentB;
+                    return mWhiteWinePalateFragmentB;
                 default:
                     break;
             }

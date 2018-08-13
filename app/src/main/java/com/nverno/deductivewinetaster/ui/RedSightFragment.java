@@ -18,7 +18,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RedSightFragment extends Fragment implements RedWineContract {
+public class RedSightFragment extends Fragment implements DeductionFormContract {
 
     private RedDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
@@ -52,11 +52,6 @@ public class RedSightFragment extends Fragment implements RedWineContract {
         ButterKnife.bind(this, rootView);
 
         return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

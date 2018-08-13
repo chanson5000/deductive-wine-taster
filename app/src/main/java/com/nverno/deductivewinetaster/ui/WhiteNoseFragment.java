@@ -23,17 +23,17 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class RedNoseFragment extends Fragment implements DeductionFormContract {
+public class WhiteNoseFragment extends Fragment implements DeductionFormContract {
 
-    private RedDeductionFormActivity mFragmentActivity;
+    private WhiteDeductionFormActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
-    @BindView(R.id.scrollView_nose_red)
-    ScrollView mScrollViewNoseRed;
+    @BindView(R.id.scrollView_nose_white)
+    ScrollView mScrollViewNoseWhite;
     @BindViews({R.id.radio_nose_wood_old, R.id.radio_nose_wood_new,
             R.id.radio_nose_wood_large, R.id.radio_nose_wood_small,
             R.id.radio_nose_wood_french, R.id.radio_nose_wood_american})
-    List<RadioButton> mRadioGroupsNoseWood;
+    List<RadioButton> mRadioGroupNoseWood;
 
     static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
             view.setEnabled(true);
@@ -41,27 +41,27 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
     static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
-    public RedNoseFragment() {
+    public WhiteNoseFragment() {
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = (RedDeductionFormActivity) getActivity();
+        mFragmentActivity = (WhiteDeductionFormActivity) getActivity();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSharedPreferences = mFragmentActivity
-                .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+                .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_nose_red,
+        View rootView = inflater.inflate(R.layout.fragment_nose_white,
                 container, false);
 
         ButterKnife.bind(this, rootView);
@@ -92,7 +92,7 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int key = castKey(entry.getKey());
 
-            if (redNoseViews.contains(key)) {
+            if (whiteNoseViews.contains(key)) {
                 if (AllRadioGroups.contains(key)) {
                     ((RadioGroup) mFragmentActivity.findViewById(key))
                             .check(parseEntryValue(entry.getValue()));
@@ -114,9 +114,9 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
 
     public void syncWoodRadioState() {
         if (getCheckBoxState(NOSE_WOOD)) {
-            ButterKnife.apply(mRadioGroupsNoseWood, WOOD_ENABLE);
+            ButterKnife.apply(mRadioGroupNoseWood, WOOD_ENABLE);
         } else {
-            ButterKnife.apply(mRadioGroupsNoseWood, WOOD_DISABLE);
+            ButterKnife.apply(mRadioGroupNoseWood, WOOD_DISABLE);
         }
     }
 }
