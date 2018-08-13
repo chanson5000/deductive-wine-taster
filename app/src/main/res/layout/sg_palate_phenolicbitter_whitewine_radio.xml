@@ -9,6 +9,7 @@
 
     <RadioGroup
         style="@style/AppTheme.RadioGroup"
+        android:id="@+id/radio_group_phenolic_bitter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

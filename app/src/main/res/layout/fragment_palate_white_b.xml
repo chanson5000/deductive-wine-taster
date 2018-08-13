@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView_nose_white"
+    android:id="@+id/scrollView_palate_white_b"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,61 +11,52 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/standard_margin">
 
-        <include layout="@layout/sg_nose_faulty_check" />
+        <include layout="@layout/sg_palate_phenolicbitter_whitewine_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_intensity_radio" />
+        <include layout="@layout/sg_palate_acid_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_ageassessment_radio" />
+        <include layout="@layout/sg_palate_alcohol_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_fruit_whitewine_check" />
+        <include layout="@layout/sg_palate_body_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_fruitcharacter_check" />
+        <include layout="@layout/sg_palate_texture_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_nonfruit_check" />
+        <include layout="@layout/sg_palate_balance_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_earth_check" />
+        <include layout="@layout/sg_palate_lengthfinish_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
 
-        <include layout="@layout/sg_nose_mineral_check" />
+        <include layout="@layout/sg_palate_complexity_radio" />
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/standard_margin" />
-
-        <include layout="@layout/sg_nose_wood_radio" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
-
-
     </LinearLayout>
-
 </ScrollView>
