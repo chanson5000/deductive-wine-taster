@@ -24,13 +24,13 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class RedPalateFragment extends Fragment implements RedWineContract {
+public class RedPalateFragmentA extends Fragment implements RedWineContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
 
-    @BindView(R.id.scrollView_palate_red)
-    ScrollView mScrollViewPalateRed;
+    @BindView(R.id.scrollView_palate_red_a)
+    ScrollView mScrollViewPalateRedA;
     @BindViews({R.id.radio_palate_wood_old, R.id.radio_palate_wood_new,
             R.id.radio_palate_wood_large, R.id.radio_palate_wood_small,
             R.id.radio_palate_wood_french, R.id.radio_palate_wood_american})
@@ -42,7 +42,7 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
     static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
-    public RedPalateFragment() {
+    public RedPalateFragmentA() {
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_palate_red,
+        View rootView = inflater.inflate(R.layout.fragment_palate_red_a,
                 container, false);
 
         ButterKnife.bind(this, rootView);
@@ -93,7 +93,7 @@ public class RedPalateFragment extends Fragment implements RedWineContract {
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int key = castKey(entry.getKey());
 
-            if (redPalateViews.contains(key)) {
+            if (redPalateViewsA.contains(key)) {
                 if (AllRadioGroups.contains(key)) {
                     ((RadioGroup) mFragmentActivity.findViewById(key))
                             .check(Integer.parseInt(entry.getValue().toString()));

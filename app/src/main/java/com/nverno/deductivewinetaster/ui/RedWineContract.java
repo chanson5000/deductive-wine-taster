@@ -11,7 +11,8 @@ public interface RedWineContract {
     String CURRENT_PAGE = "CURRENT_PAGE";
     int RED_SIGHT_PAGE = 0;
     int RED_NOSE_PAGE = 1;
-    int RED_PALATE_PAGE = 2;
+    int RED_PALATE_PAGE_A = 2;
+    int RED_PALATE_PAGE_B = 3;
 
     String RED_SIGHT_PAGE_TITLE = "Red Wine - Sight";
     String RED_NOSE_PAGE_TITLE = "Red Wine - Nose";
@@ -110,15 +111,23 @@ public interface RedWineContract {
     int PALATE_WOOD_OLD_VS_NEW = R.id.radio_group_wood_old_vs_new;
     int PALATE_WOOD_LARGE_VS_SMALL = R.id.radio_group_wood_large_vs_small;
     int PALATE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_wood_french_vs_american;
-    // TODO: Add the rest of the views from above.
+
+    int PALATE_TANNIN = R.id.radio_group_palate_tannin;
+    int PALATE_ACID = R.id.radio_group_palate_acid;
+    int PALATE_ALCOHOL = R.id.radio_group_palate_alcohol;
+    int PALATE_BODY = R.id.radio_group_palate_body;
+    int PALATE_TEXTURE = R.id.radio_group_palate_texture;
+    int PALATE_BALANCE = R.id.radio_group_palate_balance;
+    int PALATE_LENGTH_FINISH = R.id.radio_group_palate_length_finish;
+    int PALATE_COMPLEXITY = R.id.radio_group_palate_complexity;
 
     List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION, COLOR,
             SECONDARY_COLOR, RIM_VARIATION, EXTRACT_STAINING, TEARING, GAS_EVIDENCE, NOSE_INTENSITY,
             NOSE_AGE_ASSESSMENT, NOSE_WOOD_OLD_VS_NEW, NOSE_WOOD_LARGE_VS_SMALL,
             NOSE_WOOD_FRENCH_VS_AMERICAN, PALATE_SWEETNESS, PALATE_WOOD_OLD_VS_NEW,
-            PALATE_WOOD_LARGE_VS_SMALL, PALATE_WOOD_FRENCH_VS_AMERICAN));
-
-    List<Integer> AllSwitches = new ArrayList<>(Arrays.asList(NOSE_WOOD, PALATE_WOOD));
+            PALATE_WOOD_LARGE_VS_SMALL, PALATE_WOOD_FRENCH_VS_AMERICAN, PALATE_TANNIN, PALATE_ACID,
+            PALATE_ALCOHOL, PALATE_BODY, PALATE_TEXTURE, PALATE_BALANCE, PALATE_LENGTH_FINISH,
+            PALATE_COMPLEXITY));
 
     List<Integer> AllCheckBoxes = new ArrayList<>(Arrays.asList(FAULTY_TCA, FAULTY_HYDROGEN_SULFIDE,
             FAULTY_VOLATILE_ACIDITY, FAULTY_ETHYL_ACETATE, FAULTY_BRETT, FAULTY_OXIDIZATION,
@@ -143,6 +152,8 @@ public interface RedWineContract {
             PALATE_MINERAL_WET_STONE, PALATE_MINERAL_LIMESTONE, PALATE_MINERAL_CHALK,
             PALATE_MINERAL_SLATE, PALATE_MINERAL_FLINT));
 
+    List<Integer> AllSwitches = new ArrayList<>(Arrays.asList(NOSE_WOOD, PALATE_WOOD));
+
     List<Integer> redSightViews = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION, COLOR,
             SECONDARY_COLOR, RIM_VARIATION, EXTRACT_STAINING, TEARING, GAS_EVIDENCE));
 
@@ -161,7 +172,7 @@ public interface RedWineContract {
             NOSE_MINERAL_FLINT, NOSE_WOOD, NOSE_WOOD_OLD_VS_NEW, NOSE_WOOD_LARGE_VS_SMALL,
             NOSE_WOOD_FRENCH_VS_AMERICAN));
 
-    List<Integer> redPalateViews = new ArrayList<>(Arrays.asList(PALATE_SWEETNESS, PALATE_FRUIT_RED,
+    List<Integer> redPalateViewsA = new ArrayList<>(Arrays.asList(PALATE_SWEETNESS, PALATE_FRUIT_RED,
             PALATE_FRUIT_BLACK, PALATE_FRUIT_BLUE, PALATE_FRUIT_CHARACTER_RIPE,
             PALATE_FRUIT_CHARACTER_FRESH, PALATE_FRUIT_CHARACTER_TART, PALATE_FRUIT_CHARACTER_BAKED,
             PALATE_FRUIT_CHARACTER_STEWED, PALATE_FRUIT_CHARACTER_DRIED,
@@ -174,6 +185,10 @@ public interface RedWineContract {
             PALATE_MINERAL_LIMESTONE, PALATE_MINERAL_CHALK, PALATE_MINERAL_SLATE,
             PALATE_MINERAL_FLINT, PALATE_WOOD, PALATE_WOOD_OLD_VS_NEW, PALATE_WOOD_LARGE_VS_SMALL,
             PALATE_WOOD_FRENCH_VS_AMERICAN));
+
+    List<Integer> redPalateViewsB = new ArrayList<>(Arrays.asList(PALATE_TANNIN, PALATE_ACID,
+            PALATE_ALCOHOL, PALATE_BODY, PALATE_TEXTURE, PALATE_BALANCE, PALATE_LENGTH_FINISH,
+            PALATE_COMPLEXITY));
 
     // May or may not want these for later.
 //    int CLARITY_CLEAR = R.id.radio_clarity_clear;

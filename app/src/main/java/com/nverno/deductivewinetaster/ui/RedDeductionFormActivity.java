@@ -24,18 +24,20 @@ import java.util.Map;
 
 public class RedDeductionFormActivity extends AppCompatActivity implements RedWineContract {
 
-    private static final int NUM_PAGES = 3;
+    private static final int NUM_PAGES = 4;
 
     private ViewPager mPager;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences mActivityPreferences;
     private boolean mResettingScrollView;
 
+    // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
     RedSightFragment mRedWineSightFragment;
     RedNoseFragment mRedWineNoseFragment;
-    RedPalateFragment mRedWinePalateFragment;
+    RedPalateFragmentA mRedWinePalateFragmentA;
+    RedPalateFragmentB mRedWinePalateFragmentB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +203,7 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         if (switchId == NOSE_WOOD) {
             mRedWineNoseFragment.syncRedNoseWoodRadioState();
         } else if (switchId == PALATE_WOOD) {
-            mRedWinePalateFragment.syncRedPalateWoodRadioState();
+            mRedWinePalateFragmentA.syncRedPalateWoodRadioState();
         }
     }
 
@@ -219,7 +221,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
             case RED_NOSE_PAGE:
                 setTitle(RED_NOSE_PAGE_TITLE);
                 break;
-            case RED_PALATE_PAGE:
+            case RED_PALATE_PAGE_A:
+                setTitle(RED_PALATE_PAGE_TITLE);
+                break;
+            case RED_PALATE_PAGE_B:
                 setTitle(RED_PALATE_PAGE_TITLE);
                 break;
             default:
@@ -232,7 +237,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
             super(fragmentManager);
             mRedWineSightFragment = new RedSightFragment();
             mRedWineNoseFragment = new RedNoseFragment();
-            mRedWinePalateFragment = new RedPalateFragment();
+            mRedWinePalateFragmentA = new RedPalateFragmentA();
+            mRedWinePalateFragmentB = new RedPalateFragmentB();
         }
 
         @Override
@@ -243,12 +249,14 @@ public class RedDeductionFormActivity extends AppCompatActivity implements RedWi
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case RED_SIGHT_PAGE:
                     return mRedWineSightFragment;
-                case 1:
+                case RED_NOSE_PAGE:
                     return mRedWineNoseFragment;
-                case 2:
-                    return mRedWinePalateFragment;
+                case RED_PALATE_PAGE_A:
+                    return mRedWinePalateFragmentA;
+                case RED_PALATE_PAGE_B:
+                    return mRedWinePalateFragmentB;
                 default:
                     break;
             }
