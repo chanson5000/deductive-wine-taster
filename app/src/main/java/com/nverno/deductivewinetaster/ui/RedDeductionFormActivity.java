@@ -13,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -23,8 +25,6 @@ import com.nverno.deductivewinetaster.R;
 import java.util.Map;
 
 public class RedDeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
-
-    private static final int NUM_PAGES = 4;
 
     private ViewPager mPager;
     private SharedPreferences mSharedPreferences;
@@ -38,6 +38,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
     RedNoseFragment mRedWineNoseFragment;
     RedPalateFragmentA mRedWinePalateFragmentA;
     RedPalateFragmentB mRedWinePalateFragmentB;
+    InitialConclusionFragment mInitialConclusionFragment;
+    FinalConclusionFragment mFinalConclusionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
                     ((CheckBox) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
                     ((Switch) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                } else if (view instanceof MultiAutoCompleteTextView) {
+                    ((MultiAutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                } else if (view instanceof AutoCompleteTextView) {
+                    ((AutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
                 }
             }
         }));
@@ -152,6 +158,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
                 edit.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllSwitches.contains(key)) {
                 edit.putInt(entry.getKey(), NOT_CHECKED);
+            } else if (AllAutoText.contains(key)) {
+                edit.putString(entry.getKey(), "");
+            } else if (AllAutoMultiText.contains(key)) {
+                edit.putString(entry.getKey(), "");
             }
         }
         edit.apply();
@@ -227,6 +237,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
             case PALATE_PAGE_B:
                 setTitle(RED_PALATE_PAGE_TITLE);
                 break;
+            case INITIAL_CONCLUSION_PAGE:
+                setTitle(INITIAL_CONCLUSION_PAGE_TITLE);
+            case FINAL_CONCLUSION_PAGE:
+                setTitle(FINAL_CONCLUSION_PAGE_TITLE);
             default:
                 break;
         }
@@ -239,6 +253,8 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
             mRedWineNoseFragment = new RedNoseFragment();
             mRedWinePalateFragmentA = new RedPalateFragmentA();
             mRedWinePalateFragmentB = new RedPalateFragmentB();
+            mInitialConclusionFragment = new InitialConclusionFragment();
+            mFinalConclusionFragment = new FinalConclusionFragment();
         }
 
         @Override
@@ -257,6 +273,10 @@ public class RedDeductionFormActivity extends AppCompatActivity implements Deduc
                     return mRedWinePalateFragmentA;
                 case PALATE_PAGE_B:
                     return mRedWinePalateFragmentB;
+                case INITIAL_CONCLUSION_PAGE:
+                    return mInitialConclusionFragment;
+                case FINAL_CONCLUSION_PAGE:
+                    return mFinalConclusionFragment;
                 default:
                     break;
             }

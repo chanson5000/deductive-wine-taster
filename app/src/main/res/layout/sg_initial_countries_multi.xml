@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView_initial_countries"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/multiText_initial_countries"
+        android:text="@string/possible_countries" />
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/multiText_initial_countries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</merge>

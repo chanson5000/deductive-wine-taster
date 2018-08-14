@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView_final_country"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/autoText_final_country"
+        android:text="@string/grape_variety_blend" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</merge>

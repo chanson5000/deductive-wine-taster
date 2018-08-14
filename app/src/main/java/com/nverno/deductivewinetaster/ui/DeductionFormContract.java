@@ -9,10 +9,13 @@ import java.util.List;
 public interface DeductionFormContract {
 
     String CURRENT_PAGE = "CURRENT_PAGE";
+    int NUM_PAGES = 6;
     int SIGHT_PAGE = 0;
     int NOSE_PAGE = 1;
     int PALATE_PAGE_A = 2;
     int PALATE_PAGE_B = 3;
+    int INITIAL_CONCLUSION_PAGE = 4;
+    int FINAL_CONCLUSION_PAGE = 5;
 
     String RED_SIGHT_PAGE_TITLE = "Red Wine - Sight";
     String RED_NOSE_PAGE_TITLE = "Red Wine - Nose";
@@ -21,6 +24,9 @@ public interface DeductionFormContract {
     String WHITE_SIGHT_PAGE_TITLE = "White Wine - Sight";
     String WHITE_NOSE_PAGE_TITLE = "Red Wine - Nose";
     String WHITE_PALATE_PAGE_TITLE = "White Wine - Palate";
+
+    String INITIAL_CONCLUSION_PAGE_TITLE = "Initial Conclusion";
+    String FINAL_CONCLUSION_PAGE_TITLE = "Final Conclusion";
 
     String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
     String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
@@ -139,6 +145,15 @@ public interface DeductionFormContract {
     int PALATE_LENGTH_FINISH = R.id.radio_group_palate_length_finish;
     int PALATE_COMPLEXITY = R.id.radio_group_palate_complexity;
 
+    int INITIAL_GRAPE_VARIETIES = R.id.multiText_initial_possible_grape_varieties;
+    int INITIAL_WORLD = R.id.radio_group_initial_world;
+    int INITIAL_CLIMATE = R.id.radio_group_initial_climate;
+    int INITIAL_COUNTRIES = R.id.multiText_initial_countries;
+    int INITIAL_AGE_RANGE = R.id.radio_group_initial_age;
+
+    int FINAL_GRAPE_VARIETY = R.id.autoText_final_grape_variety;
+    int FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
+
     List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION,
             COLOR_RED_WINE, COLOR_WHITE_WINE, SECONDARY_COLOR_RED_WINE, SECONDARY_COLOR_WHITE_WINE,
             RIM_VARIATION, EXTRACT_STAINING, TEARING, GAS_EVIDENCE, NOSE_INTENSITY,
@@ -146,7 +161,8 @@ public interface DeductionFormContract {
             NOSE_WOOD_FRENCH_VS_AMERICAN, PALATE_SWEETNESS, PALATE_WOOD_OLD_VS_NEW,
             PALATE_WOOD_LARGE_VS_SMALL, PALATE_WOOD_FRENCH_VS_AMERICAN, PALATE_PHENOLIC_BITTER,
             PALATE_TANNIN, PALATE_ACID, PALATE_ALCOHOL, PALATE_BODY, PALATE_TEXTURE, PALATE_BALANCE,
-            PALATE_LENGTH_FINISH, PALATE_COMPLEXITY));
+            PALATE_LENGTH_FINISH, PALATE_COMPLEXITY, INITIAL_WORLD, INITIAL_CLIMATE,
+            INITIAL_AGE_RANGE));
 
     List<Integer> AllCheckBoxes = new ArrayList<>(Arrays.asList(FAULTY_TCA, FAULTY_HYDROGEN_SULFIDE,
             FAULTY_VOLATILE_ACIDITY, FAULTY_ETHYL_ACETATE, FAULTY_BRETT, FAULTY_OXIDIZATION,
@@ -175,6 +191,12 @@ public interface DeductionFormContract {
             PALATE_MINERAL_FLINT));
 
     List<Integer> AllSwitches = new ArrayList<>(Arrays.asList(NOSE_WOOD, PALATE_WOOD));
+
+    List<Integer> AllAutoMultiText = new ArrayList<>(Arrays.asList(INITIAL_GRAPE_VARIETIES,
+            INITIAL_COUNTRIES));
+
+    List<Integer> AllAutoText = new ArrayList<>(Arrays.asList(FINAL_GRAPE_VARIETY,
+            FINAL_COUNTRY_ORIGIN));
 
     List<Integer> redSightViews = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION,
             COLOR_RED_WINE, SECONDARY_COLOR_RED_WINE, RIM_VARIATION, EXTRACT_STAINING, TEARING,
@@ -249,6 +271,12 @@ public interface DeductionFormContract {
     List<Integer> whitePalateViewsB = new ArrayList<>(Arrays.asList(PALATE_PHENOLIC_BITTER,
             PALATE_ACID, PALATE_ALCOHOL, PALATE_BODY, PALATE_TEXTURE, PALATE_BALANCE,
             PALATE_LENGTH_FINISH, PALATE_COMPLEXITY));
+
+    List<Integer> initialConclusionViews = new ArrayList<>(Arrays.asList(INITIAL_GRAPE_VARIETIES,
+            INITIAL_WORLD, INITIAL_CLIMATE, INITIAL_COUNTRIES, INITIAL_AGE_RANGE));
+
+    List<Integer> finalConclusionViews = new ArrayList<>(Arrays.asList(FINAL_GRAPE_VARIETY,
+            FINAL_COUNTRY_ORIGIN));
 
     // May or may not want these for later.
 //    int CLARITY_CLEAR = R.id.radio_clarity_clear;

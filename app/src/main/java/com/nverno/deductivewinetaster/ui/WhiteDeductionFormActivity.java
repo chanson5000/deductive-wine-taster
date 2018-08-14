@@ -24,8 +24,6 @@ import java.util.Map;
 
 public class WhiteDeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
 
-    private static final int NUM_PAGES = 4;
-
     private ViewPager mPager;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences mActivityPreferences;
