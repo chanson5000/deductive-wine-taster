@@ -25,10 +25,6 @@ public interface DeductionFormContract {
     String NOSE_PAGE_TITLE = "Nose";
     String PALATE_PAGE_TITLE = "Palate";
 
-    String WHITE_SIGHT_PAGE_TITLE = "White Wine - Sight";
-    String WHITE_NOSE_PAGE_TITLE = "Red Wine - Nose";
-    String WHITE_PALATE_PAGE_TITLE = "White Wine - Palate";
-
     String INITIAL_CONCLUSION_PAGE_TITLE = "Initial Conclusion";
     String FINAL_CONCLUSION_PAGE_TITLE = "Final Conclusion";
 

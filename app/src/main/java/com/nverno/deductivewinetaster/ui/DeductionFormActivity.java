@@ -42,8 +42,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     InitialConclusionFragment mInitialConclusionFragment;
     FinalConclusionFragment mFinalConclusionFragment;
 
-    private boolean isRedWine;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +91,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     mSightFragment.mScrollViewSight.scrollTo(0, 0);
                     mResettingScrollView = false;
                 }
-                syncCurrentTitle();
+                syncCurrentTitle(position);
             }
 
             @Override
@@ -133,8 +131,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     @Override
     public void onResume() {
         super.onResume();
-        mPager.setCurrentItem(mActivityPreferences.getInt(CURRENT_PAGE, 0));
-        syncCurrentTitle();
+        int currentPage = mActivityPreferences.getInt(CURRENT_PAGE, 0);
+        mPager.setCurrentItem(currentPage);
+        syncCurrentTitle(currentPage);
         registerPreferencesListener();
     }
 
@@ -249,8 +248,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         editor.apply();
     }
 
-    private void syncCurrentTitle() {
-        switch (mPager.getCurrentItem()) {
+    private void syncCurrentTitle(int position) {
+        switch (position) {
             case SIGHT_PAGE:
                 setTitle(SIGHT_PAGE_TITLE);
                 break;
@@ -265,8 +264,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 break;
             case INITIAL_CONCLUSION_PAGE:
                 setTitle(INITIAL_CONCLUSION_PAGE_TITLE);
+                break;
             case FINAL_CONCLUSION_PAGE:
                 setTitle(FINAL_CONCLUSION_PAGE_TITLE);
+                break;
             default:
                 break;
         }
