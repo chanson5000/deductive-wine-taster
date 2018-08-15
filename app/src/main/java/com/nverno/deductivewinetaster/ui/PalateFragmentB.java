@@ -15,8 +15,6 @@ import com.nverno.deductivewinetaster.R;
 
 import java.util.Map;
 
-import butterknife.ButterKnife;
-
 public class PalateFragmentB extends Fragment implements DeductionFormContract {
 
     private FragmentActivity mFragmentActivity;
