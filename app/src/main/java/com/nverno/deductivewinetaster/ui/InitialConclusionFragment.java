@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,11 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
-    private DatabaseReference mDataReference;
+    private boolean mIsRedWine;
+    private DatabaseReference mDatabase;
 
-    private List<String> countries = new ArrayList<>();
+    private MultiAutoCompleteTextView mMultiAutoTextVarieties;
+    private MultiAutoCompleteTextView mMultiAutoTextCountries;
 
     public InitialConclusionFragment() {
     }
@@ -51,52 +54,76 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
             mSharedPreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = true;
         } else {
             mSharedPreferences = mFragmentActivity
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = false;
         }
-        DatabaseReference mDatabase;
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-        mDataReference = mDatabase.child("deductive-wine-taster").child("lists").child("countries");
-
-        mDataReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot country : dataSnapshot.getChildren()) {
-                    countries.add(country.getKey());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView;
-        MultiAutoCompleteTextView countryText;
-        String[] testCountries = new String[]{
-                "Belgium", "France", "Italy", "Germany"
-        };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries);
-
 
         rootView = inflater.inflate(R.layout.fragment_initial_conclusion,
                 container, false);
 
-        countryText = rootView.findViewById(R.id.multiText_initial_countries);
-        countryText.setAdapter(adapter);
-        countryText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        mMultiAutoTextVarieties = rootView.findViewById(R.id.multiText_initial_varieties);
+        mMultiAutoTextCountries = rootView.findViewById(R.id.multiText_initial_countries);
 
+        if (mIsRedWine) {
+            mDatabase.child("lists").child("varieties").child("red").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<String> varieties = new ArrayList<>();
+                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
+                        varieties.add(entry.getKey());
+                    }
+                    setMultiAutoTextVarieties(varieties);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            mDatabase.child("lists").child("varieties").child("white").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<String> varieties = new ArrayList<>();
+                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
+                        varieties.add(entry.getKey());
+                    }
+                    setMultiAutoTextVarieties(varieties);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        mDatabase.child("lists").child("countries").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> countries = new ArrayList<>();
+                for (DataSnapshot entry : dataSnapshot.getChildren()) {
+                    countries.add(entry.getKey());
+                }
+                setMultiAutoTextCountries(countries);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(databaseError.getDetails(), mFragmentActivity.getClass().getName());
+            }
+        });
 
         return rootView;
     }
@@ -105,6 +132,20 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     public void onResume() {
         super.onResume();
         setUiState();
+    }
+
+    private void setMultiAutoTextCountries(List<String> countries) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries);
+        mMultiAutoTextCountries.setAdapter(adapter);
+        mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+    }
+
+    private void setMultiAutoTextVarieties(List<String> varieties) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, varieties);
+        mMultiAutoTextVarieties.setAdapter(adapter);
+        mMultiAutoTextVarieties.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
     private int castKey(String key) {
