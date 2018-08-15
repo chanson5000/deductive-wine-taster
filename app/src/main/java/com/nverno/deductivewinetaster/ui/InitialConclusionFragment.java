@@ -1,12 +1,12 @@
 package com.nverno.deductivewinetaster.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.nverno.deductivewinetaster.R;
+import com.nverno.deductivewinetaster.viewmodel.ViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +28,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private SharedPreferences mSharedPreferences;
     private boolean mIsRedWine;
     private DatabaseReference mDatabase;
+    private ViewModel mViewModel;
 
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
     private MultiAutoCompleteTextView mMultiAutoTextCountries;
@@ -47,6 +45,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(mFragmentActivity).get(ViewModel.class);
 
         SharedPreferences activityPreferences =
                 mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
@@ -76,55 +75,25 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextCountries = rootView.findViewById(R.id.multiText_initial_countries);
 
         if (mIsRedWine) {
-            mDatabase.child("lists").child("varieties").child("red").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<String> varieties = new ArrayList<>();
-                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                        varieties.add(entry.getKey());
-                    }
-                    setMultiAutoTextVarieties(varieties);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            mViewModel.redVarietiesList().observe(this, redVarieties -> {
+                if (redVarieties != null) {
+                    setMultiAutoTextVarieties(redVarieties);
                 }
             });
+
         } else {
-            mDatabase.child("lists").child("varieties").child("white").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<String> varieties = new ArrayList<>();
-                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                        varieties.add(entry.getKey());
-                    }
-                    setMultiAutoTextVarieties(varieties);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            mViewModel.whiteVarietiesList().observe(this, whiteVarieties -> {
+                if (whiteVarieties != null) {
+                    setMultiAutoTextVarieties(whiteVarieties);
                 }
             });
         }
 
-        mDatabase.child("lists").child("countries").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> countries = new ArrayList<>();
-                for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                    countries.add(entry.getKey());
-                }
+        mViewModel.countriesList().observe(this, countries -> {
+            if (countries != null) {
                 setMultiAutoTextCountries(countries);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(databaseError.getDetails(), mFragmentActivity.getClass().getName());
-            }
         });
-
         return rootView;
     }
 
