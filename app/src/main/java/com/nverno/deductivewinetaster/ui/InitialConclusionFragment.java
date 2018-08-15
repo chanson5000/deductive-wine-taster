@@ -9,17 +9,28 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nverno.deductivewinetaster.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class InitialConclusionFragment extends Fragment implements DeductionFormContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
+    private DatabaseReference mDataReference;
+
+    private List<String> countries = new ArrayList<>();
 
     public InitialConclusionFragment() {
     }
@@ -44,14 +55,50 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
             mSharedPreferences = mFragmentActivity
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
         }
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        mDataReference = mDatabase.child("deductive-wine-taster").child("lists").child("countries");
+
+        mDataReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot country : dataSnapshot.getChildren()) {
+                    countries.add(country.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView;
+        MultiAutoCompleteTextView countryText;
+        String[] testCountries = new String[]{
+                "Belgium", "France", "Italy", "Germany"
+        };
 
-        return inflater.inflate(R.layout.fragment_initial_conclusion,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries);
+
+
+        rootView = inflater.inflate(R.layout.fragment_initial_conclusion,
                 container, false);
+
+        countryText = rootView.findViewById(R.id.multiText_initial_countries);
+        countryText.setAdapter(adapter);
+        countryText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+
+        return rootView;
     }
 
     @Override
