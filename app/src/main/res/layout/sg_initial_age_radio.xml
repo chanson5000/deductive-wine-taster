@@ -12,7 +12,7 @@
         style="@style/AppTheme.RadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/radio_button_initial_age_onetothree"
