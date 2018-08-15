@@ -32,12 +32,14 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Class parentClass = mFragmentActivity.getClass();
 
-        if (parentClass == DeductionFormActivity.class) {
+        SharedPreferences activityPreferences =
+                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
             mSharedPreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-        } else if (parentClass == WhiteDeductionFormActivity.class) {
+        } else {
             mSharedPreferences = mFragmentActivity
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
         }
@@ -46,10 +48,9 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_final_conclusion,
-                container, false);
 
-        return rootView;
+        return inflater.inflate(R.layout.fragment_final_conclusion,
+                container, false);
     }
 
     @Override
