@@ -63,10 +63,6 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         return Integer.parseInt(key);
     }
 
-    private int parseEntryValue(Object value) {
-        return Integer.parseInt(value.toString());
-    }
-
     private void setUiState() {
         Map<String, ?> allEntries = mSharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
