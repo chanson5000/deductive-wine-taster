@@ -145,7 +145,7 @@ public interface DeductionFormContract {
     int PALATE_LENGTH_FINISH = R.id.radio_group_palate_length_finish;
     int PALATE_COMPLEXITY = R.id.radio_group_palate_complexity;
 
-    int INITIAL_GRAPE_VARIETIES = R.id.multiText_initial_possible_grape_varieties;
+    int INITIAL_GRAPE_VARIETIES = R.id.multiText_initial_varieties;
     int INITIAL_WORLD = R.id.radio_group_initial_world;
     int INITIAL_CLIMATE = R.id.radio_group_initial_climate;
     int INITIAL_COUNTRIES = R.id.multiText_initial_countries;
