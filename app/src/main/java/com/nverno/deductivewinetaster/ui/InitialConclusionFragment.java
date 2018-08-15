@@ -129,6 +129,17 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),
+                mMultiAutoTextVarieties.getText().toString());
+        editor.putString(Integer.toString(INITIAL_COUNTRIES),
+                mMultiAutoTextCountries.getText().toString());
+        editor.apply();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setUiState();
