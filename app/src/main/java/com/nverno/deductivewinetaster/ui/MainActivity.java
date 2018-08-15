@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.nverno.deductivewinetaster.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeductionFormContract {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +16,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonRedWine(View view) {
-        Intent intent = new Intent(this, RedDeductionFormActivity.class);
+        Intent intent = new Intent(this, DeductionFormActivity.class);
+        intent.putExtra(WINE_TYPE, RED_WINE);
         startActivity(intent);
     }
 
     public void buttonWhiteWine(View view) {
-        Intent intent = new Intent(this, WhiteDeductionFormActivity.class);
+        Intent intent = new Intent(this, DeductionFormActivity.class);
         startActivity(intent);
     }
 }

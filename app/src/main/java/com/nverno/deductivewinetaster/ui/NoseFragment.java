@@ -5,13 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.nverno.deductivewinetaster.R;
@@ -19,17 +19,15 @@ import com.nverno.deductivewinetaster.R;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class RedNoseFragment extends Fragment implements DeductionFormContract {
+public class NoseFragment extends Fragment implements DeductionFormContract {
 
-    private RedDeductionFormActivity mFragmentActivity;
-    private SharedPreferences mSharedPreferences;
+    private FragmentActivity mFragmentActivity;
+    private SharedPreferences mWinePreferences;
+    private boolean mIsRedWine;
 
-    @BindView(R.id.scrollView_nose_red)
-    ScrollView mScrollViewNoseRed;
     @BindViews({R.id.radio_nose_wood_old, R.id.radio_nose_wood_new,
             R.id.radio_nose_wood_large, R.id.radio_nose_wood_small,
             R.id.radio_nose_wood_french, R.id.radio_nose_wood_american})
@@ -41,28 +39,45 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
     static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
-    public RedNoseFragment() {
+    public NoseFragment() {
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = (RedDeductionFormActivity) getActivity();
+        mFragmentActivity = getActivity();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = mFragmentActivity
-                .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences activityPreferences =
+                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = true;
+        } else {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = false;
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_nose_red,
-                container, false);
+        View rootView;
+        if (mIsRedWine) {
+            rootView = inflater.inflate(R.layout.fragment_nose_red,
+                    container, false);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_nose_white,
+                    container, false);
+        }
 
         ButterKnife.bind(this, rootView);
 
@@ -88,19 +103,30 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
     }
 
     private void setUiState() {
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
+        Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int key = castKey(entry.getKey());
+            int view = castKey(entry.getKey());
 
-            if (redNoseViews.contains(key)) {
-                if (AllRadioGroups.contains(key)) {
-                    ((RadioGroup) mFragmentActivity.findViewById(key))
+            if (mIsRedWine && redNoseViews.contains(view)) {
+                if (AllRadioGroups.contains(view)) {
+                    ((RadioGroup) mFragmentActivity.findViewById(view))
                             .check(parseEntryValue(entry.getValue()));
-                } else if (AllCheckBoxes.contains(key)) {
-                    ((CheckBox) mFragmentActivity.findViewById(key))
+                } else if (AllCheckBoxes.contains(view)) {
+                    ((CheckBox) mFragmentActivity.findViewById(view))
                             .setChecked(castChecked(parseEntryValue(entry.getValue())));
-                } else if (AllSwitches.contains(key)) {
-                    ((Switch) mFragmentActivity.findViewById(key))
+                } else if (AllSwitches.contains(view)) {
+                    ((Switch) mFragmentActivity.findViewById(view))
+                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                }
+            } else if (!mIsRedWine && whiteNoseViews.contains(view)) {
+                if (AllRadioGroups.contains(view)) {
+                    ((RadioGroup) mFragmentActivity.findViewById(view))
+                            .check(parseEntryValue(entry.getValue()));
+                } else if (AllCheckBoxes.contains(view)) {
+                    ((CheckBox) mFragmentActivity.findViewById(view))
+                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                } else if (AllSwitches.contains(view)) {
+                    ((Switch) mFragmentActivity.findViewById(view))
                             .setChecked(castChecked(parseEntryValue(entry.getValue())));
                 }
             }
@@ -109,7 +135,7 @@ public class RedNoseFragment extends Fragment implements DeductionFormContract {
     }
 
     private boolean getCheckBoxState(int key) {
-        return mSharedPreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
+        return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
     public void syncWoodRadioState() {

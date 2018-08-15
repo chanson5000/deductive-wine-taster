@@ -5,13 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.nverno.deductivewinetaster.R;
@@ -19,17 +19,15 @@ import com.nverno.deductivewinetaster.R;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class WhitePalateFragmentA extends Fragment implements DeductionFormContract {
+public class PalateFragmentA extends Fragment implements DeductionFormContract {
 
-    private WhiteDeductionFormActivity mFragmentActivity;
-    private SharedPreferences mSharedPreferences;
+    private FragmentActivity mFragmentActivity;
+    private SharedPreferences mWinePreferences;
+    private boolean mIsRedWine;
 
-    @BindView(R.id.scrollView_palate_white_a)
-    ScrollView mScrollViewPalateWhiteA;
     @BindViews({R.id.radio_palate_wood_old, R.id.radio_palate_wood_new,
             R.id.radio_palate_wood_large, R.id.radio_palate_wood_small,
             R.id.radio_palate_wood_french, R.id.radio_palate_wood_american})
@@ -41,28 +39,45 @@ public class WhitePalateFragmentA extends Fragment implements DeductionFormContr
     static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
-    public WhitePalateFragmentA() {
+    public PalateFragmentA() {
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mFragmentActivity = (WhiteDeductionFormActivity) getActivity();
+        mFragmentActivity = getActivity();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSharedPreferences = mFragmentActivity
-                .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences activityPreferences =
+                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = true;
+        } else {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = false;
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView;
 
-        View rootView = inflater.inflate(R.layout.fragment_palate_white_a,
-                container, false);
+        if (mIsRedWine) {
+            rootView = inflater.inflate(R.layout.fragment_palate_red_a,
+                    container, false);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_palate_white_a,
+                    container, false);
+        }
 
         ButterKnife.bind(this, rootView);
 
@@ -88,19 +103,30 @@ public class WhitePalateFragmentA extends Fragment implements DeductionFormContr
     }
 
     private void setUiState() {
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
+        Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int key = castKey(entry.getKey());
+            int view = castKey(entry.getKey());
 
-            if (whitePalateViewsA.contains(key)) {
-                if (AllRadioGroups.contains(key)) {
-                    ((RadioGroup) mFragmentActivity.findViewById(key))
+            if (mIsRedWine && redPalateViewsA.contains(view)) {
+                if (AllRadioGroups.contains(view)) {
+                    ((RadioGroup) mFragmentActivity.findViewById(view))
                             .check(parseEntryValue(entry.getValue()));
-                } else if (AllCheckBoxes.contains(key)) {
-                    ((CheckBox) mFragmentActivity.findViewById(key))
+                } else if (AllCheckBoxes.contains(view)) {
+                    ((CheckBox) mFragmentActivity.findViewById(view))
                             .setChecked(castChecked(parseEntryValue(entry.getValue())));
-                } else if (AllSwitches.contains(key)) {
-                    ((Switch) mFragmentActivity.findViewById(key))
+                } else if (AllSwitches.contains(view)) {
+                    ((Switch) mFragmentActivity.findViewById(view))
+                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                }
+            } else if (!mIsRedWine && whitePalateViewsA.contains(view)) {
+                if (AllRadioGroups.contains(view)) {
+                    ((RadioGroup) mFragmentActivity.findViewById(view))
+                            .check(parseEntryValue(entry.getValue()));
+                } else if (AllCheckBoxes.contains(view)) {
+                    ((CheckBox) mFragmentActivity.findViewById(view))
+                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                } else if (AllSwitches.contains(view)) {
+                    ((Switch) mFragmentActivity.findViewById(view))
                             .setChecked(castChecked(parseEntryValue(entry.getValue())));
                 }
             }
@@ -109,7 +135,7 @@ public class WhitePalateFragmentA extends Fragment implements DeductionFormContr
     }
 
     private boolean getCheckBoxState(int key) {
-        return mSharedPreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
+        return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
     public void syncWoodRadioState() {

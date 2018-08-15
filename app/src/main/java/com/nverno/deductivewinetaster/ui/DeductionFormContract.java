@@ -9,6 +9,10 @@ import java.util.List;
 public interface DeductionFormContract {
 
     String CURRENT_PAGE = "CURRENT_PAGE";
+    String WINE_TYPE = "WINE_TYPE";
+    String RED_WINE = "RED_WINE";
+    String WHITE_WINE = "WHITE_WINE";
+
     int NUM_PAGES = 6;
     int SIGHT_PAGE = 0;
     int NOSE_PAGE = 1;
@@ -17,9 +21,9 @@ public interface DeductionFormContract {
     int INITIAL_CONCLUSION_PAGE = 4;
     int FINAL_CONCLUSION_PAGE = 5;
 
-    String RED_SIGHT_PAGE_TITLE = "Red Wine - Sight";
-    String RED_NOSE_PAGE_TITLE = "Red Wine - Nose";
-    String RED_PALATE_PAGE_TITLE = "Red Wine - Palate";
+    String SIGHT_PAGE_TITLE = "Sight";
+    String NOSE_PAGE_TITLE = "Nose";
+    String PALATE_PAGE_TITLE = "Palate";
 
     String WHITE_SIGHT_PAGE_TITLE = "White Wine - Sight";
     String WHITE_NOSE_PAGE_TITLE = "Red Wine - Nose";

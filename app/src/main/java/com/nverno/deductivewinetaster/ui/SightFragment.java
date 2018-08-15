@@ -9,19 +9,22 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.nverno.deductivewinetaster.R;
 
 import java.util.Map;
 
-public class InitialConclusionFragment extends Fragment implements DeductionFormContract {
+public class SightFragment extends Fragment implements DeductionFormContract {
 
     private FragmentActivity mFragmentActivity;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mWinePreferences;
+    private boolean mIsRedWine;
 
-    public InitialConclusionFragment() {
+    ScrollView mScrollViewSight;
+
+    public SightFragment() {
     }
 
     @Override
@@ -33,23 +36,35 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Class parentClass = mFragmentActivity.getClass();
 
-        if (parentClass == DeductionFormActivity.class) {
-            mSharedPreferences = mFragmentActivity
+        SharedPreferences activityPreferences =
+                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+            mWinePreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-        } else if (parentClass == WhiteDeductionFormActivity.class) {
-            mSharedPreferences = mFragmentActivity
+            mIsRedWine = true;
+        } else {
+            mWinePreferences = mFragmentActivity
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = false;
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView;
 
-        View rootView = inflater.inflate(R.layout.fragment_initial_conclusion,
-                container, false);
+        if (mIsRedWine) {
+            rootView = inflater.inflate(R.layout.fragment_sight_red,
+                    container, false);
+            mScrollViewSight = rootView.findViewById(R.id.scrollView_sight_red);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_sight_white,
+                    container, false);
+            mScrollViewSight = rootView.findViewById(R.id.scrollView_sight_white);
+        }
 
         return rootView;
     }
@@ -69,18 +84,16 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     }
 
     private void setUiState() {
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
+        Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int view = castKey(entry.getKey());
 
-            if (initialConclusionViews.contains(view)) {
-                if (AllRadioGroups.contains(view)) {
-                    ((RadioGroup) mFragmentActivity.findViewById(view))
-                            .check(parseEntryValue(entry.getValue()));
-                } else if (AllAutoMultiText.contains(view)) {
-                    ((MultiAutoCompleteTextView) mFragmentActivity.findViewById(view))
-                            .setText(entry.getValue().toString());
-                }
+            if (mIsRedWine && redSightViews.contains(view) && AllRadioGroups.contains(view)) {
+                ((RadioGroup) mFragmentActivity.findViewById(view))
+                        .check(parseEntryValue(entry.getValue()));
+            } else if (!mIsRedWine && whiteSightViews.contains(view) && AllRadioGroups.contains(view)) {
+                ((RadioGroup) mFragmentActivity.findViewById(view))
+                        .check(parseEntryValue(entry.getValue()));
             }
         }
     }

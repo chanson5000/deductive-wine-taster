@@ -19,11 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.RedDeductionFormActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity
-            android:name=".ui.WhiteDeductionFormActivity"
+            android:name=".ui.DeductionFormActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity" />
     </application>

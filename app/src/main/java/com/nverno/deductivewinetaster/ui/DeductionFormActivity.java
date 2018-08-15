@@ -1,6 +1,7 @@
 package com.nverno.deductivewinetaster.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -22,32 +25,59 @@ import com.nverno.deductivewinetaster.R;
 
 import java.util.Map;
 
-public class WhiteDeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
+public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
 
     private ViewPager mPager;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mWinePreferences;
     private SharedPreferences mActivityPreferences;
     private boolean mResettingScrollView;
 
-    // Set a strong reference to the listener so that it avoids garbage collection;
+    // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
-    WhiteSightFragment mWhiteWineSightFragment;
-    WhiteNoseFragment mWhiteWineNoseFragment;
-    WhitePalateFragmentA mWhiteWinePalateFragmentA;
-    WhitePalateFragmentB mWhiteWinePalateFragmentB;
+    SightFragment mSightFragment;
+    NoseFragment mNoseFragment;
+    PalateFragmentA palateFragmentA;
+    PalateFragmentB palateFragmentB;
+    InitialConclusionFragment mInitialConclusionFragment;
+    FinalConclusionFragment mFinalConclusionFragment;
+
+    private boolean isRedWine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_white_deduction_form);
 
-        mSharedPreferences = getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+        Intent parentIntent = getIntent();
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        mPager = findViewById(R.id.view_pager_white_deduction);
-        PagerAdapter pagerAdapter = new WhiteDeductionFormPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(pagerAdapter);
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+
+        if (parentIntent != null && parentIntent.hasExtra(WINE_TYPE)) {
+            setContentView(R.layout.activity_red_deduction_form);
+
+            editor.putString(WINE_TYPE, RED_WINE);
+
+            mWinePreferences =
+                    getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mPager = findViewById(R.id.view_pager_red_deduction);
+            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(getSupportFragmentManager());
+            mPager.setAdapter(pagerAdapter);
+        } else {
+            setContentView(R.layout.activity_white_deduction_form);
+
+            editor.putString(WINE_TYPE, WHITE_WINE);
+
+            mWinePreferences =
+                    getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mPager = findViewById(R.id.view_pager_white_deduction);
+            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(getSupportFragmentManager());
+            mPager.setAdapter(pagerAdapter);
+        }
+
+        editor.apply();
+
+
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -57,10 +87,10 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
             @Override
             public void onPageSelected(int position) {
                 // TODO: Get the scrollY to reset after a rotation. (ScrollView returns null)
-                if (mWhiteWineSightFragment.mScrollViewSightWhite != null
+                if (mSightFragment.mScrollViewSight != null
                         && mResettingScrollView
                         && position == 0) {
-                    mWhiteWineSightFragment.mScrollViewSightWhite.scrollTo(0, 0);
+                    mSightFragment.mScrollViewSight.scrollTo(0, 0);
                     mResettingScrollView = false;
                 }
                 syncCurrentTitle();
@@ -118,7 +148,7 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
     }
 
     private void registerPreferencesListener() {
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
+        mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
 
             View view = findViewById(castKey(key));
@@ -130,18 +160,22 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
                     ((CheckBox) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
                     ((Switch) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                } else if (view instanceof MultiAutoCompleteTextView) {
+                    ((MultiAutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                } else if (view instanceof AutoCompleteTextView) {
+                    ((AutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
                 }
             }
         }));
     }
 
     private void unRegisterSharedPreferencesListener() {
-        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+        mWinePreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
     }
 
     private void resetSharedPreferences() {
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
-        SharedPreferences.Editor edit = mSharedPreferences.edit();
+        Map<String, ?> allEntries = mWinePreferences.getAll();
+        SharedPreferences.Editor edit = mWinePreferences.edit();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int key = castKey(entry.getKey());
             if (AllRadioGroups.contains(key)) {
@@ -150,19 +184,23 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
                 edit.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllSwitches.contains(key)) {
                 edit.putInt(entry.getKey(), NOT_CHECKED);
+            } else if (AllAutoText.contains(key)) {
+                edit.putString(entry.getKey(), "");
+            } else if (AllAutoMultiText.contains(key)) {
+                edit.putString(entry.getKey(), "");
             }
         }
         edit.apply();
     }
 
     private void saveRadioGroupState(int key, int state) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putInt(Integer.toString(key), state);
         editor.apply();
     }
 
     private void saveCheckBoxState(int key, int checkedInt) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putInt(Integer.toString(key), checkedInt);
         editor.apply();
     }
@@ -199,9 +237,9 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
         boolean checked = switchToggle.isChecked();
         saveCheckBoxState(switchId, castChecked(checked));
         if (switchId == NOSE_WOOD) {
-            mWhiteWineNoseFragment.syncWoodRadioState();
+            mNoseFragment.syncWoodRadioState();
         } else if (switchId == PALATE_WOOD) {
-            mWhiteWinePalateFragmentA.syncWoodRadioState();
+            palateFragmentA.syncWoodRadioState();
         }
     }
 
@@ -214,29 +252,35 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
-                setTitle(WHITE_SIGHT_PAGE_TITLE);
+                setTitle(SIGHT_PAGE_TITLE);
                 break;
             case NOSE_PAGE:
-                setTitle(WHITE_NOSE_PAGE_TITLE);
+                setTitle(NOSE_PAGE_TITLE);
                 break;
             case PALATE_PAGE_A:
-                setTitle(WHITE_PALATE_PAGE_TITLE);
+                setTitle(PALATE_PAGE_TITLE);
                 break;
             case PALATE_PAGE_B:
-                setTitle(WHITE_PALATE_PAGE_TITLE);
+                setTitle(PALATE_PAGE_TITLE);
                 break;
+            case INITIAL_CONCLUSION_PAGE:
+                setTitle(INITIAL_CONCLUSION_PAGE_TITLE);
+            case FINAL_CONCLUSION_PAGE:
+                setTitle(FINAL_CONCLUSION_PAGE_TITLE);
             default:
                 break;
         }
     }
 
-    class WhiteDeductionFormPagerAdapter extends FragmentPagerAdapter {
-        WhiteDeductionFormPagerAdapter(FragmentManager fragmentManager) {
+    class DeductionFormPagerAdapter extends FragmentPagerAdapter {
+        DeductionFormPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            mWhiteWineSightFragment = new WhiteSightFragment();
-            mWhiteWineNoseFragment = new WhiteNoseFragment();
-            mWhiteWinePalateFragmentA = new WhitePalateFragmentA();
-            mWhiteWinePalateFragmentB = new WhitePalateFragmentB();
+            mSightFragment = new SightFragment();
+            mNoseFragment = new NoseFragment();
+            palateFragmentA = new PalateFragmentA();
+            palateFragmentB = new PalateFragmentB();
+            mInitialConclusionFragment = new InitialConclusionFragment();
+            mFinalConclusionFragment = new FinalConclusionFragment();
         }
 
         @Override
@@ -248,13 +292,17 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
         public Fragment getItem(int position) {
             switch (position) {
                 case SIGHT_PAGE:
-                    return mWhiteWineSightFragment;
+                    return mSightFragment;
                 case NOSE_PAGE:
-                    return mWhiteWineNoseFragment;
+                    return mNoseFragment;
                 case PALATE_PAGE_A:
-                    return mWhiteWinePalateFragmentA;
+                    return palateFragmentA;
                 case PALATE_PAGE_B:
-                    return mWhiteWinePalateFragmentB;
+                    return palateFragmentB;
+                case INITIAL_CONCLUSION_PAGE:
+                    return mInitialConclusionFragment;
+                case FINAL_CONCLUSION_PAGE:
+                    return mFinalConclusionFragment;
                 default:
                     break;
             }
@@ -263,7 +311,7 @@ public class WhiteDeductionFormActivity extends AppCompatActivity implements Ded
     }
 
     private void wipeSharedPreferences() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.clear();
         editor.apply();
     }
