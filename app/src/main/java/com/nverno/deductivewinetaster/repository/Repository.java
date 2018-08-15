@@ -82,7 +82,7 @@ public class Repository {
         }
     }
 
-    class FirebaseLiveData<Snapshot> extends LiveData<DataSnapshot> {
+    class FirebaseLiveData extends LiveData<DataSnapshot> {
 
         private static final String LOG_TAG = "FirebaseLiveData";
 
