@@ -27,7 +27,6 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
     private boolean mIsRedWine;
-    private DatabaseReference mDatabase;
     private ViewModel mViewModel;
 
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
@@ -59,8 +58,6 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = false;
         }
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -100,18 +97,22 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),
-                mMultiAutoTextVarieties.getText().toString());
-        editor.putString(Integer.toString(INITIAL_COUNTRIES),
-                mMultiAutoTextCountries.getText().toString());
-        editor.apply();
+        saveUiState();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setUiState();
+    }
+
+    private void saveUiState() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),
+                mMultiAutoTextVarieties.getText().toString());
+        editor.putString(Integer.toString(INITIAL_COUNTRIES),
+                mMultiAutoTextCountries.getText().toString());
+        editor.apply();
     }
 
     private void setMultiAutoTextCountries(List<String> countries) {
