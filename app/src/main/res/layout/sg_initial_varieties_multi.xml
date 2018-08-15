@@ -6,11 +6,11 @@
         style="@style/AppTheme.Text.Descriptor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@id/multiText_initial_possible_grape_varieties"
+        android:labelFor="@id/multiText_initial_varieties"
         android:text="@string/possible_grape_varieties" />
 
     <MultiAutoCompleteTextView
-        android:id="@+id/multiText_initial_possible_grape_varieties"
+        android:id="@+id/multiText_initial_varieties"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
