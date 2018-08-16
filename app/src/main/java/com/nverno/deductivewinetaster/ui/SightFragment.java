@@ -13,15 +13,21 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import com.nverno.deductivewinetaster.R;
+import com.nverno.deductivewinetaster.util.AppExecutors;
 
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SightFragment extends Fragment implements DeductionFormContract {
 
     private FragmentActivity mFragmentActivity;
+    private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
+    @BindView(R.id.scrollView_sight)
     ScrollView mScrollViewSight;
 
     public SightFragment() {
@@ -37,10 +43,9 @@ public class SightFragment extends Fragment implements DeductionFormContract {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences activityPreferences =
-                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+        if (mActivityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
             mWinePreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = true;
@@ -59,20 +64,54 @@ public class SightFragment extends Fragment implements DeductionFormContract {
         if (mIsRedWine) {
             rootView = inflater.inflate(R.layout.fragment_sight_red,
                     container, false);
-            mScrollViewSight = rootView.findViewById(R.id.scrollView_sight_red);
         } else {
             rootView = inflater.inflate(R.layout.fragment_sight_white,
                     container, false);
-            mScrollViewSight = rootView.findViewById(R.id.scrollView_sight_white);
         }
+
+        ButterKnife.bind(this, rootView);
 
         return rootView;
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollState();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        setUiState();
+        loadSelectionState();
+        loadScrollState();
+    }
+
+    private void saveScrollState() {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
+        } else {
+            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
+        }
+        editor.apply();
+    }
+
+    private void loadScrollState() {
+        if (mIsRedWine) {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(RED_SIGHT_Y_SCROLL, 0)));
+        } else {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(WHITE_SIGHT_Y_SCROLL, 0)));
+        }
+    }
+
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewSight.scrollTo(0, 0));
     }
 
     private int castKey(String key) {
@@ -83,7 +122,7 @@ public class SightFragment extends Fragment implements DeductionFormContract {
         return Integer.parseInt(value.toString());
     }
 
-    private void setUiState() {
+    private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int view = castKey(entry.getKey());

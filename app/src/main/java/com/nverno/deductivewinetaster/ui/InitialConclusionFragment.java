@@ -13,24 +13,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.nverno.deductivewinetaster.R;
+import com.nverno.deductivewinetaster.util.AppExecutors;
 import com.nverno.deductivewinetaster.viewmodel.ViewModel;
 
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class InitialConclusionFragment extends Fragment implements DeductionFormContract {
 
     private FragmentActivity mFragmentActivity;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mActivityPreferences;
+    private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
     private ViewModel mViewModel;
 
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
     private MultiAutoCompleteTextView mMultiAutoTextCountries;
+
+    @BindView(R.id.scrollView_initial)
+    ScrollView mScrollViewInitial;
 
     public InitialConclusionFragment() {
     }
@@ -46,15 +53,15 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(mFragmentActivity).get(ViewModel.class);
 
-        SharedPreferences activityPreferences =
+        mActivityPreferences =
                 mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        if (activityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
-            mSharedPreferences = mFragmentActivity
+        if (mActivityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+            mWinePreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = true;
         } else {
-            mSharedPreferences = mFragmentActivity
+            mWinePreferences = mFragmentActivity
                     .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = false;
         }
@@ -91,23 +98,50 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
                 setMultiAutoTextCountries(countries);
             }
         });
+
+        ButterKnife.bind(this, rootView);
+
         return rootView;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        saveUiState();
+        saveSelectionState();
+        saveScrollState();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setUiState();
+        loadSelectionState();
+        loadScrollState();
     }
 
-    private void saveUiState() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
+    private void saveScrollState() {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(RED_INITIAL_Y_SCROLL, mScrollViewInitial.getScrollY());
+        } else {
+            editor.putInt(WHITE_INITIAL_Y_SCROLL, mScrollViewInitial.getScrollY());
+        }
+        editor.apply();
+    }
+
+    private void loadScrollState() {
+        if (mIsRedWine) {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewInitial.scrollTo(0, mActivityPreferences
+                            .getInt(RED_INITIAL_Y_SCROLL, 0)));
+        } else {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewInitial.scrollTo(0, mActivityPreferences
+                            .getInt(WHITE_INITIAL_Y_SCROLL, 0)));
+        }
+    }
+
+    private void saveSelectionState() {
+        SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),
                 mMultiAutoTextVarieties.getText().toString());
         editor.putString(Integer.toString(INITIAL_COUNTRIES),
@@ -137,8 +171,8 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         return Integer.parseInt(value.toString());
     }
 
-    private void setUiState() {
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
+    private void loadSelectionState() {
+        Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int view = castKey(entry.getKey());
 
