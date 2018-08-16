@@ -126,6 +126,11 @@ public class NoseFragment extends Fragment implements DeductionFormContract {
         }
     }
 
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewNose.scrollTo(0, 0));
+    }
+
     private int castKey(String key) {
         return Integer.parseInt(key);
     }

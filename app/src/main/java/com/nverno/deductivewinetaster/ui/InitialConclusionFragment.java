@@ -140,6 +140,11 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         }
     }
 
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewInitial.scrollTo(0, 0));
+    }
+
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),

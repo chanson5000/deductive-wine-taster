@@ -138,6 +138,11 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         }
     }
 
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewFinal.scrollTo(0, 0));
+    }
+
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putString(Integer.toString(FINAL_GRAPE_VARIETY),

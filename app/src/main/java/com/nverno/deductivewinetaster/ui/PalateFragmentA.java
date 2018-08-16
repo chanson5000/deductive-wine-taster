@@ -126,6 +126,11 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract {
         }
     }
 
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewPalateA.scrollTo(0, 0));
+    }
+
 
     private int castKey(String key) {
         return Integer.parseInt(key);

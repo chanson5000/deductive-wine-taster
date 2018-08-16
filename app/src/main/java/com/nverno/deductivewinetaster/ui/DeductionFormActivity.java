@@ -41,6 +41,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private SightFragment mSightFragment;
     private NoseFragment mNoseFragment;
     private PalateFragmentA mPalateFragmentA;
+    private PalateFragmentB mPalateFragmentB;
+    private InitialConclusionFragment mInitialFragment;
+    private FinalConclusionFragment mFinalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +89,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             @Override
             public void onPageSelected(int position) {
-                // TODO: Get the scrollY to reset after a rotation. (ScrollView returns null)
-                if (mResetView && position == 0) {
-                    mResetView = false;
-                    mSightFragment.scrollToTop();
-                }
                 syncCurrentTitle();
             }
 
@@ -112,9 +110,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         switch (item.getItemId()) {
             case R.id.clear_selections:
                 resetSharedPreferences();
-                if (mPager.getCurrentItem() == SIGHT_PAGE) {
-                    mSightFragment.scrollToTop();
-                } else {
+                resetAllTopScroll();
+                if (mPager.getCurrentItem() != SIGHT_PAGE) {
                     mResetView = true;
                     mPager.setCurrentItem(SIGHT_PAGE);
                 }
@@ -288,6 +285,32 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
+    private void resetAllTopScroll() {
+        if (mSightFragment != null) {
+            mSightFragment.scrollToTop();
+
+        }
+        if (mNoseFragment != null) {
+            mNoseFragment.scrollToTop();
+
+        }
+        if (mPalateFragmentA != null) {
+            mPalateFragmentA.scrollToTop();
+
+        }
+        if (mPalateFragmentB != null) {
+            mPalateFragmentB.scrollToTop();
+
+        }
+        if (mInitialFragment != null) {
+            mInitialFragment.scrollToTop();
+
+        }
+        if (mFinalFragment != null) {
+            mFinalFragment.scrollToTop();
+        }
+    }
+
 
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
@@ -360,6 +383,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     break;
                 case PALATE_PAGE_A:
                     mPalateFragmentA = (PalateFragmentA) createdFragment;
+                    break;
+                case PALATE_PAGE_B:
+                    mPalateFragmentB = (PalateFragmentB) createdFragment;
+                    break;
+                case INITIAL_CONCLUSION_PAGE:
+                    mInitialFragment = (InitialConclusionFragment) createdFragment;
+                    break;
+                case FINAL_CONCLUSION_PAGE:
+                    mFinalFragment = (FinalConclusionFragment) createdFragment;
                     break;
                 default:
                     break;
