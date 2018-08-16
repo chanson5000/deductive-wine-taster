@@ -91,7 +91,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     mResetView = false;
                     mSightFragment.scrollToTop();
                 }
-                syncCurrentTitle(position);
+                syncCurrentTitle();
             }
 
             @Override
@@ -129,16 +129,41 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onPause() {
         super.onPause();
         unRegisterSharedPreferencesListener();
-        saveCurrentPageSelection();
+        setCurrentPageInPreferences(getCurrentPageFromPager());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        int currentPage = mActivityPreferences.getInt(CURRENT_PAGE, 0);
-        mPager.setCurrentItem(currentPage);
-        syncCurrentTitle(currentPage);
+        setCurrentPage(getCurrentPageFromPreferences());
+        syncCurrentTitle();
         registerPreferencesListener();
+    }
+
+    private void setCurrentPageInPreferences(int page) {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(CURRENT_PAGE_RED, page);
+        } else {
+            editor.putInt(CURRENT_PAGE_WHITE, page);
+        }
+        editor.apply();
+    }
+
+    private int getCurrentPageFromPreferences() {
+        if (mIsRedWine) {
+            return mActivityPreferences.getInt(CURRENT_PAGE_RED, 0);
+        } else {
+            return mActivityPreferences.getInt(CURRENT_PAGE_WHITE, 0);
+        }
+    }
+
+    private void setCurrentPage(int page) {
+        mPager.setCurrentItem(page);
+    }
+
+    private int getCurrentPageFromPager() {
+        return mPager.getCurrentItem();
     }
 
     @Override
@@ -263,14 +288,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-    private void saveCurrentPageSelection() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        editor.putInt(CURRENT_PAGE, mPager.getCurrentItem());
-        editor.apply();
-    }
 
-    private void syncCurrentTitle(int position) {
-        switch (position) {
+    private void syncCurrentTitle() {
+        switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
                 setTitle(SIGHT_PAGE_TITLE);
                 break;
