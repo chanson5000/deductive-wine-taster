@@ -1,5 +1,7 @@
 package com.nverno.deductivewinetaster.ui;
 
+import android.content.res.Resources;
+
 import com.nverno.deductivewinetaster.R;
 
 import java.util.ArrayList;
@@ -44,6 +46,85 @@ public interface DeductionFormContract {
 
     String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
     String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
+
+    // These strings I will not want translated so I am not using strings.xml.
+    String Albarino = "Albarino";
+    String Cabernet_Franc = "Cabernet Franc";
+    String Cabernet_Sauvignon = "Cabernet Sauvignon";
+    String Chardonnay = "Chardonnay";
+    String Chenin_Blanc = "Chenin Blanc";
+    String Gamay = "Gamay";
+    String Gewurztraminer = "Gewurztraminer";
+    String Grenache = "Grenache";
+    String Malbec = "Malbec";
+    String Merlot = "Merlot";
+    String Nebbiolo = "Nebbiolo";
+    String Pinot_Gris = "Pinot Gris";
+    String Pinot_Noir = "Pinot Noir";
+    String Riesling = "Riesling";
+    String Sangiovese = "Sangiovese";
+    String Sauvignon_Blanc = "Sauvignon Blanc";
+    String Syrah = "Syrah";
+    String Tempranillo = "Tempranillo";
+    String Torrontes = "Torrontes";
+    String Viognier = "Viognier";
+    String Zinfandel = "Zinfandel";
+
+    String Argentina = "Argentina";
+    String Australia = "Australia";
+    String Chile = "Chile";
+    String France = "France";
+    String Germany = "Germany";
+    String Italy = "Italy";
+    String New_Zealand = "New Zealand";
+    String Spain = "Spain";
+    String United_States = "United States";
+
+    String[] AllCountries = new String[]{Argentina, Australia, Chile, France, Germany,
+            Italy, New_Zealand, Spain, United_States,};
+
+    String[] NewWorldCountries = new String[]{Argentina, Australia, Chile, New_Zealand,
+            United_States};
+
+    String[] OldWorldCountries = new String[]{France, Germany, Italy, Spain};
+
+    String[] AllVarieties = new String[]{Albarino, Cabernet_Franc, Cabernet_Sauvignon,
+    Chardonnay, Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Malbec, Merlot,
+    Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
+    Syrah, Tempranillo, Torrontes, Viognier, Zinfandel};
+
+    String[] RedVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Gamay,
+    Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
+    Tempranillo, Zinfandel};
+
+    String[] WhiteVarieties = new String[]{Albarino, Chardonnay, Chenin_Blanc,
+    Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier};
+
+    String[] ArgentinaVarieties = new String[]{Malbec, Torrontes};
+
+    String[] AustraliaVarieties = new String[]{Cabernet_Sauvignon, Grenache, Riesling,
+    Syrah};
+
+    String[] ChileVarieties = new String[]{Cabernet_Sauvignon};
+
+    String[] FranceVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Chardonnay,
+    Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Merlot, Pinot_Gris, Riesling,
+            Sauvignon_Blanc, Syrah, Viognier};
+
+    String[] GermanyVarieties = new String[]{Riesling};
+
+    String[] ItalyVarieties = new String[]{Nebbiolo, Pinot_Gris, Sangiovese};
+
+    String[] NewZealandVarieties = new String[]{Pinot_Noir, Sauvignon_Blanc};
+
+    String[] SpainVarieties = new String[]{Albarino, Tempranillo};
+
+    String[] UnitedStatesVarieties = new String[]{Cabernet_Sauvignon, Chardonnay, Merlot,
+            Pinot_Noir, Sauvignon_Blanc, Syrah, Zinfandel};
+
+
+
+
 
     int NOT_CHECKED = 0;
     int NONE_SELECTED = -1;
@@ -191,7 +272,7 @@ public interface DeductionFormContract {
             NOSE_FRUIT_CHARACTER_JAMMY, NOSE_NON_FRUIT_FLORAL, NOSE_NON_FRUIT_VEGETAL,
             NOSE_NON_FRUIT_HERBAL, NOSE_NON_FRUIT_SPICE, NOSE_NON_FRUIT_ANIMAL, NOSE_NON_FRUIT_BARN,
             NOSE_NON_FRUIT_PETROL, NOSE_NON_FRUIT_FERMENTATION, NOSE_EARTH_FOREST_FLOOR,
-            NOSE_EARTH_COMPOST,NOSE_EARTH_MUSHROOMS, NOSE_EARTH_POTTING_SOIL, NOSE_MINERAL_MINERAL,
+            NOSE_EARTH_COMPOST, NOSE_EARTH_MUSHROOMS, NOSE_EARTH_POTTING_SOIL, NOSE_MINERAL_MINERAL,
             NOSE_MINERAL_WET_STONE, NOSE_MINERAL_LIMESTONE, NOSE_MINERAL_CHALK, NOSE_MINERAL_SLATE,
             NOSE_MINERAL_FLINT, PALATE_FRUIT_RED, PALATE_FRUIT_BLACK, PALATE_FRUIT_BLUE,
             PALATE_FRUIT_CITRUS, PALATE_FRUIT_APPLE_PEAR, PALATE_FRUIT_STONE_PIT,
@@ -220,7 +301,7 @@ public interface DeductionFormContract {
             GAS_EVIDENCE));
 
     List<Integer> whiteSightViews = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION,
-            COLOR_WHITE_WINE, SECONDARY_COLOR_WHITE_WINE, RIM_VARIATION, TEARING,GAS_EVIDENCE));
+            COLOR_WHITE_WINE, SECONDARY_COLOR_WHITE_WINE, RIM_VARIATION, TEARING, GAS_EVIDENCE));
 
     List<Integer> redNoseViews = new ArrayList<>(Arrays.asList(FAULTY_TCA, FAULTY_HYDROGEN_SULFIDE,
             FAULTY_HYDROGEN_SULFIDE, FAULTY_VOLATILE_ACIDITY, FAULTY_ETHYL_ACETATE, FAULTY_BRETT,

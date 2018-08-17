@@ -1,6 +1,5 @@
 package com.nverno.deductivewinetaster.ui;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,9 +16,7 @@ import android.widget.ScrollView;
 
 import com.nverno.deductivewinetaster.R;
 import com.nverno.deductivewinetaster.util.AppExecutors;
-import com.nverno.deductivewinetaster.viewmodel.ViewModel;
 
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -31,7 +28,6 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
-    private ViewModel mViewModel;
 
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
     private MultiAutoCompleteTextView mMultiAutoTextCountries;
@@ -51,7 +47,6 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(mFragmentActivity).get(ViewModel.class);
 
         mActivityPreferences =
                 mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
@@ -79,25 +74,11 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextCountries = rootView.findViewById(R.id.multiText_initial_countries);
 
         if (mIsRedWine) {
-            mViewModel.redVarietiesList().observe(this, redVarieties -> {
-                if (redVarieties != null) {
-                    setMultiAutoTextVarieties(redVarieties);
-                }
-            });
-
+            setMultiAutoTextVarieties(RedVarieties);
         } else {
-            mViewModel.whiteVarietiesList().observe(this, whiteVarieties -> {
-                if (whiteVarieties != null) {
-                    setMultiAutoTextVarieties(whiteVarieties);
-                }
-            });
+            setMultiAutoTextVarieties(WhiteVarieties);
         }
-
-        mViewModel.countriesList().observe(this, countries -> {
-            if (countries != null) {
-                setMultiAutoTextCountries(countries);
-            }
-        });
+        setMultiAutoTextCountries(AllCountries);
 
         ButterKnife.bind(this, rootView);
 
@@ -154,14 +135,14 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         editor.apply();
     }
 
-    private void setMultiAutoTextCountries(List<String> countries) {
+    private void setMultiAutoTextCountries(String[] countries) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, countries);
         mMultiAutoTextCountries.setAdapter(adapter);
         mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
-    private void setMultiAutoTextVarieties(List<String> varieties) {
+    private void setMultiAutoTextVarieties(String[] varieties) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties);
         mMultiAutoTextVarieties.setAdapter(adapter);
