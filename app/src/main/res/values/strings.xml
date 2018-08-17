@@ -212,7 +212,39 @@
     <string name="actual_wine">Actual Wine</string>
     <string name="save_result">Save Result</string>
 
+    <!-- Varieties -->
+    <string name="albarino">Albarino</string>
+    <string name="cabernet_franc">Cabernet Franc</string>
+    <string name="cabernet_sauvignon">Cabernet Sauvignon</string>
+    <string name="chardonnay">Chardonnay</string>
+    <string name="chenin_blanc">Chenin Blanc</string>
+    <string name="gamay">Gamay</string>
+    <string name="gewurztraminer">Gewurzraminer</string>
+    <string name="grenache">Grenache</string>
+    <string name="malbec">Malbec</string>
+    <string name="merlot">Merlot</string>
+    <string name="nebbiolo">Nebbiolo</string>
+    <string name="pinot_gris">Pinot Gris</string>
+    <string name="pinot_noir">Pinot Noir</string>
+    <string name="riesling">Riesling</string>
+    <string name="sangiovese">Sangiovese</string>
+    <string name="sauvignon_blanc">Sauvignon Blanc</string>
+    <string name="syrah">Syrah</string>
+    <string name="tempranillo">Tempranillo</string>
+    <string name="torrontes">Torrontes</string>
+    <string name="viogier">Viognier</string>
+    <string name="zinfandel">Zinfandel</string>
 
+    <!-- Countries -->
+    <string name="argentina">Argentina</string>
+    <string name="australia">Australia</string>
+    <string name="chile">Chile</string>
+    <string name="france">France</string>
+    <string name="germany">Germany</string>
+    <string name="italy">Italy</string>
+    <string name="new_zealand">New Zealand</string>
+    <string name="spain">Spain</string>
+    <string name="united_states">United States</string>
 
 
 
