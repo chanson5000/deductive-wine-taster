@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@id/autoText_final_region"
-        android:text="@string/quality_regional_hierarchy" />
+        android:text="@string/region_appellation" />
 
     <AutoCompleteTextView
         android:id="@+id/autoText_final_region"
