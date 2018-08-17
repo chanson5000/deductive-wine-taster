@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.MultiAutoCompleteTextView;
@@ -30,17 +32,18 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
     private SharedPreferences mActivityPreferences;
-    private boolean mResettingScrollView;
+    private boolean mIsRedWine;
+    private boolean mResetView;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
 
-    SightFragment mSightFragment;
-    NoseFragment mNoseFragment;
-    PalateFragmentA palateFragmentA;
-    PalateFragmentB palateFragmentB;
-    InitialConclusionFragment mInitialConclusionFragment;
-    FinalConclusionFragment mFinalConclusionFragment;
+    private SightFragment mSightFragment;
+    private NoseFragment mNoseFragment;
+    private PalateFragmentA mPalateFragmentA;
+    private PalateFragmentB mPalateFragmentB;
+    private InitialConclusionFragment mInitialFragment;
+    private FinalConclusionFragment mFinalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,31 +53,33 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
+        FragmentManager mFragmentManager = getSupportFragmentManager();
 
         if (parentIntent != null && parentIntent.hasExtra(WINE_TYPE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
             editor.putString(WINE_TYPE, RED_WINE);
+            mIsRedWine = true;
 
             mWinePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mPager = findViewById(R.id.view_pager_red_deduction);
-            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(getSupportFragmentManager());
+            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         } else {
             setContentView(R.layout.activity_white_deduction_form);
 
             editor.putString(WINE_TYPE, WHITE_WINE);
+            mIsRedWine = false;
 
             mWinePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mPager = findViewById(R.id.view_pager_white_deduction);
-            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(getSupportFragmentManager());
+            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         }
 
         editor.apply();
-
 
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -84,14 +89,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             @Override
             public void onPageSelected(int position) {
-                // TODO: Get the scrollY to reset after a rotation. (ScrollView returns null)
-                if (mSightFragment.mScrollViewSight != null
-                        && mResettingScrollView
-                        && position == 0) {
-                    mSightFragment.mScrollViewSight.scrollTo(0, 0);
-                    mResettingScrollView = false;
-                }
-                syncCurrentTitle(position);
+                syncCurrentTitle();
             }
 
             @Override
@@ -111,9 +109,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clear_selections:
-                mResettingScrollView = true;
                 resetSharedPreferences();
-                mPager.setCurrentItem(0);
+                resetAllTopScroll();
+                if (mPager.getCurrentItem() != SIGHT_PAGE) {
+                    mResetView = true;
+                    mPager.setCurrentItem(SIGHT_PAGE);
+                }
                 Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
                 return true;
             default:
@@ -125,16 +126,47 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onPause() {
         super.onPause();
         unRegisterSharedPreferencesListener();
-        saveCurrentPageSelection();
+        setCurrentPageInPreferences(getCurrentPageFromPager());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        int currentPage = mActivityPreferences.getInt(CURRENT_PAGE, 0);
-        mPager.setCurrentItem(currentPage);
-        syncCurrentTitle(currentPage);
+        setCurrentPage(getCurrentPageFromPreferences());
+        syncCurrentTitle();
         registerPreferencesListener();
+    }
+
+    public void onSubmitFinalConclusion(View view) {
+        Intent intent = new Intent(this, ActualWineActivity.class);
+        startActivity(intent);
+    }
+
+
+    private void setCurrentPageInPreferences(int page) {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(CURRENT_PAGE_RED, page);
+        } else {
+            editor.putInt(CURRENT_PAGE_WHITE, page);
+        }
+        editor.apply();
+    }
+
+    private int getCurrentPageFromPreferences() {
+        if (mIsRedWine) {
+            return mActivityPreferences.getInt(CURRENT_PAGE_RED, 0);
+        } else {
+            return mActivityPreferences.getInt(CURRENT_PAGE_WHITE, 0);
+        }
+    }
+
+    private void setCurrentPage(int page) {
+        mPager.setCurrentItem(page);
+    }
+
+    private int getCurrentPageFromPager() {
+        return mPager.getCurrentItem();
     }
 
     @Override
@@ -174,22 +206,39 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     private void resetSharedPreferences() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
-        SharedPreferences.Editor edit = mWinePreferences.edit();
+        SharedPreferences.Editor winePreferencesEditor = mWinePreferences.edit();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int key = castKey(entry.getKey());
             if (AllRadioGroups.contains(key)) {
-                edit.putInt(entry.getKey(), NONE_SELECTED);
+                winePreferencesEditor.putInt(entry.getKey(), NONE_SELECTED);
             } else if (AllCheckBoxes.contains(key)) {
-                edit.putInt(entry.getKey(), NOT_CHECKED);
+                winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllSwitches.contains(key)) {
-                edit.putInt(entry.getKey(), NOT_CHECKED);
+                winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllAutoText.contains(key)) {
-                edit.putString(entry.getKey(), "");
+                winePreferencesEditor.putString(entry.getKey(), "");
             } else if (AllAutoMultiText.contains(key)) {
-                edit.putString(entry.getKey(), "");
+                winePreferencesEditor.putString(entry.getKey(), "");
             }
         }
-        edit.apply();
+        winePreferencesEditor.apply();
+        SharedPreferences.Editor activityPreferencesEditor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_NOSE_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_PALATE_A_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_PALATE_B_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_INITIAL_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_FINAL_Y_SCROLL, 0);
+        } else {
+            activityPreferencesEditor.putInt(WHITE_SIGHT_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_NOSE_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_PALATE_A_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_PALATE_B_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
+        }
+        activityPreferencesEditor.apply();
     }
 
     private void saveRadioGroupState(int key, int state) {
@@ -238,18 +287,39 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         if (switchId == NOSE_WOOD) {
             mNoseFragment.syncWoodRadioState();
         } else if (switchId == PALATE_WOOD) {
-            palateFragmentA.syncWoodRadioState();
+            mPalateFragmentA.syncWoodRadioState();
         }
     }
 
-    private void saveCurrentPageSelection() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        editor.putInt(CURRENT_PAGE, mPager.getCurrentItem());
-        editor.apply();
+    private void resetAllTopScroll() {
+        if (mSightFragment != null) {
+            mSightFragment.scrollToTop();
+
+        }
+        if (mNoseFragment != null) {
+            mNoseFragment.scrollToTop();
+
+        }
+        if (mPalateFragmentA != null) {
+            mPalateFragmentA.scrollToTop();
+
+        }
+        if (mPalateFragmentB != null) {
+            mPalateFragmentB.scrollToTop();
+
+        }
+        if (mInitialFragment != null) {
+            mInitialFragment.scrollToTop();
+
+        }
+        if (mFinalFragment != null) {
+            mFinalFragment.scrollToTop();
+        }
     }
 
-    private void syncCurrentTitle(int position) {
-        switch (position) {
+
+    private void syncCurrentTitle() {
+        switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
                 setTitle(SIGHT_PAGE_TITLE);
                 break;
@@ -276,12 +346,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     class DeductionFormPagerAdapter extends FragmentPagerAdapter {
         DeductionFormPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            mSightFragment = new SightFragment();
-            mNoseFragment = new NoseFragment();
-            palateFragmentA = new PalateFragmentA();
-            palateFragmentB = new PalateFragmentB();
-            mInitialConclusionFragment = new InitialConclusionFragment();
-            mFinalConclusionFragment = new FinalConclusionFragment();
         }
 
         @Override
@@ -293,21 +357,52 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         public Fragment getItem(int position) {
             switch (position) {
                 case SIGHT_PAGE:
-                    return mSightFragment;
+                    return new SightFragment();
                 case NOSE_PAGE:
-                    return mNoseFragment;
+                    return new NoseFragment();
                 case PALATE_PAGE_A:
-                    return palateFragmentA;
+                    return new PalateFragmentA();
                 case PALATE_PAGE_B:
-                    return palateFragmentB;
+                    return new PalateFragmentB();
                 case INITIAL_CONCLUSION_PAGE:
-                    return mInitialConclusionFragment;
+                    return new InitialConclusionFragment();
                 case FINAL_CONCLUSION_PAGE:
-                    return mFinalConclusionFragment;
+                    return new FinalConclusionFragment();
                 default:
                     break;
             }
             return null;
+        }
+
+        // Using this to save our fragment state/reference on view rotation.
+        @NonNull
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+
+            switch (position) {
+                case SIGHT_PAGE:
+                    mSightFragment = (SightFragment) createdFragment;
+                    break;
+                case NOSE_PAGE:
+                    mNoseFragment = (NoseFragment) createdFragment;
+                    break;
+                case PALATE_PAGE_A:
+                    mPalateFragmentA = (PalateFragmentA) createdFragment;
+                    break;
+                case PALATE_PAGE_B:
+                    mPalateFragmentB = (PalateFragmentB) createdFragment;
+                    break;
+                case INITIAL_CONCLUSION_PAGE:
+                    mInitialFragment = (InitialConclusionFragment) createdFragment;
+                    break;
+                case FINAL_CONCLUSION_PAGE:
+                    mFinalFragment = (FinalConclusionFragment) createdFragment;
+                    break;
+                default:
+                    break;
+            }
+            return createdFragment;
         }
     }
 

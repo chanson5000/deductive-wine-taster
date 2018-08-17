@@ -2,16 +2,15 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/textView_final_country"
+        android:id="@+id/textView_final_region"
         style="@style/AppTheme.Text.Descriptor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@id/autoText_final_country"
-        android:text="@string/region_appellation" />
+        android:labelFor="@id/autoText_final_region"
+        android:text="@string/quality_regional_hierarchy" />
 
     <AutoCompleteTextView
-        android:id="@+id/autoText_final_country"
+        android:id="@+id/autoText_final_region"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 </merge>
