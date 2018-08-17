@@ -2,6 +2,8 @@ package com.nverno.deductivewinetaster.model;
 
 public abstract class Wine {
 
+    private String name;
+
     private Clarity clarity = new Clarity();
     private Concentration concentration = new Concentration();
     private Tearing tearing = new Tearing();
@@ -23,6 +25,14 @@ public abstract class Wine {
     private boolean hasRimVariation;
     private boolean hasGasEvidence;
     private boolean isBalanced;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Clarity clarity() {
         return clarity;
