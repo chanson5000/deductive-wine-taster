@@ -9,13 +9,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/sg_final_variety_single" />
+        <include layout="@layout/group_final_wine_fields" />
 
-        <Space
+        <Button
+            android:layout_gravity="center"
+            android:onClick="onSubmitFinalConclusion"
+            android:id="@+id/button_submit_final_conclusion"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
-
-        <include layout="@layout/sg_final_country_single" />
+            android:layout_height="wrap_content"
+            android:text="@string/submit_final_conclusion" />
 
         <Space
             android:layout_width="wrap_content"

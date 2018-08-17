@@ -137,6 +137,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         registerPreferencesListener();
     }
 
+    public void onSubmitFinalConclusion(View view) {
+        Intent intent = new Intent(this, ActualWineActivity.class);
+        startActivity(intent);
+    }
+
+
     private void setCurrentPageInPreferences(int page) {
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (mIsRedWine) {

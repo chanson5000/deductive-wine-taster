@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/sg_final_variety_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+    <include layout="@layout/sg_final_country_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+    <include layout="@layout/sg_final_country_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+    <include layout="@layout/sg_final_region_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+    <include layout="@layout/sg_final_quality_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+    <include layout="@layout/sg_final_vintage_single" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/standard_margin" />
+
+</merge>

@@ -167,6 +167,9 @@ public interface DeductionFormContract {
 
     int FINAL_GRAPE_VARIETY = R.id.autoText_final_grape_variety;
     int FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
+    int FINAL_REGION = R.id.autoText_final_region;
+    int FINAL_QUALITY = R.id.autoText_final_quality;
+    int FINAL_VINTAGE = R.id.autoText_final_vintage;
 
     List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION,
             COLOR_RED_WINE, COLOR_WHITE_WINE, SECONDARY_COLOR_RED_WINE, SECONDARY_COLOR_WHITE_WINE,
@@ -210,7 +213,7 @@ public interface DeductionFormContract {
             INITIAL_COUNTRIES));
 
     List<Integer> AllAutoText = new ArrayList<>(Arrays.asList(FINAL_GRAPE_VARIETY,
-            FINAL_COUNTRY_ORIGIN));
+            FINAL_COUNTRY_ORIGIN, FINAL_REGION, FINAL_QUALITY, FINAL_VINTAGE));
 
     List<Integer> redSightViews = new ArrayList<>(Arrays.asList(CLARITY, CONCENTRATION,
             COLOR_RED_WINE, SECONDARY_COLOR_RED_WINE, RIM_VARIATION, EXTRACT_STAINING, TEARING,
@@ -290,7 +293,7 @@ public interface DeductionFormContract {
             INITIAL_WORLD, INITIAL_CLIMATE, INITIAL_COUNTRIES, INITIAL_AGE_RANGE));
 
     List<Integer> finalConclusionViews = new ArrayList<>(Arrays.asList(FINAL_GRAPE_VARIETY,
-            FINAL_COUNTRY_ORIGIN));
+            FINAL_COUNTRY_ORIGIN, FINAL_REGION, FINAL_QUALITY, FINAL_VINTAGE));
 
     // May or may not want these for later.
 //    int CLARITY_CLEAR = R.id.radio_clarity_clear;

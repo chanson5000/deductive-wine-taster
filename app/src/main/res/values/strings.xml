@@ -205,8 +205,13 @@
     <string name="quality_regional_hierarchy">Quality/Regional Hierarchy</string>
     <string name="vintage">Vintage</string>
 
-    <!-- Initial Conclusion -->
+    <!-- Conclusion -->
     <string name="world_of_origin">World of Origin</string>
+    <string name="submit_final_conclusion">Submit Final Conclusion</string>
+    <string name="our_guess">Our Guess</string>
+    <string name="actual_wine">Actual Wine</string>
+    <string name="save_result">Save Result</string>
+
 
 
 
