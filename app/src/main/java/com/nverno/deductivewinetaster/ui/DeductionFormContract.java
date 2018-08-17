@@ -1,7 +1,5 @@
 package com.nverno.deductivewinetaster.ui;
 
-import android.content.res.Resources;
-
 import com.nverno.deductivewinetaster.R;
 
 import java.util.ArrayList;
