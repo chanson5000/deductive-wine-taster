@@ -46,6 +46,9 @@ public interface DeductionFormContract {
     String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
 
     // These strings I will not want translated so I am not using strings.xml.
+    // If it does come to that we can use the snippet below.
+    // Resources.getSystem().getString(android.R.string.string_name)
+
     String Albarino = "Albarino";
     String Cabernet_Franc = "Cabernet Franc";
     String Cabernet_Sauvignon = "Cabernet Sauvignon";
@@ -78,6 +81,33 @@ public interface DeductionFormContract {
     String Spain = "Spain";
     String United_States = "United States";
 
+    String Alsace = "Alsace";
+    String Burgundy = "Burgundy";
+    String Bordeaux = "Bordeaux";
+    String Loire_Valley = "Loire Valley";
+    String South_Australia = "South Australia";
+    String Western_Australia = "Western Australia";
+    String Central_Valley = "Central Valley";
+    String California = "California";
+    String Rhone_Valley = "Rhone Valley";
+    String Victoria = "Victoria";
+    String Piedmont = "Piedmont";
+    String Oregon = "Oregon";
+    String South_Island = "South Island";
+    String North_Island = "North Island";
+    String Tuscany = "Tuscany";
+
+    String[] AllRegions = new String[]{Alsace, Burgundy, Bordeaux, Loire_Valley, South_Australia,
+            Western_Australia, Central_Valley, California, Rhone_Valley, Victoria, Piedmont, Oregon,
+            South_Island, North_Island, Tuscany};
+
+    String[] RegionsFrance = new String[]{Alsace, Burgundy, Bordeaux, Loire_Valley, Rhone_Valley};
+    String[] RegionsUnitedStates = new String[]{California, Oregon};
+    String[] RegionsAustralia = new String[]{South_Australia, Western_Australia, Victoria};
+    String[] RegionsNewZealand = new String[]{North_Island, South_Island};
+    String[] RegionsItaly = new String[]{Piedmont, Tuscany};
+    String[] RegionsChile = new String[]{Central_Valley};
+
     String[] AllCountries = new String[]{Argentina, Australia, Chile, France, Germany,
             Italy, New_Zealand, Spain, United_States,};
 
@@ -87,26 +117,26 @@ public interface DeductionFormContract {
     String[] OldWorldCountries = new String[]{France, Germany, Italy, Spain};
 
     String[] AllVarieties = new String[]{Albarino, Cabernet_Franc, Cabernet_Sauvignon,
-    Chardonnay, Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Malbec, Merlot,
-    Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
-    Syrah, Tempranillo, Torrontes, Viognier, Zinfandel};
+            Chardonnay, Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Malbec, Merlot,
+            Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
+            Syrah, Tempranillo, Torrontes, Viognier, Zinfandel};
 
     String[] RedVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Gamay,
-    Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
-    Tempranillo, Zinfandel};
+            Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
+            Tempranillo, Zinfandel};
 
     String[] WhiteVarieties = new String[]{Albarino, Chardonnay, Chenin_Blanc,
-    Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier};
+            Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier};
 
     String[] ArgentinaVarieties = new String[]{Malbec, Torrontes};
 
     String[] AustraliaVarieties = new String[]{Cabernet_Sauvignon, Grenache, Riesling,
-    Syrah};
+            Syrah};
 
     String[] ChileVarieties = new String[]{Cabernet_Sauvignon};
 
     String[] FranceVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Chardonnay,
-    Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Merlot, Pinot_Gris, Riesling,
+            Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Merlot, Pinot_Gris, Riesling,
             Sauvignon_Blanc, Syrah, Viognier};
 
     String[] GermanyVarieties = new String[]{Riesling};
@@ -119,9 +149,6 @@ public interface DeductionFormContract {
 
     String[] UnitedStatesVarieties = new String[]{Cabernet_Sauvignon, Chardonnay, Merlot,
             Pinot_Noir, Sauvignon_Blanc, Syrah, Zinfandel};
-
-
-
 
 
     int NOT_CHECKED = 0;

@@ -28,11 +28,14 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
-    private AutoCompleteTextView mAutoTextVariety;
-    private AutoCompleteTextView mAutoTextCountry;
-
     @BindView(R.id.scrollView_final)
     ScrollView mScrollViewFinal;
+    @BindView(R.id.autoText_final_grape_variety)
+    AutoCompleteTextView mAutoTextVariety;
+    @BindView(R.id.autoText_final_country)
+    AutoCompleteTextView mAutoTextCountry;
+    @BindView(R.id.autoText_final_region)
+    AutoCompleteTextView mAutoTextRegion;
 
     public FinalConclusionFragment() {
     }
@@ -69,8 +72,7 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         rootView = inflater.inflate(R.layout.fragment_final_conclusion,
                 container, false);
 
-        mAutoTextVariety = rootView.findViewById(R.id.autoText_final_grape_variety);
-        mAutoTextCountry = rootView.findViewById(R.id.autoText_final_country);
+        ButterKnife.bind(this, rootView);
 
         if (mIsRedWine) {
             setAutoTextVarieties(RedVarieties);
@@ -79,7 +81,7 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         }
         setAutoTextCountries(AllCountries);
 
-        ButterKnife.bind(this, rootView);
+        setAutoTextRegions(AllRegions);
 
         return rootView;
     }
@@ -144,6 +146,12 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties);
         mAutoTextVariety.setAdapter(adapter);
+    }
+
+    private void setAutoTextRegions(String[] regions) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, regions);
+        mAutoTextRegion.setAdapter(adapter);
     }
 
     private int castKey(String key) {
