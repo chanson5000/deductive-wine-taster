@@ -10,11 +10,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nverno.deductivewinetaster.data.FirebaseDataContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository {
+public class Repository implements FirebaseDataContract {
     private final DatabaseReference COUNTRIES_REF;
     private final DatabaseReference RED_VARIETIES;
     private final DatabaseReference WHITE_VARIETIES;
@@ -39,7 +40,7 @@ public class Repository {
         return new FirebaseChildrenList(WHITE_VARIETIES);
     }
 
-    class FirebaseChildrenList extends LiveData<List<String>>  {
+    class FirebaseChildrenList extends LiveData<List<String>> {
 
         private static final String LOG_TAG = "FirebaseLiveData";
         private final Query query;

@@ -624,7 +624,7 @@ public abstract class Wine {
         private int low;
         private int mediumMinus;
         private int medium;
-        private int getMediumPlus;
+        private int mediumPlus;
         private int high;
 
         public int getLow() {
@@ -651,12 +651,12 @@ public abstract class Wine {
             this.medium = medium;
         }
 
-        public int getGetMediumPlus() {
-            return getMediumPlus;
+        public int getMediumPlus() {
+            return mediumPlus;
         }
 
-        public void setGetMediumPlus(int getMediumPlus) {
-            this.getMediumPlus = getMediumPlus;
+        public void setMediumPlus(int getMediumPlus) {
+            this.mediumPlus = getMediumPlus;
         }
 
         public int getHigh() {

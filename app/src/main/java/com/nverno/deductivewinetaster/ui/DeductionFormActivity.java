@@ -24,16 +24,17 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nverno.deductivewinetaster.R;
+import com.nverno.deductivewinetaster.data.FirebaseDataContract;
+import com.nverno.deductivewinetaster.model.RedWine;
 
 import java.util.Map;
 
-public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract {
+public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract, FirebaseDataContract {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
     private SharedPreferences mActivityPreferences;
     private boolean mIsRedWine;
-    private boolean mResetView;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -112,7 +113,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 resetSharedPreferences();
                 resetAllTopScroll();
                 if (mPager.getCurrentItem() != SIGHT_PAGE) {
-                    mResetView = true;
                     mPager.setCurrentItem(SIGHT_PAGE);
                 }
                 Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
@@ -138,6 +138,22 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     public void onSubmitFinalConclusion(View view) {
+        Map<String, ?> allEntries = mWinePreferences.getAll();
+        SharedPreferences.Editor winePreferencesEditor = mWinePreferences.edit();
+
+        if (mIsRedWine) {
+            RedWine redWine = new RedWine();
+
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                int key = castKey(entry.getKey());
+                if (propertiesMap.containsKey(key))
+                {
+
+                }
+            }
+        }
+
+
         Intent intent = new Intent(this, ActualWineActivity.class);
         startActivity(intent);
     }
