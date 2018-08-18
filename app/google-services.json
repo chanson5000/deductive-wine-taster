@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:611411436297:android:c5f75e0ab92ae886",
+        "mobilesdk_app_id": "1:611411436297:android:12e3f724e63f1383",
         "android_client_info": {
-          "package_name": "com.nverno.deductivewinetaster"
+          "package_name": "com.wineguesser.deductive"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "611411436297-mcvh9l6hvbuttoastt2g9rrohdlovpod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wineguesser.deductive",
+            "certificate_hash": "0bee0f2efcaa81ac2f25c86505b68f3874683c12"
+          }
+        },
         {
           "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
           "client_type": 3
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

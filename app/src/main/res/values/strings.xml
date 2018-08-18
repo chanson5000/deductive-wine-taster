@@ -246,4 +246,8 @@
     <string name="spain">Spain</string>
     <string name="united_states">United States</string>
 
+    <!-- AdMob -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+
 </resources>

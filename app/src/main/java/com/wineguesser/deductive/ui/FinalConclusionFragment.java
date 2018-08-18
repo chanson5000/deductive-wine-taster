@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ScrollView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.util.AppExecutors;
 
@@ -36,6 +38,8 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     AutoCompleteTextView mAutoTextCountry;
     @BindView(R.id.autoText_final_region)
     AutoCompleteTextView mAutoTextRegion;
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     public FinalConclusionFragment() {
     }
@@ -82,6 +86,9 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         setAutoTextCountries(AllCountries);
 
         setAutoTextRegions(AllRegions);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }
