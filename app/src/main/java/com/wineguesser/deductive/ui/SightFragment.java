@@ -1,0 +1,139 @@
+package com.wineguesser.deductive.ui;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+
+import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.util.AppExecutors;
+
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class SightFragment extends Fragment implements DeductionFormContract {
+
+    private FragmentActivity mFragmentActivity;
+    private SharedPreferences mActivityPreferences;
+    private SharedPreferences mWinePreferences;
+    private boolean mIsRedWine;
+
+    @BindView(R.id.scrollView_sight)
+    ScrollView mScrollViewSight;
+
+    public SightFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFragmentActivity = getActivity();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+
+        if (mActivityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = true;
+        } else {
+            mWinePreferences = mFragmentActivity
+                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+            mIsRedWine = false;
+        }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView;
+
+        if (mIsRedWine) {
+            rootView = inflater.inflate(R.layout.fragment_sight_red,
+                    container, false);
+        } else {
+            rootView = inflater.inflate(R.layout.fragment_sight_white,
+                    container, false);
+        }
+
+        ButterKnife.bind(this, rootView);
+
+        return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollState();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSelectionState();
+        loadScrollState();
+    }
+
+    private void saveScrollState() {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
+        } else {
+            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
+        }
+        editor.apply();
+    }
+
+    private void loadScrollState() {
+        if (mIsRedWine) {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(RED_SIGHT_Y_SCROLL, 0)));
+        } else {
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(WHITE_SIGHT_Y_SCROLL, 0)));
+        }
+    }
+
+    public void scrollToTop() {
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewSight.scrollTo(0, 0));
+    }
+
+    private int castKey(String key) {
+        return Integer.parseInt(key);
+    }
+
+    private int parseEntryValue(Object value) {
+        return Integer.parseInt(value.toString());
+    }
+
+    private void loadSelectionState() {
+        Map<String, ?> allEntries = mWinePreferences.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            int view = castKey(entry.getKey());
+
+            if (mIsRedWine && redSightViews.contains(view) && AllRadioGroups.contains(view)) {
+                ((RadioGroup) mFragmentActivity.findViewById(view))
+                        .check(parseEntryValue(entry.getValue()));
+            } else if (!mIsRedWine && whiteSightViews.contains(view) && AllRadioGroups.contains(view)) {
+                ((RadioGroup) mFragmentActivity.findViewById(view))
+                        .check(parseEntryValue(entry.getValue()));
+            }
+        }
+    }
+}
