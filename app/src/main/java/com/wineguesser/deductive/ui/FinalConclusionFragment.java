@@ -136,9 +136,9 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
 
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putString(Integer.toString(FINAL_GRAPE_VARIETY),
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
                 mAutoTextVariety.getText().toString());
-        editor.putString(Integer.toString(FINAL_COUNTRY_ORIGIN),
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
                 mAutoTextCountry.getText().toString());
         editor.apply();
     }
