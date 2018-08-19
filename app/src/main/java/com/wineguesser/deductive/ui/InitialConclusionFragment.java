@@ -128,9 +128,9 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putString(Integer.toString(INITIAL_GRAPE_VARIETIES),
+        editor.putString(Integer.toString(TEXT_MULTI_INITIAL_GRAPE_VARIETIES),
                 mMultiAutoTextVarieties.getText().toString());
-        editor.putString(Integer.toString(INITIAL_COUNTRIES),
+        editor.putString(Integer.toString(TEXT_MULTI_INITIAL_COUNTRIES),
                 mMultiAutoTextCountries.getText().toString());
         editor.apply();
     }
