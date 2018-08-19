@@ -234,7 +234,7 @@ public interface DeductionFormContract {
     int CHECK_PALATE_FRUIT_CHARACTER_BAKED = R.id.check_palate_fruit_character_baked;
     int CHECK_PALATE_FRUIT_CHARACTER_STEWED = R.id.check_palate_fruit_character_stewed;
     int CHECK_PALATE_FRUIT_CHARACTER_DRIED = R.id.check_palate_fruit_character_dried;
-    int CHECK_PALATE_FRUIT_CHARACTER_DESICATTED = R.id.check_palate_fruit_character_desiccated;
+    int CHECK_PALATE_FRUIT_CHARACTER_DESICCATED = R.id.check_palate_fruit_character_desiccated;
     int CHECK_PALATE_FRUIT_CHARACTER_BRUISED = R.id.check_palate_fruit_character_bruised;
     int CHECK_PALATE_FRUIT_CHARACTER_JAMMY = R.id.check_palate_fruit_character_jammy;
     int CHECK_PALATE_NON_FRUIT_FLORAL = R.id.check_palate_non_fruit_floral;
@@ -256,6 +256,7 @@ public interface DeductionFormContract {
     int CHECK_PALATE_MINERAL_SLATE = R.id.check_palate_mineral_slate;
     int CHECK_PALATE_MINERAL_FLINT = R.id.check_palate_mineral_flint;
     int SWITCH_PALATE_WOOD = R.id.switch_palate_wood;
+
     int RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW = R.id.radio_group_wood_old_vs_new;
     int RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL = R.id.radio_group_wood_large_vs_small;
     int RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_wood_french_vs_american;
@@ -317,7 +318,7 @@ public interface DeductionFormContract {
             CHECK_PALATE_FRUIT_CHARACTER_RIPE, CHECK_PALATE_FRUIT_CHARACTER_FRESH,
             CHECK_PALATE_FRUIT_CHARACTER_TART, CHECK_PALATE_FRUIT_CHARACTER_BAKED,
             CHECK_PALATE_FRUIT_CHARACTER_STEWED, CHECK_PALATE_FRUIT_CHARACTER_DRIED,
-            CHECK_PALATE_FRUIT_CHARACTER_DESICATTED, CHECK_PALATE_FRUIT_CHARACTER_BRUISED,
+            CHECK_PALATE_FRUIT_CHARACTER_DESICCATED, CHECK_PALATE_FRUIT_CHARACTER_BRUISED,
             CHECK_PALATE_FRUIT_CHARACTER_JAMMY, CHECK_PALATE_NON_FRUIT_FLORAL,
             CHECK_PALATE_NON_FRUIT_VEGETAL, CHECK_PALATE_NON_FRUIT_HERBAL,
             CHECK_PALATE_NON_FRUIT_SPICE, CHECK_PALATE_NON_FRUIT_ANIMAL,
@@ -390,7 +391,7 @@ public interface DeductionFormContract {
             CHECK_PALATE_FRUIT_CHARACTER_RIPE, CHECK_PALATE_FRUIT_CHARACTER_FRESH,
             CHECK_PALATE_FRUIT_CHARACTER_TART, CHECK_PALATE_FRUIT_CHARACTER_BAKED,
             CHECK_PALATE_FRUIT_CHARACTER_STEWED, CHECK_PALATE_FRUIT_CHARACTER_DRIED,
-            CHECK_PALATE_FRUIT_CHARACTER_DESICATTED, CHECK_PALATE_FRUIT_CHARACTER_BRUISED,
+            CHECK_PALATE_FRUIT_CHARACTER_DESICCATED, CHECK_PALATE_FRUIT_CHARACTER_BRUISED,
             CHECK_PALATE_FRUIT_CHARACTER_JAMMY, CHECK_PALATE_NON_FRUIT_FLORAL,
             CHECK_PALATE_NON_FRUIT_VEGETAL, CHECK_PALATE_NON_FRUIT_HERBAL,
             CHECK_PALATE_NON_FRUIT_SPICE, CHECK_PALATE_NON_FRUIT_ANIMAL,
@@ -407,7 +408,7 @@ public interface DeductionFormContract {
             CHECK_PALATE_FRUIT_TROPICAL, CHECK_PALATE_FRUIT_MELON, CHECK_PALATE_FRUIT_CHARACTER_RIPE,
             CHECK_PALATE_FRUIT_CHARACTER_FRESH, CHECK_PALATE_FRUIT_CHARACTER_TART,
             CHECK_PALATE_FRUIT_CHARACTER_BAKED, CHECK_PALATE_FRUIT_CHARACTER_STEWED,
-            CHECK_PALATE_FRUIT_CHARACTER_DRIED, CHECK_PALATE_FRUIT_CHARACTER_DESICATTED,
+            CHECK_PALATE_FRUIT_CHARACTER_DRIED, CHECK_PALATE_FRUIT_CHARACTER_DESICCATED,
             CHECK_PALATE_FRUIT_CHARACTER_BRUISED, CHECK_PALATE_FRUIT_CHARACTER_JAMMY,
             CHECK_PALATE_NON_FRUIT_FLORAL, CHECK_PALATE_NON_FRUIT_VEGETAL,
             CHECK_PALATE_NON_FRUIT_HERBAL, CHECK_PALATE_NON_FRUIT_SPICE,
@@ -495,8 +496,8 @@ public interface DeductionFormContract {
     int RADIO_PHENOLIC_BITTER_YES = R.id.radio_palate_phenolic_bitter_yes;
     int RADIO_PHENOLIC_BITTER_NO = R.id.radio_palate_phenolic_bitter_no;
     int RADIO_TANNIN_LOW = R.id.radio_palate_tannin_low;
-    int RADIO_TANNIN_MED = R.id.radio_palate_tannin_med;
     int RADIO_TANNIN_MED_MINUS = R.id.radio_palate_tannin_med_minus;
+    int RADIO_TANNIN_MED = R.id.radio_palate_tannin_med;
     int RADIO_TANNIN_MED_PLUS = R.id.radio_palate_tannin_med_plus;
     int RADIO_TANNIN_HIGH = R.id.radio_palate_tannin_high;
     int RADIO_ACID_LOW = R.id.radio_palate_acid_low;
@@ -527,6 +528,4 @@ public interface DeductionFormContract {
     int RADIO_COMPLEXITY_MED = R.id.radio_palate_complexity_med;
     int RADIO_COMPLEXITY_MED_PLUS = R.id.radio_palate_complexity_med_plus;
     int RADIO_COMPLEXITY_HIGH = R.id.radio_palate_complexity_high;
-
-
 }
