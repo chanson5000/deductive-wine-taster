@@ -16,21 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Repository implements FirebaseDataContract {
-    private final DatabaseReference COUNTRIES_REF;
+//    private final DatabaseReference COUNTRIES_REF;
     private final DatabaseReference RED_VARIETIES;
     private final DatabaseReference WHITE_VARIETIES;
 
     public Repository() {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
-        COUNTRIES_REF = mDatabase.getReference("/lists/countries");
-        RED_VARIETIES = mDatabase.getReference("/lists/varieties/red");
-        WHITE_VARIETIES = mDatabase.getReference("/lists/varieties/white");
+//        COUNTRIES_REF = mDatabase.getReference("/lists/countries");
+        RED_VARIETIES = mDatabase.getReference("/redVarietalData");
+        WHITE_VARIETIES = mDatabase.getReference("/whiteVarietalData");
     }
 
-    public FirebaseChildrenList getCountriesList() {
-        return new FirebaseChildrenList(COUNTRIES_REF);
-    }
+//    public FirebaseChildrenList getCountriesList() {
+//        return new FirebaseChildrenList(COUNTRIES_REF);
+//    }
 
     public FirebaseChildrenList getRedVarietiesList() {
         return new FirebaseChildrenList(RED_VARIETIES);

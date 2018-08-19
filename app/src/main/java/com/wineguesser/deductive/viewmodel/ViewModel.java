@@ -14,11 +14,11 @@ public class ViewModel extends android.arch.lifecycle.ViewModel {
     public ViewModel() {
         mRepository = new Repository();
     }
-
-    @NonNull
-    public LiveData<List<String>> countriesList() {
-        return mRepository.getCountriesList();
-    }
+//
+//    @NonNull
+//    public LiveData<List<String>> countriesList() {
+//        return mRepository.getCountriesList();
+//    }
 
     @NonNull
     public LiveData<List<String>> redVarietiesList() {
