@@ -13,12 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/standard_margin" />
 
-    <include layout="@layout/sg_final_country_single" />
-
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
-
     <include layout="@layout/sg_final_region_single" />
 
     <Space

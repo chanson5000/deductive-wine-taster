@@ -16,6 +16,9 @@
 
         <TextView
             android:id="@+id/textView_our_guess"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
