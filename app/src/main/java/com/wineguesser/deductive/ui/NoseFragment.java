@@ -180,7 +180,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract {
     }
 
     public void syncWoodRadioState() {
-        if (getCheckBoxState(NOSE_WOOD)) {
+        if (getCheckBoxState(SWITCH_NOSE_WOOD)) {
             ButterKnife.apply(mRadioGroupsNoseWood, WOOD_ENABLE);
         } else {
             ButterKnife.apply(mRadioGroupsNoseWood, WOOD_DISABLE);

@@ -181,7 +181,7 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract {
     }
 
     public void syncWoodRadioState() {
-        if (getCheckBoxState(PALATE_WOOD)) {
+        if (getCheckBoxState(SWITCH_PALATE_WOOD)) {
             ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
         } else {
             ButterKnife.apply(mRadioGroupsPalateWood, WOOD_DISABLE);
