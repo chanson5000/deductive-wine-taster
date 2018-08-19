@@ -23,7 +23,7 @@
             android:text="@string/low" />
 
         <RadioButton
-            android:id="@+id/radio_palate_tannin_med_minus"
+            android:id="@+id/radio_palate_acid_med_minus"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
 
 
         <RadioButton
-            android:id="@+id/radio_palate_tannin_med"
+            android:id="@+id/radio_palate_acid_med"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:text="@string/med" />
 
         <RadioButton
-            android:id="@+id/radio_palate_tannin_med_plus"
+            android:id="@+id/radio_palate_acid_med_plus"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:text="@string/med_plus" />
 
         <RadioButton
-            android:id="@+id/radio_palate_tannin_high"
+            android:id="@+id/radio_palate_acid_high"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -47,7 +47,7 @@
             android:text="@string/med_plus" />
 
         <RadioButton
-            android:id="@+id/radio_palate_length_finish_high"
+            android:id="@+id/radio_palate_length_finish_long"
             style="@style/AppTheme.RadioGroup.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
