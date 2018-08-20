@@ -23,7 +23,7 @@ public interface RepoKeyContract {
     String TEXTURE_PREPEND = "texture_";
     String BALANCE_PREPEND = "balanced_";
     String FINISH_PREPEND = "finish_";
-    String COMPLEXITY_PREPEND = "complexity";
+    String COMPLEXITY_PREPEND = "complexity_";
 
     String FAULT_PREPEND = "fault_";
     String FRUIT_PREPEND = "fruit_";
