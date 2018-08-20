@@ -33,19 +33,13 @@ public class ActualWineActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actual_wine);
-
         mContext = this;
-
         ButterKnife.bind(this);
-
         Intent parentIntent = getIntent();
 
         if (parentIntent != null && parentIntent.hasExtra(WINNING_WINE_ID)) {
-
             Bundle bundle = parentIntent.getExtras();
-
             if (bundle != null && bundle.getString(WINNING_WINE_ID) != null) {
-
                 mWinningWineId = bundle.getString(WINNING_WINE_ID);
 
                 ValueEventListener listener = new ValueEventListener() {
@@ -69,8 +63,6 @@ public class ActualWineActivity extends AppCompatActivity{
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = database.getReference("/redVarietalInfo");
                 databaseReference.addListenerForSingleValueEvent(listener);
-
-                mTextViewWineGuess.setText(bundle.getString(WINNING_WINE_ID));
             }
         }
     }
