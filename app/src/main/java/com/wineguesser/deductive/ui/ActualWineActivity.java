@@ -46,17 +46,20 @@ public class ActualWineActivity extends AppCompatActivity{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        Object dataObject = dataSnapshot.child(mWinningWineId).child("variety").getValue();
+                        Object dataObject =
+                                dataSnapshot.child(mWinningWineId).child("variety").getValue();
                         if (dataObject != null) {
                             mTextViewWineGuess.setText(dataObject.toString());
                         } else {
-                            Toast.makeText(mContext, "Unable to retrieve varietal name.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Unable to retrieve varietal name.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(mContext, "Unable to retrieve varietal name.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Unable to retrieve varietal name.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 };
 
