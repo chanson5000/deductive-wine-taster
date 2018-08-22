@@ -181,9 +181,6 @@ public class WineKeyConverter implements DeductionFormContract, RepoKeyContract 
         put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
     }};
 
-
-
-
     public HashMap<String, Integer> convertToDataFormat(SparseIntArray wineProperties) {
 
         HashMap<String, Integer> convertedData = new HashMap<>();
