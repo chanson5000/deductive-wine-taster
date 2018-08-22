@@ -2,7 +2,6 @@ package com.wineguesser.deductive.repository;
 
 // These are the keys that our database must match.
 public interface RepoKeyContract {
-
     String CLARITY_PREPEND = "clarity_";
     String CONCENTRATION_PREPEND = "concentration_";
     String COLOR_PREPEND = "color_";
@@ -254,7 +253,4 @@ public interface RepoKeyContract {
     String KEY_MINERAL_CHALK = MINERAL_PREPEND + CHALK;
     String KEY_MINERAL_SLATE = MINERAL_PREPEND + SLATE;
     String KEY_MINERAL_FLINT = MINERAL_PREPEND + FLINT;
-
-
-
 }
