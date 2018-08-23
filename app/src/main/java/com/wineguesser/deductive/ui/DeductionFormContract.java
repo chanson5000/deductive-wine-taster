@@ -10,9 +10,6 @@ public interface DeductionFormContract {
 
     String CURRENT_PAGE_RED = "CURRENT_PAGE_RED";
     String CURRENT_PAGE_WHITE = "CURRENT_PAGE_WHITE";
-    String WINE_TYPE = "WINE_TYPE";
-    String RED_WINE = "RED_WINE";
-    String WHITE_WINE = "WHITE_WINE";
 
     String RED_SIGHT_Y_SCROLL = "RED_SIGHT_Y_SCROLL";
     String WHITE_SIGHT_Y_SCROLL = "WHITE_SIGHT_Y_SCROLL";

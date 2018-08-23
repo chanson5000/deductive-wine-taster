@@ -42,7 +42,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         RepoKeyContract {
 
     private static final String LOG_TAG = DeductionFormActivity.class.getSimpleName();
-    private static final String WINNING_WINE_ID = "WINNING_WINE_ID";
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -76,12 +75,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
-        if (parentIntent != null && parentIntent.hasExtra(WINE_TYPE)) {
+        if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
-            editor.putString(WINE_TYPE, RED_WINE);
+            editor.putString(IS_RED_WINE, RED_WINE);
             mIsRedWine = true;
-            mDatabaseReference = mDatabase.getReference("/redVarietalDescriptors");
+            mDatabaseReference = mDatabase.getReference(DB_RED_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -91,9 +90,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         } else {
             setContentView(R.layout.activity_white_deduction_form);
 
-            editor.putString(WINE_TYPE, WHITE_WINE);
+            editor.putString(IS_RED_WINE, WHITE_WINE);
             mIsRedWine = false;
-            mDatabaseReference = mDatabase.getReference("/whiteVarietalDescriptors");
+            mDatabaseReference = mDatabase.getReference(DB_WHITE_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -482,11 +481,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 if (winnerId != null) {
                     Intent intent = new Intent(mContext, ActualWineActivity.class);
                     intent.putExtra(WINNING_WINE_ID, winnerId);
+                    if (mIsRedWine) {
+                        intent.putExtra(IS_RED_WINE, true);
+                    }
                     startActivity(intent);
                 } else {
-                    Toast.makeText(mContext, "Unable To Calculate Winner", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,
+                            "Unable To Calculate Winner", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override

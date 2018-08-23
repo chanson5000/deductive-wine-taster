@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.repository.RepoKeyContract;
 
-public class MainActivity extends AppCompatActivity implements DeductionFormContract {
+public class MainActivity extends AppCompatActivity implements DeductionFormContract,
+        RepoKeyContract {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
     public void buttonRedWine(View view) {
         Intent intent = new Intent(this, DeductionFormActivity.class);
-        intent.putExtra(WINE_TYPE, RED_WINE);
+        intent.putExtra(IS_RED_WINE, RED_WINE);
         startActivity(intent);
     }
 

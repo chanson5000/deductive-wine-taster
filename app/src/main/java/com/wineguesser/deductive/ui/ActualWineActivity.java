@@ -14,13 +14,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.repository.RepoKeyContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActualWineActivity extends AppCompatActivity{
-
-    private static final String WINNING_WINE_ID = "WINNING_WINE_ID";
+public class ActualWineActivity extends AppCompatActivity implements RepoKeyContract {
 
     private Context mContext;
 
@@ -28,6 +27,7 @@ public class ActualWineActivity extends AppCompatActivity{
     TextView mTextViewWineGuess;
 
     String mWinningWineId;
+    boolean mIsRedWine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,35 +38,43 @@ public class ActualWineActivity extends AppCompatActivity{
         Intent parentIntent = getIntent();
 
         if (parentIntent != null && parentIntent.hasExtra(WINNING_WINE_ID)) {
+            mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
+
             Bundle bundle = parentIntent.getExtras();
-            if (bundle != null && bundle.getString(WINNING_WINE_ID) != null) {
+            if (bundle != null) {
                 mWinningWineId = bundle.getString(WINNING_WINE_ID);
+            }
 
-                ValueEventListener listener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            ValueEventListener listener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        Object dataObject =
-                                dataSnapshot.child(mWinningWineId).child("variety").getValue();
-                        if (dataObject != null) {
-                            mTextViewWineGuess.setText(dataObject.toString());
-                        } else {
-                            Toast.makeText(mContext, "Unable to retrieve varietal name.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Object dataObject =
+                            dataSnapshot.child(mWinningWineId).child("variety").getValue();
+                    if (dataObject != null) {
+                        mTextViewWineGuess.setText(dataObject.toString());
+                    } else {
                         Toast.makeText(mContext, "Unable to retrieve varietal name.",
                                 Toast.LENGTH_SHORT).show();
                     }
-                };
+                }
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = database.getReference("/redVarietalInfo");
-                databaseReference.addListenerForSingleValueEvent(listener);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(mContext, "Unable to retrieve varietal name.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference;
+            if (mIsRedWine) {
+                databaseReference = database.getReference(DB_RED_INFO_PATH);
+            } else {
+                databaseReference = database.getReference(DB_WHITE_INFO_PATH);
             }
+            databaseReference.addListenerForSingleValueEvent(listener);
         }
     }
 }
+
