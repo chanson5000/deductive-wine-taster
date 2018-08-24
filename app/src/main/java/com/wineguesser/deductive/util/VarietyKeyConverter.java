@@ -8,9 +8,9 @@ import com.wineguesser.deductive.ui.DeductionFormContract;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WineKeyConverter implements DeductionFormContract, RepoKeyContract {
+public class VarietyKeyConverter implements DeductionFormContract, RepoKeyContract {
 
-    private static Map<Integer, String> keyConversionMap = new HashMap<Integer, String>(){{
+    private static Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>(){{
 
         put(CHECK_FAULT_TCA, KEY_FAULT_TCA);
         put(CHECK_FAULT_HYDROGEN_SULFIDE, KEY_FAULT_HYDROGEN_SULFIDE);
@@ -181,7 +181,9 @@ public class WineKeyConverter implements DeductionFormContract, RepoKeyContract 
         put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
     }};
 
-    public HashMap<String, Integer> convertToDataFormat(SparseIntArray wineProperties) {
+    // Converts the input keys of our forms to their relevant database keys using the
+    // FormToDbConversionMap.
+    public HashMap<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
 
         HashMap<String, Integer> convertedData = new HashMap<>();
 
@@ -189,7 +191,7 @@ public class WineKeyConverter implements DeductionFormContract, RepoKeyContract 
             int key = wineProperties.keyAt(i);
             int value = wineProperties.get(key);
 
-            convertedData.put(keyConversionMap.get(key), value);
+            convertedData.put(FormToDbConversionMap.get(key), value);
         }
 
         return convertedData;
