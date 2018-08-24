@@ -443,7 +443,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private SparseIntArray retrieveSharedPreferencesValues() {
         // Retrieve all the form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
-        // TODO: Determine when we will wipe shared preferences.
 
         // Create a SparseIntArray that will contain our normalized map of form selections.
         // SparseIntArray uses less memory but is a little slower. There is no real specific
@@ -574,10 +573,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // Putting the user's guess into the intent.
         intent.putExtra(USER_GUESSED_WINE, mUserFinalVarietyString);
         // We can now launch the activity that will show results to the user.
+        wipeWinePreferences();
         startActivity(intent);
     }
 
-    private void wipeSharedPreferences() {
+    private void wipeWinePreferences() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.clear();
         editor.apply();
