@@ -11,8 +11,8 @@
 
     <AutoCompleteTextView
         android:id="@+id/autoText_final_grape_variety"
-        android:inputType="textAutoComplete"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textAutoComplete" />
 
 </merge>
