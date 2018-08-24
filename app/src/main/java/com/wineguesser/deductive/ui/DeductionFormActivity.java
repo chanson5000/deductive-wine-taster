@@ -527,7 +527,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     private void launchResultsIntent(String topScoreVariety) {
-        Intent intent = new Intent(mContext, ActualWineActivity.class);
+        Intent intent = new Intent(mContext, VarietyResultsActivity.class);
         if (mIsRedWine) {
             intent.putExtra(IS_RED_WINE, true);
         }

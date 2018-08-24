@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ActualWineActivity extends AppCompatActivity implements RepoKeyContract {
+public class VarietyResultsActivity extends AppCompatActivity implements RepoKeyContract {
 
     private Context mContext;
 

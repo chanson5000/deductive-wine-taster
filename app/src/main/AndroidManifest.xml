@@ -27,7 +27,7 @@
             android:parentActivityName=".ui.MainActivity" />
 
         <activity
-            android:name=".ui.ActualWineActivity"
+            android:name=".ui.VarietyResultsActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.DeductionFormActivity" />
     </application>
