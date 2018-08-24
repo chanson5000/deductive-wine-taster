@@ -28,31 +28,31 @@ import timber.log.Timber;
 
 public class ActualWineActivity extends AppCompatActivity implements RepoKeyContract {
 
-    private static DatabaseReference mReferenceUsers;
-    private static DatabaseReference mReferenceGuesses;
-
     private Context mContext;
+
+    private static DatabaseReference mDbReferenceUsers;
+    private static DatabaseReference mDbReferenceUserGuesses;
 
     @BindView(R.id.textView_our_guess)
     TextView mTextViewWineGuess;
     @BindView(R.id.autoText_final_grape_variety)
     AutoCompleteTextView mTextViewActualWine;
-
     @BindView(R.id.wine_result_save)
     Button mButtonWineResultSave;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    String mWinningWineId;
-    String mUserGuessedWine;
-    String mWinningWineString;
-    boolean mIsRedWine;
+    private String mWinningWineId;
+    private String mUserGuessedWine;
+    private String mWinningWineString;
+    private boolean mIsRedWine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actual_wine);
+
         mContext = this;
         ButterKnife.bind(this);
         Intent parentIntent = getIntent();
@@ -69,9 +69,9 @@ public class ActualWineActivity extends AppCompatActivity implements RepoKeyCont
             ValueEventListener listener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                     Object dataObject =
                             dataSnapshot.child(mWinningWineId).child("variety").getValue();
+
                     if (dataObject != null) {
                         mWinningWineString = dataObject.toString();
                         mTextViewWineGuess.setText(mWinningWineString);
@@ -100,31 +100,29 @@ public class ActualWineActivity extends AppCompatActivity implements RepoKeyCont
 
         mAuth = FirebaseAuth.getInstance();
 
-        mReferenceUsers = FirebaseDatabase.getInstance().getReference("users");
-        mReferenceGuesses = FirebaseDatabase.getInstance().getReference("userGuesses");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        mDbReferenceUsers = database.getReference("users");
+        mDbReferenceUserGuesses = database.getReference("userGuesses");
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    mButtonWineResultSave.setText(getString(R.string.save_result));
-                    String name = user.getDisplayName();
-                    String email = user.getEmail();
-                    Uri photoUrl = user.getPhotoUrl();
-                    String uid = user.getUid();
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                mButtonWineResultSave.setText(getString(R.string.save_result));
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+                String uid = user.getUid();
 
-                    boolean emailVerified = user.isEmailVerified();
+                boolean emailVerified = user.isEmailVerified();
 
-
-                } else {
-                    mButtonWineResultSave.setText(getString(R.string.log_in_for_result_save));
-                }
+            } else {
+                mButtonWineResultSave.setText(getString(R.string.log_in_for_result_save));
             }
         };
 
@@ -137,10 +135,10 @@ public class ActualWineActivity extends AppCompatActivity implements RepoKeyCont
         if (user != null) {
             String uid = user.getUid();
 
-            DatabaseReference newGuessReference = mReferenceGuesses.child(uid).push();
+            DatabaseReference newGuessReference = mDbReferenceUserGuesses.child(uid).push();
             String guessReferenceKey = newGuessReference.getKey();
             if (guessReferenceKey != null) {
-                mReferenceUsers.child(uid).child("guesses").child(guessReferenceKey).setValue(true);
+                mDbReferenceUsers.child(uid).child("guesses").child(guessReferenceKey).setValue(true);
             }
             newGuessReference.child("app_guess").setValue(mWinningWineString);
             String actualWine = mTextViewActualWine.getText().toString();
