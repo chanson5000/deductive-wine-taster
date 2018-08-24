@@ -19,6 +19,22 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:gravity="center"
+            android:text="@string/no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/your_guess" />
+
+        <TextView
+            android:id="@+id/textView_user_guess"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/no_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
