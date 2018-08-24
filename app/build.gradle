@@ -33,8 +33,11 @@ dependencies {
     implementation "com.android.support:support-media-compat:$support_version"
     implementation "com.android.support:customtabs:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.google.firebase:firebase-ads:15.0.1'
     annotationProcessor "com.jakewharton:butterknife-compiler:8.8.1"
