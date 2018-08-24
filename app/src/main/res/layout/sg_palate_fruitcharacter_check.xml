@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCheckBoxButtonClicked"
-            android:text="@string/tart" />
+            android:text="@string/ripe" />
 
         <CheckBox
             android:id="@+id/check_palate_fruit_character_fresh"

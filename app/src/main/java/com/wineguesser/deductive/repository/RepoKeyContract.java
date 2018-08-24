@@ -3,6 +3,17 @@ package com.wineguesser.deductive.repository;
 // These are the keys that our database must match.
 public interface RepoKeyContract {
 
+    String WINNING_WINE_ID = "WINNING_WINE_ID";
+    String IS_RED_WINE = "IS_RED_WINE";
+    String RED_WINE = "RED_WINE";
+    String WHITE_WINE = "WHITE_WINE";
+    String USER_GUESSED_WINE = "USER_GUESSED_WINE";
+
+    String DB_RED_DESC_PATH = "/redVarietalDescriptors";
+    String DB_WHITE_DESC_PATH = "/whiteVarietalDescriptors";
+    String DB_RED_INFO_PATH = "/redVarietalInfo";
+    String DB_WHITE_INFO_PATH = "/whiteVarietalInfo";
+
     String CLARITY_PREPEND = "clarity_";
     String CONCENTRATION_PREPEND = "concentration_";
     String COLOR_PREPEND = "color_";
@@ -23,7 +34,7 @@ public interface RepoKeyContract {
     String TEXTURE_PREPEND = "texture_";
     String BALANCE_PREPEND = "balanced_";
     String FINISH_PREPEND = "finish_";
-    String COMPLEXITY_PREPEND = "complexity";
+    String COMPLEXITY_PREPEND = "complexity_";
 
     String FAULT_PREPEND = "fault_";
     String FRUIT_PREPEND = "fruit_";
@@ -254,7 +265,4 @@ public interface RepoKeyContract {
     String KEY_MINERAL_CHALK = MINERAL_PREPEND + CHALK;
     String KEY_MINERAL_SLATE = MINERAL_PREPEND + SLATE;
     String KEY_MINERAL_FLINT = MINERAL_PREPEND + FLINT;
-
-
-
 }

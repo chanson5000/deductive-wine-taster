@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.repository.RepoKeyContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.Map;
@@ -20,7 +21,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PalateFragmentB extends Fragment implements DeductionFormContract {
+public class PalateFragmentB extends Fragment implements DeductionFormContract,
+        RepoKeyContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
@@ -46,7 +48,7 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract {
         mActivityPreferences =
                 mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        if (mActivityPreferences.getString(WINE_TYPE, WHITE_WINE).equals(RED_WINE)) {
+        if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
             mWinePreferences = mFragmentActivity
                     .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = true;

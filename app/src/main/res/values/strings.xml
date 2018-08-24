@@ -249,5 +249,9 @@
     <!-- AdMob -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
+    <string name="log_in">Log In</string>
+    <string name="welcome_tag">Welcome, %1$s</string>
+    <string name="log_out">Log Out</string>
+    <string name="log_in_for_result_save">Log In To Save Result</string>
 
 </resources>

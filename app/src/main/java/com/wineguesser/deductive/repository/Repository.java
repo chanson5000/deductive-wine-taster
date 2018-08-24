@@ -10,12 +10,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.wineguesser.deductive.data.FirebaseDataContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository implements FirebaseDataContract {
+public class Repository {
 //    private final DatabaseReference COUNTRIES_REF;
     private final DatabaseReference RED_VARIETIES;
     private final DatabaseReference WHITE_VARIETIES;

@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.data.FirebaseDataContract;
 import com.wineguesser.deductive.repository.RepoKeyContract;
 import com.wineguesser.deductive.util.WineKeyConverter;
 
@@ -40,10 +39,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        FirebaseDataContract, RepoKeyContract {
+        RepoKeyContract {
 
     private static final String LOG_TAG = DeductionFormActivity.class.getSimpleName();
-    private static final String WINNING_WINE_ID = "WINNING_WINE_ID";
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -77,12 +75,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
-        if (parentIntent != null && parentIntent.hasExtra(WINE_TYPE)) {
+        if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
-            editor.putString(WINE_TYPE, RED_WINE);
+            editor.putString(IS_RED_WINE, RED_WINE);
             mIsRedWine = true;
-            mDatabaseReference = mDatabase.getReference("/redVarietalDescriptors");
+            mDatabaseReference = mDatabase.getReference(DB_RED_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -92,9 +90,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         } else {
             setContentView(R.layout.activity_white_deduction_form);
 
-            editor.putString(WINE_TYPE, WHITE_WINE);
+            editor.putString(IS_RED_WINE, WHITE_WINE);
             mIsRedWine = false;
-            mDatabaseReference = mDatabase.getReference("/whiteVarietalDescriptors");
+            mDatabaseReference = mDatabase.getReference(DB_WHITE_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -424,43 +422,44 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     public void onSubmitFinalConclusion(View view) {
+        // Retrieve all the current form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
 
-        if (mIsRedWine) {
+        SparseIntArray wineFormSelections = new SparseIntArray();
 
-            SparseIntArray wineProperties = new SparseIntArray();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Integer wineFormKey = castKey(entry.getKey());
 
-            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                Integer key = castKey(entry.getKey());
-
-                if (AllRadioGroups.contains(key)) {
-                    Integer value = Integer.parseInt(entry.getValue().toString());
-                    if (value != 0) {
-                        wineProperties.put(value, CHECKED);
-                    }
-                } else if (AllCheckBoxes.contains(key)) {
-                    Integer value = Integer.parseInt(entry.getValue().toString());
-                    if (value == CHECKED) {
-                        wineProperties.put(key, value);
-                    }
+            // Combing through our preference keys and parsing for relevance.
+            // Checking for radio groups.
+            if (AllRadioGroups.contains(wineFormKey)) {
+                Integer radioButtonSelection = Integer.parseInt(entry.getValue().toString());
+                // Checking to see if a selection has been made.
+                if (radioButtonSelection != NONE_SELECTED) {
+                    // If a selection has been made it would have included
+                    wineFormSelections.put(radioButtonSelection, CHECKED);
+                }
+            } else if (AllCheckBoxes.contains(wineFormKey)) {
+                Integer value = Integer.parseInt(entry.getValue().toString());
+                if (value == CHECKED) {
+                    wineFormSelections.put(wineFormKey, value);
                 }
             }
-
-            WineKeyConverter converter = new WineKeyConverter();
-            HashMap<String, Integer> converted = converter.convertToDataFormat(wineProperties);
-
-            scoreWine(converted);
         }
 
+        WineKeyConverter converter = new WineKeyConverter();
+        HashMap<String, Integer> converted = converter.convertToDataFormat(wineFormSelections);
 
+        scoreWine(converted);
     }
+
 
     public void scoreWine(HashMap<String, Integer> wineToCompare) {
 
         // <Wine Id, Wine Score>
         HashMap<String, Integer> wineScores = new HashMap<>();
 
-        ValueEventListener postListener = new ValueEventListener() {
+        ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -475,17 +474,24 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     wineScores.put(wineId, currentWineScore);
                 }
 
+                // Retrieve the wine key with the highest score.
                 String winnerId = Collections.max(wineScores.entrySet(), (wineId, wineScore)
                         -> wineId.getValue() - wineScore.getValue()).getKey();
 
                 if (winnerId != null) {
                     Intent intent = new Intent(mContext, ActualWineActivity.class);
                     intent.putExtra(WINNING_WINE_ID, winnerId);
+                    if (mIsRedWine) {
+                        intent.putExtra(IS_RED_WINE, true);
+                    }
+                    AutoCompleteTextView viewFinalConclusionText = findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
+                    String finalVarietyText = viewFinalConclusionText.getText().toString();
+                    intent.putExtra(USER_GUESSED_WINE, finalVarietyText);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(mContext, "Unable To Calculate Winner", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,
+                            "Unable To Calculate Winner", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -495,7 +501,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         };
 
-        mDatabaseReference.addListenerForSingleValueEvent(postListener);
+        mDatabaseReference.addListenerForSingleValueEvent(listener);
     }
 
     private void wipeSharedPreferences() {
