@@ -34,9 +34,20 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
     private static DatabaseReference mDbReferenceUserGuesses;
 
     @BindView(R.id.textView_our_guess)
-    TextView mTextViewWineGuess;
+    TextView mTextViewAppConclusion;
+    @BindView(R.id.textView_user_guess)
+    TextView mTextViewUserConclusion;
     @BindView(R.id.autoText_final_grape_variety)
-    AutoCompleteTextView mTextViewActualWine;
+    AutoCompleteTextView mSingleViewActualVariety;
+    @BindView(R.id.autoText_final_country)
+    AutoCompleteTextView mSingleViewActualCountry;
+    @BindView(R.id.autoText_final_region)
+    AutoCompleteTextView mSingleViewActualRegion;
+    @BindView(R.id.autoText_final_quality)
+    AutoCompleteTextView mSingleViewActualQuality;
+    @BindView(R.id.autoText_final_vintage)
+    AutoCompleteTextView mSingleViewActualVintage;
+
     @BindView(R.id.wine_result_save)
     Button mButtonWineResultSave;
 
@@ -64,6 +75,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
             if (bundle != null) {
                 mWinningWineId = bundle.getString(APP_VARIETY_GUESS_ID);
                 mUserGuessedWine = bundle.getString(USER_GUESSED_WINE);
+                mTextViewUserConclusion.setText(mUserGuessedWine);
             }
 
             ValueEventListener listener = new ValueEventListener() {
@@ -74,7 +86,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
 
                     if (dataObject != null) {
                         mWinningWineString = dataObject.toString();
-                        mTextViewWineGuess.setText(mWinningWineString);
+                        mTextViewAppConclusion.setText(mWinningWineString);
                     } else {
                         Toast.makeText(mContext, "Unable to retrieve varietal name.",
                                 Toast.LENGTH_SHORT).show();
@@ -141,10 +153,32 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
                 mDbReferenceUsers.child(uid).child("guesses").child(guessReferenceKey).setValue(true);
             }
             newGuessReference.child("app_guess").setValue(mWinningWineString);
-            String actualWine = mTextViewActualWine.getText().toString();
-            if (!actualWine.equals("")) {
+            String actualWine = mSingleViewActualVariety.getText().toString();
+            String actualCountry = mSingleViewActualCountry.getText().toString();
+            String actualRegion = mSingleViewActualRegion.getText().toString();
+            String actualQuality = mSingleViewActualQuality.getText().toString();
+            String parseInteger = mSingleViewActualVintage.getText().toString();
+            Integer actualVintage = null;
+            if (!parseInteger.isEmpty()) {
+                actualVintage = Integer.parseInt(parseInteger);
+            }
+
+            if (!actualWine.isEmpty()) {
                 newGuessReference.child("actual_wine").setValue(actualWine);
             }
+            if (!actualCountry.isEmpty()) {
+                newGuessReference.child("actual_country").setValue(actualCountry);
+            }
+            if (!actualRegion.isEmpty()) {
+                newGuessReference.child("actual_region").setValue(actualRegion);
+            }
+            if (!actualQuality.isEmpty()) {
+                newGuessReference.child("actual_quality").setValue(actualQuality);
+            }
+            if (actualVintage != null) {
+                newGuessReference.child("actual_vintage").setValue(actualVintage);
+            }
+
             newGuessReference.child("user_guess").setValue(mUserGuessedWine);
         } else {
             Timber.d("The wine saving didn't work!");

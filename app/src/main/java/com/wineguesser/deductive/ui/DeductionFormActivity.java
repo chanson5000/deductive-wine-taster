@@ -58,6 +58,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private InitialConclusionFragment mInitialFragment;
     private FinalConclusionFragment mFinalFragment;
 
+    private String mUserFinalVarietyString;
+
     private static DatabaseReference mDatabaseReference;
 
     @Override
@@ -187,6 +189,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
+    // When shared preferences are changed, the view is also updated. This is most useful when
+    // wiping shared preferences.
     private void registerPreferencesListener() {
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
@@ -195,15 +199,20 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             if (view != null) {
                 if (view instanceof RadioGroup) {
-                    ((RadioGroup) view).check(sharedPreferences.getInt(key, NONE_SELECTED));
+                    ((RadioGroup) view).check(
+                            sharedPreferences.getInt(key, NONE_SELECTED));
                 } else if (view instanceof CheckBox) {
-                    ((CheckBox) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                    ((CheckBox) view).setChecked(
+                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
-                    ((Switch) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                    ((Switch) view).setChecked(
+                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof MultiAutoCompleteTextView) {
-                    ((MultiAutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                    ((MultiAutoCompleteTextView) view).setText(
+                            sharedPreferences.getString(key, ""));
                 } else if (view instanceof AutoCompleteTextView) {
-                    ((AutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                    ((AutoCompleteTextView) view).setText(
+                            sharedPreferences.getString(key, ""));
                 }
             }
         }));
@@ -326,7 +335,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
@@ -415,7 +423,24 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-    public void onSubmitFinalConclusion(View view) {
+    private boolean validInputs() {
+        AutoCompleteTextView singleTextViewFinalVariety =
+                findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
+        mUserFinalVarietyString = singleTextViewFinalVariety.getText().toString();
+        // Check that user has provided their conclusion of grape variety.
+        if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
+            Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!mIsRedWine && !WhiteVarieties.contains(mUserFinalVarietyString)) {
+            Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private SparseIntArray retrieveSharedPreferencesValues() {
         // Retrieve all the form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
         // TODO: Determine when we will wipe shared preferences.
@@ -450,18 +475,31 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         }
 
-        VarietyKeyConverter converter = new VarietyKeyConverter();
-
-        // Convert our form collection keys to our database keys so that they can be compared.
-        HashMap<String, Integer> convertedSelectionsMap =
-                converter.formToDbFormat(wineFormSelections);
-
-        // Converting our wines will hand off launching of new intent as well.
-        scoreWineForIntent(convertedSelectionsMap);
+        return wineFormSelections;
     }
 
+    private HashMap<String, Integer> convertToDbFormat(SparseIntArray sparseIntArray) {
+        VarietyKeyConverter converter = new VarietyKeyConverter();
+        return converter.formToDbFormat(sparseIntArray);
+    }
 
-    public void scoreWineForIntent(HashMap<String, Integer> userInputToCompare) {
+    public void onSubmitFinalConclusion(View view) {
+        // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
+        if (!validInputs()) {
+            return;
+        }
+
+        // Retrieve our form selections from shared preferences.
+        SparseIntArray formSelections = retrieveSharedPreferencesValues();
+        // Convert our form collection keys to our database keys so that they can be compared.
+        HashMap<String, Integer> convertedSelectionsMap = convertToDbFormat(formSelections);
+
+        // Converting our wines will hand off launching of new intent as well.
+        // The second argument is carrying over our validate user's variety guess.
+        scoreWithDatabase(convertedSelectionsMap);
+    }
+
+    private void scoreWithDatabase(HashMap<String, Integer> descriptorsMap) {
 
         // Creating a hash map here that will be populated with wine variety ID's that have
         // descriptors that match the form inputs.
@@ -480,7 +518,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     int currentVarietyScore = 0;
                     // Here we iterate through each descriptor of the variety.
                     for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
-                        if (userInputToCompare.containsKey(varietyDescriptor.getKey())) {
+                        if (descriptorsMap.containsKey(varietyDescriptor.getKey())) {
                             // Increment its score each time there is a match.
                             Object varietyDescriptorValue = varietyDescriptor.getValue();
                             if (varietyDescriptorValue instanceof Integer
@@ -507,17 +545,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     Timber.d("Result of wine scoring: %s", highestScoreId);
 
                     // We now have a wine variety to use in our intent.
-                    launchResultsIntent(highestScoreId);
+                    launchResultsActivity(highestScoreId);
                 } else {
                     Timber.e("Unable to match wine. Highest score ID returned null!");
                     Toast.makeText(mContext,
-                            "Unable to complete request.", Toast.LENGTH_SHORT).show();
+                            "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(mContext, "Unable to complete request.",
+                Toast.makeText(mContext, "Unable to score grape variety.",
                         Toast.LENGTH_SHORT).show();
                 Timber.e(databaseError.toString());
             }
@@ -526,19 +564,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mDatabaseReference.addListenerForSingleValueEvent(listener);
     }
 
-    private void launchResultsIntent(String topScoreVariety) {
+    private void launchResultsActivity(String topScoreVariety) {
         Intent intent = new Intent(mContext, VarietyResultsActivity.class);
         if (mIsRedWine) {
             intent.putExtra(IS_RED_WINE, true);
         }
         // We put our guess into the intent to be launched.
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
-        // Finding the view that has the user's conclusion of grape variety.
-        AutoCompleteTextView viewFinalConclusionText =
-                findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
-        String finalVarietyText = viewFinalConclusionText.getText().toString();
         // Putting the user's guess into the intent.
-        intent.putExtra(USER_GUESSED_WINE, finalVarietyText);
+        intent.putExtra(USER_GUESSED_WINE, mUserFinalVarietyString);
         // We can now launch the activity that will show results to the user.
         startActivity(intent);
     }

@@ -122,12 +122,12 @@ public interface DeductionFormContract {
             Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
             Syrah, Tempranillo, Torrontes, Viognier, Zinfandel};
 
-    String[] RedVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Gamay,
+    List<String> RedVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Gamay,
             Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
-            Tempranillo, Zinfandel};
+            Tempranillo, Zinfandel));
 
-    String[] WhiteVarieties = new String[]{Albarino, Chardonnay, Chenin_Blanc,
-            Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier};
+    List<String> WhiteVarieties = new ArrayList<>(Arrays.asList(Albarino, Chardonnay, Chenin_Blanc,
+            Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier));
 
     String[] ArgentinaVarieties = new String[]{Malbec, Torrontes};
 

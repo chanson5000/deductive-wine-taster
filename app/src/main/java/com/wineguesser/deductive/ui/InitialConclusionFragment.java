@@ -18,6 +18,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.RepoKeyContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -144,7 +145,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
-    private void setMultiAutoTextVarieties(String[] varieties) {
+    private void setMultiAutoTextVarieties(List<String> varieties) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties);
         mMultiAutoTextVarieties.setAdapter(adapter);
