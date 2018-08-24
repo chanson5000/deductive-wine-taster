@@ -484,6 +484,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     if (mIsRedWine) {
                         intent.putExtra(IS_RED_WINE, true);
                     }
+                    AutoCompleteTextView viewFinalConclusionText = findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
+                    String finalVarietyText = viewFinalConclusionText.getText().toString();
+                    intent.putExtra(USER_GUESSED_WINE, finalVarietyText);
                     startActivity(intent);
                 } else {
                     Toast.makeText(mContext,
