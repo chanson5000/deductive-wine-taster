@@ -57,12 +57,12 @@ public class ActualWineActivity extends AppCompatActivity implements RepoKeyCont
         ButterKnife.bind(this);
         Intent parentIntent = getIntent();
 
-        if (parentIntent != null && parentIntent.hasExtra(WINNING_WINE_ID)) {
+        if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
-                mWinningWineId = bundle.getString(WINNING_WINE_ID);
+                mWinningWineId = bundle.getString(APP_VARIETY_GUESS_ID);
                 mUserGuessedWine = bundle.getString(USER_GUESSED_WINE);
             }
 
