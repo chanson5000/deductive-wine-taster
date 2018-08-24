@@ -7,6 +7,7 @@ public interface RepoKeyContract {
     String IS_RED_WINE = "IS_RED_WINE";
     String RED_WINE = "RED_WINE";
     String WHITE_WINE = "WHITE_WINE";
+    String USER_GUESSED_WINE = "USER_GUESSED_WINE";
 
     String DB_RED_DESC_PATH = "/redVarietalDescriptors";
     String DB_WHITE_DESC_PATH = "/whiteVarietalDescriptors";
