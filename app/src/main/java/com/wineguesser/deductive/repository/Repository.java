@@ -2,7 +2,6 @@ package com.wineguesser.deductive.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,13 +54,11 @@ public class Repository {
 
         @Override
         protected void onActive() {
-            Log.d(LOG_TAG, "onActive");
             query.addValueEventListener(listener);
         }
 
         @Override
         protected void onInactive() {
-            Log.d(LOG_TAG, "onInactive");
             query.removeEventListener(listener);
         }
 
@@ -77,7 +74,6 @@ public class Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(LOG_TAG, "Can't listen to query " + query, databaseError.toException());
             }
         }
     }
@@ -99,13 +95,11 @@ public class Repository {
 
         @Override
         protected void onActive() {
-            Log.d(LOG_TAG, "onActive");
             query.addValueEventListener(listener);
         }
 
         @Override
         protected void onInactive() {
-            Log.d(LOG_TAG, "onInactive");
             query.removeEventListener(listener);
         }
 
@@ -117,7 +111,6 @@ public class Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(LOG_TAG, "Can't listen to query " + query, databaseError.toException());
             }
         }
     }
