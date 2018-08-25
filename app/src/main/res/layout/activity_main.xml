@@ -48,6 +48,7 @@
         android:layout_width="@dimen/main_activity_wine_button_width"
         android:layout_height="wrap_content"
         android:text="@string/button_statistics"
+        android:onClick="onHistoryButtonClicked"
         app:layout_constraintBottom_toTopOf="@+id/guideline_margin_bottom"
         app:layout_constraintEnd_toStartOf="@+id/button_log_in"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"

@@ -150,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         }
     }
 
+    public void onHistoryButtonClicked(View view) {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
+
     public void signOutCurrentFirebaseUser() {
         AuthUI.getInstance().signOut(this).addOnCompleteListener(task -> {
             // Do something when sign out completed.

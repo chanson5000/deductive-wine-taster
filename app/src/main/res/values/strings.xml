@@ -255,4 +255,5 @@
     <string name="log_in_for_result_save">Log In To Save Result</string>
     <string name="your_guess">Your Conclusion</string>
     <string name="no_data">No Data</string>
+    <string name="app_conclusion">Our Conclusion</string>
 </resources>

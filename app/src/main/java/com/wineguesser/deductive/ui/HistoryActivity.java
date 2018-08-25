@@ -52,12 +52,12 @@ public class HistoryActivity extends AppCompatActivity implements RepoKeyContrac
                 List<ConclusionRecord> conclusionRecords = new ArrayList<>();
                 for (DataSnapshot conclusionDbRecord : dataSnapshot.getChildren()) {
                     ConclusionRecord conclusionRecord = new ConclusionRecord();
-                    
+
                     for (DataSnapshot conclusionDbItem : conclusionDbRecord.getChildren()) {
                         String key = conclusionDbItem.getKey();
                         Object value = conclusionDbItem.getValue();
                         if (key != null && value instanceof String) {
-                            switch ((String) value) {
+                            switch (key) {
                                 case DB_ACTUAL_GRAPE:
                                     conclusionRecord.setActualGrape((String) value);
                                     break;
