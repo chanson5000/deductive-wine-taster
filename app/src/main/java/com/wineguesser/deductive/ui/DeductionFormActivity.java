@@ -46,6 +46,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private SharedPreferences mWinePreferences;
     private SharedPreferences mActivityPreferences;
     private boolean mIsRedWine;
+    private boolean mLaunchingIntent;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -143,7 +144,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onPause() {
         super.onPause();
         unRegisterSharedPreferencesListener();
-        setCurrentPageInPreferences(getCurrentPageFromPager());
+        if (!mLaunchingIntent) {
+            setCurrentPageInPreferences(getCurrentPageFromPager());
+            mLaunchingIntent = false;
+        }
     }
 
     @Override
@@ -190,7 +194,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     // When shared preferences are changed, the view is also updated. This is most useful when
-    // wiping shared preferences.
+    // clearing preferences.
     private void registerPreferencesListener() {
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
@@ -235,8 +239,16 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllAutoText.contains(key)) {
                 winePreferencesEditor.putString(entry.getKey(), "");
+                AutoCompleteTextView autoView = findViewById(key);
+                if (autoView != null) {
+                    autoView.setText("");
+                }
             } else if (AllAutoMultiText.contains(key)) {
                 winePreferencesEditor.putString(entry.getKey(), "");
+                MultiAutoCompleteTextView multiView = findViewById(key);
+                if (multiView != null) {
+                    multiView.setText("");
+                }
             }
         }
         winePreferencesEditor.apply();
@@ -256,7 +268,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
             activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
         }
+
         activityPreferencesEditor.apply();
+
+        activityPreferencesEditor.commit();
+
     }
 
     private void saveRadioGroupState(int key, int state) {
@@ -487,7 +503,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         if (!validInputs()) {
             return;
         }
-
+        mFinalFragment.showLoadingIndicator();
         // Retrieve our form selections from shared preferences.
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
         // Convert our form collection keys to our database keys so that they can be compared.
@@ -523,7 +539,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                             if (varietyDescriptorValue instanceof Integer
                                     && (Integer) varietyDescriptorValue > 1) {
                                 // Two points for key indicator of variety (value was a 2 or higher)
-                                currentVarietyScore+=2;
+                                currentVarietyScore += 2;
                             } else {
                                 // On point for regular indicator
                                 currentVarietyScore++;
@@ -542,10 +558,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
                 if (highestScoreId != null) {
                     Timber.d("Result of wine scoring: %s", highestScoreId);
-
                     // We now have a wine variety to use in our intent.
+
+                    resetSharedPreferences();
+                    resetAllTopScroll();
+                    setCurrentPageInPreferences(SIGHT_PAGE);
+                    mLaunchingIntent = true;
+
+                    mFinalFragment.hideLoadingIndicator();
                     launchResultsActivity(highestScoreId);
                 } else {
+                    mFinalFragment.hideLoadingIndicator();
                     Timber.e("Unable to match wine. Highest score ID returned null!");
                     Toast.makeText(mContext,
                             "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
@@ -554,6 +577,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                mFinalFragment.hideLoadingIndicator();
                 Toast.makeText(mContext, "Unable to score grape variety.",
                         Toast.LENGTH_SHORT).show();
                 Timber.e(databaseError.toString());
@@ -573,13 +597,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // Putting the user's guess into the intent.
         intent.putExtra(USER_GUESSED_WINE, mUserFinalVarietyString);
         // We can now launch the activity that will show results to the user.
-        wipeWinePreferences();
-        startActivity(intent);
-    }
 
-    private void wipeWinePreferences() {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.clear();
-        editor.apply();
+        startActivity(intent);
     }
 }
