@@ -30,6 +30,11 @@
             android:name=".ui.VarietyResultsActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.DeductionFormActivity" />
+
+        <activity android:name=".ui.HistoryActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity" />
+
     </application>
 
 </manifest>
