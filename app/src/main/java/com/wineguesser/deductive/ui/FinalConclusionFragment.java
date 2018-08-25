@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class FinalConclusionFragment extends Fragment implements DeductionFormContract,
@@ -41,8 +42,20 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     AutoCompleteTextView mAutoTextCountry;
     @BindView(R.id.autoText_final_region)
     AutoCompleteTextView mAutoTextRegion;
+    @BindView(R.id.autoText_final_quality)
+    AutoCompleteTextView mAutoTextQuality;
+    @BindView(R.id.autoText_final_vintage)
+    AutoCompleteTextView mAutoTextVintage;
     @BindView(R.id.adView)
     AdView mAdView;
+    @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})
+    List<View> mLoadingIndicator;
+
+    private static final ButterKnife.Action<View> HIDE = (view, index) ->
+            view.setVisibility(View.INVISIBLE);
+
+    private static final ButterKnife.Action<View> SHOW = (view, index) ->
+            view.setVisibility(View.VISIBLE);
 
     public FinalConclusionFragment() {
     }
@@ -143,6 +156,12 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                 mAutoTextVariety.getText().toString());
         editor.putString(Integer.toString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
                 mAutoTextCountry.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_REGION),
+                mAutoTextRegion.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_QUALITY),
+                mAutoTextQuality.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_VINTAGE),
+                mAutoTextVintage.getText().toString());
         editor.apply();
     }
 
@@ -178,5 +197,13 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                         .setText(entry.getValue().toString());
             }
         }
+    }
+
+    public void showLoadingIndicator() {
+        ButterKnife.apply(mLoadingIndicator, SHOW);
+    }
+
+    public void hideLoadingIndicator() {
+        ButterKnife.apply(mLoadingIndicator, HIDE);
     }
 }
