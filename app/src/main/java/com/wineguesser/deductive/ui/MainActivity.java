@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    int RC_SIGN_IN = 42;
+    private int RC_SIGN_IN = 42;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -61,59 +61,63 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    mButtonLogIn.setText(getString(R.string.log_out));
-                    String name = user.getDisplayName();
-                    String email = user.getEmail();
-                    Uri photoUrl = user.getPhotoUrl();
-                    String uid = user.getUid();
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                mButtonLogIn.setText(getString(R.string.log_out));
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+                String uid = user.getUid();
 
-                    if (name == null) {
-                        mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
-                    } else {
-                        mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
-                    }
-
-                    boolean emailVerified = user.isEmailVerified();
-
-                    if (!emailVerified) {
-                        ValueEventListener listener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.child(uid).child("verificationEmailSent")
-                                        .getValue() != (Boolean) true) {
-                                    user.sendEmailVerification().addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            Timber.d("Email verification for user sent.");
-                                            mReferenceUsers.child(uid).child("verificationEmailSent")
-                                                    .setValue(true);
-                                        } else {
-                                            Timber.d("Sending of email verification failed");
-                                        }
-                                    });
-                                } else {
-                                    Timber.d("Skipped sending user verification e-mail");
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Timber.e(databaseError.toString());
-                            }
-                        };
-                        mReferenceUsers.addListenerForSingleValueEvent(listener);
-                    }
+                if (name == null) {
+                    mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
                 } else {
-                    mButtonLogIn.setText(getString(R.string.log_in));
+                    mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
                 }
+
+                boolean emailVerified = user.isEmailVerified();
+
+                if (!emailVerified) {
+                    ValueEventListener listener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child(uid).child("verificationEmailSent")
+                                    .getValue() != (Boolean) true) {
+                                user.sendEmailVerification().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Timber.d("Email verification for user sent.");
+                                        mReferenceUsers.child(uid).child("verificationEmailSent")
+                                                .setValue(true);
+                                    } else {
+                                        Timber.d("Sending of email verification failed");
+                                    }
+                                });
+                            } else {
+                                Timber.d("Skipped sending user verification e-mail");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Timber.e(databaseError.toString());
+                        }
+                    };
+                    mReferenceUsers.addListenerForSingleValueEvent(listener);
+                }
+            } else {
+                mButtonLogIn.setText(getString(R.string.log_in));
             }
         };
 
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     public void buttonRedWine(View view) {

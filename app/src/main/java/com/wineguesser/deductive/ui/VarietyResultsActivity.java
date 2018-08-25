@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.RepoKeyContract;
 
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -30,8 +34,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
 
     private Context mContext;
 
+    private int RC_SIGN_IN = 43;
+
     private static DatabaseReference mDbReferenceUsers;
-    private static DatabaseReference mDbReferenceUserGuesses;
+    private static DatabaseReference mDbReferenceUserConclusions;
 
     @BindView(R.id.textView_our_guess)
     TextView mTextViewAppConclusion;
@@ -47,16 +53,20 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
     AutoCompleteTextView mSingleViewActualQuality;
     @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mSingleViewActualVintage;
-
     @BindView(R.id.wine_result_save)
     Button mButtonWineResultSave;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private String mWinningWineId;
-    private String mUserGuessedWine;
-    private String mWinningWineString;
+    private String mAppGrapeConclusionId;
+    private String mUserConclusionGrape;
+    private String mAppGrapeConclusionString;
+    private String mUserConclusionOrigin;
+    private String mUserConclusionRegion;
+    private String mUserConclusionQuality;
+    private Integer mUserConclusionVintage;
+
     private boolean mIsRedWine;
 
     @Override
@@ -73,20 +83,25 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
 
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
-                mWinningWineId = bundle.getString(APP_VARIETY_GUESS_ID);
-                mUserGuessedWine = bundle.getString(USER_GUESSED_WINE);
-                mTextViewUserConclusion.setText(mUserGuessedWine);
+                mAppGrapeConclusionId = bundle.getString(APP_VARIETY_GUESS_ID);
+                mUserConclusionGrape = bundle.getString(USER_CONCLUSION_GRAPE);
+                mUserConclusionOrigin = bundle.getString(USER_CONCLUSION_ORIGIN);
+                mUserConclusionRegion = bundle.getString(USER_CONCLUSION_REGION);
+                mUserConclusionQuality = bundle.getString(USER_CONCLUSION_QUALITY);
+                mUserConclusionVintage = bundle.getInt(USER_CONCLUSION_VINTAGE);
+
+                mTextViewUserConclusion.setText(mUserConclusionGrape);
             }
 
             ValueEventListener listener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Object dataObject =
-                            dataSnapshot.child(mWinningWineId).child("variety").getValue();
+                            dataSnapshot.child(mAppGrapeConclusionId).child("variety").getValue();
 
                     if (dataObject != null) {
-                        mWinningWineString = dataObject.toString();
-                        mTextViewAppConclusion.setText(mWinningWineString);
+                        mAppGrapeConclusionString = dataObject.toString();
+                        mTextViewAppConclusion.setText(mAppGrapeConclusionString);
                     } else {
                         Toast.makeText(mContext, "Unable to retrieve varietal name.",
                                 Toast.LENGTH_SHORT).show();
@@ -114,8 +129,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        mDbReferenceUsers = database.getReference("users");
-        mDbReferenceUserGuesses = database.getReference("userGuesses");
+        mDbReferenceUsers = database.getReference(DB_REFERENCE_USERS);
+        mDbReferenceUserConclusions = database.getReference(DB_REFERENCE_ALL_CONCLUSIONS);
     }
 
     @Override
@@ -126,13 +141,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 mButtonWineResultSave.setText(getString(R.string.save_result));
-                String name = user.getDisplayName();
-                String email = user.getEmail();
-                Uri photoUrl = user.getPhotoUrl();
-                String uid = user.getUid();
-
-                boolean emailVerified = user.isEmailVerified();
-
             } else {
                 mButtonWineResultSave.setText(getString(R.string.log_in_for_result_save));
             }
@@ -141,18 +149,26 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        mAuth.removeAuthStateListener(mAuthListener);
+    }
+
     public void onButtonWineResultSave(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
             String uid = user.getUid();
 
-            DatabaseReference newGuessReference = mDbReferenceUserGuesses.child(uid).push();
+            DatabaseReference newGuessReference = mDbReferenceUserConclusions.child(uid).push();
             String guessReferenceKey = newGuessReference.getKey();
             if (guessReferenceKey != null) {
-                mDbReferenceUsers.child(uid).child("guesses").child(guessReferenceKey).setValue(true);
+                mDbReferenceUsers.child(uid).child(DB_USER_CONCLUSIONS)
+                        .child(guessReferenceKey).setValue(true);
             }
-            newGuessReference.child("app_guess").setValue(mWinningWineString);
+            newGuessReference.child(DB_APP_CONCLUSION).setValue(mAppGrapeConclusionString);
             String actualWine = mSingleViewActualVariety.getText().toString();
             String actualCountry = mSingleViewActualCountry.getText().toString();
             String actualRegion = mSingleViewActualRegion.getText().toString();
@@ -164,24 +180,38 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
             }
 
             if (!actualWine.isEmpty()) {
-                newGuessReference.child("actual_wine").setValue(actualWine);
+                newGuessReference.child(DB_ACTUAL_GRAPE).setValue(actualWine);
             }
             if (!actualCountry.isEmpty()) {
-                newGuessReference.child("actual_country").setValue(actualCountry);
+                newGuessReference.child(DB_ACTUAL_COUNTRY).setValue(actualCountry);
             }
             if (!actualRegion.isEmpty()) {
-                newGuessReference.child("actual_region").setValue(actualRegion);
+                newGuessReference.child(DB_ACTUAL_REGION).setValue(actualRegion);
             }
             if (!actualQuality.isEmpty()) {
-                newGuessReference.child("actual_quality").setValue(actualQuality);
+                newGuessReference.child(DB_ACTUAL_QUALITY).setValue(actualQuality);
             }
             if (actualVintage != null) {
-                newGuessReference.child("actual_vintage").setValue(actualVintage);
+                newGuessReference.child(DB_ACTUAL_VINTAGE).setValue(actualVintage);
             }
 
-            newGuessReference.child("user_guess").setValue(mUserGuessedWine);
+            newGuessReference.child(DB_USER_CONCLUSION_GRAPE).setValue(mUserConclusionGrape);
+            newGuessReference.child(DB_USER_CONCLUSION_COUNTRY).setValue(mUserConclusionOrigin);
+            newGuessReference.child(DB_USER_CONCLUSION_REGION).setValue(mUserConclusionRegion);
+            newGuessReference.child(DB_USER_CONCLUSION_QUALITY).setValue(mUserConclusionQuality);
+            newGuessReference.child(DB_USER_CONCLUSION_VINTAGE).setValue(mUserConclusionVintage);
+
         } else {
-            Timber.d("The wine saving didn't work!");
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build()
+            );
+
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .build(),
+                    RC_SIGN_IN);
         }
     }
 }

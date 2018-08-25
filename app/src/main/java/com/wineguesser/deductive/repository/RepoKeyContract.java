@@ -7,7 +7,29 @@ public interface RepoKeyContract {
     String IS_RED_WINE = "IS_RED_WINE";
     String RED_WINE = "RED_WINE";
     String WHITE_WINE = "WHITE_WINE";
-    String USER_GUESSED_WINE = "USER_GUESSED_WINE";
+    String USER_CONCLUSION_GRAPE = "USER_CONCLUSION_GRAPE";
+    String USER_CONCLUSION_ORIGIN = "USER_CONCLUSION_ORIGIN";
+    String USER_CONCLUSION_REGION = "USER_CONCLUSION_REGION";
+    String USER_CONCLUSION_QUALITY = "USER_CONCLUSION_QUALITY";
+    String USER_CONCLUSION_VINTAGE = "USER_CONCLUSION_VINTAGE";
+
+    String DB_REFERENCE_USERS = "users";
+    String DB_REFERENCE_ALL_CONCLUSIONS = "all_conclusions";
+
+    String DB_USER_CONCLUSIONS = "conclusions";
+    String DB_APP_CONCLUSION = "app_conclusion_grape";
+
+    String DB_ACTUAL_GRAPE = "actual_grape";
+    String DB_ACTUAL_COUNTRY = "actual_country";
+    String DB_ACTUAL_REGION = "actual_region";
+    String DB_ACTUAL_QUALITY = "actual_quality";
+    String DB_ACTUAL_VINTAGE = "actual_vintage";
+
+    String DB_USER_CONCLUSION_GRAPE = "user_conclusion_grape";
+    String DB_USER_CONCLUSION_COUNTRY = "user_conclusion_country";
+    String DB_USER_CONCLUSION_REGION = "user_conclusion_region";
+    String DB_USER_CONCLUSION_QUALITY = "user_conclusion_quality";
+    String DB_USER_CONCLUSION_VINTAGE = "user_conclusion_vintage";
 
     String DB_RED_DESC_PATH = "/redVarietalDescriptors";
     String DB_WHITE_DESC_PATH = "/whiteVarietalDescriptors";

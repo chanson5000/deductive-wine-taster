@@ -60,6 +60,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private FinalConclusionFragment mFinalFragment;
 
     private String mUserFinalVarietyString;
+    private String mUserFinalOriginString;
+    private String mUserFinalRegionString;
+    private String mUserFinalQualityString;
+    private Integer mUserFinalVintageInteger;
 
     private static DatabaseReference mDatabaseReference;
 
@@ -442,7 +446,29 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private boolean validInputs() {
         AutoCompleteTextView singleTextViewFinalVariety =
                 findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
+        AutoCompleteTextView singleTextViewFinalCountry =
+                findViewById(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN);
+        AutoCompleteTextView singleTextViewFinalRegion =
+                findViewById(TEXT_SINGLE_FINAL_REGION);
+        AutoCompleteTextView singleTextViewFinalQuality =
+                findViewById(TEXT_SINGLE_FINAL_QUALITY);
+        AutoCompleteTextView singleTextViewFinalVintage =
+                findViewById(TEXT_SINGLE_FINAL_VINTAGE);
+
         mUserFinalVarietyString = singleTextViewFinalVariety.getText().toString();
+        mUserFinalOriginString = singleTextViewFinalCountry.getText().toString();
+        mUserFinalRegionString = singleTextViewFinalRegion.getText().toString();
+        mUserFinalQualityString = singleTextViewFinalQuality.getText().toString();
+
+        mUserFinalVintageInteger = null;
+        String parseInteger = singleTextViewFinalVintage.getText().toString();
+        if (!parseInteger.isEmpty()) {
+            mUserFinalVintageInteger = Integer.parseInt(parseInteger);
+        } else {
+            mUserFinalVintageInteger = 0;
+        }
+
+        // TODO: Make these show below the inputs in red.
         // Check that user has provided their conclusion of grape variety.
         if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
             Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
@@ -452,6 +478,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
                     Toast.LENGTH_SHORT).show();
             return false;
+        }
+        if (mUserFinalOriginString.isEmpty()) {
+            mUserFinalOriginString = "None Selected";
+        }
+        if (mUserFinalRegionString.isEmpty()) {
+            mUserFinalRegionString = "None Selected";
+        }
+        if (mUserFinalQualityString.isEmpty()) {
+            mUserFinalQualityString = "None Selected";
         }
         return true;
     }
@@ -595,9 +630,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // We put our guess into the intent to be launched.
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
         // Putting the user's guess into the intent.
-        intent.putExtra(USER_GUESSED_WINE, mUserFinalVarietyString);
-        // We can now launch the activity that will show results to the user.
+        intent.putExtra(USER_CONCLUSION_GRAPE, mUserFinalVarietyString);
+        intent.putExtra(USER_CONCLUSION_ORIGIN, mUserFinalOriginString);
+        intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString);
+        intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
+        intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
 
+        // We can now launch the activity that will show results to the user.
         startActivity(intent);
     }
 }
