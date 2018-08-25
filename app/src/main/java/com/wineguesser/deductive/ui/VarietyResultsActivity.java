@@ -201,6 +201,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements RepoKey
             newGuessReference.child(DB_USER_CONCLUSION_QUALITY).setValue(mUserConclusionQuality);
             newGuessReference.child(DB_USER_CONCLUSION_VINTAGE).setValue(mUserConclusionVintage);
 
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+
         } else {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
