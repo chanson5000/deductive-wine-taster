@@ -19,6 +19,19 @@
             android:text="@string/placeholder_user_name" />
 
         <TextView
+            android:id="@+id/textStatic_auth_provider"
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_provider" />
+
+        <TextView
+            android:id="@+id/textView_auth_provider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_provider" />
+
+        <TextView
             android:id="@+id/textStatic_display_name"
             style="@style/AppTheme.Text.Descriptor"
             android:layout_width="wrap_content"
@@ -31,6 +44,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/textError_display_name"
+            style="@style/AppTheme.Text.Error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textStatic_email_address"
@@ -47,6 +67,13 @@
             android:inputType="textEmailAddress" />
 
         <TextView
+            android:id="@+id/textError_email_address"
+            style="@style/AppTheme.Text.Error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/textStatic_confirm_email_address"
             style="@style/AppTheme.Text.Descriptor"
             android:layout_width="wrap_content"
@@ -59,6 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/textError_confirm_email_address"
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/small_text"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textStatic_photo_url"
@@ -74,13 +109,41 @@
             android:layout_height="wrap_content"
             android:inputType="textUri" />
 
-        <ImageView
-            android:id="@+id/imageView_profile_photo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+        <TextView
+            android:id="@+id/textError_photo_url"
+            style="@style/AppTheme.Text.Error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/profile_photo_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/standard_margin"
-            android:contentDescription="@string/profile_image" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_delete_photo"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="onClickDeleteProfilePhoto"
+                android:text="@string/button_delete_photo" />
+
+            <ImageView
+                android:id="@+id/imageView_profile_photo"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/standard_margin"
+                android:contentDescription="@string/profile_image"
+                android:scaleType="centerCrop" />
+
+        </LinearLayout>
+
 
         <Button
             style="@style/AppTheme.Button"
@@ -112,6 +175,13 @@
             android:inputType="textPassword" />
 
         <TextView
+            android:id="@+id/textError_new_password"
+            style="@style/AppTheme.Text.Error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/textStatic_confirm_password"
             style="@style/AppTheme.Text.Descriptor"
             android:layout_width="wrap_content"
@@ -124,6 +194,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/textError_confirm_password"
+            style="@style/AppTheme.Text.Error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Button
             style="@style/AppTheme.Button"

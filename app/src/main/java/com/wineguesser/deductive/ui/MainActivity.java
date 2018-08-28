@@ -168,8 +168,6 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
                         });
                     } else {
                         Timber.d("Skipped sending user verification e-mail.");
-                        Toast.makeText(mContext, getString(R.string.verify_email_request),
-                                Toast.LENGTH_LONG).show();
                     }
                 }
 
