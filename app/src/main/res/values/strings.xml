@@ -256,4 +256,17 @@
     <string name="your_guess">Your Conclusion</string>
     <string name="no_data">No Data</string>
     <string name="app_conclusion">Our Conclusion</string>
+    <string name="verify_email_request">Please check your e-mail to verify your account!</string>
+    <string name="button_history">HISTORY</string>
+    <string name="menu_account_profile">Profile</string>
+    <string name="placeholder_user_name">User Name</string>
+    <string name="profile_display_name">Display Name: </string>
+    <string name="profile_photo_url">Photo URL: </string>
+    <string name="profile_email_address">Email Address: </string>
+    <string name="profile_confirm_email_address">Confirm Email Address: </string>
+    <string name="profile_image">Profile Image</string>
+    <string name="button_update_profile">UPDATE PROFILE</string>
+    <string name="profile_new_password">New Password: </string>
+    <string name="profile_confirm_password">Confirm Password: </string>
+    <string name="button_update_password">UPDATE PASSWORD</string>
 </resources>

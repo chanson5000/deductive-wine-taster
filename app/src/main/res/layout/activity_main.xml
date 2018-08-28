@@ -43,29 +43,29 @@
         app:layout_constraintTop_toTopOf="@+id/guideline_top_middle" />
 
     <Button
-        android:id="@+id/button_statistics"
+        android:id="@+id/button_history"
         style="@style/AppTheme.Button"
         android:layout_width="@dimen/main_activity_wine_button_width"
         android:layout_height="wrap_content"
-        android:text="@string/button_statistics"
+        android:text="@string/button_history"
         android:onClick="onHistoryButtonClicked"
         app:layout_constraintBottom_toTopOf="@+id/guideline_margin_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/button_log_in"
+        app:layout_constraintEnd_toStartOf="@id/guideline_margin_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
         app:layout_constraintTop_toTopOf="@+id/guideline_bottom_middle" />
 
-    <Button
-        android:id="@+id/button_log_in"
-        style="@style/AppTheme.Button"
-        android:layout_width="@dimen/main_activity_wine_button_width"
-        android:layout_height="wrap_content"
-        android:text="@string/log_in"
-        app:layout_constraintTop_toTopOf="@id/guideline_bottom_middle"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_margin_bottom"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margin_end"
-        app:layout_constraintStart_toEndOf="@id/button_statistics"
-        android:onClick="onLogInButtonClicked"
-        />
+    <!--<Button-->
+        <!--android:id="@+id/button_log_in"-->
+        <!--style="@style/AppTheme.Button"-->
+        <!--android:layout_width="@dimen/main_activity_wine_button_width"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/log_in"-->
+        <!--app:layout_constraintTop_toTopOf="@id/guideline_bottom_middle"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/guideline_margin_bottom"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guideline_margin_end"-->
+        <!--app:layout_constraintStart_toEndOf="@id/button_history"-->
+        <!--android:onClick="onLogInButtonClicked"-->
+        <!--/>-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_margin_top"

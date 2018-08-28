@@ -13,6 +13,8 @@ public interface DatabaseContract {
     String USER_CONCLUSION_QUALITY = "USER_CONCLUSION_QUALITY";
     String USER_CONCLUSION_VINTAGE = "USER_CONCLUSION_VINTAGE";
 
+    String DB_EMAIL_VERIFICATION = "verificationEmailSent";
+
     String DB_REFERENCE_USERS = "users";
     String DB_REFERENCE_ALL_CONCLUSIONS = "all_conclusions";
 
