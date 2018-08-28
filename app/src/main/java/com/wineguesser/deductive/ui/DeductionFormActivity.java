@@ -105,7 +105,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
         editor.apply();
 
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -118,7 +125,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        };
+
+        mPager.addOnPageChangeListener(onPageChangeListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+
+
     }
 
     @Override

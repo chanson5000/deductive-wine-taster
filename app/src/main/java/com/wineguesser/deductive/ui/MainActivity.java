@@ -49,13 +49,12 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         ButterKnife.bind(this);
 
         mAuth = FirebaseAuth.getInstance();
-        mReferenceUsers = FirebaseDatabase.getInstance().getReference("users");
+        mReferenceUsers = FirebaseDatabase.getInstance().getReference(DB_REFERENCE_USERS);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
 
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();

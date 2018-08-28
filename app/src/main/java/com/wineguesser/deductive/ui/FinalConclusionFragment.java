@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ScrollView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
@@ -46,8 +44,6 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     AutoCompleteTextView mAutoTextQuality;
     @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mAutoTextVintage;
-    @BindView(R.id.adView)
-    AdView mAdView;
     @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})
     List<View> mLoadingIndicator;
 
@@ -103,17 +99,13 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
 
         setAutoTextRegions(AllRegions);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
         return rootView;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        saveSelectionState();
-        saveScrollState();
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -123,15 +115,19 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         loadScrollState();
     }
 
-    private void saveScrollState() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        if (mIsRedWine) {
-            editor.putInt(RED_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
-        } else {
-            editor.putInt(WHITE_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
-        }
-        editor.apply();
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveSelectionState();
+        saveScrollState();
+    }
+
 
     private void loadScrollState() {
         if (mIsRedWine) {
@@ -150,6 +146,7 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                 mScrollViewFinal.scrollTo(0, 0));
     }
 
+    // Saving selection state Asynchronously with apply()
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putString(Integer.toString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
@@ -164,6 +161,17 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                 mAutoTextVintage.getText().toString());
         editor.apply();
     }
+
+    private void saveScrollState() {
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            editor.putInt(RED_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
+        } else {
+            editor.putInt(WHITE_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
+        }
+        editor.apply();
+    }
+
 
     private void setAutoTextCountries(String[] countries) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
