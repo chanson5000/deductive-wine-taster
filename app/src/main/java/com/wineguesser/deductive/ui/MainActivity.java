@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +28,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements DeductionFormContract,
-        RepoKeyContract {
-
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+        DatabaseContract {
 
     private int RC_SIGN_IN = 42;
 
@@ -52,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
         mAuth = FirebaseAuth.getInstance();
         mReferenceUsers = FirebaseDatabase.getInstance().getReference("users");
-
-        Timber.e("TESTING IF THIS WORKS.");
     }
 
     @Override

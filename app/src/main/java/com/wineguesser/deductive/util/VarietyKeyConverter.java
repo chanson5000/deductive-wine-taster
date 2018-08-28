@@ -2,13 +2,13 @@ package com.wineguesser.deductive.util;
 
 import android.util.SparseIntArray;
 
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.ui.DeductionFormContract;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class VarietyKeyConverter implements DeductionFormContract, RepoKeyContract {
+public class VarietyKeyConverter implements DeductionFormContract, DatabaseContract {
 
     private static Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>(){{
 

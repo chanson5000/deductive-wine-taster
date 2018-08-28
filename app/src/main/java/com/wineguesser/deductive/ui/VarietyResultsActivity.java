@@ -2,7 +2,6 @@ package com.wineguesser.deductive.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,16 +20,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 
 import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
-public class VarietyResultsActivity extends AppCompatActivity implements RepoKeyContract {
+public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract {
 
     private Context mContext;
 

@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.Map;
@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PalateFragmentB extends Fragment implements DeductionFormContract,
-        RepoKeyContract {
+        DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;

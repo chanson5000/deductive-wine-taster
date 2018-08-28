@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class NoseFragment extends Fragment implements DeductionFormContract,
-        RepoKeyContract {
+        DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;

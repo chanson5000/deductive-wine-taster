@@ -30,7 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.VarietyKeyConverter;
 
 import java.util.Collections;
@@ -40,7 +40,7 @@ import java.util.Map;
 import timber.log.Timber;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        RepoKeyContract {
+        DatabaseContract {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;

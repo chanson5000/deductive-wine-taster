@@ -1,7 +1,7 @@
 package com.wineguesser.deductive.repository;
 
 // These are the keys that our database must match.
-public interface RepoKeyContract {
+public interface DatabaseContract {
 
     String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
     String IS_RED_WINE = "IS_RED_WINE";

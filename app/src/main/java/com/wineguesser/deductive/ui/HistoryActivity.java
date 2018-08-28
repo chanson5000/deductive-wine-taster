@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.adapter.ConclusionItemAdapter;
 import com.wineguesser.deductive.model.ConclusionRecord;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends AppCompatActivity implements RepoKeyContract {
+public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
 
     private ConclusionItemAdapter mConclusionAdapter;
     private static DatabaseReference mDbReferenceUserConclusions;
