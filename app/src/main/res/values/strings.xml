@@ -212,6 +212,10 @@
     <string name="actual_wine">Actual Wine</string>
     <string name="save_result">Save Result</string>
 
+    <string name="our_conclusion_colon">Our Conclusion: </string>
+    <string name="actual_wine_colon">Actual Wine: </string>
+    <string name="user_conclusion_colon">Your Conclusion: </string>
+
     <!-- Varieties -->
     <string name="albarino">Albarino</string>
     <string name="cabernet_franc">Cabernet Franc</string>
@@ -273,4 +277,8 @@
     <string name="placeholder_provider">Provider</string>
     <string name="button_delete_photo">DELETE PHOTO</string>
     <string name="button_update_photo">UPDATE PHOTO</string>
+    <string name="placeholder_wine_variety">Wine Variety</string>
+    <string name="placeholder_user_conclusion">User Conclusion</string>
+    <string name="placeholder_app_conclusion">App Conclusion</string>
+
 </resources>
