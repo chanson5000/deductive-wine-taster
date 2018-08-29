@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -95,6 +96,21 @@
             android:textSize="@dimen/small_text"
             android:visibility="gone" />
 
+        <Button
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/standard_half_margin"
+            android:onClick="onClickUpdateDetails"
+            android:text="@string/button_update_details" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="@dimen/standard_half_margin"
+            android:background="@color/colorPrimaryDark" />
+
         <TextView
             android:id="@+id/textStatic_photo_url"
             style="@style/AppTheme.Text.Descriptor"
@@ -116,25 +132,48 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/profile_photo_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/button_delete_photo"
-                style="@style/AppTheme.Button"
+            <LinearLayout
+                android:id="@+id/container_photo_buttons"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageView_profile_photo"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:onClick="onClickDeleteProfilePhoto"
-                android:text="@string/button_delete_photo" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/button_update_photo"
+                    style="@style/AppTheme.Button"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/button_update_photo"
+                    android:onClick="onClickUpdateProfilePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/button_delete_photo"
+                    style="@style/AppTheme.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:onClick="onClickDeleteProfilePhoto"
+                    android:text="@string/button_delete_photo" />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView_profile_photo"
+                app:layout_constraintStart_toEndOf="@id/container_photo_buttons"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
@@ -142,17 +181,7 @@
                 android:contentDescription="@string/profile_image"
                 android:scaleType="centerCrop" />
 
-        </LinearLayout>
-
-
-        <Button
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/standard_half_margin"
-            android:onClick="onClickUpdateProfile"
-            android:text="@string/button_update_profile" />
+        </android.support.constraint.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"

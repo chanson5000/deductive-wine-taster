@@ -265,11 +265,12 @@
     <string name="profile_email_address">Email Address: </string>
     <string name="profile_confirm_email_address">Confirm Email Address: </string>
     <string name="profile_image">Profile Image</string>
-    <string name="button_update_profile">UPDATE PROFILE</string>
+    <string name="button_update_details">UPDATE DETAILS</string>
     <string name="profile_new_password">New Password: </string>
     <string name="profile_confirm_password">Confirm Password: </string>
     <string name="button_update_password">UPDATE PASSWORD</string>
     <string name="auth_provider">Authentication Provider: </string>
     <string name="placeholder_provider">Provider</string>
     <string name="button_delete_photo">DELETE PHOTO</string>
+    <string name="button_update_photo">UPDATE PHOTO</string>
 </resources>

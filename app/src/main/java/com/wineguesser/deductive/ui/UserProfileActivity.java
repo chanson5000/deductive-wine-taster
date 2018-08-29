@@ -1,16 +1,15 @@
 package com.wineguesser.deductive.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +47,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mReferenceUsers;
-    private boolean mUserLoggedIn;
 
     private String mNewTextDisplayName;
     private String mNewTextEmailAddress;
@@ -71,12 +69,12 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     EditText mEditTextPhotoUri;
     @BindView(R.id.imageView_profile_photo)
     ImageView mImageProfilePhoto;
-    @BindView(R.id.profile_photo_group)
-    LinearLayout mGroupProfilePhoto;
     @BindView(R.id.editText_new_password)
     EditText mEditTextNewPassword;
     @BindView(R.id.editText_confirm_password)
     EditText mEditTextConfirmPassword;
+    @BindView(R.id.button_delete_photo)
+    Button mButtonDeletePhoto;
 
     @BindView(R.id.textError_display_name)
     TextView mErrorDisplayName;
@@ -124,8 +122,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 setUserLoggedIn(user);
                 checkEmailVerification(user);
             } else {
-                mUserLoggedIn = false;
-                mGroupProfilePhoto.setVisibility(View.GONE);
+                showProfilePhoto(null);
                 startLoginUI();
             }
         };
@@ -202,7 +199,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     }
 
     private void setUserLoggedIn(FirebaseUser user) {
-        mUserLoggedIn = true;
 
         String provider = user.getProviderId();
         String name = user.getDisplayName();
@@ -225,29 +221,29 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             }
             showProfilePhoto(photoUrl);
         } else {
-            mGroupProfilePhoto.setVisibility(View.GONE);
+            showProfilePhoto(null);
         }
 
     }
 
     private void showProfilePhoto(Uri photoUrl) {
         if (photoUrl != null) {
-            Picasso.get().load(photoUrl).into(mImageProfilePhoto, new Callback() {
-                @Override
-                public void onSuccess() {
-                    mGroupProfilePhoto.setVisibility(View.VISIBLE);
-                    Timber.d("Photo image successfully loaded.");
-                }
+            Picasso.get().load(photoUrl).placeholder(R.drawable.ic_placeholder_profile_photo)
+                    .into(mImageProfilePhoto, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Timber.d("Photo image successfully loaded.");
+                            mButtonDeletePhoto.setVisibility(View.VISIBLE);
+                        }
 
-                @Override
-                public void onError(Exception e) {
-                    mGroupProfilePhoto.setVisibility(View.GONE);
-                    Timber.d("Error loading profile image.");
-                }
-            });
+                        @Override
+                        public void onError(Exception e) {
+                            Timber.d("Error loading profile image.");
+                        }
+                    });
         } else {
-            mGroupProfilePhoto.setVisibility(View.GONE);
-            mImageProfilePhoto.setImageResource(0);
+            mImageProfilePhoto.setImageResource(R.drawable.ic_placeholder_profile_photo);
+            mButtonDeletePhoto.setVisibility(View.GONE);
         }
     }
 
@@ -274,22 +270,19 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
-    public void onClickUpdateProfile(View view) {
+    public void onClickUpdateDetails(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
         boolean updateDisplayName = false;
         boolean updateEmailAddress = false;
-        boolean updatePhotoUrl = false;
 
         String errorDisplayName = null;
         String errorEmailAddress = null;
         String errorConfirmEmailAddress = null;
-        String errorPhotoUrl = null;
 
         String newDisplayName = mEditTextDisplayName.getText().toString();
         String newEmailAddress = mEditTextEmailAddress.getText().toString();
         String newConfirmEmailAddress = mEditTextConfirmEmailAddress.getText().toString();
-        String newPhotoUrl = mEditTextPhotoUri.getText().toString();
 
         if (user != null) {
             if (!newDisplayName.equals(user.getDisplayName())) {
@@ -315,22 +308,24 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 }
             }
 
-            Uri oldPhotoUri = user.getPhotoUrl();
-            String oldPhotoUrl;
-            if (oldPhotoUri != null) {
-                oldPhotoUrl = oldPhotoUri.toString();
+            if (updateDisplayName) {
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(newDisplayName).build();
 
-                if (!newPhotoUrl.equals(oldPhotoUrl)) {
-                    if (newPhotoUrl.isEmpty()) {
-                        errorPhotoUrl = "Photo URL field must not be empty.";
-                    } else {
-                        errorPhotoUrl = null;
-                        updatePhotoUrl = true;
+                user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Timber.d("Successfully updated user display name.");
+                        mEditTextDisplayName.setText(newDisplayName);
+                        resetErrorDisplayName();
+                        Toast.makeText(mContext,
+                                "Updated display name.",
+                                Toast.LENGTH_SHORT).show();
                     }
-                }
-            } else if (!newPhotoUrl.isEmpty()) {
-                errorPhotoUrl = null;
-                updatePhotoUrl = true;
+                });
+            } else if (errorDisplayName != null) {
+                setErrorDisplayName(errorDisplayName);
+            } else {
+                resetErrorDisplayName();
             }
 
             if (updateEmailAddress) {
@@ -352,25 +347,35 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             } else {
                 resetAllErrorEmailAddress();
             }
+        } else {
+            startLoginUI();
+        }
+    }
 
-            if (updateDisplayName) {
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(newDisplayName).build();
+    public void onClickUpdateProfilePhoto(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
 
-                user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Timber.d("Successfully updated user display name.");
-                        mEditTextDisplayName.setText(newDisplayName);
-                        resetErrorDisplayName();
-                        Toast.makeText(mContext,
-                                "Updated display name.",
-                                Toast.LENGTH_SHORT).show();
+        boolean updatePhotoUrl = false;
+        String errorPhotoUrl = null;
+        String newPhotoUrl = mEditTextPhotoUri.getText().toString();
+
+        if (user != null) {
+            Uri oldPhotoUri = user.getPhotoUrl();
+            String oldPhotoUrl;
+            if (oldPhotoUri != null) {
+                oldPhotoUrl = oldPhotoUri.toString();
+
+                if (!newPhotoUrl.equals(oldPhotoUrl)) {
+                    if (newPhotoUrl.isEmpty()) {
+                        errorPhotoUrl = "Photo URL field must not be empty.";
+                    } else {
+                        errorPhotoUrl = null;
+                        updatePhotoUrl = true;
                     }
-                });
-            } else if (errorDisplayName != null) {
-                setErrorDisplayName(errorDisplayName);
-            } else {
-                resetErrorDisplayName();
+                }
+            } else if (!newPhotoUrl.isEmpty()) {
+                errorPhotoUrl = null;
+                updatePhotoUrl = true;
             }
 
             if (updatePhotoUrl) {
@@ -383,7 +388,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user photo URI.");
                         showProfilePhoto(newPhotoUri);
-                        mErrorPhotoUrl.setText(newPhotoUrl);
+                        mEditTextPhotoUri.setText(newPhotoUrl);
                         resetErrorPhotoUrl();
                         Toast.makeText(mContext,
                                 "Update photo URL.",
@@ -395,13 +400,13 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             } else {
                 resetErrorPhotoUrl();
             }
+
         } else {
             startLoginUI();
         }
     }
 
     public void onClickDeleteProfilePhoto(View view) {
-
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
