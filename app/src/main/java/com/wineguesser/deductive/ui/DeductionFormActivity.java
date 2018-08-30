@@ -3,6 +3,7 @@ package com.wineguesser.deductive.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.VarietyKeyConverter;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -508,6 +510,37 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return true;
     }
 
+    private static class CalculateGrapeGuess extends AsyncTask<SparseIntArray, Void, String> {
+
+        private WeakReference<DeductionFormActivity> activityReference;
+        private WeakReference<FinalConclusionFragment> fragmentReference;
+
+        CalculateGrapeGuess(DeductionFormActivity activityContext,
+                            FinalConclusionFragment fragmentContext) {
+
+            activityReference = new WeakReference<>(activityContext);
+            fragmentReference = new WeakReference<>(fragmentContext);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            FinalConclusionFragment fragment = fragmentReference.get();
+            if (fragment != null && fragment.isVisible()) {
+                fragment.showLoadingIndicator();
+            }
+        }
+
+        @Override
+        protected String doInBackground(SparseIntArray... formSelections) {
+
+        }
+
+        @Override
+        protected void onPostExecute(String appGrapeConclusion) {
+
+        }
+    }
+
     private SparseIntArray retrieveSharedPreferencesValues() {
         // Retrieve all the form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
@@ -555,9 +588,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         if (!validInputs()) {
             return;
         }
+
+        SparseIntArray formSelections = retrieveSharedPreferencesValues();
+
+        new CalculateGrapeGuess(mContext, mFinalFragment).execute(formSelections);
+
         mFinalFragment.showLoadingIndicator();
         // Retrieve our form selections from shared preferences.
-        SparseIntArray formSelections = retrieveSharedPreferencesValues();
         // Convert our form collection keys to our database keys so that they can be compared.
         HashMap<String, Integer> convertedSelectionsMap = convertToDbFormat(formSelections);
 
