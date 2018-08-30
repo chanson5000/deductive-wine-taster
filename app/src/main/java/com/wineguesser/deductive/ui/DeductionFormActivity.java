@@ -3,7 +3,6 @@ package com.wineguesser.deductive.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,24 +24,15 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.VarietyKeyConverter;
+import com.wineguesser.deductive.util.GrapeScore;
+import com.wineguesser.deductive.util.GrapeResults;
 
-import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import timber.log.Timber;
-
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract {
+        DatabaseContract, GrapeResults {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -67,8 +57,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private String mUserFinalQualityString;
     private Integer mUserFinalVintageInteger;
 
-    private static DatabaseReference mDatabaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +64,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
         Intent parentIntent = getIntent();
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
@@ -85,7 +72,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             editor.putString(IS_RED_WINE, RED_WINE);
             mIsRedWine = true;
-            mDatabaseReference = mDatabase.getReference(DB_RED_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -97,7 +83,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             editor.putString(IS_RED_WINE, WHITE_WINE);
             mIsRedWine = false;
-            mDatabaseReference = mDatabase.getReference(DB_WHITE_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -135,8 +120,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     @Override
     public void onStop() {
         super.onStop();
-
-
 
     }
 
@@ -510,37 +493,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return true;
     }
 
-    private static class CalculateGrapeGuess extends AsyncTask<SparseIntArray, Void, String> {
-
-        private WeakReference<DeductionFormActivity> activityReference;
-        private WeakReference<FinalConclusionFragment> fragmentReference;
-
-        CalculateGrapeGuess(DeductionFormActivity activityContext,
-                            FinalConclusionFragment fragmentContext) {
-
-            activityReference = new WeakReference<>(activityContext);
-            fragmentReference = new WeakReference<>(fragmentContext);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            FinalConclusionFragment fragment = fragmentReference.get();
-            if (fragment != null && fragment.isVisible()) {
-                fragment.showLoadingIndicator();
-            }
-        }
-
-        @Override
-        protected String doInBackground(SparseIntArray... formSelections) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String appGrapeConclusion) {
-
-        }
-    }
-
     private SparseIntArray retrieveSharedPreferencesValues() {
         // Retrieve all the form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
@@ -578,11 +530,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return wineFormSelections;
     }
 
-    private HashMap<String, Integer> convertToDbFormat(SparseIntArray sparseIntArray) {
-        VarietyKeyConverter converter = new VarietyKeyConverter();
-        return converter.formToDbFormat(sparseIntArray);
-    }
-
     public void onSubmitFinalConclusion(View view) {
         // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
         if (!validInputs()) {
@@ -591,92 +538,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
-        new CalculateGrapeGuess(mContext, mFinalFragment).execute(formSelections);
+        GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
 
-        mFinalFragment.showLoadingIndicator();
-        // Retrieve our form selections from shared preferences.
-        // Convert our form collection keys to our database keys so that they can be compared.
-        HashMap<String, Integer> convertedSelectionsMap = convertToDbFormat(formSelections);
-
-        // Converting our wines will hand off launching of new intent as well.
-        // The second argument is carrying over our validate user's variety guess.
-        scoreWithDatabase(convertedSelectionsMap);
+        scoreTask.execute(formSelections);
     }
 
-    private void scoreWithDatabase(HashMap<String, Integer> descriptorsMap) {
+    public void onGrapeResult(String topScoreVariety) {
+        resetSharedPreferences();
+        resetAllTopScroll();
+        setCurrentPageInPreferences(SIGHT_PAGE);
+        mLaunchingIntent = true;
 
-        // Creating a hash map here that will be populated with wine variety ID's that have
-        // descriptors that match the form inputs.
-        // <Variety Id, Variety Score>
-        HashMap<String, Integer> varietyScoresMap = new HashMap<>();
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through our database of descriptors for each wine variety and
-                // add point(s) for score each time there is a characteristic match.
-
-                // Here we iterate through each wine variety in our database.
-                for (DataSnapshot varietyRecord : dataSnapshot.getChildren()) {
-                    String varietyId = varietyRecord.getKey();
-                    int currentVarietyScore = 0;
-                    // Here we iterate through each descriptor of the variety.
-                    for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
-                        if (descriptorsMap.containsKey(varietyDescriptor.getKey())) {
-                            // Increment its score each time there is a match.
-                            Object varietyDescriptorValue = varietyDescriptor.getValue();
-                            if (varietyDescriptorValue instanceof Integer
-                                    && (Integer) varietyDescriptorValue > 1) {
-                                // Two points for key indicator of variety (value was a 2 or higher)
-                                currentVarietyScore += 2;
-                            } else {
-                                // On point for regular indicator
-                                currentVarietyScore++;
-                            }
-                        }
-                    }
-                    Timber.d("Putting score: %s, %s", varietyId, currentVarietyScore);
-                    // Putting the final score for the record into the map.
-                    varietyScoresMap.put(varietyId, currentVarietyScore);
-                }
-
-                // Find the wine variety key with the highest score.
-                String highestScoreId = Collections.max(
-                        varietyScoresMap.entrySet(),
-                        (wineId, wineScore) -> wineId.getValue() - wineScore.getValue()).getKey();
-
-                if (highestScoreId != null) {
-                    Timber.d("Result of wine scoring: %s", highestScoreId);
-                    // We now have a wine variety to use in our intent.
-
-                    resetSharedPreferences();
-                    resetAllTopScroll();
-                    setCurrentPageInPreferences(SIGHT_PAGE);
-                    mLaunchingIntent = true;
-
-                    mFinalFragment.hideLoadingIndicator();
-                    launchResultsActivity(highestScoreId);
-                } else {
-                    mFinalFragment.hideLoadingIndicator();
-                    Timber.e("Unable to match wine. Highest score ID returned null!");
-                    Toast.makeText(mContext,
-                            "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                mFinalFragment.hideLoadingIndicator();
-                Toast.makeText(mContext, "Unable to score grape variety.",
-                        Toast.LENGTH_SHORT).show();
-                Timber.e(databaseError.toString());
-            }
-        };
-        // The listener that is triggering the code block above. Only needed to trigger once.
-        mDatabaseReference.addListenerForSingleValueEvent(listener);
-    }
-
-    private void launchResultsActivity(String topScoreVariety) {
         Intent intent = new Intent(mContext, VarietyResultsActivity.class);
         if (mIsRedWine) {
             intent.putExtra(IS_RED_WINE, true);
@@ -692,5 +564,18 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         // We can now launch the activity that will show results to the user.
         startActivity(intent);
+    }
+
+    public void isScoring(Boolean loading) {
+        if (loading) {
+            mFinalFragment.showLoadingIndicator();
+        } else {
+            mFinalFragment.hideLoadingIndicator();
+        }
+    }
+
+    public void onGrapeFailure() {
+        Toast.makeText(mContext,
+                "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
     }
 }
