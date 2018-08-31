@@ -17,6 +17,6 @@ public class DeductiveWineTaster extends Application {
         }
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        MobileAds.initialize(this, "ca-app-pub-6240294942266099~9194679928");
+        MobileAds.initialize(this, getString(R.string.app_add_id));
     }
 }
