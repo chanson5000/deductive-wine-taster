@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="userProfile"
-            type="com.wineguesser.deductive.model.UserProfile" />
+            name="userProfileForm"
+            type="com.wineguesser.deductive.model.UserProfileForm" />
     </data>
 
     <ScrollView
@@ -24,7 +24,7 @@
                 style="@style/AppTheme.Text.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.userName, default=@string/placeholder_user_name}" />
+                android:text="@{userProfileForm.userName, default=@string/placeholder_user_name}" />
 
             <TextView
                 android:id="@+id/textStatic_auth_provider"
@@ -51,7 +51,7 @@
                 android:id="@+id/editText_display_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.displayName}"
+                android:text="@{userProfileForm.displayName}"
                 android:inputType="textPersonName" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:id="@+id/editText_email_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.emailAddress}"
+                android:text="@{userProfileForm.emailAddress}"
                 android:inputType="textEmailAddress" />
 
             <TextView
@@ -95,7 +95,7 @@
                 android:id="@+id/editText_confirm_email_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.confirmEmailAddress}"
+                android:text="@{userProfileForm.confirmEmailAddress}"
                 android:inputType="textEmailAddress" />
 
             <TextView
@@ -132,7 +132,7 @@
             <EditText
                 android:id="@+id/editText_photo_url"
                 android:layout_width="match_parent"
-                android:text="@{userProfile.photoUrl}"
+                android:text="@{userProfileForm.photoUrl}"
                 android:layout_height="wrap_content"
                 android:inputType="textUri" />
 
@@ -212,7 +212,7 @@
                 android:id="@+id/editText_new_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.password}"
+                android:text="@{userProfileForm.password}"
                 android:inputType="textPassword" />
 
             <TextView
@@ -234,7 +234,7 @@
                 android:id="@+id/editText_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfile.confirmPassword}"
+                android:text="@{userProfileForm.confirmPassword}"
                 android:inputType="textPassword" />
 
             <TextView

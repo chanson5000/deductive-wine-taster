@@ -27,7 +27,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityUserProfileBinding;
-import com.wineguesser.deductive.model.UserProfile;
+import com.wineguesser.deductive.model.UserProfileForm;
 import com.wineguesser.deductive.repository.DatabaseContract;
 
 import java.util.Arrays;
@@ -109,7 +109,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     @BindView(R.id.textError_confirm_password)
     TextView mErrorConfirmPassword;
 
-    UserProfile userProfile;
+    UserProfileForm userProfileForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +117,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
 
-        userProfile = new UserProfile();
-        binding.setUserProfile(userProfile);
+        userProfileForm = new UserProfileForm();
+        binding.setUserProfileForm(userProfileForm);
 
         ButterKnife.bind(this);
 
@@ -164,22 +164,22 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String email = user.getEmail();
         Uri photoUrl = user.getPhotoUrl();
 
-        userProfile.setUserName(name);
+        userProfileForm.setUserName(name);
 
         // TODO: Decide that you don't need this.
         mTextProviderName.setText(provider);
 
         if (mNewTextDisplayName == null) {
-            userProfile.setDisplayName(name);
+            userProfileForm.setDisplayName(name);
         }
 
         if (mNewTextEmailAddress == null) {
-            userProfile.setEmailAddress(email);
+            userProfileForm.setEmailAddress(email);
         }
 
         if (photoUrl != null) {
             if (mNewUriPhotoUri == null) {
-                userProfile.setPhotoUrl(photoUrl.toString());
+                userProfileForm.setPhotoUrl(photoUrl.toString());
             }
             showProfilePhoto(photoUrl);
         } else {
@@ -197,22 +197,22 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private void loadUiState() {
         // Populating the UI with saved form values.
         if (mNewTextDisplayName != null) {
-            userProfile.setDisplayName(mNewTextDisplayName);
+            userProfileForm.setDisplayName(mNewTextDisplayName);
         }
         if (mNewTextEmailAddress != null) {
-            userProfile.setEmailAddress(mNewTextEmailAddress);
+            userProfileForm.setEmailAddress(mNewTextEmailAddress);
         }
         if (mNewTextConfirmEmailAddress != null) {
-            userProfile.setConfirmEmailAddress(mNewTextConfirmEmailAddress);
+            userProfileForm.setConfirmEmailAddress(mNewTextConfirmEmailAddress);
         }
         if (mNewUriPhotoUri != null) {
-            userProfile.setPhotoUrl(mNewUriPhotoUri);
+            userProfileForm.setPhotoUrl(mNewUriPhotoUri);
         }
         if (mNewPassword != null) {
-            userProfile.setPassword(mNewPassword);
+            userProfileForm.setPassword(mNewPassword);
         }
         if (mNewConfirmPassword != null) {
-            userProfile.setConfirmPassword(mNewConfirmPassword);
+            userProfileForm.setConfirmPassword(mNewConfirmPassword);
         }
     }
 
@@ -229,12 +229,12 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     }
 
     private void saveUiState() {
-        mNewTextDisplayName = userProfile.getDisplayName();
-        mNewTextEmailAddress = userProfile.getEmailAddress();
-        mNewTextConfirmEmailAddress = userProfile.getConfirmEmailAddress();
-        mNewUriPhotoUri = userProfile.getPhotoUrl();
-        mNewPassword = userProfile.getPassword();
-        mNewConfirmPassword = userProfile.getConfirmPassword();
+        mNewTextDisplayName = userProfileForm.getDisplayName();
+        mNewTextEmailAddress = userProfileForm.getEmailAddress();
+        mNewTextConfirmEmailAddress = userProfileForm.getConfirmEmailAddress();
+        mNewUriPhotoUri = userProfileForm.getPhotoUrl();
+        mNewPassword = userProfileForm.getPassword();
+        mNewConfirmPassword = userProfileForm.getConfirmPassword();
     }
 
     @Override
@@ -304,9 +304,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String errorEmailAddress = null;
         String errorConfirmEmailAddress = null;
 
-        String newDisplayName = userProfile.getDisplayName();
-        String newEmailAddress = userProfile.getEmailAddress();
-        String newConfirmEmailAddress = userProfile.getConfirmEmailAddress();
+        String newDisplayName = userProfileForm.getDisplayName();
+        String newEmailAddress = userProfileForm.getEmailAddress();
+        String newConfirmEmailAddress = userProfileForm.getConfirmEmailAddress();
 
         if (user != null) {
             if (!newDisplayName.equals(user.getDisplayName())) {
@@ -339,8 +339,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user display name.");
-                        userProfile.setUserName(newDisplayName);
-                        userProfile.setDisplayName(newDisplayName);
+                        userProfileForm.setUserName(newDisplayName);
+                        userProfileForm.setDisplayName(newDisplayName);
                         resetErrorDisplayName();
                         Toast.makeText(mContext,
                                 "Updated display name.",
@@ -357,8 +357,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 user.updateEmail(newEmailAddress).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user email address.");
-                        userProfile.setEmailAddress(newEmailAddress);
-                        userProfile.setConfirmEmailAddress("");
+                        userProfileForm.setEmailAddress(newEmailAddress);
+                        userProfileForm.setConfirmEmailAddress("");
                         resetAllErrorEmailAddress();
                         Toast.makeText(mContext,
                                 "Updated email address.",
@@ -383,7 +383,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         boolean updatePhotoUrl = false;
         String errorPhotoUrl = null;
 
-        String newPhotoUrl = userProfile.getPhotoUrl();
+        String newPhotoUrl = userProfileForm.getPhotoUrl();
 
         if (user != null) {
             Uri oldPhotoUri = user.getPhotoUrl();
@@ -414,7 +414,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user photo URI.");
                         showProfilePhoto(newPhotoUri);
-                        userProfile.setPhotoUrl(newPhotoUrl);
+                        userProfileForm.setPhotoUrl(newPhotoUrl);
                         resetErrorPhotoUrl();
                         Toast.makeText(mContext,
                                 "Update photo URL.",
@@ -472,8 +472,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String errorPassword = null;
         String errorConfirmPassword = null;
 
-        String newPassword = userProfile.getPassword();
-        String newConfirmPassword = userProfile.getConfirmPassword();
+        String newPassword = userProfileForm.getPassword();
+        String newConfirmPassword = userProfileForm.getConfirmPassword();
 
         if (user != null) {
             if (!newPassword.isEmpty()) {
