@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,54 +59,14 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private String mNewConfirmPassword;
 
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_user_name)
-    TextView mTextViewUserName;
-    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_auth_provider)
     TextView mTextProviderName;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_display_name)
-    EditText mEditTextDisplayName;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_email_address)
-    EditText mEditTextEmailAddress;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_confirm_email_address)
-    EditText mEditTextConfirmEmailAddress;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_photo_url)
-    EditText mEditTextPhotoUri;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.imageView_profile_photo)
     ImageView mImageProfilePhoto;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_new_password)
-    EditText mEditTextNewPassword;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.editText_confirm_password)
-    EditText mEditTextConfirmPassword;
-    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.button_delete_photo)
     Button mButtonDeletePhoto;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_display_name)
-    TextView mErrorDisplayName;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_email_address)
-    TextView mErrorEmailAddress;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_confirm_email_address)
-    TextView mErrorConfirmEmailAddress;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_photo_url)
-    TextView mErrorPhotoUrl;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_new_password)
-    TextView mErrorNewPassword;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textError_confirm_password)
-    TextView mErrorConfirmPassword;
 
     UserProfileForm userProfileForm;
 
@@ -513,24 +472,20 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
     private void setErrorEmailAddress(String error) {
         resetErrorConfirmEmailAddress();
-        mErrorEmailAddress.setVisibility(View.VISIBLE);
-        mErrorEmailAddress.setText(error);
+        userProfileForm.setErrorEmailAddress(error);
     }
 
     private void resetErrorEmailAddress() {
-        mErrorEmailAddress.setText("");
-        mErrorEmailAddress.setVisibility(View.GONE);
+        userProfileForm.setErrorEmailAddress(null);
     }
 
     private void setErrorConfirmEmailAddress(String error) {
         resetErrorEmailAddress();
-        mErrorConfirmEmailAddress.setVisibility(View.VISIBLE);
-        mErrorConfirmEmailAddress.setText(error);
+        userProfileForm.setErrorConfirmEmailAddress(error);
     }
 
     private void resetErrorConfirmEmailAddress() {
-        mErrorConfirmEmailAddress.setText("");
-        mErrorConfirmEmailAddress.setVisibility(View.GONE);
+        userProfileForm.setErrorConfirmEmailAddress(null);
     }
 
     private void resetAllErrorEmailAddress() {
@@ -539,33 +494,27 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     }
 
     private void setErrorDisplayName(String error) {
-        mErrorDisplayName.setVisibility(View.VISIBLE);
-        mErrorDisplayName.setText(error);
+        userProfileForm.setErrorDisplayName(error);
     }
 
     private void resetErrorDisplayName() {
-        mErrorDisplayName.setVisibility(View.GONE);
-        mErrorDisplayName.setText("");
+        userProfileForm.setErrorDisplayName(null);
     }
 
     private void setErrorPhotoUrl(String error) {
-        mErrorPhotoUrl.setVisibility(View.VISIBLE);
-        mErrorPhotoUrl.setText(error);
+        userProfileForm.setErrorPhotoUrl(error);
     }
 
     private void resetErrorPhotoUrl() {
-        mErrorPhotoUrl.setVisibility(View.GONE);
-        mErrorPhotoUrl.setText("");
+        userProfileForm.setErrorPhotoUrl(null);
     }
 
     private void resetErrorNewPassword() {
-        mErrorNewPassword.setVisibility(View.GONE);
-        mErrorNewPassword.setText("");
+        userProfileForm.setErrorPassword(null);
     }
 
     private void resetErrorConfirmPassword() {
-        mErrorConfirmPassword.setVisibility(View.GONE);
-        mErrorConfirmPassword.setText("");
+        userProfileForm.setErrorConfirmPassword(null);
     }
 
     private void resetAllErrorPassword() {
@@ -575,19 +524,17 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
     private void setErrorNewPassword(String error) {
         resetErrorConfirmPassword();
-        mErrorNewPassword.setText(error);
-        mErrorNewPassword.setVisibility(View.VISIBLE);
+        userProfileForm.setErrorPassword(error);
     }
 
     private void setErrorConfirmPassword(String error) {
         resetErrorNewPassword();
-        mErrorConfirmPassword.setText(error);
-        mErrorConfirmPassword.setVisibility(View.VISIBLE);
+        userProfileForm.setConfirmPassword(error);
     }
 
     private void resetAllPasswordFields() {
-        mEditTextNewPassword.setText("");
-        mEditTextConfirmPassword.setText("");
+        userProfileForm.setPassword(null);
+        userProfileForm.setConfirmPassword(null);
     }
 
     private void checkEmailVerification(FirebaseUser user) {

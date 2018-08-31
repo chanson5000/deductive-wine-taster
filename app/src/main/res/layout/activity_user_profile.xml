@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View" />
         <variable
             name="userProfileForm"
             type="com.wineguesser.deductive.model.UserProfileForm" />
@@ -51,15 +52,16 @@
                 android:id="@+id/editText_display_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfileForm.displayName}"
+                android:text="@={userProfileForm.displayName}"
                 android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/textError_display_name"
                 style="@style/AppTheme.Text.Error"
+                android:text="@{userProfileForm.errorDisplayName}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorDisplayName != null ? View.VISIBLE : View.GONE}" />
 
             <TextView
                 android:id="@+id/textStatic_email_address"
@@ -73,15 +75,16 @@
                 android:id="@+id/editText_email_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfileForm.emailAddress}"
+                android:text="@={userProfileForm.emailAddress}"
                 android:inputType="textEmailAddress" />
 
             <TextView
                 android:id="@+id/textError_email_address"
                 style="@style/AppTheme.Text.Error"
+                android:text="@{userProfileForm.errorEmailAddress}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorEmailAddress != null ? View.VISIBLE : View.GONE}" />
 
             <TextView
                 android:id="@+id/textStatic_confirm_email_address"
@@ -95,16 +98,17 @@
                 android:id="@+id/editText_confirm_email_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfileForm.confirmEmailAddress}"
+                android:text="@={userProfileForm.confirmEmailAddress}"
                 android:inputType="textEmailAddress" />
 
             <TextView
                 android:id="@+id/textError_confirm_email_address"
                 style="@style/AppTheme.Text.Descriptor"
+                android:text="@{userProfileForm.errorConfirmEmailAddress}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_text"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorConfirmEmailAddress != null ? View.VISIBLE : View.GONE}" />
 
             <Button
                 style="@style/AppTheme.Button"
@@ -132,16 +136,17 @@
             <EditText
                 android:id="@+id/editText_photo_url"
                 android:layout_width="match_parent"
-                android:text="@{userProfileForm.photoUrl}"
+                android:text="@={userProfileForm.photoUrl}"
                 android:layout_height="wrap_content"
                 android:inputType="textUri" />
 
             <TextView
                 android:id="@+id/textError_photo_url"
                 style="@style/AppTheme.Text.Error"
+                android:text="@{userProfileForm.errorPhotoUrl}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorPhotoUrl != null ? View.VISIBLE : View.GONE}" />
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -212,15 +217,16 @@
                 android:id="@+id/editText_new_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfileForm.password}"
+                android:text="@={userProfileForm.password}"
                 android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/textError_new_password"
                 style="@style/AppTheme.Text.Error"
+                android:text="@{userProfileForm.errorPassword}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorPassword != null ? View.VISIBLE : View.GONE}" />
 
             <TextView
                 android:id="@+id/textStatic_confirm_password"
@@ -234,15 +240,16 @@
                 android:id="@+id/editText_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{userProfileForm.confirmPassword}"
+                android:text="@={userProfileForm.confirmPassword}"
                 android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/textError_confirm_password"
                 style="@style/AppTheme.Text.Error"
+                android:text="@{userProfileForm.errorConfirmPassword}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="@{userProfileForm.errorConfirmPassword != null ? View.VISIBLE : View.GONE}" />
 
             <Button
                 style="@style/AppTheme.Button"
