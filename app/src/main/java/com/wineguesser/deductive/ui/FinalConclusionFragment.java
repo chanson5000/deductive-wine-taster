@@ -18,6 +18,7 @@ import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -106,13 +107,16 @@ public class FinalConclusionFragment extends Fragment implements
 
         mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(R.array.all_countries)));
+                new ArrayList<>(parseResourceArray(R.array.all_countries))));
 
         mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(R.array.all_regions)));
-
+                new ArrayList<>(parseResourceArray(R.array.all_regions))));
         return rootView;
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 
     @Override
