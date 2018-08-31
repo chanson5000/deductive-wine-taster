@@ -163,14 +163,17 @@ public class FinalConclusionFragment extends Fragment implements
     }
 
     private void saveSelectionState() {
-        List<Integer> textViews = new ArrayList<>(FinalConclusionAutoCompleteTextViews);
-
         SharedPreferences.Editor editor = mWinePreferences.edit();
-
-        for (Integer view : textViews) {
-            editor.putString(Integer.toString(view),
-            mAutoTextVariety.getText().toString());
-        }
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
+                mAutoTextVariety.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
+                mAutoTextCountry.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_REGION),
+                mAutoTextRegion.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_QUALITY),
+                mAutoTextQuality.getText().toString());
+        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_VINTAGE),
+                mAutoTextVintage.getText().toString());
         editor.apply();
     }
 
