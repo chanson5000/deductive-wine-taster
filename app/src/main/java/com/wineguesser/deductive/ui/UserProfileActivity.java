@@ -1,6 +1,7 @@
 package com.wineguesser.deductive.ui;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.databinding.ActivityUserProfileBinding;
+import com.wineguesser.deductive.model.UserProfile;
 import com.wineguesser.deductive.repository.DatabaseContract;
 
 import java.util.Arrays;
@@ -48,6 +51,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mReferenceUsers;
 
+    // Representing that the user has changed fields.
     private String mNewTextDisplayName;
     private String mNewTextEmailAddress;
     private String mNewTextConfirmEmailAddress;
@@ -105,10 +109,16 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     @BindView(R.id.textError_confirm_password)
     TextView mErrorConfirmPassword;
 
+    UserProfile userProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
+                this, R.layout.activity_user_profile);
+
+        userProfile = new UserProfile();
+        binding.setUserProfile(userProfile);
 
         ButterKnife.bind(this);
 
@@ -134,6 +144,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
+            // Activity requires a logged in user.
+            // If not logged in, send to log in UI.
             if (user != null) {
                 setUserLoggedIn(user);
                 checkEmailVerification(user);
@@ -146,25 +158,83 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    private void setUserLoggedIn(FirebaseUser user) {
+        String provider = user.getProviderId();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        Uri photoUrl = user.getPhotoUrl();
 
-        mAuth.removeAuthStateListener(mAuthListener);
+        userProfile.setUserName(name);
+
+        // TODO: Decide that you don't need this.
+        mTextProviderName.setText(provider);
+
+        if (mNewTextDisplayName == null) {
+            userProfile.setDisplayName(name);
+        }
+
+        if (mNewTextEmailAddress == null) {
+            userProfile.setEmailAddress(email);
+        }
+
+        if (photoUrl != null) {
+            if (mNewUriPhotoUri == null) {
+                userProfile.setPhotoUrl(photoUrl.toString());
+            }
+            showProfilePhoto(photoUrl);
+        } else {
+            showProfilePhoto(null);
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         loadUiState();
+    }
+
+    private void loadUiState() {
+        // Populating the UI with saved form values.
+        if (mNewTextDisplayName != null) {
+            userProfile.setDisplayName(mNewTextDisplayName);
+        }
+        if (mNewTextEmailAddress != null) {
+            userProfile.setEmailAddress(mNewTextEmailAddress);
+        }
+        if (mNewTextConfirmEmailAddress != null) {
+            userProfile.setConfirmEmailAddress(mNewTextConfirmEmailAddress);
+        }
+        if (mNewUriPhotoUri != null) {
+            userProfile.setPhotoUrl(mNewUriPhotoUri);
+        }
+        if (mNewPassword != null) {
+            userProfile.setPassword(mNewPassword);
+        }
+        if (mNewConfirmPassword != null) {
+            userProfile.setConfirmPassword(mNewConfirmPassword);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         saveUiState();
+    }
+
+    private void saveUiState() {
+        mNewTextDisplayName = userProfile.getDisplayName();
+        mNewTextEmailAddress = userProfile.getEmailAddress();
+        mNewTextConfirmEmailAddress = userProfile.getConfirmEmailAddress();
+        mNewUriPhotoUri = userProfile.getPhotoUrl();
+        mNewPassword = userProfile.getPassword();
+        mNewConfirmPassword = userProfile.getConfirmPassword();
     }
 
     @Override
@@ -178,68 +248,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         savedInstanceState.putString(NEW_PHOTO_URI, mNewUriPhotoUri);
         savedInstanceState.putString(NEW_PASSWORD, mNewPassword);
         savedInstanceState.putString(NEW_CONFIRM_PASSWORD, mNewConfirmPassword);
-    }
-
-    private void saveUiState() {
-        mNewTextDisplayName = mEditTextDisplayName.getText().toString();
-        mNewTextEmailAddress = mEditTextEmailAddress.getText().toString();
-        mNewTextConfirmEmailAddress = mEditTextConfirmEmailAddress.getText().toString();
-        mNewUriPhotoUri = mEditTextPhotoUri.getText().toString();
-        mNewPassword = mEditTextNewPassword.getText().toString();
-        mNewConfirmPassword = mEditTextConfirmPassword.getText().toString();
-    }
-
-    private void loadUiState() {
-        if (mNewTextDisplayName != null) {
-            mEditTextDisplayName.setText(mNewTextDisplayName);
-        }
-        if (mNewTextEmailAddress != null) {
-            mEditTextEmailAddress.setText(mNewTextEmailAddress);
-
-        }
-        if (mNewTextConfirmEmailAddress != null) {
-            mEditTextConfirmEmailAddress.setText(mNewTextConfirmEmailAddress);
-
-        }
-        if (mNewUriPhotoUri != null) {
-            mEditTextPhotoUri.setText(mNewUriPhotoUri);
-
-        }
-        if (mNewPassword != null) {
-            mEditTextNewPassword.setText(mNewPassword);
-
-        }
-        if (mNewConfirmPassword != null) {
-            mEditTextConfirmPassword.setText(mNewConfirmPassword);
-        }
-    }
-
-    private void setUserLoggedIn(FirebaseUser user) {
-
-        String provider = user.getProviderId();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        Uri photoUrl = user.getPhotoUrl();
-
-        mTextViewUserName.setText(name);
-        mTextProviderName.setText(provider);
-
-        if (mNewTextDisplayName == null) {
-            mEditTextDisplayName.setText(name);
-        }
-        if (mNewTextEmailAddress == null) {
-            mEditTextEmailAddress.setText(email);
-        }
-
-        if (photoUrl != null) {
-            if (mNewUriPhotoUri == null) {
-                mEditTextPhotoUri.setText(photoUrl.toString());
-            }
-            showProfilePhoto(photoUrl);
-        } else {
-            showProfilePhoto(null);
-        }
-
     }
 
     private void showProfilePhoto(Uri photoUrl) {
@@ -296,9 +304,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String errorEmailAddress = null;
         String errorConfirmEmailAddress = null;
 
-        String newDisplayName = mEditTextDisplayName.getText().toString();
-        String newEmailAddress = mEditTextEmailAddress.getText().toString();
-        String newConfirmEmailAddress = mEditTextConfirmEmailAddress.getText().toString();
+        String newDisplayName = userProfile.getDisplayName();
+        String newEmailAddress = userProfile.getEmailAddress();
+        String newConfirmEmailAddress = userProfile.getConfirmEmailAddress();
 
         if (user != null) {
             if (!newDisplayName.equals(user.getDisplayName())) {
@@ -331,7 +339,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user display name.");
-                        mEditTextDisplayName.setText(newDisplayName);
+                        userProfile.setUserName(newDisplayName);
+                        userProfile.setDisplayName(newDisplayName);
                         resetErrorDisplayName();
                         Toast.makeText(mContext,
                                 "Updated display name.",
@@ -348,8 +357,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 user.updateEmail(newEmailAddress).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user email address.");
-                        mEditTextEmailAddress.setText(newEmailAddress);
-                        mEditTextConfirmEmailAddress.setText("");
+                        userProfile.setEmailAddress(newEmailAddress);
+                        userProfile.setConfirmEmailAddress("");
                         resetAllErrorEmailAddress();
                         Toast.makeText(mContext,
                                 "Updated email address.",
@@ -373,7 +382,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
         boolean updatePhotoUrl = false;
         String errorPhotoUrl = null;
-        String newPhotoUrl = mEditTextPhotoUri.getText().toString();
+
+        String newPhotoUrl = userProfile.getPhotoUrl();
 
         if (user != null) {
             Uri oldPhotoUri = user.getPhotoUrl();
@@ -404,7 +414,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user photo URI.");
                         showProfilePhoto(newPhotoUri);
-                        mEditTextPhotoUri.setText(newPhotoUrl);
+                        userProfile.setPhotoUrl(newPhotoUrl);
                         resetErrorPhotoUrl();
                         Toast.makeText(mContext,
                                 "Update photo URL.",
@@ -462,8 +472,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String errorPassword = null;
         String errorConfirmPassword = null;
 
-        String newPassword = mEditTextNewPassword.getText().toString();
-        String newConfirmPassword = mEditTextConfirmPassword.getText().toString();
+        String newPassword = userProfile.getPassword();
+        String newConfirmPassword = userProfile.getConfirmPassword();
 
         if (user != null) {
             if (!newPassword.isEmpty()) {
