@@ -139,7 +139,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mDbReferenceUserConclusions = database.getReference(DB_REFERENCE_ALL_CONCLUSIONS);
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 

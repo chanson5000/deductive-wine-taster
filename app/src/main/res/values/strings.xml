@@ -337,9 +337,10 @@
         <item>@string/italy</item>
         <item>@string/france</item>
     </string-array>
-
+V
     <!-- AdMob -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_add_id">ca-app-pub-6240294942266099~9194679928</string>
+    <string name="interstitial_ad_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="log_in">Log In</string>
     <string name="welcome_tag">Welcome, %1$s</string>

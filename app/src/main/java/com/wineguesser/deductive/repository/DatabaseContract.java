@@ -1,7 +1,15 @@
 package com.wineguesser.deductive.repository;
 
+import android.content.res.Resources;
+
+import com.firebase.ui.auth.data.model.Resource;
+
+import java.util.HashMap;
+
 // These are the keys that our database must match.
 public interface DatabaseContract {
+
+    Resources RESOURCES = Resources.getSystem();
 
     String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
     String IS_RED_WINE = "IS_RED_WINE";
@@ -289,4 +297,19 @@ public interface DatabaseContract {
     String KEY_MINERAL_CHALK = MINERAL_PREPEND + CHALK;
     String KEY_MINERAL_SLATE = MINERAL_PREPEND + SLATE;
     String KEY_MINERAL_FLINT = MINERAL_PREPEND + FLINT;
+
+    String APPEND_NEW_WORLD = "_new_world";
+    String APPEND_OLD_WORLD = "_old_world";
+
+    String KEY_CABERNET_SAUVIGNON = "Cabernet_Sauvignon";
+    String KEY_GAMAY = "Gamay";
+    String KEY_GRENACHE = "Grenache";
+    String KEY_MALBEC = "Malbec";
+    String KEY_MERLOT = "Merlot";
+    String KEY_NEBBIOLO = "Nebbiolo";
+    String KEY_PINOT_NOIR = "Pinot_Noir";
+    String KEY_SANGIOVESE = "Sangiovese";
+    String KEY_SYRAH = "Syrah";
+    String KEY_TEMPRANILLO = "Tempranillo";
+    String KEY_ZINFANDEL = "Zinfandel";
 }
