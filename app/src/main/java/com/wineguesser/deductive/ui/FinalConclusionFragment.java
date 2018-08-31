@@ -17,6 +17,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +25,8 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class FinalConclusionFragment extends Fragment implements DeductionFormContract,
-        DatabaseContract {
+public class FinalConclusionFragment extends Fragment implements
+        DeductionFormContract, DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
@@ -77,14 +78,18 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                 mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
         if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
             mIsRedWine = true;
-        } else {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-            mIsRedWine = false;
         }
+
+        String wineColorPreferenceType;
+
+        if (mIsRedWine) {
+            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
+        } else {
+            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
+        }
+        mWinePreferences = mFragmentActivity
+                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -97,23 +102,17 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
 
         ButterKnife.bind(this, rootView);
 
-        if (mIsRedWine) {
-            setAutoTextVarieties(RedVarieties);
-        } else {
-            setAutoTextVarieties(WhiteVarieties);
-        }
-        setAutoTextCountries(AllCountries);
+        setAutoTextVarietyByType(mIsRedWine);
 
-        setAutoTextRegions(AllRegions);
+        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>(R.array.all_countries)));
+
+        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>(R.array.all_regions)));
 
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSelectionState();
-        loadScrollState();
     }
 
     @Override
@@ -123,17 +122,39 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
         saveScrollState();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSelectionState();
+        loadScrollState();
+    }
+
+    private void saveScrollState() {
+        String scrollType;
+
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        if (mIsRedWine) {
+            scrollType = RED_FINAL_Y_SCROLL;
+        } else {
+            scrollType = WHITE_FINAL_Y_SCROLL;
+        }
+        editor.putInt(scrollType, mScrollViewFinal.getScrollY());
+        editor.apply();
+    }
 
     private void loadScrollState() {
+        String scrollType;
+
         if (mIsRedWine) {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewFinal.scrollTo(0, mActivityPreferences
-                            .getInt(RED_FINAL_Y_SCROLL, 0)));
+            scrollType = RED_FINAL_Y_SCROLL;
         } else {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewFinal.scrollTo(0, mActivityPreferences
-                            .getInt(WHITE_FINAL_Y_SCROLL, 0)));
+            scrollType = WHITE_FINAL_Y_SCROLL;
         }
+
+        // scrollTo must not be executed on the main thread.
+        AppExecutors.getInstance().mainThread().execute(() ->
+                mScrollViewFinal.scrollTo(0, mActivityPreferences
+                        .getInt(scrollType, 0)));
     }
 
     public void scrollToTop() {
@@ -141,53 +162,16 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                 mScrollViewFinal.scrollTo(0, 0));
     }
 
-    // Saving selection state Asynchronously with apply()
     private void saveSelectionState() {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
-                mAutoTextVariety.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
-                mAutoTextCountry.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_REGION),
-                mAutoTextRegion.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_QUALITY),
-                mAutoTextQuality.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_VINTAGE),
-                mAutoTextVintage.getText().toString());
-        editor.apply();
-    }
+        List<Integer> textViews = new ArrayList<>(FinalConclusionAutoCompleteTextViews);
 
-    private void saveScrollState() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        if (mIsRedWine) {
-            editor.putInt(RED_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
-        } else {
-            editor.putInt(WHITE_FINAL_Y_SCROLL, mScrollViewFinal.getScrollY());
+        SharedPreferences.Editor editor = mWinePreferences.edit();
+
+        for (Integer view : textViews) {
+            editor.putString(Integer.toString(view),
+            mAutoTextVariety.getText().toString());
         }
         editor.apply();
-    }
-
-
-    private void setAutoTextCountries(String[] countries) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries);
-        mAutoTextCountry.setAdapter(adapter);
-    }
-
-    private void setAutoTextVarieties(List<String> varieties) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, varieties);
-        mAutoTextVariety.setAdapter(adapter);
-    }
-
-    private void setAutoTextRegions(String[] regions) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, regions);
-        mAutoTextRegion.setAdapter(adapter);
-    }
-
-    private int castKey(String key) {
-        return Integer.parseInt(key);
     }
 
     private void loadSelectionState() {
@@ -200,6 +184,24 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
                         .setText(entry.getValue().toString());
             }
         }
+    }
+
+    private void setAutoTextVarietyByType(Boolean isRedWine) {
+        List<String> varieties;
+
+        if (isRedWine) {
+            varieties = new ArrayList<>(R.array.red_varieties);
+        } else {
+            varieties = new ArrayList<>(R.array.white_varieties);
+        }
+
+        mAutoTextVariety.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, varieties));
+
+    }
+
+    private int castKey(String key) {
+        return Integer.parseInt(key);
     }
 
     public void showLoadingIndicator() {
