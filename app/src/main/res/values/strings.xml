@@ -217,38 +217,126 @@
     <string name="user_conclusion_colon">Your Conclusion: </string>
 
     <!-- Varieties -->
-    <string name="albarino">Albarino</string>
-    <string name="cabernet_franc">Cabernet Franc</string>
-    <string name="cabernet_sauvignon">Cabernet Sauvignon</string>
-    <string name="chardonnay">Chardonnay</string>
-    <string name="chenin_blanc">Chenin Blanc</string>
-    <string name="gamay">Gamay</string>
-    <string name="gewurztraminer">Gewurzraminer</string>
-    <string name="grenache">Grenache</string>
-    <string name="malbec">Malbec</string>
-    <string name="merlot">Merlot</string>
-    <string name="nebbiolo">Nebbiolo</string>
-    <string name="pinot_gris">Pinot Gris</string>
-    <string name="pinot_noir">Pinot Noir</string>
-    <string name="riesling">Riesling</string>
-    <string name="sangiovese">Sangiovese</string>
-    <string name="sauvignon_blanc">Sauvignon Blanc</string>
-    <string name="syrah">Syrah</string>
-    <string name="tempranillo">Tempranillo</string>
-    <string name="torrontes">Torrontes</string>
-    <string name="viognier">Viognier</string>
-    <string name="zinfandel">Zinfandel</string>
+    <string name="albarino" translatable="false">Albariño</string>
+    <string name="cabernet_sauvignon" translatable="false">Cabernet Sauvignon</string>
+    <string name="chardonnay" translatable="false">Chardonnay</string>
+    <string name="chenin_blanc" translatable="false">Chenin Blanc</string>
+    <string name="gamay" translatable="false">Gamay</string>
+    <string name="gewurztraminer" translatable="false">Gewürztraminer</string>
+    <string name="grenache" translatable="false">Grenache</string>
+    <string name="malbec" translatable="false">Malbec</string>
+    <string name="merlot" translatable="false">Merlot</string>
+    <string name="nebbiolo" translatable="false">Nebbiolo</string>
+    <string name="pinot_gris" translatable="false">Pinot Gris</string>
+    <string name="pinot_noir" translatable="false">Pinot Noir</string>
+    <string name="riesling" translatable="false">Riesling</string>
+    <string name="sangiovese" translatable="false">Sangiovese</string>
+    <string name="sauvignon_blanc" translatable="false">Sauvignon Blanc</string>
+    <string name="syrah" translatable="false">Syrah</string>
+    <string name="tempranillo" translatable="false">Tempranillo</string>
+    <string name="torrontes" translatable="false">Torrontés</string>
+    <string name="viognier" translatable="false">Viognier</string>
+    <string name="zinfandel" translatable="false">Zinfandel</string>
+
+    <string-array name="red_varieties">
+        <item>@string/cabernet_sauvignon</item>
+        <item>@string/gamay</item>
+        <item>@string/grenache</item>
+        <item>@string/malbec</item>
+        <item>@string/merlot</item>
+        <item>@string/nebbiolo</item>
+        <item>@string/pinot_noir</item>
+        <item>@string/sangiovese</item>
+        <item>@string/syrah</item>
+        <item>@string/tempranillo</item>
+        <item>@string/zinfandel</item>
+    </string-array>
+
+    <string-array name="white_varieties">
+        <item>@string/albarino</item>
+        <item>@string/chardonnay</item>
+        <item>@string/chenin_blanc</item>
+        <item>@string/gewurztraminer</item>
+        <item>@string/pinot_gris</item>
+        <item>@string/riesling</item>
+        <item>@string/sauvignon_blanc</item>
+        <item>@string/torrontes</item>
+        <item>@string/viognier</item>
+    </string-array>
 
     <!-- Countries -->
-    <string name="argentina">Argentina</string>
-    <string name="australia">Australia</string>
-    <string name="chile">Chile</string>
-    <string name="france">France</string>
-    <string name="germany">Germany</string>
-    <string name="italy">Italy</string>
-    <string name="new_zealand">New Zealand</string>
-    <string name="spain">Spain</string>
-    <string name="united_states">United States</string>
+    <string name="argentina" translatable="false">Argentina</string>
+    <string name="australia" translatable="false">Australia</string>
+    <string name="chile" translatable="false">Chile</string>
+    <string name="france" translatable="false">France</string>
+    <string name="germany" translatable="false">Germany</string>
+    <string name="italy" translatable="false">Italy</string>
+    <string name="new_zealand" translatable="false">New Zealand</string>
+    <string name="spain" translatable="false">Spain</string>
+    <string name="united_states" translatable="false">United States</string>
+    
+    <!-- Regions -->
+    <string name="alsace" translatable="false">Alsace</string>
+    <string name="burgundy" translatable="false">Burgundy</string>
+    <string name="bordeaux" translatable="false">Bordeaux</string>
+    <string name="loire_valley" translatable="false">Loire Valley</string>
+    <string name="rhone_valley" translatable="false">Rhône Valley</string>
+    <string name="south_australia" translatable="false">South Australia</string>
+    <string name="western_australia" translatable="false">Western Australia</string>
+    <string name="central_valley" translatable="false">Central Valley</string>
+    <string name="california" translatable="false">California</string>
+    <string name="victoria" translatable="false">Victoria</string>
+    <string name="piedmont" translatable="false">Piedmont</string>
+    <string name="oregon" translatable="false">Oregon</string>
+    <string name="south_island" translatable="false">South Island</string>
+    <string name="north_island" translatable="false">North Island</string>
+    <string name="tuscany" translatable="false">Tuscany</string>
+
+    <string-array name="all_regions">
+        <item>@string/alsace</item>
+        <item>@string/burgundy</item>
+        <item>@string/bordeaux</item>
+        <item>@string/loire_valley</item>
+        <item>@string/rhone_valley</item>
+        <item>@string/south_australia</item>
+        <item>@string/south_australia</item>
+        <item>@string/western_australia</item>
+        <item>@string/central_valley</item>
+        <item>@string/california</item>
+        <item>@string/victoria</item>
+        <item>@string/piedmont</item>
+        <item>@string/oregon</item>
+        <item>@string/south_island</item>
+        <item>@string/north_island</item>
+        <item>@string/tuscany</item>
+    </string-array>
+
+    <string-array name="all_countries">
+        <item>@string/argentina</item>
+        <item>@string/australia</item>
+        <item>@string/chile</item>
+        <item>@string/france</item>
+        <item>@string/germany</item>
+        <item>@string/italy</item>
+        <item>@string/new_zealand</item>
+        <item>@string/spain</item>
+        <item>@string/united_states</item>
+    </string-array>
+
+    <string-array name="new_world_countries">
+        <item>@string/argentina</item>
+        <item>@string/australia</item>
+        <item>@string/chile</item>
+        <item>@string/new_zealand</item>
+        <item>@string/united_states</item>
+    </string-array>
+
+    <string-array name="old_world_countries">
+        <item>@string/france</item>
+        <item>@string/germany</item>
+        <item>@string/italy</item>
+        <item>@string/france</item>
+    </string-array>
 
     <!-- AdMob -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
@@ -280,5 +368,6 @@
     <string name="placeholder_wine_variety">Wine Variety</string>
     <string name="placeholder_user_conclusion">User Conclusion</string>
     <string name="placeholder_app_conclusion">App Conclusion</string>
+
 
 </resources>
