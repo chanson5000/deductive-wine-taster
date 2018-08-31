@@ -32,18 +32,25 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_final)
     ScrollView mScrollViewFinal;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_grape_variety)
     AutoCompleteTextView mAutoTextVariety;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_country)
     AutoCompleteTextView mAutoTextCountry;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_region)
     AutoCompleteTextView mAutoTextRegion;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_quality)
     AutoCompleteTextView mAutoTextQuality;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mAutoTextVintage;
+    @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})
     List<View> mLoadingIndicator;
 
@@ -103,22 +110,10 @@ public class FinalConclusionFragment extends Fragment implements DeductionFormCo
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         loadSelectionState();
         loadScrollState();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,11 +38,12 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     private Context mContext;
     private boolean mUserLoggedIn;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_blind_taste)
     TextView mTextViewBlindTaste;
 
-    MenuItem mMenuAuthToggle;
-    MenuItem mMenuProfile;
+    private MenuItem mMenuAuthToggle;
+    private MenuItem mMenuProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         return true;
     }
 
-    public void setMenuLoggedIn() {
+    private void setMenuLoggedIn() {
         if (mMenuAuthToggle != null) {
             mMenuAuthToggle.setTitle(R.string.log_out);
             mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         }
     }
 
-    public void setMenuLoggedOut() {
+    private void setMenuLoggedOut() {
         if (mMenuAuthToggle != null) {
             mMenuAuthToggle.setTitle(R.string.log_in);
             mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         startActivity(intent);
     }
 
-    public void signOutCurrentFirebaseUser() {
+    private void signOutCurrentFirebaseUser() {
         AuthUI.getInstance().signOut(mContext).addOnCompleteListener(task ->
                 setUserLoggedOut());
     }

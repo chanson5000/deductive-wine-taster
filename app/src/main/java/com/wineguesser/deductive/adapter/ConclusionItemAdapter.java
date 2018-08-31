@@ -23,11 +23,11 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
         mContext = context;
     }
 
-    public class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder {
+    class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mActualGrape;
-        TextView mUserGrape;
-        TextView mAppGrape;
+        final TextView mActualGrape;
+        final TextView mUserGrape;
+        final TextView mAppGrape;
 
         ConclusionItemAdapterViewHolder(View view) {
             super(view);

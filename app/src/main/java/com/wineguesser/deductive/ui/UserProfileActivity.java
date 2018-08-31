@@ -55,37 +55,53 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private String mNewPassword;
     private String mNewConfirmPassword;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_user_name)
     TextView mTextViewUserName;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_auth_provider)
     TextView mTextProviderName;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_display_name)
     EditText mEditTextDisplayName;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_email_address)
     EditText mEditTextEmailAddress;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_confirm_email_address)
     EditText mEditTextConfirmEmailAddress;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_photo_url)
     EditText mEditTextPhotoUri;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.imageView_profile_photo)
     ImageView mImageProfilePhoto;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_new_password)
     EditText mEditTextNewPassword;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.editText_confirm_password)
     EditText mEditTextConfirmPassword;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.button_delete_photo)
     Button mButtonDeletePhoto;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_display_name)
     TextView mErrorDisplayName;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_email_address)
     TextView mErrorEmailAddress;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_confirm_email_address)
     TextView mErrorConfirmEmailAddress;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_photo_url)
     TextView mErrorPhotoUrl;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_new_password)
     TextView mErrorNewPassword;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textError_confirm_password)
     TextView mErrorConfirmPassword;
 

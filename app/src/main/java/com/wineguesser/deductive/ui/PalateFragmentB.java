@@ -29,6 +29,7 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_palate_b)
     ScrollView mScrollViewPalateB;
 

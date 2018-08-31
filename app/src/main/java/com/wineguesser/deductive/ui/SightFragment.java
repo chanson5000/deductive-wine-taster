@@ -28,6 +28,7 @@ public class SightFragment extends Fragment implements DeductionFormContract, Da
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_sight)
     ScrollView mScrollViewSight;
 

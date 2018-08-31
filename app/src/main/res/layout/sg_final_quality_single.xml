@@ -6,7 +6,7 @@
         style="@style/AppTheme.Text.Descriptor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:labelFor="@id/autoText_final_region"
+        android:labelFor="@id/autoText_final_quality"
         android:text="@string/quality_regional_hierarchy" />
 
     <AutoCompleteTextView

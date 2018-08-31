@@ -35,6 +35,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
     private MultiAutoCompleteTextView mMultiAutoTextCountries;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_initial)
     ScrollView mScrollViewInitial;
 

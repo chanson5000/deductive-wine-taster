@@ -30,31 +30,36 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract {
 
     private Context mContext;
 
-    private int RC_SIGN_IN = 43;
-
     private static DatabaseReference mDbReferenceUsers;
     private static DatabaseReference mDbReferenceUserConclusions;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_our_guess)
     TextView mTextViewAppConclusion;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_user_guess)
     TextView mTextViewUserConclusion;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_grape_variety)
     AutoCompleteTextView mSingleViewActualVariety;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_country)
     AutoCompleteTextView mSingleViewActualCountry;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_region)
     AutoCompleteTextView mSingleViewActualRegion;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_quality)
     AutoCompleteTextView mSingleViewActualQuality;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mSingleViewActualVintage;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.wine_result_save)
     Button mButtonWineResultSave;
 
@@ -70,8 +75,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private String mUserConclusionQuality;
     private Integer mUserConclusionVintage;
 
-    private boolean mIsRedWine;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         Intent parentIntent = getIntent();
 
         if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
-            mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
+            boolean mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
@@ -222,6 +225,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
+
+            int RC_SIGN_IN = 43;
 
             startActivityForResult(
                     AuthUI.getInstance()

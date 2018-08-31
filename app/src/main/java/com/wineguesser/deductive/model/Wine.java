@@ -28,12 +28,6 @@ public abstract class Wine {
     private boolean hasGasEvidence;
     private boolean isBalanced;
 
-    public void setMap(Map<String, Object> map){
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-
-        }
-    }
-
     public void setName(String name) {
         this.name = name;
     }

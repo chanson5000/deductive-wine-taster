@@ -22,7 +22,7 @@ import timber.log.Timber;
 public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         implements DeductionFormContract, DatabaseContract {
 
-    private static Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
+    private static final Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
 
         put(CHECK_FAULT_TCA, KEY_FAULT_TCA);
         put(CHECK_FAULT_HYDROGEN_SULFIDE, KEY_FAULT_HYDROGEN_SULFIDE);
@@ -193,7 +193,7 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
     }};
 
-    private GrapeResults mContext;
+    private final GrapeResults mContext;
     private static DatabaseReference mDatabaseReference;
 
     public GrapeScore(GrapeResults context, Boolean isRedWine) {

@@ -27,10 +27,8 @@ import butterknife.ButterKnife;
 public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
 
     private ConclusionItemAdapter mConclusionAdapter;
-    private static DatabaseReference mDbReferenceUserConclusions;
-    private FirebaseAuth mAuth;
-    private String uid;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.conclusion_item_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -83,16 +81,15 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
             }
         };
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-            uid = user.getUid();
+            String uid = user.getUid();
 
-            mDbReferenceUserConclusions = FirebaseDatabase.getInstance().getReference()
+            DatabaseReference dbReferenceUserConclusions = FirebaseDatabase.getInstance().getReference()
                     .child(DB_REFERENCE_ALL_CONCLUSIONS).child(uid);
 
-            mDbReferenceUserConclusions.addListenerForSingleValueEvent(listener);
+            dbReferenceUserConclusions.addListenerForSingleValueEvent(listener);
         }
     }
 
