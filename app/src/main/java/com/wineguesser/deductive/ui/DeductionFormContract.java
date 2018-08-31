@@ -271,6 +271,11 @@ public interface DeductionFormContract {
     int TEXT_MULTI_INITIAL_COUNTRIES = R.id.multiText_initial_countries;
     int RADIO_GROUP_INITIAL_AGE_RANGE = R.id.radio_group_initial_age;
 
+    List<Integer> InitialConclusionMultiAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
+            TEXT_MULTI_INITIAL_GRAPE_VARIETIES,
+            TEXT_MULTI_INITIAL_COUNTRIES
+    ));
+
     int TEXT_SINGLE_FINAL_GRAPE_VARIETY = R.id.autoText_final_grape_variety;
     int TEXT_SINGLE_FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
     int TEXT_SINGLE_FINAL_REGION = R.id.autoText_final_region;
