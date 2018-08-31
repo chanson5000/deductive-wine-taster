@@ -197,14 +197,13 @@ public class FinalConclusionFragment extends Fragment implements
         List<String> varieties;
 
         if (isRedWine) {
-            varieties = new ArrayList<>(R.array.red_varieties);
+            varieties = new ArrayList<>(parseResourceArray(R.array.red_varieties));
         } else {
-            varieties = new ArrayList<>(R.array.white_varieties);
+            varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
         }
 
         mAutoTextVariety.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
-
     }
 
     private int castKey(String key) {
