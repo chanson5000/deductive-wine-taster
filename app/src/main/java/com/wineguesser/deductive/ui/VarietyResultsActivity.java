@@ -1,11 +1,14 @@
 package com.wineguesser.deductive.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,8 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.databinding.ActivityActualWineBinding;
+import com.wineguesser.deductive.model.ErrorsFinalForm;
 import com.wineguesser.deductive.repository.DatabaseContract;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,6 +72,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private InterstitialAd mInterstitialAd;
+    private ErrorsFinalForm errorsForm = new ErrorsFinalForm();
 
     private String mAppGrapeConclusionId;
     private String mUserConclusionGrape;
@@ -78,7 +85,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_actual_wine);
+        ActivityActualWineBinding binding = DataBindingUtil
+                .setContentView(this, R.layout.activity_actual_wine);
+
+        errorsForm = new ErrorsFinalForm();
+        binding.setErrorGroup(errorsForm);
 
         mContext = this;
         ButterKnife.bind(this);
@@ -138,9 +149,22 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mDbReferenceUsers = database.getReference(DB_REFERENCE_USERS);
         mDbReferenceUserConclusions = database.getReference(DB_REFERENCE_ALL_CONCLUSIONS);
 
+        List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
+        List<String> countires = new ArrayList<>(parseResourceArray(R.array.all_countries));
+        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
+
+        mSingleViewActualVariety.setAdapter(new ArrayAdapter<>(mContext,
+                android.R.layout.simple_dropdown_item_1line, varieties));
+
+
+
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 
     @Override
