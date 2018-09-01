@@ -273,7 +273,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String newConfirmEmailAddress = userProfileModel.getConfirmEmailAddress().getValue();
 
         if (user != null) {
-            if (!newDisplayName.equals(user.getDisplayName())) {
+            if (newDisplayName != null && !newDisplayName.equals(user.getDisplayName())) {
                 if (newDisplayName.isEmpty()) {
                     errorDisplayName = "Display Name field must not be empty.";
                 } else {
@@ -282,10 +282,10 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 }
             }
 
-            if (!newEmailAddress.equals(user.getEmail())) {
+            if (newEmailAddress != null && !newEmailAddress.equals(user.getEmail())) {
                 if (newEmailAddress.isEmpty()) {
                     errorEmailAddress = "Email address field must not be empty.";
-                } else if (newConfirmEmailAddress.isEmpty()) {
+                } else if (newConfirmEmailAddress != null && newConfirmEmailAddress.isEmpty()) {
                     errorConfirmEmailAddress = "Confirm Email address field must not be empty.";
                 } else if (!newEmailAddress.equals(newConfirmEmailAddress)) {
                     errorEmailAddress = "Email address fields must match.";
@@ -355,7 +355,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             if (oldPhotoUri != null) {
                 oldPhotoUrl = oldPhotoUri.toString();
 
-                if (!newPhotoUrl.equals(oldPhotoUrl)) {
+                if (newPhotoUrl != null && !newPhotoUrl.equals(oldPhotoUrl)) {
                     if (newPhotoUrl.isEmpty()) {
                         errorPhotoUrl = "Photo URL field must not be empty.";
                     } else {
@@ -363,7 +363,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         updatePhotoUrl = true;
                     }
                 }
-            } else if (!newPhotoUrl.isEmpty()) {
+            } else if (newPhotoUrl != null && !newPhotoUrl.isEmpty()) {
                 errorPhotoUrl = null;
                 updatePhotoUrl = true;
             }
@@ -440,8 +440,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         String newConfirmPassword = userProfileModel.getConfirmPassword().getValue();
 
         if (user != null) {
-            if (!newPassword.isEmpty()) {
-                if (newConfirmPassword.isEmpty()) {
+            if (newPassword != null && !newPassword.isEmpty()) {
+                if (newConfirmPassword != null && newConfirmPassword.isEmpty()) {
                     errorPassword = "Confirm password field must not be empty.";
                 } else if (!newPassword.equals(newConfirmPassword)) {
                     errorConfirmPassword = "Passwords must match.";
