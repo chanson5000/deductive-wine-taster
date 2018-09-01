@@ -27,12 +27,12 @@ import android.widget.Toast;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
-import com.wineguesser.deductive.util.GrapeResults;
+import com.wineguesser.deductive.util.GrapeResult;
 
 import java.util.Map;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract, GrapeResults {
+        DatabaseContract, GrapeResult {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;

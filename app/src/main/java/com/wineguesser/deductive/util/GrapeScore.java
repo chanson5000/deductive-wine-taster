@@ -193,10 +193,10 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
     }};
 
-    private final GrapeResults mContext;
+    private final GrapeResult mContext;
     private static DatabaseReference mDatabaseReference;
 
-    public GrapeScore(GrapeResults context, Boolean isRedWine) {
+    public GrapeScore(GrapeResult context, Boolean isRedWine) {
         mContext = context;
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
