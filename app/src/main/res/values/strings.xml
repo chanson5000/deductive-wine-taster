@@ -238,6 +238,29 @@
     <string name="viognier" translatable="false">Viognier</string>
     <string name="zinfandel" translatable="false">Zinfandel</string>
 
+    <string-array name="all_varieties">
+        <item>@string/cabernet_sauvignon</item>
+        <item>@string/gamay</item>
+        <item>@string/grenache</item>
+        <item>@string/malbec</item>
+        <item>@string/merlot</item>
+        <item>@string/nebbiolo</item>
+        <item>@string/pinot_noir</item>
+        <item>@string/sangiovese</item>
+        <item>@string/syrah</item>
+        <item>@string/tempranillo</item>
+        <item>@string/zinfandel</item>
+        <item>@string/albarino</item>
+        <item>@string/chardonnay</item>
+        <item>@string/chenin_blanc</item>
+        <item>@string/gewurztraminer</item>
+        <item>@string/pinot_gris</item>
+        <item>@string/riesling</item>
+        <item>@string/sauvignon_blanc</item>
+        <item>@string/torrontes</item>
+        <item>@string/viognier</item>
+    </string-array>
+
     <string-array name="red_varieties">
         <item>@string/cabernet_sauvignon</item>
         <item>@string/gamay</item>
