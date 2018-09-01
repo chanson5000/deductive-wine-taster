@@ -1,66 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="errorGroup"
+            type="com.wineguesser.deductive.model.ErrorsFinalForm" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/AppTheme.Text.Descriptor"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/our_guess" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_our_guess"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="@string/no_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/our_guess" />
 
-        <TextView
-            style="@style/AppTheme.Text.Descriptor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/your_guess" />
+            <TextView
+                android:id="@+id/textView_our_guess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_data"
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView_user_guess"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:text="@string/no_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_guess" />
 
-        <include layout="@layout/spacer_horizontal" />
+            <TextView
+                android:id="@+id/textView_user_guess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_data"
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView_actual_wine"
-            style="@style/AppTheme.Text.Descriptor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/actual_wine" />
+            <include layout="@layout/spacer_horizontal" />
 
-        <include layout="@layout/spacer_horizontal" />
+            <TextView
+                android:id="@+id/textView_actual_wine"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actual_wine" />
 
-        <include layout="@layout/group_final_wine_fields" />
+            <include layout="@layout/spacer_horizontal" />
 
-        <Button
-            android:id="@+id/wine_result_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="onButtonWineResultSave"
-            android:text="@string/save_result" />
+            <TextView
+                android:id="@+id/textView_final_grape_variety"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_final_grape_variety"
+                android:text="@string/grape_variety_blend" />
 
-        <include layout="@layout/spacer_horizontal" />
+            <AutoCompleteTextView
+                android:id="@+id/autoText_final_grape_variety"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textError_variety"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{errorGroup.errorVariety}"
+                android:visibility="@{errorGroup.errorVariety != null ? View.VISIBLE : View.GONE}" />
 
-</ScrollView>
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_final_country"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_final_country"
+                android:text="@string/country_of_origin" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_final_country"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textError_country"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{errorGroup.errorCountry}"
+                android:visibility="@{errorGroup.errorCountry != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_final_region"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_final_region"
+                android:text="@string/region_appellation" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_final_region"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textError_region"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{errorGroup.errorRegion}"
+                android:visibility="@{errorGroup.errorRegion != null ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:id="@+id/textView_final_quality"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_final_quality"
+                android:text="@string/quality_regional_hierarchy" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_final_quality"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textError_quality"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{errorGroup.errorQuality}"
+                android:visibility="@{errorGroup.errorQuality != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_final_vintage"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/autoText_final_vintage"
+                android:text="@string/vintage" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_final_vintage"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="4" />
+
+            <TextView
+                android:id="@+id/textError_vintage"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{errorGroup.errorVintage}"
+                android:visibility="@{errorGroup.errorVintage != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <Button
+                android:id="@+id/wine_result_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="onButtonWineResultSave"
+                android:text="@string/save_result" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
