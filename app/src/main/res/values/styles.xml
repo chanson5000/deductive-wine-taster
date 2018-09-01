@@ -47,6 +47,10 @@
 
     </style>
 
+    <style name="AppTheme.EditText">
+
+    </style>
+
     <style name="AppTheme.AutoText">
         <item name="android:focusable">true</item>
     </style>
