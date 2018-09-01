@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="userProfileForm"
-            type="com.wineguesser.deductive.model.UserProfileForm" />
+            type="com.wineguesser.deductive.viewmodel.UserProfileViewModel" />
     </data>
 
     <ScrollView
