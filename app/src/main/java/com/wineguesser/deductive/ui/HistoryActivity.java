@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
 
@@ -77,7 +78,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Timber.e(databaseError.toException());
             }
         };
 
@@ -92,5 +93,4 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
             dbReferenceUserConclusions.addListenerForSingleValueEvent(listener);
         }
     }
-
 }
