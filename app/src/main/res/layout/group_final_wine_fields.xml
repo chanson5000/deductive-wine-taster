@@ -1,34 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/sg_final_variety_single" />
+    <TextView
+        android:id="@+id/textView_final_grape_variety"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/autoText_final_grape_variety"
+        android:text="@string/grape_variety_blend" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_grape_variety"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
 
-    <include layout="@layout/sg_final_country_single" />
+    <include layout="@layout/spacer_horizontal" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
+    <TextView
+        android:id="@+id/textView_final_country"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/autoText_final_country"
+        android:text="@string/country_of_origin" />
 
-    <include layout="@layout/sg_final_region_single" />
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
+    <include layout="@layout/spacer_horizontal" />
 
-    <include layout="@layout/sg_final_quality_single" />
+    <TextView
+        android:id="@+id/textView_final_region"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/autoText_final_region"
+        android:text="@string/region_appellation" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
 
-    <include layout="@layout/sg_final_vintage_single" />
+    <include layout="@layout/spacer_horizontal" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/standard_margin" />
+    <TextView
+        android:id="@+id/textView_final_quality"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/autoText_final_quality"
+        android:text="@string/quality_regional_hierarchy" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_quality"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <include layout="@layout/spacer_horizontal" />
+
+    <TextView
+        android:id="@+id/textView_final_vintage"
+        style="@style/AppTheme.Text.Descriptor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/autoText_final_vintage"
+        android:text="@string/vintage" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoText_final_vintage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <include layout="@layout/spacer_horizontal" />
 
 </merge>
