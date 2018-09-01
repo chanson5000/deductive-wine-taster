@@ -29,6 +29,8 @@ import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
 
+import java.time.Year;
+import java.util.Calendar;
 import java.util.Map;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
@@ -139,7 +141,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 if (mPager.getCurrentItem() != SIGHT_PAGE) {
                     mPager.setCurrentItem(SIGHT_PAGE);
                 }
-                Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.form_cleared), Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -470,27 +472,49 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mUserFinalVintageInteger = 0;
         }
 
-        // TODO: Make these show below the inputs in red.
+        boolean isValid = true;
+
         // Check that user has provided their conclusion of grape variety.
         if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
-            Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
-                    Toast.LENGTH_SHORT).show();
-            return false;
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
         } else if (!mIsRedWine && !WhiteVarieties.contains(mUserFinalVarietyString)) {
-            Toast.makeText(mContext, "Please input a valid Grape Variety/Blend",
-                    Toast.LENGTH_SHORT).show();
-            return false;
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorVariety(null);
         }
+
         if (mUserFinalOriginString.isEmpty()) {
-            mUserFinalOriginString = "None Selected";
+            mFinalFragment.errorsFinalForm()
+                    .setErrorCountry(getString(R.string.error_input_country_origin));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorCountry(null);
         }
+
         if (mUserFinalRegionString.isEmpty()) {
-            mUserFinalRegionString = "None Selected";
+            mFinalFragment.errorsFinalForm()
+                    .setErrorRegion(getString(R.string.error_input_valid_region));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorRegion(null);
         }
+
         if (mUserFinalQualityString.isEmpty()) {
-            mUserFinalQualityString = "None Selected";
+            mUserFinalQualityString = "None";
         }
-        return true;
+
+        if (mUserFinalVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
+                || mUserFinalVintageInteger < 1900) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVintage(getString(R.string.error_input_valid_vintage));
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     private SparseIntArray retrieveSharedPreferencesValues() {

@@ -19,6 +19,7 @@ import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -80,10 +81,10 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
         setAutoTextVarietyByType(mIsRedWine);
 
-        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(R.array.all_countries)));
+        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
 
+        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries));
         mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         ButterKnife.bind(this, rootView);
@@ -145,9 +146,9 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         List<String> varieties;
 
         if (isRedWine) {
-            varieties = new ArrayList<>(R.array.red_varieties);
+            varieties = new ArrayList<>(parseResourceArray(R.array.red_varieties));
         } else {
-            varieties = new ArrayList<>(R.array.white_varieties);
+            varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
         }
 
         mMultiAutoTextVarieties.setAdapter(new ArrayAdapter<>(mFragmentActivity,
@@ -161,6 +162,10 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     private int parseEntryValue(Object value) {
         return Integer.parseInt(value.toString());
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 
     private void loadSelectionState() {

@@ -2,7 +2,9 @@ package com.wineguesser.deductive.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
+import com.wineguesser.deductive.model.ErrorsFinalForm;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
@@ -32,6 +37,7 @@ public class FinalConclusionFragment extends Fragment implements
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
+    private ErrorsFinalForm errorsFinalForm;
     private boolean mIsRedWine;
 
     @SuppressWarnings("WeakerAccess")
@@ -98,21 +104,33 @@ public class FinalConclusionFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View rootView;
 
-        rootView = inflater.inflate(R.layout.fragment_final_conclusion,
-                container, false);
+        FragmentFinalConclusionBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_final_conclusion, container, false);
+
+        rootView = binding.getRoot();
+
+        errorsFinalForm = new ErrorsFinalForm();
+
+        binding.setErrorGroup(errorsFinalForm);
 
         ButterKnife.bind(this, rootView);
 
         setAutoTextVarietyByType(mIsRedWine);
 
-        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(parseResourceArray(R.array.all_countries))));
+        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
+        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
 
         mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(parseResourceArray(R.array.all_regions))));
+                android.R.layout.simple_dropdown_item_1line, countries));
+
+        mAutoTextRegion.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, regions));
+
         return rootView;
+    }
+
+    public ErrorsFinalForm errorsFinalForm() {
+        return errorsFinalForm;
     }
 
     private List<String> parseResourceArray(int resourceId) {
@@ -131,6 +149,7 @@ public class FinalConclusionFragment extends Fragment implements
         super.onResume();
         loadSelectionState();
         loadScrollState();
+
     }
 
     private void saveScrollState() {

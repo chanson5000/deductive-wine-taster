@@ -337,7 +337,9 @@
         <item>@string/italy</item>
         <item>@string/france</item>
     </string-array>
-V
+
+
+
     <!-- AdMob -->
     <string name="app_add_id">ca-app-pub-6240294942266099~9194679928</string>
     <string name="interstitial_ad_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
@@ -370,5 +372,12 @@ V
     <string name="placeholder_user_conclusion">User Conclusion</string>
     <string name="placeholder_app_conclusion">App Conclusion</string>
 
+    <!-- Errors -->
+    <string name="error_input_country_origin">Please input a valid country of origin.</string>
+    <string name="error_input_valid_grape">Please input a valid primary grape variety.</string>
+    <string name="error_input_valid_region">Please input a valid region/appellation.</string>
+    <string name="error_input_valid_vintage">Please input a valid vintage. (1900 - Present)</string>
+
+    <string name="form_cleared">Form Cleared!</string>
 
 </resources>

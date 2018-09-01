@@ -38,9 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/spacer_horizontal" />
 
         <TextView
             android:id="@+id/textView_actual_wine"
@@ -49,9 +47,7 @@
             android:layout_height="wrap_content"
             android:text="@string/actual_wine" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/spacer_horizontal" />
 
         <include layout="@layout/group_final_wine_fields" />
 
@@ -63,9 +59,7 @@
             android:onClick="onButtonWineResultSave"
             android:text="@string/save_result" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/spacer_horizontal" />
 
     </LinearLayout>
 
