@@ -294,5 +294,4 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
 
         return convertedData;
     }
-
 }
