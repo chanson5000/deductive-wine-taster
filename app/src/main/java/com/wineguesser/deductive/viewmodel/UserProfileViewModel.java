@@ -193,7 +193,7 @@ public class UserProfileViewModel extends ViewModel implements Observable {
      *
      * @param fieldId The generated BR id for the Bindable field.
      */
-    void notifyPropertyChanged(int fieldId) {
+    private void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
     }
 }
