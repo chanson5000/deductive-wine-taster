@@ -9,35 +9,157 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/sg_initial_varieties_multi" />
+        <TextView
+            android:id="@+id/textView_initial_possible_grape_varieties"
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/multiText_initial_varieties"
+            android:text="@string/possible_grape_varieties" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <MultiAutoCompleteTextView
+            android:id="@+id/multiText_initial_varieties"
+            style="@style/AppTheme.AutoText.Multi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <include layout="@layout/sg_initial_world_radio" />
+        <include layout="@layout/spacer_horizontal" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <TextView
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/world_of_origin" />
 
-        <include layout="@layout/sg_initial_climate_radio" />
+        <RadioGroup
+            android:id="@+id/radio_group_initial_world"
+            style="@style/AppTheme.RadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+            <RadioButton
+                android:id="@+id/radio_button_initial_world_old"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/old_world" />
 
-        <include layout="@layout/sg_initial_countries_multi" />
+            <RadioButton
+                android:id="@+id/radio_button_initial_world_new"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/new_world" />
+        </RadioGroup>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/spacer_horizontal" />
 
-        <include layout="@layout/sg_initial_age_radio" />
+        <TextView
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/climate" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <RadioGroup
+            android:id="@+id/radio_group_initial_climate"
+            style="@style/AppTheme.RadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_climate_cool"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/cool" />
+
+            <RadioButton
+                android:id="@+id/radio_button_climate_moderate"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/moderate" />
+
+            <RadioButton
+                android:id="@+id/radio_button_climate_warm"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/warm" />
+        </RadioGroup>
+
+        <include layout="@layout/spacer_horizontal" />
+
+        <TextView
+            android:id="@+id/textView_initial_countries"
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/multiText_initial_countries"
+            android:text="@string/possible_countries" />
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/multiText_initial_countries"
+            style="@style/AppTheme.AutoText.Multi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include layout="@layout/spacer_horizontal" />
+
+        <TextView
+            style="@style/AppTheme.Text.Descriptor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_range" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_initial_age"
+            style="@style/AppTheme.RadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio_button_initial_age_onetothree"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/one_to_three_years" />
+
+            <RadioButton
+                android:id="@+id/radio_button_initial_age_threetofive"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/three_to_five_years" />
+
+            <RadioButton
+                android:id="@+id/radio_button_initial_age_fivetoten"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/five_to_ten_years" />
+
+            <RadioButton
+                android:id="@+id/radio_button_initial_age_tenplus"
+                style="@style/AppTheme.RadioGroup.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/ten_plus_years" />
+        </RadioGroup>
+
+        <include layout="@layout/spacer_horizontal" />
 
     </LinearLayout>
 </ScrollView>
