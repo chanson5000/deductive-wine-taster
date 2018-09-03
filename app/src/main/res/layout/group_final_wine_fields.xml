@@ -115,11 +115,11 @@
             style="@style/AppTheme.Text.Descriptor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:labelFor="@+id/autoText_final_vintage"
+            android:labelFor="@+id/autoText_actual_vintage"
             android:text="@string/vintage" />
 
         <AutoCompleteTextView
-            android:id="@+id/autoText_final_vintage"
+            android:id="@+id/autoText_actual_vintage"
             style="@style/AppTheme.AutoText.Single"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
