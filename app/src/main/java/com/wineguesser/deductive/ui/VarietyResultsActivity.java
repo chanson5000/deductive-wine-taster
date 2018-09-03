@@ -55,16 +55,16 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @BindView(R.id.textView_user_variety)
     TextView mTextViewUserConclusion;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_grape_variety)
+    @BindView(R.id.autoText_actual_variety)
     AutoCompleteTextView mSingleViewActualVariety;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_country)
+    @BindView(R.id.autoText_actual_country)
     AutoCompleteTextView mSingleViewActualCountry;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_region)
+    @BindView(R.id.autoText_actual_region)
     AutoCompleteTextView mSingleViewActualRegion;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_quality)
+    @BindView(R.id.autoText_actual_quality)
     AutoCompleteTextView mSingleViewActualQuality;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_vintage)
@@ -82,7 +82,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private String mActualCountry;
     private String mActualRegion;
     private String mActualQuality;
-    private Integer mActualVintage;
+    private String mActualVintage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             actualWineForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
             actualWineForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
             actualWineForm.setActualQuality(savedInstanceState.getString(FORM_ACTUAL_QUALITY));
-            actualWineForm.setActualVintage(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE));
+            actualWineForm.setActualVintage(Integer.toString(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE)));
         }
 
         Intent parentIntent = getIntent();
@@ -123,48 +123,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                 actualWineForm.setUserCountry(bundle.getString(USER_CONCLUSION_COUNTRY));
                 actualWineForm.setUserRegion(bundle.getString(USER_CONCLUSION_REGION));
                 actualWineForm.setUserQuality(bundle.getString(USER_CONCLUSION_QUALITY));
-                actualWineForm.setUserVintage(bundle.getInt(USER_CONCLUSION_VINTAGE));
-
-//                mAppVarietyConclusionId = bundle.getString(APP_VARIETY_GUESS_ID);
-//                mUserConclusionVariety = bundle.getString(USER_CONCLUSION_VARIETY);
-//                mUserConclusionCountry = bundle.getString(USER_CONCLUSION_COUNTRY);
-//                mUserConclusionRegion = bundle.getString(USER_CONCLUSION_REGION);
-//                mUserConclusionQuality = bundle.getString(USER_CONCLUSION_QUALITY);
-//                mUserConclusionVintage = bundle.getInt(USER_CONCLUSION_VINTAGE);
-
-//                mTextViewUserConclusion.setText(mUserConclusionVariety);
+                actualWineForm.setUserVintage(Integer.toString(bundle.getInt(USER_CONCLUSION_VINTAGE)));
             }
-
-//            ValueEventListener listener = new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    Object dataObject =
-//                            dataSnapshot.child(mAppVarietyConclusionId).child("variety").getValue();
-//
-//                    if (dataObject != null) {
-//                        mAppVarietyConclusionString = dataObject.toString();
-//                        mTextViewAppConclusion.setText(mAppVarietyConclusionString);
-//                    } else {
-//                        Toast.makeText(mContext, "Unable to retrieve varietal name.",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//                    Toast.makeText(mContext, "Unable to retrieve varietal name.",
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            };
-//
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference databaseReference;
-//            if (mIsRedWine) {
-//                databaseReference = database.getReference(DB_REFERENCE_RED_VARIETAL_DATA);
-//            } else {
-//                databaseReference = database.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA);
-//            }
-//            databaseReference.addListenerForSingleValueEvent(listener);
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -211,7 +171,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         savedInstanceState.putString(FORM_ACTUAL_COUNTRY, mActualCountry);
         savedInstanceState.putString(FORM_ACTUAL_REGION, mActualRegion);
         savedInstanceState.putString(FORM_ACTUAL_QUALITY, mActualQuality);
-        savedInstanceState.putInt(FORM_ACTUAL_VINTAGE, mActualVintage);
+        savedInstanceState.putString(FORM_ACTUAL_VINTAGE, mActualVintage);
     }
 
     private List<String> parseResourceArray(int resourceId) {
@@ -261,27 +221,22 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                 mDbReferenceUsers.child(uid).child(DB_REFERENCE_USER_CONCLUSIONS)
                         .child(conclusionReferenceKey).setValue(true);
             }
-//            newConclusionRecordReference.child(DB_KEY_APP_CONCLUSION_VARIETY)
-//                    .setValue(mAppVarietyConclusionString);
+
             String actualVariety = actualWineForm.getActualVariety().getValue();
             String actualCountry = actualWineForm.getActualCountry().getValue();
             String actualRegion = actualWineForm.getActualRegion().getValue();
             String actualQuality = actualWineForm.getActualQuality().getValue();
-            Integer actualVintage = actualWineForm.getActualVintage().getValue();
+            String parseInt = mSingleViewActualVintage.getText().toString();
+            Integer actualVintage = Integer.parseInt(parseInt);
 
             String userVariety = actualWineForm.getUserVariety().getValue();
             String userCountry = actualWineForm.getUserCountry().getValue();
             String userRegion = actualWineForm.getUserRegion().getValue();
             String userQuality = actualWineForm.getUserQuality().getValue();
-            Integer userVintage = actualWineForm.getUserVintage().getValue();
+            parseInt = actualWineForm.getUserVintage().getValue();
+            Integer userVintage = Integer.parseInt(parseInt);
 
             String appVariety = actualWineForm.getAppVariety().getValue();
-
-//            String actualWine = mSingleViewActualVariety.getText().toString();
-//            String actualCountry = mSingleViewActualCountry.getText().toString();
-//            String actualRegion = mSingleViewActualRegion.getText().toString();
-//            String actualQuality = mSingleViewActualQuality.getText().toString();
-//            String parseInteger = mSingleViewActualVintage.getText().toString();
 
             ConclusionRecord conclusionRecord = new ConclusionRecord();
             conclusionRecord.setAppConclusionVariety(appVariety);
@@ -298,33 +253,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             conclusionRecord.setUserConclusionVintage(userVintage);
 
             newConclusionRecordReference.setValue(conclusionRecord);
-
-//            Integer actualVintage = null;
-//            if (!parseInteger.isEmpty()) {
-//                actualVintage = Integer.parseInt(parseInteger);
-//            }
-//
-//            if (!actualWine.isEmpty()) {
-//                newConclusionRecordReference.child(DB_KEY_ACTUAL_VARIETY).setValue(actualWine);
-//            }
-//            if (!actualCountry.isEmpty()) {
-//                newConclusionRecordReference.child(DB_KEY_ACTUAL_COUNTRY).setValue(actualCountry);
-//            }
-//            if (!actualRegion.isEmpty()) {
-//                newConclusionRecordReference.child(DB_KEY_ACTUAL_REGION).setValue(actualRegion);
-//            }
-//            if (!actualQuality.isEmpty()) {
-//                newConclusionRecordReference.child(DB_KEY_ACTUAL_QUALITY).setValue(actualQuality);
-//            }
-//            if (actualVintage != null) {
-//                newConclusionRecordReference.child(DB_KEY_ACTUAL_VINTAGE).setValue(actualVintage);
-//            }
-
-//            newConclusionRecordReference.child(DB_USER_CONCLUSION_VARIETY).setValue(mUserConclusionVariety);
-//            newConclusionRecordReference.child(DB_USER_CONCLUSION_COUNTRY).setValue(mUserConclusionCountry);
-//            newConclusionRecordReference.child(DB_USER_CONCLUSION_REGION).setValue(mUserConclusionRegion);
-//            newConclusionRecordReference.child(DB_USER_CONCLUSION_QUALITY).setValue(mUserConclusionQuality);
-//            newConclusionRecordReference.child(DB_USER_CONCLUSION_VINTAGE).setValue(mUserConclusionVintage);
 
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);

@@ -54,7 +54,7 @@ public class FinalConclusionFragment extends Fragment implements
     @BindView(R.id.autoText_final_quality)
     AutoCompleteTextView mAutoTextQuality;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_vintage)
+    @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mAutoTextVintage;
     @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})

@@ -21,13 +21,13 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
     private MutableLiveData<String> actualCountry = new MutableLiveData<>();
     private MutableLiveData<String> actualRegion = new MutableLiveData<>();
     private MutableLiveData<String> actualQuality = new MutableLiveData<>();
-    private MutableLiveData<Integer> actualVintage = new MutableLiveData<>();
+    private MutableLiveData<String> actualVintage = new MutableLiveData<>();
 
     private MutableLiveData<String> userVariety = new MutableLiveData<>();
     private MutableLiveData<String> userCountry = new MutableLiveData<>();
     private MutableLiveData<String> userRegion = new MutableLiveData<>();
     private MutableLiveData<String> userQuality = new MutableLiveData<>();
-    private MutableLiveData<Integer> userVintage = new MutableLiveData<>();
+    private MutableLiveData<String> userVintage = new MutableLiveData<>();
 
     public VarietyResultsViewModel() {
         varietyDataRepository = new VarietyDataRepository();
@@ -65,11 +65,11 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         this.userQuality.setValue(userQuality);
     }
 
-    public LiveData<Integer> getUserVintage() {
+    public LiveData<String> getUserVintage() {
         return userVintage;
     }
 
-    public void setUserVintage (Integer userVintage) {
+    public void setUserVintage (String userVintage) {
         this.userVintage.setValue(userVintage);
     }
 
@@ -130,11 +130,11 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
     }
 
     @Bindable
-    public MutableLiveData<Integer> getActualVintage() {
+    public MutableLiveData<String> getActualVintage() {
         return actualVintage;
     }
 
-    public void setActualVintage(Integer actualVintage) {
+    public void setActualVintage(String actualVintage) {
         this.actualVintage.setValue(actualVintage);
         notifyPropertyChanged(BR.actualVintage);
     }

@@ -91,15 +91,15 @@
             <include layout="@layout/spacer_horizontal" />
 
             <TextView
-                android:id="@+id/textView_final_grape_variety"
+                android:id="@+id/textView_actual_variety"
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/autoText_final_grape_variety"
+                android:labelFor="@id/autoText_actual_variety"
                 android:text="@string/grape_variety_blend" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoText_final_grape_variety"
+                android:id="@+id/autoText_actual_variety"
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,15 +117,15 @@
             <include layout="@layout/spacer_horizontal" />
 
             <TextView
-                android:id="@+id/textView_final_country"
+                android:id="@+id/textView_actual_country"
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/autoText_final_country"
+                android:labelFor="@id/autoText_actual_country"
                 android:text="@string/country_of_origin" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoText_final_country"
+                android:id="@+id/autoText_actual_country"
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,15 +143,15 @@
             <include layout="@layout/spacer_horizontal" />
 
             <TextView
-                android:id="@+id/textView_final_region"
+                android:id="@+id/textView_actual_region"
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/autoText_final_region"
+                android:labelFor="@id/autoText_actual_region"
                 android:text="@string/region_appellation" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoText_final_region"
+                android:id="@+id/autoText_actual_region"
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,15 +167,15 @@
                 android:visibility="@{errorGroup.errorRegion != null ? View.VISIBLE : View.GONE}" />
 
             <TextView
-                android:id="@+id/textView_final_quality"
+                android:id="@+id/textView_actual_quality"
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/autoText_final_quality"
+                android:labelFor="@id/autoText_actual_quality"
                 android:text="@string/quality_regional_hierarchy" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoText_final_quality"
+                android:id="@+id/autoText_actual_quality"
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
             <include layout="@layout/spacer_horizontal" />
 
             <TextView
-                android:id="@+id/textView_final_vintage"
+                android:id="@+id/textView_actual_vintage"
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
