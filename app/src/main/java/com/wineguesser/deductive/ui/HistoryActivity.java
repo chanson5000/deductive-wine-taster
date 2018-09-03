@@ -57,14 +57,14 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
                         Object value = conclusionDbItem.getValue();
                         if (key != null && value instanceof String) {
                             switch (key) {
-                                case DB_ACTUAL_GRAPE:
-                                    conclusionRecord.setActualGrape((String) value);
+                                case DB_KEY_ACTUAL_VARIETY:
+                                    conclusionRecord.setActualVariety((String) value);
                                     break;
-                                case DB_USER_CONCLUSION_GRAPE:
-                                    conclusionRecord.setUserConclusionGrape((String) value);
+                                case DB_USER_CONCLUSION_VARIETY:
+                                    conclusionRecord.setUserConclusionVariety((String) value);
                                     break;
-                                case DB_APP_CONCLUSION:
-                                    conclusionRecord.setAppConclusionGrape((String) value);
+                                case DB_KEY_APP_CONCLUSION_VARIETY:
+                                    conclusionRecord.setAppConclusionVariety((String) value);
                                     break;
                                 default:
                                     break;
@@ -88,7 +88,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
             String uid = user.getUid();
 
             DatabaseReference dbReferenceUserConclusions = FirebaseDatabase.getInstance().getReference()
-                    .child(DB_REFERENCE_ALL_CONCLUSIONS).child(uid);
+                    .child(DB_REFERENCE_CONCLUSIONS).child(uid);
 
             dbReferenceUserConclusions.addListenerForSingleValueEvent(listener);
         }

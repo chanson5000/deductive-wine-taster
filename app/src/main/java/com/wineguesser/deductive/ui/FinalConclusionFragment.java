@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
@@ -56,7 +54,7 @@ public class FinalConclusionFragment extends Fragment implements
     @BindView(R.id.autoText_final_quality)
     AutoCompleteTextView mAutoTextQuality;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_vintage)
+    @BindView(R.id.autoText_actual_vintage)
     AutoCompleteTextView mAutoTextVintage;
     @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})

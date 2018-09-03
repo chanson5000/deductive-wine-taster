@@ -201,9 +201,9 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         if (isRedWine) {
-            mDatabaseReference = mDatabase.getReference(DB_RED_DESC_PATH);
+            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
         } else {
-            mDatabaseReference = mDatabase.getReference(DB_WHITE_DESC_PATH);
+            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
         }
     }
 

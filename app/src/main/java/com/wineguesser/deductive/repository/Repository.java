@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository {
+public class Repository implements DatabaseContract {
 //    private final DatabaseReference COUNTRIES_REF;
     private final DatabaseReference RED_VARIETIES;
     private final DatabaseReference WHITE_VARIETIES;
@@ -22,8 +22,8 @@ public class Repository {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
 //        COUNTRIES_REF = mDatabase.getReference("/lists/countries");
-        RED_VARIETIES = mDatabase.getReference("/redVarietalData");
-        WHITE_VARIETIES = mDatabase.getReference("/whiteVarietalData");
+        RED_VARIETIES = mDatabase.getReference(DB_REFERENCE_RED_VARIETAL_DATA);
+        WHITE_VARIETIES = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA);
     }
 
 //    public FirebaseChildrenList getCountriesList() {

@@ -8,9 +8,13 @@
         <variable
             name="errorGroup"
             type="com.wineguesser.deductive.model.ErrorsFinalForm" />
+
+        <variable
+            name="actualWine"
+            type="com.wineguesser.deductive.viewmodel.VarietyResultsViewModel" />
     </data>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/no_data"
+                android:text="@{actualWine.appVariety, default=@string/no_data}"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
@@ -41,13 +45,39 @@
                 android:text="@string/your_guess" />
 
             <TextView
-                android:id="@+id/textView_user_guess"
+                android:id="@+id/textView_user_variety"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/no_data"
-                android:textSize="26sp"
-                android:textStyle="bold" />
+                android:text="@{actualWine.userVariety, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userCountry, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userRegion, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_quality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userQuality, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_vintage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userVintage, default=@string/no_data}" />
 
             <include layout="@layout/spacer_horizontal" />
 
@@ -73,7 +103,8 @@
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={actualWine.actualVariety}" />
 
             <TextView
                 android:id="@+id/textError_variety"
@@ -98,7 +129,8 @@
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={actualWine.actualCountry}" />
 
             <TextView
                 android:id="@+id/textError_country"
@@ -123,7 +155,8 @@
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={actualWine.actualRegion}" />
 
             <TextView
                 android:id="@+id/textError_region"
@@ -146,7 +179,8 @@
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={actualWine.actualQuality}" />
 
             <TextView
                 android:id="@+id/textError_quality"
@@ -163,16 +197,17 @@
                 style="@style/AppTheme.Text.Descriptor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:labelFor="@+id/autoText_final_vintage"
+                android:labelFor="@+id/autoText_actual_vintage"
                 android:text="@string/vintage" />
 
             <AutoCompleteTextView
-                android:id="@+id/autoText_final_vintage"
+                android:id="@+id/autoText_actual_vintage"
                 style="@style/AppTheme.AutoText.Single"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="4" />
+                android:maxLength="4"
+                android:text="@{actualWine.actualVintage}" />
 
             <TextView
                 android:id="@+id/textError_vintage"

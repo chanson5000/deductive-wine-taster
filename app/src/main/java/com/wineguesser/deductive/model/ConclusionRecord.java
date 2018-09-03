@@ -9,16 +9,18 @@ public class ConclusionRecord {
     @Exclude
     private String userId;
 
-    private String actualGrape;
+    private String actualVariety;
     private String actualCountry;
     private String actualRegion;
     private String actualQuality;
-    private int actualVintage;
+    private Integer actualVintage;
 
     private String userConclusionGrape;
     private String userConclusionCountry;
     private String userConclusionRegion;
     private String userConclusionQuality;
+    private Integer userConclusionVintage;
+
     private String appConclusionGrape;
 
     public ConclusionRecord() {
@@ -41,12 +43,12 @@ public class ConclusionRecord {
         this.userId = userId;
     }
 
-    public String getActualGrape() {
-        return actualGrape;
+    public String getActualVariety() {
+        return actualVariety;
     }
 
-    public void setActualGrape(String actualGrape) {
-        this.actualGrape = actualGrape;
+    public void setActualVariety(String actualVariety) {
+        this.actualVariety = actualVariety;
     }
 
     public String getActualCountry() {
@@ -73,11 +75,11 @@ public class ConclusionRecord {
         this.actualQuality = actualQuality;
     }
 
-    public int getActualVintage() {
+    public Integer getActualVintage() {
         return actualVintage;
     }
 
-    public void setActualVintage(int actualVintage) {
+    public void setActualVintage(Integer actualVintage) {
         this.actualVintage = actualVintage;
     }
 
@@ -85,7 +87,7 @@ public class ConclusionRecord {
         return userConclusionGrape;
     }
 
-    public void setUserConclusionGrape(String userConclusionGrape) {
+    public void setUserConclusionVariety(String userConclusionGrape) {
         this.userConclusionGrape = userConclusionGrape;
     }
 
@@ -113,11 +115,17 @@ public class ConclusionRecord {
         this.userConclusionQuality = userConclusionQuality;
     }
 
+    public Integer getUserConclusionVintage() { return userConclusionVintage; }
+
+    public void setUserConclusionVintage(Integer userConclusionVintage) {
+        this.userConclusionVintage = userConclusionVintage;
+    }
+
     public String getAppConclusionGrape() {
         return appConclusionGrape;
     }
 
-    public void setAppConclusionGrape(String appConclusionGrape) {
+    public void setAppConclusionVariety(String appConclusionGrape) {
         this.appConclusionGrape = appConclusionGrape;
     }
 }

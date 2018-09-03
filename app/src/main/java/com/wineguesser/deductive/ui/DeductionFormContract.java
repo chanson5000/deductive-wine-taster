@@ -280,7 +280,7 @@ public interface DeductionFormContract {
     int TEXT_SINGLE_FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
     int TEXT_SINGLE_FINAL_REGION = R.id.autoText_final_region;
     int TEXT_SINGLE_FINAL_QUALITY = R.id.autoText_final_quality;
-    int TEXT_SINGLE_FINAL_VINTAGE = R.id.autoText_final_vintage;
+    int TEXT_SINGLE_FINAL_VINTAGE = R.id.autoText_actual_vintage;
 
     List<Integer> FinalConclusionAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
             TEXT_SINGLE_FINAL_GRAPE_VARIETY,

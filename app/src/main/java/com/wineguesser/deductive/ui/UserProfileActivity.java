@@ -74,15 +74,13 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
-
-        userProfileModel = ViewModelProviders.of(this)
-                .get(UserProfileViewModel.class);
-
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
 
+        userProfileModel = ViewModelProviders.of(this)
+                .get(UserProfileViewModel.class);
         binding.setLifecycleOwner(this);
+
         binding.setUserProfileForm(userProfileModel);
 
         ButterKnife.bind(this);
@@ -96,6 +94,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             mNewConfirmPassword = savedInstanceState.getString(NEW_CONFIRM_PASSWORD);
         }
 
+        mContext = this;
         mAuth = FirebaseAuth.getInstance();
         mReferenceUsers = FirebaseDatabase.getInstance().getReference(DB_REFERENCE_USERS);
     }

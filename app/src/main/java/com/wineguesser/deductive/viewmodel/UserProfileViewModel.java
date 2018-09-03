@@ -8,7 +8,6 @@ import android.databinding.PropertyChangeRegistry;
 
 import com.wineguesser.deductive.BR;
 
-
 public class UserProfileViewModel extends ViewModel implements Observable {
     private PropertyChangeRegistry callbacks = new PropertyChangeRegistry();
 

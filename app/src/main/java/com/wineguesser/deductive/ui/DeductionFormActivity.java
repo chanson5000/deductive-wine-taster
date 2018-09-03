@@ -29,7 +29,6 @@ import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
 
-import java.time.Year;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private FinalConclusionFragment mFinalFragment;
 
     private String mUserFinalVarietyString;
-    private String mUserFinalOriginString;
+    private String mUserFinalCountryString;
     private String mUserFinalRegionString;
     private String mUserFinalQualityString;
     private Integer mUserFinalVintageInteger;
@@ -460,7 +459,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 findViewById(TEXT_SINGLE_FINAL_VINTAGE);
 
         mUserFinalVarietyString = singleTextViewFinalVariety.getText().toString();
-        mUserFinalOriginString = singleTextViewFinalCountry.getText().toString();
+        mUserFinalCountryString = singleTextViewFinalCountry.getText().toString();
         mUserFinalRegionString = singleTextViewFinalRegion.getText().toString();
         mUserFinalQualityString = singleTextViewFinalQuality.getText().toString();
 
@@ -487,7 +486,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mFinalFragment.errorsFinalForm().setErrorVariety(null);
         }
 
-        if (mUserFinalOriginString.isEmpty()) {
+        if (mUserFinalCountryString.isEmpty()) {
             mFinalFragment.errorsFinalForm()
                     .setErrorCountry(getString(R.string.error_input_country_origin));
             isValid = false;
@@ -580,8 +579,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // We put our guess into the intent to be launched.
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
         // Putting the user's guess into the intent.
-        intent.putExtra(USER_CONCLUSION_GRAPE, mUserFinalVarietyString);
-        intent.putExtra(USER_CONCLUSION_ORIGIN, mUserFinalOriginString);
+        intent.putExtra(USER_CONCLUSION_VARIETY, mUserFinalVarietyString);
+        intent.putExtra(USER_CONCLUSION_COUNTRY, mUserFinalCountryString);
         intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString);
         intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
         intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
