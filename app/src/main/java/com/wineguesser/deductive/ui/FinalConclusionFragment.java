@@ -1,5 +1,6 @@
 package com.wineguesser.deductive.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -16,9 +17,9 @@ import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
-import com.wineguesser.deductive.model.ErrorsFinalForm;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
+import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class FinalConclusionFragment extends Fragment implements
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
-    private ErrorsFinalForm errorsFinalForm;
+    private ConclusionInputErrorsViewModel inputErrors;
     private boolean mIsRedWine;
 
     @SuppressWarnings("WeakerAccess")
@@ -67,6 +68,7 @@ public class FinalConclusionFragment extends Fragment implements
             view.setVisibility(View.VISIBLE);
 
     public FinalConclusionFragment() {
+
     }
 
     @Override
@@ -101,15 +103,18 @@ public class FinalConclusionFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView;
-
+        // Set data binding.
         FragmentFinalConclusionBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_final_conclusion, container, false);
+        // Initialize our view models.
+        inputErrors = ViewModelProviders.of(mFragmentActivity)
+                .get(ConclusionInputErrorsViewModel.class);
+        // Set our lifecycle owner.
+        binding.setLifecycleOwner(this);
+        binding.setInputError(inputErrors);
 
+        // Retrieve our rootView.
         rootView = binding.getRoot();
-
-        errorsFinalForm = new ErrorsFinalForm();
-
-        binding.setErrorGroup(errorsFinalForm);
 
         ButterKnife.bind(this, rootView);
 
@@ -127,8 +132,8 @@ public class FinalConclusionFragment extends Fragment implements
         return rootView;
     }
 
-    public ErrorsFinalForm errorsFinalForm() {
-        return errorsFinalForm;
+    public ConclusionInputErrorsViewModel errorsFinalForm() {
+        return inputErrors;
     }
 
     private List<String> parseResourceArray(int resourceId) {
@@ -147,7 +152,6 @@ public class FinalConclusionFragment extends Fragment implements
         super.onResume();
         loadSelectionState();
         loadScrollState();
-
     }
 
     private void saveScrollState() {
