@@ -207,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="4"
-                android:text="@{actualWine.actualVintage}" />
+                android:text="@={actualWine.actualVintage}" />
 
             <TextView
                 android:id="@+id/textError_vintage"
