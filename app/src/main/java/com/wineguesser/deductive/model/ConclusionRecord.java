@@ -15,13 +15,13 @@ public class ConclusionRecord {
     private String actualQuality;
     private Integer actualVintage;
 
-    private String userConclusionGrape;
+    private String userConclusionVariety;
     private String userConclusionCountry;
     private String userConclusionRegion;
     private String userConclusionQuality;
     private Integer userConclusionVintage;
 
-    private String appConclusionGrape;
+    private String appConclusionVariety;
 
     public ConclusionRecord() {
 
@@ -83,12 +83,12 @@ public class ConclusionRecord {
         this.actualVintage = actualVintage;
     }
 
-    public String getUserConclusionGrape() {
-        return userConclusionGrape;
+    public String getUserConclusionVariety() {
+        return userConclusionVariety;
     }
 
     public void setUserConclusionVariety(String userConclusionGrape) {
-        this.userConclusionGrape = userConclusionGrape;
+        this.userConclusionVariety = userConclusionGrape;
     }
 
     public String getUserConclusionCountry() {
@@ -121,11 +121,11 @@ public class ConclusionRecord {
         this.userConclusionVintage = userConclusionVintage;
     }
 
-    public String getAppConclusionGrape() {
-        return appConclusionGrape;
+    public String getAppConclusionVariety() {
+        return appConclusionVariety;
     }
 
     public void setAppConclusionVariety(String appConclusionGrape) {
-        this.appConclusionGrape = appConclusionGrape;
+        this.appConclusionVariety = appConclusionGrape;
     }
 }
