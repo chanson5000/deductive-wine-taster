@@ -24,6 +24,8 @@ public class VarietyResultsViewModel extends ViewModel {
     private MutableLiveData<String> userQuality = new MutableLiveData<>();
     private MutableLiveData<String> userVintage = new MutableLiveData<>();
 
+    private MutableLiveData<String> resultButtonText = new MutableLiveData<>();
+
     public VarietyResultsViewModel() {
         varietyDataRepository = new VarietyDataRepository();
     }
@@ -64,7 +66,7 @@ public class VarietyResultsViewModel extends ViewModel {
         return userVintage;
     }
 
-    public void setUserVintage (String userVintage) {
+    public void setUserVintage(String userVintage) {
         this.userVintage.setValue(userVintage);
     }
 
@@ -76,6 +78,7 @@ public class VarietyResultsViewModel extends ViewModel {
         loadVariety(isRedWine, varietyId);
     }
 
+    // Takes in boolean for red wine and the variety Id and retrieves the string from the
     private void loadVariety(boolean isRedWine, String varietyId) {
         if (isRedWine) {
             this.appVariety = varietyDataRepository.getRedVarietyNameById(varietyId);
@@ -83,7 +86,6 @@ public class VarietyResultsViewModel extends ViewModel {
             this.appVariety = varietyDataRepository.getWhiteVarietyNameById(varietyId);
         }
     }
-
 
     public MutableLiveData<String> getActualVariety() {
         return actualVariety;
@@ -93,7 +95,6 @@ public class VarietyResultsViewModel extends ViewModel {
         this.actualVariety.setValue(actualVariety);
     }
 
-
     public MutableLiveData<String> getActualCountry() {
         return actualCountry;
     }
@@ -102,7 +103,6 @@ public class VarietyResultsViewModel extends ViewModel {
         this.actualCountry.setValue(actualCountry);
     }
 
-
     public MutableLiveData<String> getActualRegion() {
         return actualRegion;
     }
@@ -110,7 +110,6 @@ public class VarietyResultsViewModel extends ViewModel {
     public void setActualRegion(String actualRegion) {
         this.actualRegion.setValue(actualRegion);
     }
-
 
     public MutableLiveData<String> getActualQuality() {
         return actualQuality;
@@ -126,5 +125,9 @@ public class VarietyResultsViewModel extends ViewModel {
 
     public void setActualVintage(String actualVintage) {
         this.actualVintage.setValue(actualVintage);
+    }
+
+    public void setResultButtonText(String text) {
+        this.resultButtonText.setValue(text);
     }
 }
