@@ -3,11 +3,9 @@ package com.wineguesser.deductive.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.PropertyChangeRegistry;
 
-import com.wineguesser.deductive.BR;
 import com.wineguesser.deductive.repository.VarietyDataRepository;
 
 public class VarietyResultsViewModel extends ViewModel implements Observable {
