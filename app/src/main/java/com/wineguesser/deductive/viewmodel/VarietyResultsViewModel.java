@@ -3,14 +3,11 @@ package com.wineguesser.deductive.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
-import android.databinding.PropertyChangeRegistry;
 
 import com.wineguesser.deductive.repository.VarietyDataRepository;
 
-public class VarietyResultsViewModel extends ViewModel implements Observable {
+public class VarietyResultsViewModel extends ViewModel {
 
-    private PropertyChangeRegistry callbacks = new PropertyChangeRegistry();
     private VarietyDataRepository varietyDataRepository;
 
     private LiveData<String> appVariety;
@@ -129,19 +126,5 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
 
     public void setActualVintage(String actualVintage) {
         this.actualVintage.setValue(actualVintage);
-    }
-
-    @Override
-    public void addOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
-        callbacks.add(callback);
-    }
-
-    @Override
-    public void removeOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
-        callbacks.remove(callback);
-    }
-
-    private void notifyPropertyChanged(int fieldId) {
-        callbacks.notifyCallbacks(this, fieldId, null);
     }
 }
