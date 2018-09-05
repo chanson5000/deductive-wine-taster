@@ -52,8 +52,8 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
     public void onBindViewHolder(@NonNull ConclusionItemAdapterViewHolder conclusionItemAdapterViewHolder, int position) {
 
         conclusionItemAdapterViewHolder.mActualGrape.setText(mConclusionRecords.get(position).getActualVariety());
-        conclusionItemAdapterViewHolder.mUserGrape.setText(mConclusionRecords.get(position).getUserConclusionGrape());
-        conclusionItemAdapterViewHolder.mAppGrape.setText(mConclusionRecords.get(position).getAppConclusionGrape());
+        conclusionItemAdapterViewHolder.mUserGrape.setText(mConclusionRecords.get(position).getUserConclusionVariety());
+        conclusionItemAdapterViewHolder.mAppGrape.setText(mConclusionRecords.get(position).getAppConclusionVariety());
     }
 
     @Override
