@@ -2,7 +2,6 @@ package com.wineguesser.deductive.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository {
+public class Repository implements DatabaseContract {
 //    private final DatabaseReference COUNTRIES_REF;
     private final DatabaseReference RED_VARIETIES;
     private final DatabaseReference WHITE_VARIETIES;
@@ -23,8 +22,8 @@ public class Repository {
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
 //        COUNTRIES_REF = mDatabase.getReference("/lists/countries");
-        RED_VARIETIES = mDatabase.getReference("/redVarietalData");
-        WHITE_VARIETIES = mDatabase.getReference("/whiteVarietalData");
+        RED_VARIETIES = mDatabase.getReference(DB_REFERENCE_RED_VARIETAL_DATA);
+        WHITE_VARIETIES = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA);
     }
 
 //    public FirebaseChildrenList getCountriesList() {
@@ -55,13 +54,11 @@ public class Repository {
 
         @Override
         protected void onActive() {
-            Log.d(LOG_TAG, "onActive");
             query.addValueEventListener(listener);
         }
 
         @Override
         protected void onInactive() {
-            Log.d(LOG_TAG, "onInactive");
             query.removeEventListener(listener);
         }
 
@@ -77,7 +74,6 @@ public class Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(LOG_TAG, "Can't listen to query " + query, databaseError.toException());
             }
         }
     }
@@ -99,13 +95,11 @@ public class Repository {
 
         @Override
         protected void onActive() {
-            Log.d(LOG_TAG, "onActive");
             query.addValueEventListener(listener);
         }
 
         @Override
         protected void onInactive() {
-            Log.d(LOG_TAG, "onInactive");
             query.removeEventListener(listener);
         }
 
@@ -117,7 +111,6 @@ public class Repository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(LOG_TAG, "Can't listen to query " + query, databaseError.toException());
             }
         }
     }

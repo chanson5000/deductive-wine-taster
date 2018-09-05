@@ -4,9 +4,20 @@ import com.wineguesser.deductive.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public interface DeductionFormContract {
+
+    String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
+    String IS_RED_WINE = "IS_RED_WINE";
+    String RED_WINE = "RED_WINE";
+    String WHITE_WINE = "WHITE_WINE";
+    String USER_CONCLUSION_VARIETY = "USER_CONCLUSION_VARIETY";
+    String USER_CONCLUSION_COUNTRY = "USER_CONCLUSION_COUNTRY";
+    String USER_CONCLUSION_REGION = "USER_CONCLUSION_REGION";
+    String USER_CONCLUSION_QUALITY = "USER_CONCLUSION_QUALITY";
+    String USER_CONCLUSION_VINTAGE = "USER_CONCLUSION_VINTAGE";
 
     String CURRENT_PAGE_RED = "CURRENT_PAGE_RED";
     String CURRENT_PAGE_WHITE = "CURRENT_PAGE_WHITE";
@@ -98,60 +109,58 @@ public interface DeductionFormContract {
     String North_Island = "North Island";
     String Tuscany = "Tuscany";
 
-    String[] AllRegions = new String[]{Alsace, Burgundy, Bordeaux, Loire_Valley, South_Australia,
+    List<String> AllRegions = new ArrayList<>(Arrays.asList(Alsace, Burgundy, Bordeaux, Loire_Valley, South_Australia,
             Western_Australia, Central_Valley, California, Rhone_Valley, Victoria, Piedmont, Oregon,
-            South_Island, North_Island, Tuscany};
+            South_Island, North_Island, Tuscany));
 
-    String[] RegionsFrance = new String[]{Alsace, Burgundy, Bordeaux, Loire_Valley, Rhone_Valley};
-    String[] RegionsUnitedStates = new String[]{California, Oregon};
-    String[] RegionsAustralia = new String[]{South_Australia, Western_Australia, Victoria};
-    String[] RegionsNewZealand = new String[]{North_Island, South_Island};
-    String[] RegionsItaly = new String[]{Piedmont, Tuscany};
-    String[] RegionsChile = new String[]{Central_Valley};
+    List<String> RegionsFrance = new ArrayList<>(Arrays.asList(Alsace, Burgundy, Bordeaux, Loire_Valley, Rhone_Valley));
+    List<String> RegionsUnitedStates = new ArrayList<>(Arrays.asList(California, Oregon));
+    List<String> RegionsAustralia = new ArrayList<>(Arrays.asList(South_Australia, Western_Australia, Victoria));
+    List<String> RegionsNewZealand = new ArrayList<>(Arrays.asList(North_Island, South_Island));
+    List<String> RegionsItaly = new ArrayList<>(Arrays.asList(Piedmont, Tuscany));
+    List<String> RegionsChile = Collections.singletonList(Central_Valley);
 
-    String[] AllCountries = new String[]{Argentina, Australia, Chile, France, Germany,
-            Italy, New_Zealand, Spain, United_States,};
+    List<String> AllCountries = new ArrayList<>(Arrays.asList(Argentina, Australia, Chile, France, Germany,
+            Italy, New_Zealand, Spain, United_States));
 
-    String[] NewWorldCountries = new String[]{Argentina, Australia, Chile, New_Zealand,
-            United_States};
+    List<String> NewWorldCountries = new ArrayList<>(Arrays.asList(Argentina, Australia, Chile, New_Zealand,
+            United_States));
 
-    String[] OldWorldCountries = new String[]{France, Germany, Italy, Spain};
+    List<String> OldWorldCountries = new ArrayList<>(Arrays.asList(France, Germany, Italy, Spain));
 
-    String[] AllVarieties = new String[]{Albarino, Cabernet_Franc, Cabernet_Sauvignon,
+    List<String> AllVarieties = new ArrayList<>(Arrays.asList(Albarino, Cabernet_Franc, Cabernet_Sauvignon,
             Chardonnay, Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Malbec, Merlot,
             Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
-            Syrah, Tempranillo, Torrontes, Viognier, Zinfandel};
+            Syrah, Tempranillo, Torrontes, Viognier, Zinfandel));
 
-    String[] RedVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Gamay,
+    List<String> RedVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Gamay,
             Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
-            Tempranillo, Zinfandel};
+            Tempranillo, Zinfandel));
 
-    String[] WhiteVarieties = new String[]{Albarino, Chardonnay, Chenin_Blanc,
-            Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier};
+    List<String> WhiteVarieties = new ArrayList<>(Arrays.asList(Albarino, Chardonnay, Chenin_Blanc,
+            Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier));
 
-    String[] ArgentinaVarieties = new String[]{Malbec, Torrontes};
+    List<String> ArgentinaVarieties = new ArrayList<>(Arrays.asList(Malbec, Torrontes));
 
-    String[] AustraliaVarieties = new String[]{Cabernet_Sauvignon, Grenache, Riesling,
-            Syrah};
+    List<String> AustraliaVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Grenache, Riesling,
+            Syrah));
 
-    String[] ChileVarieties = new String[]{Cabernet_Sauvignon};
+    List<String> ChileVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon));
 
-    String[] FranceVarieties = new String[]{Cabernet_Franc, Cabernet_Sauvignon, Chardonnay,
+    List<String> FranceVarieties = new ArrayList<>(Arrays.asList(Cabernet_Franc, Cabernet_Sauvignon, Chardonnay,
             Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Merlot, Pinot_Gris, Riesling,
-            Sauvignon_Blanc, Syrah, Viognier};
+            Sauvignon_Blanc, Syrah, Viognier));
 
-    String[] GermanyVarieties = new String[]{Riesling};
+    List<String> GermanyVarieties = new ArrayList<>(Arrays.asList(Riesling));
 
-    String[] ItalyVarieties = new String[]{Nebbiolo, Pinot_Gris, Sangiovese};
+    List<String> ItalyVarieties = new ArrayList<>(Arrays.asList(Nebbiolo, Pinot_Gris, Sangiovese));
 
-    String[] NewZealandVarieties = new String[]{Pinot_Noir, Sauvignon_Blanc};
+    List<String> NewZealandVarieties = new ArrayList<>(Arrays.asList(Pinot_Noir, Sauvignon_Blanc));
 
-    String[] SpainVarieties = new String[]{Albarino, Tempranillo};
+    List<String> SpainVarieties = new ArrayList<>(Arrays.asList(Albarino, Tempranillo));
 
-    String[] UnitedStatesVarieties = new String[]{Cabernet_Sauvignon, Chardonnay, Merlot,
-            Pinot_Noir, Sauvignon_Blanc, Syrah, Zinfandel};
-
-
+    List<String> UnitedStatesVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Chardonnay, Merlot,
+            Pinot_Noir, Sauvignon_Blanc, Syrah, Zinfandel));
 
 
     int RADIO_GROUP_CLARITY = R.id.radio_group_clarity;
@@ -164,8 +173,6 @@ public interface DeductionFormContract {
     int RADIO_GROUP_EXTRACT_STAINING = R.id.radio_group_extractstain_redwine;
     int RADIO_GROUP_TEARING = R.id.radio_group_tearing;
     int RADIO_GROUP_GAS_EVIDENCE = R.id.radio_group_gasevidence;
-
-
 
     int CHECK_FAULT_TCA = R.id.check_faulty_tca;
     int CHECK_FAULT_HYDROGEN_SULFIDE = R.id.check_faulty_hydrogen_sulfide;
@@ -274,11 +281,24 @@ public interface DeductionFormContract {
     int TEXT_MULTI_INITIAL_COUNTRIES = R.id.multiText_initial_countries;
     int RADIO_GROUP_INITIAL_AGE_RANGE = R.id.radio_group_initial_age;
 
+    List<Integer> InitialConclusionMultiAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
+            TEXT_MULTI_INITIAL_GRAPE_VARIETIES,
+            TEXT_MULTI_INITIAL_COUNTRIES
+    ));
+
     int TEXT_SINGLE_FINAL_GRAPE_VARIETY = R.id.autoText_final_grape_variety;
     int TEXT_SINGLE_FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
     int TEXT_SINGLE_FINAL_REGION = R.id.autoText_final_region;
     int TEXT_SINGLE_FINAL_QUALITY = R.id.autoText_final_quality;
     int TEXT_SINGLE_FINAL_VINTAGE = R.id.autoText_final_vintage;
+
+    List<Integer> FinalConclusionAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
+            TEXT_SINGLE_FINAL_GRAPE_VARIETY,
+            TEXT_SINGLE_FINAL_COUNTRY_ORIGIN,
+            TEXT_SINGLE_FINAL_REGION,
+            TEXT_SINGLE_FINAL_QUALITY,
+            TEXT_SINGLE_FINAL_VINTAGE
+    ));
 
     List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_CLARITY,
             RADIO_GROUP_CONCENTRATION, RADIO_GROUP_COLOR_RED_WINE, RADIO_GROUP_COLOR_WHITE_WINE,

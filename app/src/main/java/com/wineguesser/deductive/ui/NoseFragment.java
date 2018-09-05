@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
 import java.util.List;
@@ -27,25 +27,27 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class NoseFragment extends Fragment implements DeductionFormContract,
-        RepoKeyContract {
+        DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_nose)
     ScrollView mScrollViewNose;
 
+    @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.radio_nose_wood_old, R.id.radio_nose_wood_new,
             R.id.radio_nose_wood_large, R.id.radio_nose_wood_small,
             R.id.radio_nose_wood_french, R.id.radio_nose_wood_american})
     List<RadioButton> mRadioGroupsNoseWood;
 
-    static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
+    private static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
             view.setEnabled(true);
 
-    static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
+    private static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
     public NoseFragment() {

@@ -2,6 +2,7 @@ package com.wineguesser.deductive;
 
 import android.app.Application;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.FirebaseDatabase;
 
 import timber.log.Timber;
@@ -16,5 +17,6 @@ public class DeductiveWineTaster extends Application {
         }
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        MobileAds.initialize(this, getString(R.string.app_add_id));
     }
 }

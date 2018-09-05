@@ -27,9 +27,20 @@
             android:parentActivityName=".ui.MainActivity" />
 
         <activity
-            android:name=".ui.ActualWineActivity"
+            android:name=".ui.VarietyResultsActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.DeductionFormActivity" />
+
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.UserProfileActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity" />
+
     </application>
 
 </manifest>

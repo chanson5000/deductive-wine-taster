@@ -15,16 +15,19 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
+import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InitialConclusionFragment extends Fragment implements DeductionFormContract,
-        RepoKeyContract {
+        DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
@@ -34,6 +37,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private MultiAutoCompleteTextView mMultiAutoTextVarieties;
     private MultiAutoCompleteTextView mMultiAutoTextCountries;
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_initial)
     ScrollView mScrollViewInitial;
 
@@ -75,12 +79,13 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextVarieties = rootView.findViewById(R.id.multiText_initial_varieties);
         mMultiAutoTextCountries = rootView.findViewById(R.id.multiText_initial_countries);
 
-        if (mIsRedWine) {
-            setMultiAutoTextVarieties(RedVarieties);
-        } else {
-            setMultiAutoTextVarieties(WhiteVarieties);
-        }
-        setMultiAutoTextCountries(AllCountries);
+        setAutoTextVarietyByType(mIsRedWine);
+
+        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
+
+        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries));
+        mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         ButterKnife.bind(this, rootView);
 
@@ -137,17 +142,17 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         editor.apply();
     }
 
-    private void setMultiAutoTextCountries(String[] countries) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries);
-        mMultiAutoTextCountries.setAdapter(adapter);
-        mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-    }
+    private void setAutoTextVarietyByType(Boolean isRedWine) {
+        List<String> varieties;
 
-    private void setMultiAutoTextVarieties(String[] varieties) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, varieties);
-        mMultiAutoTextVarieties.setAdapter(adapter);
+        if (isRedWine) {
+            varieties = new ArrayList<>(parseResourceArray(R.array.red_varieties));
+        } else {
+            varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
+        }
+
+        mMultiAutoTextVarieties.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, varieties));
         mMultiAutoTextVarieties.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
@@ -157,6 +162,10 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     private int parseEntryValue(Object value) {
         return Integer.parseInt(value.toString());
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 
     private void loadSelectionState() {

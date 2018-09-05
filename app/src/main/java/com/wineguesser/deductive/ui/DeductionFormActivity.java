@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,28 +24,22 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.RepoKeyContract;
-import com.wineguesser.deductive.util.WineKeyConverter;
+import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.util.GrapeScore;
+import com.wineguesser.deductive.util.GrapeResult;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.Map;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        RepoKeyContract {
-
-    private static final String LOG_TAG = DeductionFormActivity.class.getSimpleName();
+        DatabaseContract, GrapeResult {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
     private SharedPreferences mActivityPreferences;
     private boolean mIsRedWine;
+    private boolean mLaunchingIntent;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -59,28 +52,27 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private InitialConclusionFragment mInitialFragment;
     private FinalConclusionFragment mFinalFragment;
 
-    private static DatabaseReference mDatabaseReference;
+    private String mUserFinalVarietyString;
+    private String mUserFinalCountryString;
+    private String mUserFinalRegionString;
+    private String mUserFinalQualityString;
+    private Integer mUserFinalVintageInteger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
-
-        Intent parentIntent = getIntent();
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        Intent parentIntent = getIntent();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
+        SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
             editor.putString(IS_RED_WINE, RED_WINE);
             mIsRedWine = true;
-            mDatabaseReference = mDatabase.getReference(DB_RED_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -92,7 +84,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             editor.putString(IS_RED_WINE, WHITE_WINE);
             mIsRedWine = false;
-            mDatabaseReference = mDatabase.getReference(DB_WHITE_DESC_PATH);
 
             mWinePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
@@ -100,11 +91,16 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         }
-
         editor.apply();
 
 
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -117,7 +113,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        };
+
+        mPager.addOnPageChangeListener(onPageChangeListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 
     @Override
@@ -136,7 +140,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 if (mPager.getCurrentItem() != SIGHT_PAGE) {
                     mPager.setCurrentItem(SIGHT_PAGE);
                 }
-                Toast.makeText(this, "Form Cleared!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.form_cleared), Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -147,7 +151,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onPause() {
         super.onPause();
         unRegisterSharedPreferencesListener();
-        setCurrentPageInPreferences(getCurrentPageFromPager());
+        if (!mLaunchingIntent) {
+            setCurrentPageInPreferences(getCurrentPageFromPager());
+            mLaunchingIntent = false;
+        }
     }
 
     @Override
@@ -193,6 +200,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
+    // When shared preferences are changed, the view is also updated. This is most useful when
+    // clearing preferences.
     private void registerPreferencesListener() {
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
@@ -201,15 +210,20 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             if (view != null) {
                 if (view instanceof RadioGroup) {
-                    ((RadioGroup) view).check(sharedPreferences.getInt(key, NONE_SELECTED));
+                    ((RadioGroup) view).check(
+                            sharedPreferences.getInt(key, NONE_SELECTED));
                 } else if (view instanceof CheckBox) {
-                    ((CheckBox) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                    ((CheckBox) view).setChecked(
+                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
-                    ((Switch) view).setChecked(castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                    ((Switch) view).setChecked(
+                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof MultiAutoCompleteTextView) {
-                    ((MultiAutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                    ((MultiAutoCompleteTextView) view).setText(
+                            sharedPreferences.getString(key, ""));
                 } else if (view instanceof AutoCompleteTextView) {
-                    ((AutoCompleteTextView) view).setText(sharedPreferences.getString(key, ""));
+                    ((AutoCompleteTextView) view).setText(
+                            sharedPreferences.getString(key, ""));
                 }
             }
         }));
@@ -232,8 +246,16 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
             } else if (AllAutoText.contains(key)) {
                 winePreferencesEditor.putString(entry.getKey(), "");
+                AutoCompleteTextView autoView = findViewById(key);
+                if (autoView != null) {
+                    autoView.setText("");
+                }
             } else if (AllAutoMultiText.contains(key)) {
                 winePreferencesEditor.putString(entry.getKey(), "");
+                MultiAutoCompleteTextView multiView = findViewById(key);
+                if (multiView != null) {
+                    multiView.setText("");
+                }
             }
         }
         winePreferencesEditor.apply();
@@ -253,7 +275,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
             activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
         }
+
         activityPreferencesEditor.apply();
+
+        activityPreferencesEditor.commit();
+
     }
 
     private void saveRadioGroupState(int key, int state) {
@@ -331,7 +357,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mFinalFragment.scrollToTop();
         }
     }
-
 
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
@@ -421,92 +446,159 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-    public void onSubmitFinalConclusion(View view) {
-        // Retrieve all the current form selections from preferences.
+    private boolean validInputs() {
+        AutoCompleteTextView singleTextViewFinalVariety =
+                findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
+        AutoCompleteTextView singleTextViewFinalCountry =
+                findViewById(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN);
+        AutoCompleteTextView singleTextViewFinalRegion =
+                findViewById(TEXT_SINGLE_FINAL_REGION);
+        AutoCompleteTextView singleTextViewFinalQuality =
+                findViewById(TEXT_SINGLE_FINAL_QUALITY);
+        AutoCompleteTextView singleTextViewFinalVintage =
+                findViewById(TEXT_SINGLE_FINAL_VINTAGE);
+
+        mUserFinalVarietyString = singleTextViewFinalVariety.getText().toString();
+        mUserFinalCountryString = singleTextViewFinalCountry.getText().toString();
+        mUserFinalRegionString = singleTextViewFinalRegion.getText().toString();
+        mUserFinalQualityString = singleTextViewFinalQuality.getText().toString();
+
+        mUserFinalVintageInteger = null;
+        String parseInteger = singleTextViewFinalVintage.getText().toString();
+        if (!parseInteger.isEmpty()) {
+            mUserFinalVintageInteger = Integer.parseInt(parseInteger);
+        } else {
+            mUserFinalVintageInteger = 0;
+        }
+
+        boolean isValid = true;
+
+        // Check that user has provided their conclusion of grape variety.
+        if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
+        } else if (!mIsRedWine && !WhiteVarieties.contains(mUserFinalVarietyString)) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorVariety(null);
+        }
+
+        if (mUserFinalCountryString.isEmpty()) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorCountry(getString(R.string.error_input_country_origin));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorCountry(null);
+        }
+
+        if (mUserFinalRegionString.isEmpty()) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorRegion(getString(R.string.error_input_valid_region));
+            isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorRegion(null);
+        }
+
+        if (mUserFinalQualityString.isEmpty()) {
+            mUserFinalQualityString = "None";
+        }
+
+        if (mUserFinalVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
+                || mUserFinalVintageInteger < 1900) {
+            mFinalFragment.errorsFinalForm()
+                    .setErrorVintage(getString(R.string.error_input_valid_vintage));
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private SparseIntArray retrieveSharedPreferencesValues() {
+        // Retrieve all the form selections from preferences.
         Map<String, ?> allEntries = mWinePreferences.getAll();
 
+        // Create a SparseIntArray that will contain our normalized map of form selections.
+        // SparseIntArray uses less memory but is a little slower. There is no real specific
+        // reason for its use here other than seeing it in action as an alternative to HashMap.
+        // SparseArrays are an Android only component.
         SparseIntArray wineFormSelections = new SparseIntArray();
 
+        // *** Combing through our form input keys and parsing for relevance. ***
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Integer wineFormKey = castKey(entry.getKey());
+            // Radio groups and check boxes will be handled slightly differently because
+            // a radio group will return either an Id that will be included in our map or
+            // return -1 (for none selected) and result in no map put.
+            // Check boxes will just be looking for check or no check.
 
-            // Combing through our preference keys and parsing for relevance.
-            // Checking for radio groups.
             if (AllRadioGroups.contains(wineFormKey)) {
                 Integer radioButtonSelection = Integer.parseInt(entry.getValue().toString());
                 // Checking to see if a selection has been made.
                 if (radioButtonSelection != NONE_SELECTED) {
-                    // If a selection has been made it would have included
+                    // If a selection has been made we add it as checked (value of 1)
                     wineFormSelections.put(radioButtonSelection, CHECKED);
                 }
             } else if (AllCheckBoxes.contains(wineFormKey)) {
                 Integer value = Integer.parseInt(entry.getValue().toString());
+                // Only adding to map if element has been checked.
                 if (value == CHECKED) {
                     wineFormSelections.put(wineFormKey, value);
                 }
             }
         }
 
-        WineKeyConverter converter = new WineKeyConverter();
-        HashMap<String, Integer> converted = converter.convertToDataFormat(wineFormSelections);
-
-        scoreWine(converted);
+        return wineFormSelections;
     }
 
+    public void onSubmitFinalConclusion(View view) {
+        // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
+        if (!validInputs()) {
+            return;
+        }
 
-    public void scoreWine(HashMap<String, Integer> wineToCompare) {
+        SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
-        // <Wine Id, Wine Score>
-        HashMap<String, Integer> wineScores = new HashMap<>();
+        GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
 
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot varietyRecord : dataSnapshot.getChildren()) {
-                    String wineId = varietyRecord.getKey();
-                    int currentWineScore = 0;
-                    for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
-                        if (wineToCompare.containsKey(varietyDescriptor.getKey())) {
-                            currentWineScore++;
-                        }
-                    }
-                    wineScores.put(wineId, currentWineScore);
-                }
-
-                // Retrieve the wine key with the highest score.
-                String winnerId = Collections.max(wineScores.entrySet(), (wineId, wineScore)
-                        -> wineId.getValue() - wineScore.getValue()).getKey();
-
-                if (winnerId != null) {
-                    Intent intent = new Intent(mContext, ActualWineActivity.class);
-                    intent.putExtra(WINNING_WINE_ID, winnerId);
-                    if (mIsRedWine) {
-                        intent.putExtra(IS_RED_WINE, true);
-                    }
-                    AutoCompleteTextView viewFinalConclusionText = findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
-                    String finalVarietyText = viewFinalConclusionText.getText().toString();
-                    intent.putExtra(USER_GUESSED_WINE, finalVarietyText);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(mContext,
-                            "Unable To Calculate Winner", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(mContext, "Database Error", Toast.LENGTH_SHORT).show();
-                Log.e(LOG_TAG, databaseError.toString());
-            }
-        };
-
-        mDatabaseReference.addListenerForSingleValueEvent(listener);
+        scoreTask.execute(formSelections);
     }
 
-    private void wipeSharedPreferences() {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.clear();
-        editor.apply();
+    public void onGrapeResult(String topScoreVariety) {
+        resetSharedPreferences();
+        resetAllTopScroll();
+        setCurrentPageInPreferences(SIGHT_PAGE);
+        mLaunchingIntent = true;
+
+        Intent intent = new Intent(mContext, VarietyResultsActivity.class);
+        if (mIsRedWine) {
+            intent.putExtra(IS_RED_WINE, true);
+        }
+        // We put our guess into the intent to be launched.
+        intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
+        // Putting the user's guess into the intent.
+        intent.putExtra(USER_CONCLUSION_VARIETY, mUserFinalVarietyString);
+        intent.putExtra(USER_CONCLUSION_COUNTRY, mUserFinalCountryString);
+        intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString);
+        intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
+        intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
+
+        // We can now launch the activity that will show results to the user.
+        startActivity(intent);
+    }
+
+    public void isScoring(Boolean loading) {
+        if (loading) {
+            mFinalFragment.showLoadingIndicator();
+        } else {
+            mFinalFragment.hideLoadingIndicator();
+        }
+    }
+
+    public void onGrapeFailure() {
+        Toast.makeText(mContext,
+                "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
     }
 }

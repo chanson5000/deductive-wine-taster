@@ -1,41 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView_final"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="errorGroup"
+            type="com.wineguesser.deductive.model.ErrorsFinalForm" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/group_final_wine_fields" />
+        <View
+            android:id="@+id/progressBar_final_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/greyTransparent"
+            android:visibility="invisible" />
 
-        <Button
-            android:id="@+id/button_submit_final_conclusion"
+        <ProgressBar
+            android:id="@+id/progressBar_final_conclusion"
+            style="@style/AppTheme.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onSubmitFinalConclusion"
-            android:text="@string/submit_final_conclusion" />
+            android:visibility="invisible" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <ScrollView
+            android:id="@+id/scrollView_final"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+                <TextView
+                    android:id="@+id/textView_final_grape_variety"
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/autoText_final_grape_variety"
+                    android:text="@string/grape_variety_blend" />
 
-    </LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/autoText_final_grape_variety"
+                    style="@style/AppTheme.AutoText.Single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
 
-</ScrollView>
+                <TextView
+                    android:id="@+id/textError_variety"
+                    style="@style/AppTheme.Text.Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{errorGroup.errorVariety}"
+                    android:visibility="@{errorGroup.errorVariety != null ? View.VISIBLE : View.GONE}" />
+
+                <include layout="@layout/spacer_horizontal" />
+
+                <TextView
+                    android:id="@+id/textView_final_country"
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/autoText_final_country"
+                    android:text="@string/country_of_origin" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoText_final_country"
+                    style="@style/AppTheme.AutoText.Single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/textError_country"
+                    style="@style/AppTheme.Text.Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{errorGroup.errorCountry}"
+                    android:visibility="@{errorGroup.errorCountry != null ? View.VISIBLE : View.GONE}" />
+
+                <include layout="@layout/spacer_horizontal" />
+
+                <TextView
+                    android:id="@+id/textView_final_region"
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/autoText_final_region"
+                    android:text="@string/region_appellation" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoText_final_region"
+                    style="@style/AppTheme.AutoText.Single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/textError_region"
+                    style="@style/AppTheme.Text.Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{errorGroup.errorRegion}"
+                    android:visibility="@{errorGroup.errorRegion != null ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    android:id="@+id/textView_final_quality"
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/autoText_final_quality"
+                    android:text="@string/quality_regional_hierarchy" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoText_final_quality"
+                    style="@style/AppTheme.AutoText.Single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/textError_quality"
+                    style="@style/AppTheme.Text.Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{errorGroup.errorQuality}"
+                    android:visibility="@{errorGroup.errorQuality != null ? View.VISIBLE : View.GONE}" />
+
+                <include layout="@layout/spacer_horizontal" />
+
+                <TextView
+                    android:id="@+id/textView_final_vintage"
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/autoText_final_vintage"
+                    android:text="@string/vintage" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoText_final_vintage"
+                    style="@style/AppTheme.AutoText.Single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="4" />
+
+                <TextView
+                    android:id="@+id/textError_vintage"
+                    style="@style/AppTheme.Text.Error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{errorGroup.errorVintage}"
+                    android:visibility="@{errorGroup.errorVintage != null ? View.VISIBLE : View.GONE}" />
+
+                <include layout="@layout/spacer_horizontal" />
+
+                <Button
+                    android:id="@+id/button_submit_final_conclusion"
+                    style="@style/AppTheme.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onSubmitFinalConclusion"
+                    android:text="@string/submit_final_conclusion" />
+
+                <include layout="@layout/spacer_horizontal" />
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</layout>
