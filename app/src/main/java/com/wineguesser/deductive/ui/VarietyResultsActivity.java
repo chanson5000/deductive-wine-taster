@@ -9,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.ads.AdListener;
@@ -18,13 +16,12 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.databinding.ActivityActualWineBinding;
+import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
-import com.wineguesser.deductive.model.ErrorsFinalForm;
+import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
 import java.util.ArrayList;
@@ -47,18 +44,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     String DISABLE_AD_FOR_TEST = "DISABLE_AD";
     boolean mAdDisabled;
 
-    private Context mContext;
-    VarietyResultsViewModel actualWineForm;
+    VarietyResultsViewModel inputForm;
+    ConclusionInputErrorsViewModel inputErrors;
 
-    private static DatabaseReference mDbReferenceUsers;
-    private static DatabaseReference mDbReferenceUserConclusions;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_our_guess)
-    TextView mTextViewAppConclusion;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_user_variety)
-    TextView mTextViewUserConclusion;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_variety)
     AutoCompleteTextView mSingleViewActualVariety;
@@ -74,14 +62,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_vintage)
     AutoCompleteTextView mSingleViewActualVintage;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.wine_result_save)
-    Button mButtonWineResultSave;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private InterstitialAd mInterstitialAd;
-    private ErrorsFinalForm errorsForm = new ErrorsFinalForm();
     private boolean mIsRedWine;
 
     private String mActualVariety;
@@ -93,33 +77,41 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityActualWineBinding binding = DataBindingUtil
-                .setContentView(this, R.layout.activity_actual_wine);
-
-        actualWineForm = ViewModelProviders.of(this)
+        // Set data binding.
+        ActivityVarietyResultsBinding binding = DataBindingUtil
+                .setContentView(this, R.layout.activity_variety_results);
+        // Initialize our view models.
+        inputForm = ViewModelProviders.of(this)
                 .get(VarietyResultsViewModel.class);
+        inputErrors = ViewModelProviders.of(this)
+                .get(ConclusionInputErrorsViewModel.class);
+        // Set our lifecycle owner for our view models to work.
         binding.setLifecycleOwner(this);
-        binding.setActualWine(actualWineForm);
+        // Set our variables to our binding.
+        binding.setActualWine(inputForm);
+        binding.setInputError(inputErrors);
 
-        errorsForm = new ErrorsFinalForm();
-        binding.setErrorGroup(errorsForm);
-
-        mContext = this;
+        Context mContext = this;
+        // Still using Butterknife for setting adapters for our AutoCompleteTextViews.
         ButterKnife.bind(this);
 
+        // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
-            actualWineForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
-            actualWineForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
-            actualWineForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
-            actualWineForm.setActualQuality(savedInstanceState.getString(FORM_ACTUAL_QUALITY));
-            actualWineForm.setActualVintage(Integer.toString(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE)));
+            inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
+            inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
+            inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
+            inputForm.setActualQuality(savedInstanceState.getString(FORM_ACTUAL_QUALITY));
+            inputForm.setActualVintage(Integer.toString(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE)));
         }
 
+        // Check for the data from our parent intent.
         Intent parentIntent = getIntent();
-
+        // A Guess Id should have been passed.
         if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
+            // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
+            // Check to see if we are disabling Ad (For testing purposes)
             if (parentIntent.hasExtra(DISABLE_AD_FOR_TEST)) {
                 mAdDisabled = true;
             } else {
@@ -128,25 +120,20 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
+            // Retrieve all of the data from the parent intent and put it to our view model.
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
-
-                actualWineForm.setAppVarietyById(mIsRedWine, bundle.getString(APP_VARIETY_GUESS_ID));
-
-                actualWineForm.setUserVariety(bundle.getString(USER_CONCLUSION_VARIETY));
-                actualWineForm.setUserCountry(bundle.getString(USER_CONCLUSION_COUNTRY));
-                actualWineForm.setUserRegion(bundle.getString(USER_CONCLUSION_REGION));
-                actualWineForm.setUserQuality(bundle.getString(USER_CONCLUSION_QUALITY));
-                actualWineForm.setUserVintage(Integer.toString(bundle.getInt(USER_CONCLUSION_VINTAGE)));
+                inputForm.setAppVarietyById(mIsRedWine, bundle.getString(APP_VARIETY_GUESS_ID));
+                inputForm.setUserVariety(bundle.getString(USER_CONCLUSION_VARIETY));
+                inputForm.setUserCountry(bundle.getString(USER_CONCLUSION_COUNTRY));
+                inputForm.setUserRegion(bundle.getString(USER_CONCLUSION_REGION));
+                inputForm.setUserQuality(bundle.getString(USER_CONCLUSION_QUALITY));
+                inputForm.setUserVintage(Integer.toString(bundle.getInt(USER_CONCLUSION_VINTAGE)));
             }
         }
 
+        // Get our auth instance for user validation.
         mAuth = FirebaseAuth.getInstance();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        mDbReferenceUsers = database.getReference(DB_REFERENCE_USERS);
-        mDbReferenceUserConclusions = database.getReference(DB_REFERENCE_CONCLUSIONS);
 
         List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
         List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
@@ -160,21 +147,17 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        mActualVariety = actualWineForm.getActualVariety().getValue();
-        mActualCountry = actualWineForm.getActualCountry().getValue();
-        mActualRegion = actualWineForm.getActualRegion().getValue();
-
-        mActualVintage = actualWineForm.getActualVintage().getValue();
-        mActualQuality = actualWineForm.getActualQuality().getValue();
-
+        mActualVariety = inputForm.getActualVariety().getValue();
+        mActualCountry = inputForm.getActualCountry().getValue();
+        mActualRegion = inputForm.getActualRegion().getValue();
+        mActualVintage = inputForm.getActualVintage().getValue();
+        mActualQuality = inputForm.getActualQuality().getValue();
     }
 
     @Override
@@ -199,14 +182,15 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                mButtonWineResultSave.setText(getString(R.string.save_result));
+                inputForm.setResultButtonText(getString(R.string.save_result));
             } else {
-                mButtonWineResultSave.setText(getString(R.string.log_in_for_result_save));
+                inputForm.setResultButtonText(getString(R.string.log_in_for_result_save));
             }
         };
 
         mAuth.addAuthStateListener(mAuthListener);
 
+        // Checking if the ad has been disabled for testing.
         if (!mAdDisabled) {
             mInterstitialAd.setAdListener(new AdListener() {
                 @Override
@@ -225,58 +209,37 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     public void onButtonWineResultSave(View view) {
+        // Validate our inputs.
         if (!validInputs()) {
             return;
         }
 
+        // Validate our user.
         FirebaseUser user = mAuth.getCurrentUser();
-
         if (user != null) {
             String uid = user.getUid();
 
-            DatabaseReference newConclusionRecordReference
-                    = mDbReferenceUserConclusions.child(uid).push();
-            String conclusionReferenceKey = newConclusionRecordReference.getKey();
-            if (conclusionReferenceKey != null) {
-                mDbReferenceUsers.child(uid).child(DB_REFERENCE_USER_CONCLUSIONS)
-                        .child(conclusionReferenceKey).setValue(true);
-            }
-
-            String actualVariety = actualWineForm.getActualVariety().getValue();
-            String actualCountry = actualWineForm.getActualCountry().getValue();
-            String actualRegion = actualWineForm.getActualRegion().getValue();
-            String actualQuality = actualWineForm.getActualQuality().getValue();
-            String parseInt = actualWineForm.getActualVintage().getValue();
-            Integer actualVintage = Integer.parseInt(parseInt);
-
-            String userVariety = actualWineForm.getUserVariety().getValue();
-            String userCountry = actualWineForm.getUserCountry().getValue();
-            String userRegion = actualWineForm.getUserRegion().getValue();
-            String userQuality = actualWineForm.getUserQuality().getValue();
-            parseInt = actualWineForm.getUserVintage().getValue();
-            Integer userVintage = Integer.parseInt(parseInt);
-
-            String appVariety = actualWineForm.getAppVariety().getValue();
-
             ConclusionRecord conclusionRecord = new ConclusionRecord();
-            conclusionRecord.setAppConclusionVariety(appVariety);
-            conclusionRecord.setActualVariety(actualVariety);
-            conclusionRecord.setActualCountry(actualCountry);
-            conclusionRecord.setActualRegion(actualRegion);
-            conclusionRecord.setActualQuality(actualQuality);
-            conclusionRecord.setActualVintage(actualVintage);
+            conclusionRecord.setAppConclusionVariety(inputForm.getAppVariety().getValue());
+            conclusionRecord.setActualVariety(inputForm.getActualVariety().getValue());
+            conclusionRecord.setActualCountry(inputForm.getActualCountry().getValue());
+            conclusionRecord.setActualRegion(inputForm.getActualRegion().getValue());
+            conclusionRecord.setActualQuality(inputForm.getActualQuality().getValue());
+            conclusionRecord.setActualVintage(
+                    Integer.parseInt(inputForm.getActualVintage().getValue()));
 
-            conclusionRecord.setUserConclusionVariety(userVariety);
-            conclusionRecord.setUserConclusionCountry(userCountry);
-            conclusionRecord.setUserConclusionRegion(userRegion);
-            conclusionRecord.setUserConclusionQuality(userQuality);
-            conclusionRecord.setUserConclusionVintage(userVintage);
+            conclusionRecord.setUserConclusionVariety(inputForm.getUserVariety().getValue());
+            conclusionRecord.setUserConclusionCountry(inputForm.getUserCountry().getValue());
+            conclusionRecord.setUserConclusionRegion(inputForm.getUserCountry().getValue());
+            conclusionRecord.setUserConclusionQuality(inputForm.getUserRegion().getValue());
+            conclusionRecord.setUserConclusionVintage(
+                    Integer.parseInt(inputForm.getUserVintage().getValue()));
 
-            newConclusionRecordReference.setValue(conclusionRecord);
+            ConclusionsRepository conclusionsRepository = new ConclusionsRepository();
+            conclusionsRepository.saveConclusionRecord(uid, conclusionRecord);
 
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
-
         } else {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
@@ -294,52 +257,52 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     private boolean validInputs() {
-        String actualVarietyString = actualWineForm.getActualVariety().getValue();
-        String actualCountryString = actualWineForm.getActualCountry().getValue();
-        String actualRegionString = actualWineForm.getActualRegion().getValue();
-        String actualQualityString = actualWineForm.getActualQuality().getValue();
-        String parseInteger = actualWineForm.getActualVintage().getValue();
+        String actualVarietyString = inputForm.getActualVariety().getValue();
+        String actualCountryString = inputForm.getActualCountry().getValue();
+        String actualRegionString = inputForm.getActualRegion().getValue();
+        String actualQualityString = inputForm.getActualQuality().getValue();
+        String parseInteger = inputForm.getActualVintage().getValue();
 
         boolean isValid = true;
 
         // Check that user has provided their conclusion of grape variety.
         if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
-            errorsForm.setErrorVariety(getString(R.string.error_input_valid_grape));
+            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
         } else if (!mIsRedWine && !WhiteVarieties.contains(actualVarietyString)) {
-            errorsForm.setErrorVariety(getString(R.string.error_input_valid_grape));
+            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
         } else {
-            errorsForm.setErrorVariety(null);
+            inputErrors.setErrorVariety(null);
         }
 
         if (actualCountryString == null || actualCountryString.isEmpty() || !AllCountries.contains(actualCountryString)) {
-            errorsForm.setErrorCountry(getString(R.string.error_input_country_origin));
+            inputErrors.setErrorCountry(getString(R.string.error_input_country_origin));
             isValid = false;
         } else {
-            errorsForm.setErrorCountry(null);
+            inputErrors.setErrorCountry(null);
         }
 
         if (actualRegionString == null || actualRegionString.isEmpty() || !AllRegions.contains(actualRegionString)) {
-            errorsForm.setErrorRegion(getString(R.string.error_input_valid_region));
+            inputErrors.setErrorRegion(getString(R.string.error_input_valid_region));
             isValid = false;
         } else {
-            errorsForm.setErrorRegion(null);
+            inputErrors.setErrorRegion(null);
         }
 
         if (actualQualityString == null || actualQualityString.isEmpty()) {
-            actualWineForm.setActualQuality("None");
+            inputForm.setActualQuality("None");
         }
 
         if (parseInteger == null || parseInteger.isEmpty()) {
-            errorsForm.setErrorVintage(getString(R.string.error_input_valid_vintage));
+            inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
             isValid = false;
         } else {
             Integer actualVintageInteger = Integer.parseInt(parseInteger);
 
             if (actualVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
                     || actualVintageInteger < 1900) {
-                errorsForm.setErrorVintage(getString(R.string.error_input_valid_vintage));
+                inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
                 isValid = false;
             }
         }
