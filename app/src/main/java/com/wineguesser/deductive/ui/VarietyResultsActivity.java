@@ -29,18 +29,23 @@ import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract {
+public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
+        DeductionFormContract {
 
     String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
     String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
     String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
     String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
     String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+
+    String DISABLE_AD_FOR_TEST = "DISABLE_AD";
+    boolean mAdDisabled;
 
     private Context mContext;
     VarietyResultsViewModel actualWineForm;
@@ -77,6 +82,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private FirebaseAuth.AuthStateListener mAuthListener;
     private InterstitialAd mInterstitialAd;
     private ErrorsFinalForm errorsForm = new ErrorsFinalForm();
+    private boolean mIsRedWine;
 
     private String mActualVariety;
     private String mActualCountry;
@@ -112,7 +118,15 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         Intent parentIntent = getIntent();
 
         if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
-            boolean mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
+            mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
+
+            if (parentIntent.hasExtra(DISABLE_AD_FOR_TEST)) {
+                mAdDisabled = true;
+            } else {
+                mInterstitialAd = new InterstitialAd(this);
+                mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
 
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
@@ -147,9 +161,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
     }
 
     @Override
@@ -159,8 +171,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mActualVariety = actualWineForm.getActualVariety().getValue();
         mActualCountry = actualWineForm.getActualCountry().getValue();
         mActualRegion = actualWineForm.getActualRegion().getValue();
-        mActualQuality = actualWineForm.getActualQuality().getValue();
+
         mActualVintage = actualWineForm.getActualVintage().getValue();
+        mActualQuality = actualWineForm.getActualQuality().getValue();
+
     }
 
     @Override
@@ -193,12 +207,14 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mInterstitialAd.show();
-            }
-        });
+        if (!mAdDisabled) {
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mInterstitialAd.show();
+                }
+            });
+        }
     }
 
     @Override
@@ -209,6 +225,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     public void onButtonWineResultSave(View view) {
+        if (!validInputs()) {
+            return;
+        }
+
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
@@ -226,7 +246,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             String actualCountry = actualWineForm.getActualCountry().getValue();
             String actualRegion = actualWineForm.getActualRegion().getValue();
             String actualQuality = actualWineForm.getActualQuality().getValue();
-            String parseInt = mSingleViewActualVintage.getText().toString();
+            String parseInt = actualWineForm.getActualVintage().getValue();
             Integer actualVintage = Integer.parseInt(parseInt);
 
             String userVariety = actualWineForm.getUserVariety().getValue();
@@ -271,6 +291,60 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                             .build(),
                     RC_SIGN_IN);
         }
+    }
+
+    private boolean validInputs() {
+        String actualVarietyString = actualWineForm.getActualVariety().getValue();
+        String actualCountryString = actualWineForm.getActualCountry().getValue();
+        String actualRegionString = actualWineForm.getActualRegion().getValue();
+        String actualQualityString = actualWineForm.getActualQuality().getValue();
+        String parseInteger = actualWineForm.getActualVintage().getValue();
+
+        boolean isValid = true;
+
+        // Check that user has provided their conclusion of grape variety.
+        if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
+            errorsForm.setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
+        } else if (!mIsRedWine && !WhiteVarieties.contains(actualVarietyString)) {
+            errorsForm.setErrorVariety(getString(R.string.error_input_valid_grape));
+            isValid = false;
+        } else {
+            errorsForm.setErrorVariety(null);
+        }
+
+        if (actualCountryString == null || actualCountryString.isEmpty() || !AllCountries.contains(actualCountryString)) {
+            errorsForm.setErrorCountry(getString(R.string.error_input_country_origin));
+            isValid = false;
+        } else {
+            errorsForm.setErrorCountry(null);
+        }
+
+        if (actualRegionString == null || actualRegionString.isEmpty() || !AllRegions.contains(actualRegionString)) {
+            errorsForm.setErrorRegion(getString(R.string.error_input_valid_region));
+            isValid = false;
+        } else {
+            errorsForm.setErrorRegion(null);
+        }
+
+        if (actualQualityString == null || actualQualityString.isEmpty()) {
+            actualWineForm.setActualQuality("None");
+        }
+
+        if (parseInteger == null || parseInteger.isEmpty()) {
+            errorsForm.setErrorVintage(getString(R.string.error_input_valid_vintage));
+            isValid = false;
+        } else {
+            Integer actualVintageInteger = Integer.parseInt(parseInteger);
+
+            if (actualVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
+                    || actualVintageInteger < 1900) {
+                errorsForm.setErrorVintage(getString(R.string.error_input_valid_vintage));
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 }
 

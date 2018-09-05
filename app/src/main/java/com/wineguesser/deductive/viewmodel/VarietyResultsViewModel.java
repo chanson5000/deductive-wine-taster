@@ -89,54 +89,48 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         }
     }
 
-    @Bindable
+
     public MutableLiveData<String> getActualVariety() {
         return actualVariety;
     }
 
     public void setActualVariety(String actualVariety) {
         this.actualVariety.setValue(actualVariety);
-        notifyPropertyChanged(BR.actualVariety);
     }
 
-    @Bindable
+
     public MutableLiveData<String> getActualCountry() {
         return actualCountry;
     }
 
     public void setActualCountry(String actualCountry) {
         this.actualCountry.setValue(actualCountry);
-        notifyPropertyChanged(BR.actualCountry);
     }
 
-    @Bindable
+
     public MutableLiveData<String> getActualRegion() {
         return actualRegion;
     }
 
     public void setActualRegion(String actualRegion) {
         this.actualRegion.setValue(actualRegion);
-        notifyPropertyChanged(BR.actualRegion);
     }
 
-    @Bindable
+
     public MutableLiveData<String> getActualQuality() {
         return actualQuality;
     }
 
     public void setActualQuality(String actualQuality) {
         this.actualQuality.setValue(actualQuality);
-        notifyPropertyChanged(BR.actualQuality);
     }
 
-    @Bindable
     public MutableLiveData<String> getActualVintage() {
         return actualVintage;
     }
 
     public void setActualVintage(String actualVintage) {
         this.actualVintage.setValue(actualVintage);
-        notifyPropertyChanged(BR.actualVintage);
     }
 
     @Override
