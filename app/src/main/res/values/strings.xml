@@ -402,5 +402,7 @@
     <string name="error_input_valid_vintage">Please input a valid vintage. (1900 - Present)</string>
 
     <string name="form_cleared">Form Cleared!</string>
+    <string name="menu_clear_history">Clear History</string>
+    <string name="history_cleared">History Cleared!</string>
 
 </resources>
