@@ -1,6 +1,7 @@
 package com.wineguesser.deductive.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.adapter.ConclusionItemAdapter;
+import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel;
@@ -21,14 +23,18 @@ import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel;
 public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
 
     private FirebaseUser mCurrentUser;
+    private HistoryActivityViewModel historyActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        ActivityHistoryBinding binding = DataBindingUtil.setContentView(
+                this, R.layout.activity_history);
 
-        HistoryActivityViewModel historyActivity = ViewModelProviders.of(this)
+        historyActivity = ViewModelProviders.of(this)
                 .get(HistoryActivityViewModel.class);
+        binding.setLifecycleOwner(this);
+        binding.setHistoryActivity(historyActivity);
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
 
@@ -44,7 +50,11 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
             historyActivity.getUserConclusions(uid).observe(this, conclusionRecords -> {
                 if (conclusionRecords != null && !conclusionRecords.isEmpty()) {
+                    historyActivity.setNoData(false);
                     conclusionAdapter.setConclusionData(conclusionRecords);
+                } else {
+                    historyActivity.setNoData(true);
+                    conclusionAdapter.setConclusionData(null);
                 }
             });
         }
