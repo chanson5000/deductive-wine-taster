@@ -25,6 +25,11 @@ public class ConclusionsRepository extends FirebaseRepository {
         mUsersReference = mDatabase.getReference("users");
     }
 
+    public void clearUserConclusions(String uid) {
+        mUsersReference.child(uid).child("conclusions").removeValue();
+        mConclusionsReference.child(uid).removeValue();
+    }
+
     public void saveConclusionRecord(String uid, ConclusionRecord conclusionRecord) {
         // Get the reference of where our new conclusion record wil be pushed.
         DatabaseReference newConclusionRecordReference
@@ -55,26 +60,33 @@ public class ConclusionsRepository extends FirebaseRepository {
         }
 
         @Override
-        protected void onActive() { query.addValueEventListener(listener); }
+        protected void onActive() {
+            query.addValueEventListener(listener);
+        }
 
         @Override
-        protected void onInactive() { query.removeEventListener(listener); }
+        protected void onInactive() {
+            query.removeEventListener(listener);
+        }
 
         private class MyValueEventListener implements ValueEventListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<ConclusionRecord> data = new ArrayList<>();
+                if (dataSnapshot.hasChildren()) {
+                    List<ConclusionRecord> data = new ArrayList<>();
 
-                for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                    String conclusionId = entry.getKey();
-                    ConclusionRecord conclusionRecord = (ConclusionRecord) entry.getValue();
-                    if (conclusionRecord != null) {
-                        conclusionRecord.setConclusionId(conclusionId);
+                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
+                        String conclusionId = entry.getKey();
+                        ConclusionRecord conclusionRecord = entry.getValue(ConclusionRecord.class);
+                        if (conclusionRecord != null) {
+                            conclusionRecord.setConclusionId(conclusionId);
+                        }
+                        data.add(conclusionRecord);
                     }
-                    data.add(conclusionRecord);
+                    setValue(data);
+                } else {
+                    setValue(null);
                 }
-
-                setValue(data);
             }
 
             @Override
@@ -85,3 +97,4 @@ public class ConclusionsRepository extends FirebaseRepository {
         }
     }
 }
+
