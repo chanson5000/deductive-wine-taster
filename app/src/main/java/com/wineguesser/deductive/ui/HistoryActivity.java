@@ -1,96 +1,75 @@
 package com.wineguesser.deductive.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.adapter.ConclusionItemAdapter;
-import com.wineguesser.deductive.model.ConclusionRecord;
+import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import timber.log.Timber;
+import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel;
 
 public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
 
-    private ConclusionItemAdapter mConclusionAdapter;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.conclusion_item_recycler_view)
-    RecyclerView mRecyclerView;
+    private FirebaseUser mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        ButterKnife.bind(this);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        HistoryActivityViewModel historyActivity = ViewModelProviders.of(this)
+                .get(HistoryActivityViewModel.class);
 
-        mRecyclerView.setHasFixedSize(true);
-        mConclusionAdapter = new ConclusionItemAdapter(this);
-        mRecyclerView.setAdapter(mConclusionAdapter);
+        RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
 
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<ConclusionRecord> conclusionRecords = new ArrayList<>();
-                for (DataSnapshot conclusionDbRecord : dataSnapshot.getChildren()) {
-                    ConclusionRecord conclusionRecord = new ConclusionRecord();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        ConclusionItemAdapter conclusionAdapter = new ConclusionItemAdapter(this);
+        recyclerView.setAdapter(conclusionAdapter);
 
-                    for (DataSnapshot conclusionDbItem : conclusionDbRecord.getChildren()) {
-                        String key = conclusionDbItem.getKey();
-                        Object value = conclusionDbItem.getValue();
-                        if (key != null && value instanceof String) {
-                            switch (key) {
-                                case DB_KEY_ACTUAL_VARIETY:
-                                    conclusionRecord.setActualVariety((String) value);
-                                    break;
-                                case DB_USER_CONCLUSION_VARIETY:
-                                    conclusionRecord.setUserConclusionVariety((String) value);
-                                    break;
-                                case DB_KEY_APP_CONCLUSION_VARIETY:
-                                    conclusionRecord.setAppConclusionVariety((String) value);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    conclusionRecords.add(conclusionRecord);
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (mCurrentUser != null) {
+            String uid = mCurrentUser.getUid();
+
+            historyActivity.getUserConclusions(uid).observe(this, conclusionRecords -> {
+                if (conclusionRecords != null && !conclusionRecords.isEmpty()) {
+                    conclusionAdapter.setConclusionData(conclusionRecords);
                 }
-                mConclusionAdapter.setConclusionData(conclusionRecords);
-            }
+            });
+        }
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Timber.e(databaseError.toException());
-            }
-        };
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_history_activity, menu);
+        return true;
+    }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            String uid = user.getUid();
-
-            DatabaseReference dbReferenceUserConclusions = FirebaseDatabase.getInstance().getReference()
-                    .child(DB_REFERENCE_CONCLUSIONS).child(uid);
-
-            dbReferenceUserConclusions.addListenerForSingleValueEvent(listener);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clear_history:
+                if (mCurrentUser != null) {
+                    ConclusionsRepository repository = new ConclusionsRepository();
+                    repository.clearUserConclusions(mCurrentUser.getUid());
+                    Toast.makeText(this, getString(R.string.history_cleared),
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
