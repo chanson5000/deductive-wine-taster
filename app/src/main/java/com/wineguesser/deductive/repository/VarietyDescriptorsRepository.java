@@ -60,7 +60,7 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
                 for (DataSnapshot entry : dataSnapshot.getChildren()) {
                     String varietyId = entry.getKey();
                     RedVarietyDescriptors redVarietyDescriptors
-                            = (RedVarietyDescriptors) entry.getValue();
+                            = entry.getValue(RedVarietyDescriptors.class);
                     if (redVarietyDescriptors != null) {
                         redVarietyDescriptors.setVarietyId(varietyId);
                     }
@@ -105,7 +105,7 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
                 for (DataSnapshot entry : dataSnapshot.getChildren()) {
                     String varietyId = entry.getKey();
                     WhiteVarietyDescriptors whiteVarietyDescriptors
-                            = (WhiteVarietyDescriptors) entry.getValue();
+                            = entry.getValue(WhiteVarietyDescriptors.class);
                     if (whiteVarietyDescriptors != null) {
                         whiteVarietyDescriptors.setVarietyId(varietyId);
                     }
