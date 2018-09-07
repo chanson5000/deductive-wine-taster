@@ -225,7 +225,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="onButtonWineResultSave"
-                android:text="@{actualWine.resultButton, default=@string/save_result" />
+                android:text="@{actualWine.resultButtonText, default=@string/save_result}" />
 
             <include layout="@layout/spacer_horizontal" />
 
