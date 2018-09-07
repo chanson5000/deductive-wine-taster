@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Timber.e(databaseError.toString());
+                    Timber.e("Error checking for email verification: %s", databaseError.toString());
                 }
             };
 
