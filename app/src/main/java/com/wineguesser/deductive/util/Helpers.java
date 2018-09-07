@@ -4,7 +4,7 @@ public class Helpers {
 
     public static int castKey(String key) { return Integer.parseInt(key); }
 
-    public static boolean castChecked(int checkedInt) {
+    private static boolean castChecked(int checkedInt) {
         return checkedInt == 1;
     }
     public static int parseEntryValue(Object value) {
