@@ -54,6 +54,7 @@ public class AppExecutors {
         return sInstance;
     }
 
+    @SuppressWarnings("unused")
     public Executor diskIO() {
         return diskIO;
     }
