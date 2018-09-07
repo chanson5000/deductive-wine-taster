@@ -562,7 +562,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
         GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
-
+        isScoring(true);
         scoreTask.execute(formSelections);
     }
 
@@ -585,6 +585,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
         intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
 
+        isScoring(false);
+
         // We can now launch the activity that will show results to the user.
         startActivity(intent);
     }
@@ -598,6 +600,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     public void onGrapeFailure() {
+        isScoring(false);
         Toast.makeText(mContext,
                 "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
     }
