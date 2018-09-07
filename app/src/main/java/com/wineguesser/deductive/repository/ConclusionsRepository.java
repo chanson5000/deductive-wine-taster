@@ -37,6 +37,10 @@ public class ConclusionsRepository extends FirebaseRepository {
         newConclusionRecordReference.setValue(conclusionRecord);
     }
 
+    public void removeConclusionRecord(ConclusionRecord conclusionRecord) {
+        mConclusionsReference.child(conclusionRecord.getUserId()).child(conclusionRecord.getConclusionId()).removeValue();
+    }
+
     public LiveData<List<ConclusionRecord>> getConclusionsForUser(String uid) {
         return new ConclusionsList(uid);
     }

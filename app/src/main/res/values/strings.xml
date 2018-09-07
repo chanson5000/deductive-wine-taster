@@ -404,5 +404,6 @@
     <string name="form_cleared">Form Cleared!</string>
     <string name="menu_clear_history">Clear History</string>
     <string name="history_cleared">History Cleared!</string>
-
+    <string name="remove_record">Remove Record</string>
+    <string name="record_removed">Record Removed!</string>
 </resources>
