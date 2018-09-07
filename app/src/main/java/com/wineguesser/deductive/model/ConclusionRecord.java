@@ -1,8 +1,12 @@
 package com.wineguesser.deductive.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 
-public class ConclusionRecord {
+public class ConclusionRecord implements Parcelable {
 
     @Exclude
     private String conclusionId;
@@ -128,4 +132,55 @@ public class ConclusionRecord {
     public void setAppConclusionVariety(String appConclusionGrape) {
         this.appConclusionVariety = appConclusionGrape;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(conclusionId);
+        dest.writeString(userId);
+        dest.writeString(actualVariety);
+        dest.writeString(actualCountry);
+        dest.writeString(actualRegion);
+        dest.writeString(actualQuality);
+        dest.writeInt(actualVintage);
+        dest.writeString(userConclusionVariety);
+        dest.writeString(userConclusionCountry);
+        dest.writeString(userConclusionRegion);
+        dest.writeString(userConclusionQuality);
+        dest.writeInt(userConclusionVintage);
+        dest.writeString(appConclusionVariety);
+    }
+
+    public static final Creator<ConclusionRecord> CREATOR = new Creator<ConclusionRecord>() {
+        @Override
+        public ConclusionRecord createFromParcel(Parcel in) {
+            return new ConclusionRecord(in);
+        }
+
+        @Override
+        public ConclusionRecord[] newArray(int size) {
+            return new ConclusionRecord[size];
+        }
+    };
+
+    public ConclusionRecord(Parcel in) {
+        this.conclusionId = in.readString();
+        this.userId = in.readString();
+        this.actualVariety = in.readString();
+        this.actualCountry = in.readString();
+        this.actualRegion = in.readString();
+        this.actualQuality = in.readString();
+        this.actualVintage = in.readInt();
+        this.userConclusionVariety = in.readString();
+        this.userConclusionCountry = in.readString();
+        this.userConclusionRegion = in.readString();
+        this.userConclusionQuality = in.readString();
+        this.userConclusionVintage = in.readInt();
+        this.appConclusionVariety = in.readString();
+    }
+
 }
