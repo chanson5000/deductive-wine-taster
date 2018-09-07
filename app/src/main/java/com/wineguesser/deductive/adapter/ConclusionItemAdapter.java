@@ -18,12 +18,19 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
 
     private final Context mContext;
     private List<ConclusionRecord> mConclusionRecords;
+    private final HistoryItemOnClickHandler mClickHandler;
 
-    public ConclusionItemAdapter(Context context) {
-        mContext = context;
+    public interface HistoryItemOnClickHandler {
+        void onHistoryItemClick(ConclusionRecord conclusionRecord);
     }
 
-    class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder {
+    public ConclusionItemAdapter(Context context, HistoryItemOnClickHandler clickHandler) {
+        mContext = context;
+        mClickHandler = clickHandler;
+    }
+
+    class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder
+    implements View.OnClickListener {
 
         final TextView mActualGrape;
         final TextView mUserGrape;
@@ -35,6 +42,14 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
             mActualGrape = view.findViewById(R.id.textView_actual_grape);
             mUserGrape = view.findViewById(R.id.textView_user_conclusion_grape);
             mAppGrape = view.findViewById(R.id.textView_app_conclusion_grape);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            ConclusionRecord conclusionRecord = mConclusionRecords.get(adapterPosition);
+            mClickHandler.onHistoryItemClick(conclusionRecord);
         }
     }
 
@@ -44,6 +59,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         View view = inflater.inflate(layoutId, viewGroup, false);
+        view.setFocusable(true);
 
         return new ConclusionItemAdapterViewHolder(view);
     }
