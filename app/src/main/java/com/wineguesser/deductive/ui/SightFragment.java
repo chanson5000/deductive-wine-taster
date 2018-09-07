@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
+import com.wineguesser.deductive.util.Helpers;
 
 import java.util.Map;
 
@@ -116,25 +117,17 @@ public class SightFragment extends Fragment implements DeductionFormContract, Da
                 mScrollViewSight.scrollTo(0, 0));
     }
 
-    private int castKey(String key) {
-        return Integer.parseInt(key);
-    }
-
-    private int parseEntryValue(Object value) {
-        return Integer.parseInt(value.toString());
-    }
-
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = castKey(entry.getKey());
+            int view = Helpers.castKey(entry.getKey());
 
             if (mIsRedWine && redSightViews.contains(view) && AllRadioGroups.contains(view)) {
                 ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(parseEntryValue(entry.getValue()));
+                        .check(Helpers.parseEntryValue(entry.getValue()));
             } else if (!mIsRedWine && whiteSightViews.contains(view) && AllRadioGroups.contains(view)) {
                 ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(parseEntryValue(entry.getValue()));
+                        .check(Helpers.parseEntryValue(entry.getValue()));
             }
         }
     }

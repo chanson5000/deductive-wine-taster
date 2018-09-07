@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
+import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,14 +157,6 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextVarieties.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
-    private int castKey(String key) {
-        return Integer.parseInt(key);
-    }
-
-    private int parseEntryValue(Object value) {
-        return Integer.parseInt(value.toString());
-    }
-
     private List<String> parseResourceArray(int resourceId) {
         return Arrays.asList(getResources().getStringArray(resourceId));
     }
@@ -171,12 +164,12 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = castKey(entry.getKey());
+            int view = Helpers.castKey(entry.getKey());
 
             if (initialConclusionViews.contains(view)) {
                 if (AllRadioGroups.contains(view)) {
                     ((RadioGroup) mFragmentActivity.findViewById(view))
-                            .check(parseEntryValue(entry.getValue()));
+                            .check(Helpers.parseEntryValue(entry.getValue()));
                 } else if (AllAutoMultiText.contains(view)) {
                     ((MultiAutoCompleteTextView) mFragmentActivity.findViewById(view))
                             .setText(entry.getValue().toString());

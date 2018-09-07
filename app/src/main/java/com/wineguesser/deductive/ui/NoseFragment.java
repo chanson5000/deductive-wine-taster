@@ -18,6 +18,7 @@ import android.widget.Switch;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
+import com.wineguesser.deductive.util.Helpers;
 
 import java.util.List;
 import java.util.Map;
@@ -135,44 +136,32 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
                 mScrollViewNose.scrollTo(0, 0));
     }
 
-    private int castKey(String key) {
-        return Integer.parseInt(key);
-    }
-
-    private boolean castChecked(int checkedInt) {
-        return checkedInt == 1;
-    }
-
-    private int parseEntryValue(Object value) {
-        return Integer.parseInt(value.toString());
-    }
-
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = castKey(entry.getKey());
+            int view = Helpers.castKey(entry.getKey());
 
             if (mIsRedWine && redNoseViews.contains(view)) {
                 if (AllRadioGroups.contains(view)) {
                     ((RadioGroup) mFragmentActivity.findViewById(view))
-                            .check(parseEntryValue(entry.getValue()));
+                            .check(Helpers.parseEntryValue(entry.getValue()));
                 } else if (AllCheckBoxes.contains(view)) {
                     ((CheckBox) mFragmentActivity.findViewById(view))
-                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                            .setChecked(Helpers.parseChecked(entry.getValue()));
                 } else if (AllSwitches.contains(view)) {
                     ((Switch) mFragmentActivity.findViewById(view))
-                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                            .setChecked(Helpers.parseChecked(entry.getValue()));
                 }
             } else if (!mIsRedWine && whiteNoseViews.contains(view)) {
                 if (AllRadioGroups.contains(view)) {
                     ((RadioGroup) mFragmentActivity.findViewById(view))
-                            .check(parseEntryValue(entry.getValue()));
+                            .check(Helpers.parseEntryValue(entry.getValue()));
                 } else if (AllCheckBoxes.contains(view)) {
                     ((CheckBox) mFragmentActivity.findViewById(view))
-                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                            .setChecked(Helpers.parseChecked(entry.getValue()));
                 } else if (AllSwitches.contains(view)) {
                     ((Switch) mFragmentActivity.findViewById(view))
-                            .setChecked(castChecked(parseEntryValue(entry.getValue())));
+                            .setChecked(Helpers.parseChecked(entry.getValue()));
                 }
             }
         }
