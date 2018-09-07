@@ -41,6 +41,11 @@
             android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity" />
 
+        <activity
+            android:name=".ui.HistoryRecordActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.HistoryActivity" />
+
     </application>
 
 </manifest>
