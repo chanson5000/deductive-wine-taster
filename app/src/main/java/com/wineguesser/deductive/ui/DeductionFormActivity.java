@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,6 +30,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
+import com.wineguesser.deductive.util.SimpleIdlingResource;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -40,6 +43,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private SharedPreferences mActivityPreferences;
     private boolean mIsRedWine;
     private boolean mLaunchingIntent;
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -554,8 +559,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     public void onSubmitFinalConclusion(View view) {
+        getIdlingResource().setIdleState(false);
+
         // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
         if (!validInputs()) {
+            getIdlingResource().setIdleState(true);
             return;
         }
 
@@ -584,9 +592,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString);
         intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
         intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
-
+        getIdlingResource().setIdleState(true);
         isScoring(false);
-
         // We can now launch the activity that will show results to the user.
         startActivity(intent);
     }
@@ -603,5 +610,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         isScoring(false);
         Toast.makeText(mContext,
                 "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public SimpleIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+
+        return mIdlingResource;
     }
 }
