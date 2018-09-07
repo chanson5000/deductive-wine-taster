@@ -208,11 +208,6 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
     }
 
     @Override
-    protected void onPreExecute() {
-        mContext.isScoring(true);
-    }
-
-    @Override
     protected Void doInBackground(SparseIntArray... formSelections) {
         // Convert our form collection keys to our database keys so that they can be compared.
         HashMap<String, Integer> descriptorsMap = formToDbFormat(formSelections[0]);
@@ -274,11 +269,6 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         mDatabaseReference.addListenerForSingleValueEvent(listener);
 
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void result) {
-        mContext.isScoring(false);
     }
 
     private static HashMap<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
