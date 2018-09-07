@@ -130,4 +130,8 @@ public class VarietyResultsViewModel extends ViewModel {
     public void setResultButtonText(String text) {
         this.resultButtonText.setValue(text);
     }
+
+    public MutableLiveData<String> getResultButtonText() {
+        return resultButtonText;
+    }
 }
