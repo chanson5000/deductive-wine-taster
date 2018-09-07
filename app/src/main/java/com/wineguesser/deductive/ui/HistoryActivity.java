@@ -1,6 +1,7 @@
 package com.wineguesser.deductive.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +17,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.adapter.ConclusionItemAdapter;
 import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
+import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel;
 
-public class HistoryActivity extends AppCompatActivity implements DatabaseContract {
+public class HistoryActivity extends AppCompatActivity implements DatabaseContract,
+ConclusionItemAdapter.HistoryItemOnClickHandler {
 
     private FirebaseUser mCurrentUser;
     private HistoryActivityViewModel historyActivity;
@@ -40,7 +43,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        ConclusionItemAdapter conclusionAdapter = new ConclusionItemAdapter(this);
+        ConclusionItemAdapter conclusionAdapter = new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -81,5 +84,13 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onHistoryItemClick(ConclusionRecord conclusionRecord) {
+        Intent intent = new Intent(this, HistoryRecordActivity.class);
+        conclusionRecord.setUserId(mCurrentUser.getUid());
+        intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
+        startActivity(intent);
     }
 }
