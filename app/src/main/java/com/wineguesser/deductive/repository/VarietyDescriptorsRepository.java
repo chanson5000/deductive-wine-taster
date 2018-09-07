@@ -22,8 +22,8 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
     private final DatabaseReference mWhiteReference;
 
     public VarietyDescriptorsRepository() {
-        mRedReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
-        mWhiteReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
+        mRedReference = getDatabaseInstance().getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
+        mWhiteReference = getDatabaseInstance().getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
     }
 
     public LiveData<List<RedVarietyDescriptors>> getAllRedVarietyDescriptors() {

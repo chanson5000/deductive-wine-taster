@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mReferenceUsers;
     private Context mContext;
     private boolean mUserLoggedIn;
 
@@ -49,11 +49,8 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
-
         mAuth = FirebaseAuth.getInstance();
-        mReferenceUsers = FirebaseDatabase.getInstance().getReference(DB_REFERENCE_USERS);
         mContext = this;
     }
 
@@ -67,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
             if (user != null) {
                 setUserLoggedIn(user);
-                checkEmailVerification(user);
+                UserRepository userRepository = new UserRepository();
+                userRepository.checkEmailVerification(user);
             } else {
                 setUserLoggedOut();
             }
@@ -141,44 +139,6 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     public void buttonWhiteWine(View view) {
         Intent intent = new Intent(mContext, DeductionFormActivity.class);
         startActivity(intent);
-    }
-
-    private void checkEmailVerification(FirebaseUser user) {
-        boolean emailVerified = user.isEmailVerified();
-
-        if (!emailVerified) {
-            String uid = user.getUid();
-
-            ValueEventListener listener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(uid).child(DB_EMAIL_VERIFICATION)
-                            .getValue() != (Boolean) true) {
-
-                        user.sendEmailVerification().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Timber.d("Email verification for user sent.");
-                                // Set that we have requested e-mail verification so we don't
-                                // spam the user.
-                                mReferenceUsers.child(uid).child(DB_EMAIL_VERIFICATION)
-                                        .setValue(true);
-                            } else {
-                                Timber.d("Sending of email verification failed.");
-                            }
-                        });
-                    } else {
-                        Timber.d("Skipped sending user verification e-mail.");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Timber.e("Error checking for email verification: %s", databaseError.toString());
-                }
-            };
-
-            mReferenceUsers.addListenerForSingleValueEvent(listener);
-        }
     }
 
     private void setUserLoggedIn(FirebaseUser user) {
