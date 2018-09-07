@@ -19,6 +19,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 
 import java.util.ArrayList;
@@ -205,7 +206,7 @@ public class FinalConclusionFragment extends Fragment implements
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = castKey(entry.getKey());
+            int view = Helpers.castKey(entry.getKey());
 
             if (finalConclusionViews.contains(view) && AllAutoText.contains(view)) {
                 ((AutoCompleteTextView) mFragmentActivity.findViewById(view))
@@ -225,10 +226,6 @@ public class FinalConclusionFragment extends Fragment implements
 
         mAutoTextVariety.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
-    }
-
-    private int castKey(String key) {
-        return Integer.parseInt(key);
     }
 
     public void showLoadingIndicator() {
