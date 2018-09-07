@@ -18,15 +18,12 @@ import timber.log.Timber;
 public class ConclusionsRepository extends FirebaseRepository {
 
     private final DatabaseReference mConclusionsReference;
-    private final DatabaseReference mUsersReference;
 
     public ConclusionsRepository() {
         mConclusionsReference = mDatabase.getReference("conclusions");
-        mUsersReference = mDatabase.getReference("users");
     }
 
     public void clearUserConclusions(String uid) {
-        mUsersReference.child(uid).child("conclusions").removeValue();
         mConclusionsReference.child(uid).removeValue();
     }
 
@@ -34,14 +31,6 @@ public class ConclusionsRepository extends FirebaseRepository {
         // Get the reference of where our new conclusion record wil be pushed.
         DatabaseReference newConclusionRecordReference
                 = mConclusionsReference.child(uid).push();
-
-        // Retrieve and validate the new generated key.
-        String conclusionReferenceKey = mConclusionsReference.getKey();
-        if (conclusionReferenceKey != null) {
-            // Keep a reference of that key in the user's record.
-            mUsersReference.child(uid).child(DB_REFERENCE_USER_CONCLUSIONS)
-                    .child(conclusionReferenceKey).setValue(true);
-        }
 
         // Add the new conclusion record to the database.
         newConclusionRecordReference.setValue(conclusionRecord);
