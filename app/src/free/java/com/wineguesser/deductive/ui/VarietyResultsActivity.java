@@ -1,4 +1,4 @@
-package com.winegusser.deductive.ui;
+package com.wineguesser.deductive.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
