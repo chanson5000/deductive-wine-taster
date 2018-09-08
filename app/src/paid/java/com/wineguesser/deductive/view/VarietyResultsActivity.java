@@ -11,9 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
@@ -21,8 +18,6 @@ import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.view.DeductionFormContract;
-import com.wineguesser.deductive.view.HistoryActivity;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
@@ -37,14 +32,14 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+    private static final String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
+    private static final String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
+    private static final String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
+    private static final String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
+    private static final String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
-    VarietyResultsViewModel inputForm;
-    ConclusionInputErrorsViewModel inputErrors;
+    private VarietyResultsViewModel inputForm;
+    private ConclusionInputErrorsViewModel inputErrors;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_variety)

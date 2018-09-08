@@ -5,7 +5,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,11 +17,6 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wineguesser.deductive.R;
@@ -50,7 +44,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private Context mContext;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mReferenceUsers;
 
     // Representing that the user has changed fields.
     private String mNewTextDisplayName;
@@ -70,7 +63,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     @BindView(R.id.button_delete_photo)
     Button mButtonDeletePhoto;
 
-    UserProfileViewModel userProfileModel;
+    private UserProfileViewModel userProfileModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +90,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
         mContext = this;
         mAuth = FirebaseAuth.getInstance();
-        mReferenceUsers = FirebaseDatabase.getInstance().getReference(DB_REFERENCE_USERS);
     }
 
     @Override

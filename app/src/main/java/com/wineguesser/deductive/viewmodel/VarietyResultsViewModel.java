@@ -8,23 +8,23 @@ import com.wineguesser.deductive.repository.VarietyDataRepository;
 
 public class VarietyResultsViewModel extends ViewModel {
 
-    private VarietyDataRepository varietyDataRepository;
+    private final VarietyDataRepository varietyDataRepository;
 
     private LiveData<String> appVariety;
 
-    private MutableLiveData<String> actualVariety = new MutableLiveData<>();
-    private MutableLiveData<String> actualCountry = new MutableLiveData<>();
-    private MutableLiveData<String> actualRegion = new MutableLiveData<>();
-    private MutableLiveData<String> actualQuality = new MutableLiveData<>();
-    private MutableLiveData<String> actualVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> actualVariety = new MutableLiveData<>();
+    private final MutableLiveData<String> actualCountry = new MutableLiveData<>();
+    private final MutableLiveData<String> actualRegion = new MutableLiveData<>();
+    private final MutableLiveData<String> actualQuality = new MutableLiveData<>();
+    private final MutableLiveData<String> actualVintage = new MutableLiveData<>();
 
-    private MutableLiveData<String> userVariety = new MutableLiveData<>();
-    private MutableLiveData<String> userCountry = new MutableLiveData<>();
-    private MutableLiveData<String> userRegion = new MutableLiveData<>();
-    private MutableLiveData<String> userQuality = new MutableLiveData<>();
-    private MutableLiveData<String> userVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> userVariety = new MutableLiveData<>();
+    private final MutableLiveData<String> userCountry = new MutableLiveData<>();
+    private final MutableLiveData<String> userRegion = new MutableLiveData<>();
+    private final MutableLiveData<String> userQuality = new MutableLiveData<>();
+    private final MutableLiveData<String> userVintage = new MutableLiveData<>();
 
-    private MutableLiveData<String> resultButtonText = new MutableLiveData<>();
+    private final MutableLiveData<String> resultButtonText = new MutableLiveData<>();
 
     public VarietyResultsViewModel() {
         varietyDataRepository = new VarietyDataRepository();

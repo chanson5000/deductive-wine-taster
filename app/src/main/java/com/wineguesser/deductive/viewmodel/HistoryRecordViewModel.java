@@ -9,7 +9,7 @@ import com.wineguesser.deductive.model.ConclusionRecord;
 
 public class HistoryRecordViewModel extends ViewModel {
 
-    private MutableLiveData<ConclusionRecord> conclusionRecord = new MutableLiveData<>();
+    private final MutableLiveData<ConclusionRecord> conclusionRecord = new MutableLiveData<>();
 
     private final LiveData<String> appConclusionVariety =
             Transformations.map(conclusionRecord, ConclusionRecord::getAppConclusionVariety);

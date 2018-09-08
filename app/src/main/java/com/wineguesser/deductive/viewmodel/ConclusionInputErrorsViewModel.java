@@ -5,11 +5,11 @@ import android.arch.lifecycle.ViewModel;
 
 public class ConclusionInputErrorsViewModel extends ViewModel {
 
-    private MutableLiveData<String> errorVariety = new MutableLiveData<>();
-    private MutableLiveData<String> errorCountry = new MutableLiveData<>();
-    private MutableLiveData<String> errorRegion = new MutableLiveData<>();
-    private MutableLiveData<String> errorQuality = new MutableLiveData<>();
-    private MutableLiveData<String> errorVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> errorVariety = new MutableLiveData<>();
+    private final MutableLiveData<String> errorCountry = new MutableLiveData<>();
+    private final MutableLiveData<String> errorRegion = new MutableLiveData<>();
+    private final MutableLiveData<String> errorQuality = new MutableLiveData<>();
+    private final MutableLiveData<String> errorVintage = new MutableLiveData<>();
 
     public MutableLiveData<String> getErrorVariety() {
         return errorVariety;

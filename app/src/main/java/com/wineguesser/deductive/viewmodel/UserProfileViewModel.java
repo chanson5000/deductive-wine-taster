@@ -4,20 +4,20 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 public class UserProfileViewModel extends ViewModel {
-    private MutableLiveData<String> userName = new MutableLiveData<>();
-    private MutableLiveData<String> displayName = new MutableLiveData<>();
-    private MutableLiveData<String> emailAddress = new MutableLiveData<>();
-    private MutableLiveData<String> photoUrl = new MutableLiveData<>();
-    private MutableLiveData<String> confirmEmailAddress = new MutableLiveData<>();
-    private MutableLiveData<String> password = new MutableLiveData<>();
-    private MutableLiveData<String> confirmPassword = new MutableLiveData<>();
+    private final MutableLiveData<String> userName = new MutableLiveData<>();
+    private final MutableLiveData<String> displayName = new MutableLiveData<>();
+    private final MutableLiveData<String> emailAddress = new MutableLiveData<>();
+    private final MutableLiveData<String> photoUrl = new MutableLiveData<>();
+    private final MutableLiveData<String> confirmEmailAddress = new MutableLiveData<>();
+    private final MutableLiveData<String> password = new MutableLiveData<>();
+    private final MutableLiveData<String> confirmPassword = new MutableLiveData<>();
 
-    private MutableLiveData<String> errorDisplayName = new MutableLiveData<>();
-    private MutableLiveData<String> errorEmailAddress = new MutableLiveData<>();
-    private MutableLiveData<String> errorConfirmEmailAddress = new MutableLiveData<>();
-    private MutableLiveData<String> errorPhotoUrl = new MutableLiveData<>();
-    private MutableLiveData<String> errorPassword = new MutableLiveData<>();
-    private MutableLiveData<String> errorConfirmPassword = new MutableLiveData<>();
+    private final MutableLiveData<String> errorDisplayName = new MutableLiveData<>();
+    private final MutableLiveData<String> errorEmailAddress = new MutableLiveData<>();
+    private final MutableLiveData<String> errorConfirmEmailAddress = new MutableLiveData<>();
+    private final MutableLiveData<String> errorPhotoUrl = new MutableLiveData<>();
+    private final MutableLiveData<String> errorPassword = new MutableLiveData<>();
+    private final MutableLiveData<String> errorConfirmPassword = new MutableLiveData<>();
 
     public UserProfileViewModel() {
 

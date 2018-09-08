@@ -12,7 +12,7 @@ import java.util.List;
 public class HistoryActivityViewModel extends ViewModel {
 
     private final ConclusionsRepository conclusionsRepository;
-    private MutableLiveData<Boolean> noData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> noData = new MutableLiveData<>();
 
     public HistoryActivityViewModel() {
         conclusionsRepository = new ConclusionsRepository();
