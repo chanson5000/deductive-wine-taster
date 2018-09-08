@@ -1,4 +1,4 @@
-package com.wineguesser.deductive.ui;
+package com.winegusser.deductive.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -21,6 +21,8 @@ import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.ui.DeductionFormContract;
+import com.wineguesser.deductive.ui.HistoryActivity;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
