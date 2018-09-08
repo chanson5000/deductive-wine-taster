@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView_palate_a"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,50 +7,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/standard_margin"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/standard_margin">
+        android:orientation="vertical">
 
         <include layout="@layout/sg_palate_sweetness_radio" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_fruit_whitewine_check" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_fruitcharacter_check" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_nonfruit_check" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_earth_check" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_mineral_check" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
+        <include layout="@layout/divider_horizontal" />
 
         <include layout="@layout/sg_palate_wood_radio" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/standard_margin" />
     </LinearLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

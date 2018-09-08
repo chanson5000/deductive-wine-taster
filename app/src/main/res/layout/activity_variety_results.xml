@@ -79,7 +79,7 @@
                 android:gravity="center"
                 android:text="@{actualWine.userVintage, default=@string/no_data}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <TextView
                 android:id="@+id/textView_actual_wine"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/actual_wine" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <TextView
                 android:id="@+id/textView_actual_variety"
@@ -114,7 +114,7 @@
                 android:text="@{inputError.errorVariety}"
                 android:visibility="@{inputError.errorVariety != null ? View.VISIBLE : View.GONE}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <TextView
                 android:id="@+id/textView_actual_country"
@@ -140,7 +140,7 @@
                 android:text="@{inputError.errorCountry}"
                 android:visibility="@{inputError.errorCountry != null ? View.VISIBLE : View.GONE}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <TextView
                 android:id="@+id/textView_actual_region"
@@ -190,7 +190,7 @@
                 android:text="@{inputError.errorQuality}"
                 android:visibility="@{inputError.errorQuality != null ? View.VISIBLE : View.GONE}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <TextView
                 android:id="@+id/textView_actual_vintage"
@@ -217,7 +217,7 @@
                 android:text="@{inputError.errorVintage}"
                 android:visibility="@{inputError.errorVintage != null ? View.VISIBLE : View.GONE}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
             <Button
                 android:id="@+id/wine_result_save"
@@ -227,7 +227,7 @@
                 android:onClick="onButtonWineResultSave"
                 android:text="@{actualWine.resultButtonText, default=@string/save_result}" />
 
-            <include layout="@layout/spacer_horizontal" />
+            <include layout="@layout/divider_horizontal" />
 
         </LinearLayout>
     </ScrollView>

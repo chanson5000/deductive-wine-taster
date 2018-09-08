@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/concentration" />
 
     <RadioGroup
-        style="@style/AppTheme.RadioGroup"
         android:id="@+id/radio_group_concentration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        style="@style/AppTheme.SelectionGroup">
 
         <RadioButton
             android:id="@+id/radio_concentration_pale"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/pale" />
 
         <RadioButton
             android:id="@+id/radio_concentration_medium"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/medium" />
 
         <RadioButton
             android:id="@+id/radio_concentration_deep"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/deep" />
     </RadioGroup>
-</merge>
+</LinearLayout>

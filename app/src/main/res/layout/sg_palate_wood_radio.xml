@@ -1,96 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/wood" />
 
-    <LinearLayout
-        style="@style/AppTheme.RadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout style="@style/AppTheme.SelectionGroup">
 
         <Switch
             android:id="@+id/switch_palate_wood"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onSwitchToggleClicked"
+            style="@style/AppTheme.SelectionGroup.Switch"
             android:text="@string/oak" />
 
-        <RadioGroup
-            android:id="@+id/radio_group_wood_old_vs_new"
-            style="@style/AppTheme.RadioGroup"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="24dp"
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_old"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/old" />
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:text="@string/usage" />
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_new"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/word_new" />
-        </RadioGroup>
+            <RadioGroup
+                android:id="@+id/radio_group_wood_old_vs_new"
+                style="@style/AppTheme.SelectionGroup">
 
-        <RadioGroup
-            android:id="@+id/radio_group_wood_large_vs_small"
-            style="@style/AppTheme.RadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_old"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/old" />
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_large"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/large" />
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_new"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/word_new" />
+            </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_small"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/small" />
-        </RadioGroup>
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:text="@string/size" />
 
-        <RadioGroup
-            android:id="@+id/radio_group_wood_french_vs_american"
-            style="@style/AppTheme.RadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <RadioGroup
+                android:id="@+id/radio_group_wood_large_vs_small"
+                style="@style/AppTheme.SelectionGroup">
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_french"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/french" />
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_large"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/large" />
 
-            <RadioButton
-                android:id="@+id/radio_palate_wood_american"
-                style="@style/AppTheme.RadioGroup.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onRadioButtonClicked"
-                android:text="@string/american" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_small"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/small" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:text="@string/type" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_wood_french_vs_american"
+                style="@style/AppTheme.SelectionGroup">
+
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_french"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/french" />
+
+                <RadioButton
+                    android:id="@+id/radio_palate_wood_american"
+                    style="@style/AppTheme.SelectionGroup.RadioButton"
+                    android:text="@string/american" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
-</merge>
+</LinearLayout>

@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
@@ -37,7 +37,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_nose)
-    ScrollView mScrollViewNose;
+    NestedScrollView mScrollViewNose;
 
     @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.radio_nose_wood_old, R.id.radio_nose_wood_new,

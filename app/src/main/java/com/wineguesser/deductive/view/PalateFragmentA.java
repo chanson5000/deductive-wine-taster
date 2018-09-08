@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
@@ -36,7 +36,7 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_palate_a)
-    ScrollView mScrollViewPalateA;
+    NestedScrollView mScrollViewPalateA;
 
     @SuppressWarnings("WeakerAccess")
     @BindViews({R.id.radio_palate_wood_old, R.id.radio_palate_wood_new,

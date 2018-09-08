@@ -20,10 +20,12 @@ public class StartDeductionWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_start_deduction);
 
-        views.setOnClickPendingIntent(R.id.button_red_wine, getPendingSelfIntent(context, true));
-        views.setOnClickPendingIntent(R.id.button_white_wine, getPendingSelfIntent(context, false));
+        views.setOnClickPendingIntent(R.id.button_red_wine,
+                getPendingSelfIntent(context, true));
+        views.setOnClickPendingIntent(R.id.button_white_wine,
+                getPendingSelfIntent(context, false));
 
-//        // Instruct the widget manager to update the widget
+        // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 

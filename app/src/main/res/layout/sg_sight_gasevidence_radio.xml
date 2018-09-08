@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/gas_evidence" />
 
     <RadioGroup
         android:id="@+id/radio_group_gasevidence"
-        style="@style/AppTheme.RadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        style="@style/AppTheme.SelectionGroup">
 
         <RadioButton
             android:id="@+id/radio_gas_evidence_yes"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/yes" />
 
         <RadioButton
             android:id="@+id/radio_gas_evidence_no"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/no" />
     </RadioGroup>
-</merge>
+</LinearLayout>

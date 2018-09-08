@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
@@ -32,7 +32,7 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_palate_b)
-    ScrollView mScrollViewPalateB;
+    NestedScrollView mScrollViewPalateB;
 
     public PalateFragmentB() {
     }

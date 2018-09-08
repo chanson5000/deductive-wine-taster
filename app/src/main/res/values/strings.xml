@@ -409,4 +409,9 @@
     <string name="add_widget">Add widget</string>
     <string name="widget_red">Red</string>
     <string name="widget_white">White</string>
+
+    <string name="usage">Usage</string>
+    <string name="size">Size</string>
+    <string name="type">Type</string>
+
 </resources>
