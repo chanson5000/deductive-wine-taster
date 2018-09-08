@@ -69,7 +69,13 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
 
         conclusionItemAdapterViewHolder.mActualGrape.setText(mConclusionRecords.get(position).getActualVariety());
         conclusionItemAdapterViewHolder.mUserGrape.setText(mConclusionRecords.get(position).getUserConclusionVariety());
-        conclusionItemAdapterViewHolder.mAppGrape.setText(mConclusionRecords.get(position).getAppConclusionVariety());
+        String appConclusionVariety = mConclusionRecords.get(position).getAppConclusionVariety();
+        if (appConclusionVariety == null || appConclusionVariety.isEmpty()) {
+            conclusionItemAdapterViewHolder.mAppGrape.setText(R.string.no_data);
+        } else {
+            conclusionItemAdapterViewHolder.mAppGrape.setText(appConclusionVariety);
+
+        }
     }
 
     @Override

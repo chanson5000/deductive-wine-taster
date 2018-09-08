@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityUserProfileBinding;
 import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.repository.UserRepository;
 import com.wineguesser.deductive.viewmodel.UserProfileViewModel;
 
 import java.util.Arrays;
@@ -545,39 +546,10 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         boolean emailVerified = user.isEmailVerified();
 
         if (!emailVerified) {
-            String uid = user.getUid();
-
             setErrorEmailAddress(getString(R.string.verify_email_request));
 
-            ValueEventListener listener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(uid).child(DB_EMAIL_VERIFICATION)
-                            .getValue() != (Boolean) true) {
-
-                        user.sendEmailVerification().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Timber.d("Email verification for user sent.");
-                                // Set that we have requested e-mail verification so we don't
-                                // spam the user.
-                                mReferenceUsers.child(uid).child(DB_EMAIL_VERIFICATION)
-                                        .setValue(true);
-                            } else {
-                                Timber.d("Sending of email verification failed.");
-                            }
-                        });
-                    } else {
-                        Timber.d("Skipped sending user verification e-mail.");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Timber.e(databaseError.toString());
-                }
-            };
-
-            mReferenceUsers.addListenerForSingleValueEvent(listener);
+            UserRepository repository = new UserRepository();
+            repository.checkEmailVerification(user);
         }
     }
 }

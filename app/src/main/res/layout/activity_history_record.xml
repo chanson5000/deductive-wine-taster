@@ -28,7 +28,7 @@
             style="@style/AppTheme.Text.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{historyRecord.appConclusionVariety, default=@string/no_data}"
+            android:text="@{historyRecord.appConclusionVariety ?? @string/no_data, default=@string/no_data}"
             app:layout_constraintBottom_toTopOf="@id/guideline_top_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

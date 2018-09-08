@@ -230,8 +230,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
             conclusionRecord.setUserConclusionVariety(inputForm.getUserVariety().getValue());
             conclusionRecord.setUserConclusionCountry(inputForm.getUserCountry().getValue());
-            conclusionRecord.setUserConclusionRegion(inputForm.getUserCountry().getValue());
-            conclusionRecord.setUserConclusionQuality(inputForm.getUserRegion().getValue());
+            conclusionRecord.setUserConclusionRegion(inputForm.getUserRegion().getValue());
+            conclusionRecord.setUserConclusionQuality(inputForm.getUserQuality().getValue());
             conclusionRecord.setUserConclusionVintage(
                     Integer.parseInt(inputForm.getUserVintage().getValue()));
 
