@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:611411436297:android:12e3f724e63f1383",
+        "mobilesdk_app_id": "1:611411436297:android:4d72ea25aecf0704",
         "android_client_info": {
-          "package_name": "com.wineguesser.deductive"
+          "package_name": "com.wineguesser.deductive.free"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "611411436297-mcvh9l6hvbuttoastt2g9rrohdlovpod.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.wineguesser.deductive",
-            "certificate_hash": "0bee0f2efcaa81ac2f25c86505b68f3874683c12"
-          }
-        },
         {
           "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,39 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611411436297:android:ea538af7af923ce2",
+        "android_client_info": {
+          "package_name": "com.wineguesser.deductive.paid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzQL6g_QIuAVZrvH2Uvd0CDrHYAKjIF0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
