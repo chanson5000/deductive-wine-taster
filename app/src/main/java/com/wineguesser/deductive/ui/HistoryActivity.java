@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.adapter.ConclusionItemAdapter;
+import com.wineguesser.deductive.ui.adapter.ConclusionItemAdapter;
 import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
