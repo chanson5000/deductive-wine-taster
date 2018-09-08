@@ -41,9 +41,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
     String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
-    String DISABLE_AD_FOR_TEST = "DISABLE_AD";
-    boolean mAdDisabled;
-
     VarietyResultsViewModel inputForm;
     ConclusionInputErrorsViewModel inputErrors;
 
@@ -111,15 +108,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
-            // Check to see if we are disabling Ad (For testing purposes)
-            if (parentIntent.hasExtra(DISABLE_AD_FOR_TEST)) {
-                mAdDisabled = true;
-            } else {
-                mInterstitialAd = new InterstitialAd(this);
-                mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-
             // Retrieve all of the data from the parent intent and put it to our view model.
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
@@ -147,6 +135,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
@@ -190,15 +182,13 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        // Checking if the ad has been disabled for testing.
-        if (!mAdDisabled) {
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    mInterstitialAd.show();
-                }
-            });
-        }
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mInterstitialAd.show();
+            }
+        });
+
     }
 
     @Override
