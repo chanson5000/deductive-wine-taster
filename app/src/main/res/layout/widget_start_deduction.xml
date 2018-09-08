@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/staticText_blind_taste"
+        style="@style/AppTheme.Text.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="@string/blind_taste"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/staticText_blind_taste"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_red_wine"
+            style="@style/AppTheme.Button"
+            android:layout_marginEnd="2dp"
+            android:padding="@dimen/standard_half_margin"
+            android:textSize="12sp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_red" />
+
+        <Button
+            android:id="@+id/button_white_wine"
+            style="@style/AppTheme.Button"
+            android:layout_marginStart="2dp"
+            android:padding="@dimen/standard_half_margin"
+            android:textSize="12sp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_white" />
+
+    </LinearLayout>
+
+</RelativeLayout>

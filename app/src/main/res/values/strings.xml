@@ -297,7 +297,7 @@
     <string name="new_zealand" translatable="false">New Zealand</string>
     <string name="spain" translatable="false">Spain</string>
     <string name="united_states" translatable="false">United States</string>
-    
+
     <!-- Regions -->
     <string name="alsace" translatable="false">Alsace</string>
     <string name="burgundy" translatable="false">Burgundy</string>
@@ -362,7 +362,6 @@
     </string-array>
 
 
-
     <!-- AdMob -->
     <string name="app_add_id">ca-app-pub-6240294942266099~9194679928</string>
     <string name="interstitial_ad_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
@@ -406,4 +405,8 @@
     <string name="history_cleared">History Cleared!</string>
     <string name="remove_record">Remove Record</string>
     <string name="record_removed">Record Removed!</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_red">Red</string>
+    <string name="widget_white">White</string>
 </resources>
