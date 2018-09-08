@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="historyActivity"
+            type="com.wineguesser.deductive.viewmodel.HistoryActivityViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textStatic_no_data"
+            style="@style/AppTheme.Text.Title"
+            android:gravity="center"
+            android:text="@string/no_data"
+            android:visibility="@{safeUnbox(historyActivity.noData) == true ? View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/conclusion_item_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</merge>
+    </FrameLayout>
+</layout>

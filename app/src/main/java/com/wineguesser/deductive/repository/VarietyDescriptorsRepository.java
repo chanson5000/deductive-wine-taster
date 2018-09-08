@@ -22,8 +22,8 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
     private final DatabaseReference mWhiteReference;
 
     public VarietyDescriptorsRepository() {
-        mRedReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
-        mWhiteReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
+        mRedReference = getDatabaseInstance().getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
+        mWhiteReference = getDatabaseInstance().getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
     }
 
     public LiveData<List<RedVarietyDescriptors>> getAllRedVarietyDescriptors() {
@@ -60,7 +60,7 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
                 for (DataSnapshot entry : dataSnapshot.getChildren()) {
                     String varietyId = entry.getKey();
                     RedVarietyDescriptors redVarietyDescriptors
-                            = (RedVarietyDescriptors) entry.getValue();
+                            = entry.getValue(RedVarietyDescriptors.class);
                     if (redVarietyDescriptors != null) {
                         redVarietyDescriptors.setVarietyId(varietyId);
                     }
@@ -105,7 +105,7 @@ public class VarietyDescriptorsRepository extends FirebaseRepository {
                 for (DataSnapshot entry : dataSnapshot.getChildren()) {
                     String varietyId = entry.getKey();
                     WhiteVarietyDescriptors whiteVarietyDescriptors
-                            = (WhiteVarietyDescriptors) entry.getValue();
+                            = entry.getValue(WhiteVarietyDescriptors.class);
                     if (whiteVarietyDescriptors != null) {
                         whiteVarietyDescriptors.setVarietyId(varietyId);
                     }

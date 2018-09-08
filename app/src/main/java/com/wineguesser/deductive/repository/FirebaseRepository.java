@@ -10,5 +10,7 @@ abstract class FirebaseRepository implements DatabaseContract {
        mDatabase = FirebaseDatabase.getInstance();
    }
 
-
+   FirebaseDatabase getDatabaseInstance() {
+       return mDatabase;
+   }
 }

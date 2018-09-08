@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="inputError"
+            type="com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel" />
+
+        <variable
+            name="actualWine"
+            type="com.wineguesser.deductive.viewmodel.VarietyResultsViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/our_guess" />
+
+            <TextView
+                android:id="@+id/textView_our_guess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.appVariety ?? @string/no_data, default=@string/no_data}"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_guess" />
+
+            <TextView
+                android:id="@+id/textView_user_variety"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userVariety, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userCountry, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userRegion, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_quality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userQuality, default=@string/no_data}" />
+
+            <TextView
+                android:id="@+id/textView_user_vintage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{actualWine.userVintage, default=@string/no_data}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_actual_wine"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actual_wine" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_actual_variety"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_actual_variety"
+                android:text="@string/grape_variety_blend" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_actual_variety"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={actualWine.actualVariety}" />
+
+            <TextView
+                android:id="@+id/textError_variety"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{inputError.errorVariety}"
+                android:visibility="@{inputError.errorVariety != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_actual_country"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_actual_country"
+                android:text="@string/country_of_origin" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_actual_country"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={actualWine.actualCountry}" />
+
+            <TextView
+                android:id="@+id/textError_country"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{inputError.errorCountry}"
+                android:visibility="@{inputError.errorCountry != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_actual_region"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_actual_region"
+                android:text="@string/region_appellation" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_actual_region"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={actualWine.actualRegion}" />
+
+            <TextView
+                android:id="@+id/textError_region"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{inputError.errorRegion}"
+                android:visibility="@{inputError.errorRegion != null ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:id="@+id/textView_actual_quality"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/autoText_actual_quality"
+                android:text="@string/quality_regional_hierarchy" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_actual_quality"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={actualWine.actualQuality}" />
+
+            <TextView
+                android:id="@+id/textError_quality"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{inputError.errorQuality}"
+                android:visibility="@{inputError.errorQuality != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <TextView
+                android:id="@+id/textView_actual_vintage"
+                style="@style/AppTheme.Text.Descriptor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/autoText_actual_vintage"
+                android:text="@string/vintage" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoText_actual_vintage"
+                style="@style/AppTheme.AutoText.Single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="4"
+                android:text="@={actualWine.actualVintage}" />
+
+            <TextView
+                android:id="@+id/textError_vintage"
+                style="@style/AppTheme.Text.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{inputError.errorVintage}"
+                android:visibility="@{inputError.errorVintage != null ? View.VISIBLE : View.GONE}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+            <Button
+                android:id="@+id/wine_result_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="onButtonWineResultSave"
+                android:text="@{actualWine.resultButtonText, default=@string/save_result}" />
+
+            <include layout="@layout/spacer_horizontal" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

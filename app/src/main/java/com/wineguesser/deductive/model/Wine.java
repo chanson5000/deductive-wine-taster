@@ -1,7 +1,5 @@
 package com.wineguesser.deductive.model;
 
-import java.util.Map;
-
 public abstract class Wine {
 
     private String name;

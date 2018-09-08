@@ -3,31 +3,28 @@ package com.wineguesser.deductive.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Bindable;
-import android.databinding.Observable;
-import android.databinding.PropertyChangeRegistry;
 
-import com.wineguesser.deductive.BR;
 import com.wineguesser.deductive.repository.VarietyDataRepository;
 
-public class VarietyResultsViewModel extends ViewModel implements Observable {
+public class VarietyResultsViewModel extends ViewModel {
 
-    private PropertyChangeRegistry callbacks = new PropertyChangeRegistry();
-    private VarietyDataRepository varietyDataRepository;
+    private final VarietyDataRepository varietyDataRepository;
 
     private LiveData<String> appVariety;
 
-    private MutableLiveData<String> actualVariety = new MutableLiveData<>();
-    private MutableLiveData<String> actualCountry = new MutableLiveData<>();
-    private MutableLiveData<String> actualRegion = new MutableLiveData<>();
-    private MutableLiveData<String> actualQuality = new MutableLiveData<>();
-    private MutableLiveData<String> actualVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> actualVariety = new MutableLiveData<>();
+    private final MutableLiveData<String> actualCountry = new MutableLiveData<>();
+    private final MutableLiveData<String> actualRegion = new MutableLiveData<>();
+    private final MutableLiveData<String> actualQuality = new MutableLiveData<>();
+    private final MutableLiveData<String> actualVintage = new MutableLiveData<>();
 
-    private MutableLiveData<String> userVariety = new MutableLiveData<>();
-    private MutableLiveData<String> userCountry = new MutableLiveData<>();
-    private MutableLiveData<String> userRegion = new MutableLiveData<>();
-    private MutableLiveData<String> userQuality = new MutableLiveData<>();
-    private MutableLiveData<String> userVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> userVariety = new MutableLiveData<>();
+    private final MutableLiveData<String> userCountry = new MutableLiveData<>();
+    private final MutableLiveData<String> userRegion = new MutableLiveData<>();
+    private final MutableLiveData<String> userQuality = new MutableLiveData<>();
+    private final MutableLiveData<String> userVintage = new MutableLiveData<>();
+
+    private final MutableLiveData<String> resultButtonText = new MutableLiveData<>();
 
     public VarietyResultsViewModel() {
         varietyDataRepository = new VarietyDataRepository();
@@ -69,7 +66,7 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         return userVintage;
     }
 
-    public void setUserVintage (String userVintage) {
+    public void setUserVintage(String userVintage) {
         this.userVintage.setValue(userVintage);
     }
 
@@ -81,6 +78,7 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         loadVariety(isRedWine, varietyId);
     }
 
+    // Takes in boolean for red wine and the variety Id and retrieves the string from the
     private void loadVariety(boolean isRedWine, String varietyId) {
         if (isRedWine) {
             this.appVariety = varietyDataRepository.getRedVarietyNameById(varietyId);
@@ -88,7 +86,6 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
             this.appVariety = varietyDataRepository.getWhiteVarietyNameById(varietyId);
         }
     }
-
 
     public MutableLiveData<String> getActualVariety() {
         return actualVariety;
@@ -98,7 +95,6 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         this.actualVariety.setValue(actualVariety);
     }
 
-
     public MutableLiveData<String> getActualCountry() {
         return actualCountry;
     }
@@ -107,7 +103,6 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         this.actualCountry.setValue(actualCountry);
     }
 
-
     public MutableLiveData<String> getActualRegion() {
         return actualRegion;
     }
@@ -115,7 +110,6 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
     public void setActualRegion(String actualRegion) {
         this.actualRegion.setValue(actualRegion);
     }
-
 
     public MutableLiveData<String> getActualQuality() {
         return actualQuality;
@@ -133,17 +127,11 @@ public class VarietyResultsViewModel extends ViewModel implements Observable {
         this.actualVintage.setValue(actualVintage);
     }
 
-    @Override
-    public void addOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
-        callbacks.add(callback);
+    public void setResultButtonText(String text) {
+        this.resultButtonText.setValue(text);
     }
 
-    @Override
-    public void removeOnPropertyChangedCallback(Observable.OnPropertyChangedCallback callback) {
-        callbacks.remove(callback);
-    }
-
-    private void notifyPropertyChanged(int fieldId) {
-        callbacks.notifyCallbacks(this, fieldId, null);
+    public MutableLiveData<String> getResultButtonText() {
+        return resultButtonText;
     }
 }

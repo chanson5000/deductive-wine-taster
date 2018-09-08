@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="errorGroup"
-            type="com.wineguesser.deductive.model.ErrorsFinalForm" />
+            name="inputError"
+            type="com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel" />
     </data>
 
     <FrameLayout
@@ -59,8 +59,8 @@
                     style="@style/AppTheme.Text.Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{errorGroup.errorVariety}"
-                    android:visibility="@{errorGroup.errorVariety != null ? View.VISIBLE : View.GONE}" />
+                    android:text="@{inputError.errorVariety}"
+                    android:visibility="@{inputError.errorVariety != null ? View.VISIBLE : View.GONE}" />
 
                 <include layout="@layout/spacer_horizontal" />
 
@@ -84,8 +84,8 @@
                     style="@style/AppTheme.Text.Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{errorGroup.errorCountry}"
-                    android:visibility="@{errorGroup.errorCountry != null ? View.VISIBLE : View.GONE}" />
+                    android:text="@{inputError.errorCountry}"
+                    android:visibility="@{inputError.errorCountry != null ? View.VISIBLE : View.GONE}" />
 
                 <include layout="@layout/spacer_horizontal" />
 
@@ -109,8 +109,8 @@
                     style="@style/AppTheme.Text.Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{errorGroup.errorRegion}"
-                    android:visibility="@{errorGroup.errorRegion != null ? View.VISIBLE : View.GONE}" />
+                    android:text="@{inputError.errorRegion}"
+                    android:visibility="@{inputError.errorRegion != null ? View.VISIBLE : View.GONE}" />
 
                 <TextView
                     android:id="@+id/textView_final_quality"
@@ -132,8 +132,8 @@
                     style="@style/AppTheme.Text.Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{errorGroup.errorQuality}"
-                    android:visibility="@{errorGroup.errorQuality != null ? View.VISIBLE : View.GONE}" />
+                    android:text="@{inputError.errorQuality}"
+                    android:visibility="@{inputError.errorQuality != null ? View.VISIBLE : View.GONE}" />
 
                 <include layout="@layout/spacer_horizontal" />
 
@@ -158,8 +158,8 @@
                     style="@style/AppTheme.Text.Error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{errorGroup.errorVintage}"
-                    android:visibility="@{errorGroup.errorVintage != null ? View.VISIBLE : View.GONE}" />
+                    android:text="@{inputError.errorVintage}"
+                    android:visibility="@{inputError.errorVintage != null ? View.VISIBLE : View.GONE}" />
 
                 <include layout="@layout/spacer_horizontal" />
 

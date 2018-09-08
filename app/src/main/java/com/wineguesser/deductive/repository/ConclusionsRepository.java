@@ -17,10 +17,27 @@ import timber.log.Timber;
 
 public class ConclusionsRepository extends FirebaseRepository {
 
-    private final DatabaseReference mReference;
+    private final DatabaseReference mConclusionsReference;
 
     public ConclusionsRepository() {
-        mReference = mDatabase.getReference("conclusions");
+        mConclusionsReference = getDatabaseInstance().getReference("conclusions");
+    }
+
+    public void clearUserConclusions(String uid) {
+        mConclusionsReference.child(uid).removeValue();
+    }
+
+    public void saveConclusionRecord(String uid, ConclusionRecord conclusionRecord) {
+        // Get the reference of where our new conclusion record wil be pushed.
+        DatabaseReference newConclusionRecordReference
+                = mConclusionsReference.child(uid).push();
+
+        // Add the new conclusion record to the database.
+        newConclusionRecordReference.setValue(conclusionRecord);
+    }
+
+    public void removeConclusionRecord(ConclusionRecord conclusionRecord) {
+        mConclusionsReference.child(conclusionRecord.getUserId()).child(conclusionRecord.getConclusionId()).removeValue();
     }
 
     public LiveData<List<ConclusionRecord>> getConclusionsForUser(String uid) {
@@ -32,30 +49,37 @@ public class ConclusionsRepository extends FirebaseRepository {
         private final MyValueEventListener listener = new MyValueEventListener();
 
         ConclusionsList(String uid) {
-            query = mReference.child(uid);
+            query = mConclusionsReference.child(uid);
         }
 
         @Override
-        protected void onActive() { query.addValueEventListener(listener); }
+        protected void onActive() {
+            query.addValueEventListener(listener);
+        }
 
         @Override
-        protected void onInactive() { query.removeEventListener(listener); }
+        protected void onInactive() {
+            query.removeEventListener(listener);
+        }
 
         private class MyValueEventListener implements ValueEventListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<ConclusionRecord> data = new ArrayList<>();
+                if (dataSnapshot.hasChildren()) {
+                    List<ConclusionRecord> data = new ArrayList<>();
 
-                for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                    String conclusionId = entry.getKey();
-                    ConclusionRecord conclusionRecord = (ConclusionRecord) entry.getValue();
-                    if (conclusionRecord != null) {
-                        conclusionRecord.setConclusionId(conclusionId);
+                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
+                        String conclusionId = entry.getKey();
+                        ConclusionRecord conclusionRecord = entry.getValue(ConclusionRecord.class);
+                        if (conclusionRecord != null) {
+                            conclusionRecord.setConclusionId(conclusionId);
+                        }
+                        data.add(conclusionRecord);
                     }
-                    data.add(conclusionRecord);
+                    setValue(data);
+                } else {
+                    setValue(null);
                 }
-
-                setValue(data);
             }
 
             @Override
@@ -66,3 +90,4 @@ public class ConclusionsRepository extends FirebaseRepository {
         }
     }
 }
+
