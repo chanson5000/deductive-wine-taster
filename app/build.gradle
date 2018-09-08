@@ -7,7 +7,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
-        versionName "0.3.0-alpha"
+        versionName "0.8.0-beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,7 +23,20 @@ android {
     dataBinding {
         enabled = true
     }
+
+    flavorDimensions "tier"
+
     productFlavors {
+        free {
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+            dimension "tier"
+        }
+        paid {
+            applicationIdSuffix ".paid"
+            versionNameSuffix "-paid"
+            dimension "tier"
+        }
     }
 }
 
