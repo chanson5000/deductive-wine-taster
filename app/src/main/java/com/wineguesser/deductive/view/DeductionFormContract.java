@@ -1,4 +1,4 @@
-package com.wineguesser.deductive.ui;
+package com.wineguesser.deductive.view;
 
 import com.wineguesser.deductive.R;
 

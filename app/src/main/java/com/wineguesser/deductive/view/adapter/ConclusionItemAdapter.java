@@ -1,4 +1,4 @@
-package com.wineguesser.deductive.ui.adapter;
+package com.wineguesser.deductive.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

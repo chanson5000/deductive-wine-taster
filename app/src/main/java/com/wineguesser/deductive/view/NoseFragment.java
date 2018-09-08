@@ -1,4 +1,4 @@
-package com.wineguesser.deductive.ui;
+package com.wineguesser.deductive.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,28 +27,31 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class PalateFragmentA extends Fragment implements DeductionFormContract, DatabaseContract {
+public class NoseFragment extends Fragment implements DeductionFormContract,
+        DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
-    @BindView(R.id.scrollView_palate_a)
-    ScrollView mScrollViewPalateA;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.scrollView_nose)
+    ScrollView mScrollViewNose;
 
-    @BindViews({R.id.radio_palate_wood_old, R.id.radio_palate_wood_new,
-            R.id.radio_palate_wood_large, R.id.radio_palate_wood_small,
-            R.id.radio_palate_wood_french, R.id.radio_palate_wood_american})
-    List<RadioButton> mRadioGroupsPalateWood;
+    @SuppressWarnings("WeakerAccess")
+    @BindViews({R.id.radio_nose_wood_old, R.id.radio_nose_wood_new,
+            R.id.radio_nose_wood_large, R.id.radio_nose_wood_small,
+            R.id.radio_nose_wood_french, R.id.radio_nose_wood_american})
+    List<RadioButton> mRadioGroupsNoseWood;
 
-    static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
+    private static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
             view.setEnabled(true);
 
-    static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
+    private static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
             view.setEnabled(false);
 
-    public PalateFragmentA() {
+    public NoseFragment() {
     }
 
     @Override
@@ -81,10 +84,10 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
         View rootView;
 
         if (mIsRedWine) {
-            rootView = inflater.inflate(R.layout.fragment_palate_red_a,
+            rootView = inflater.inflate(R.layout.fragment_nose_red,
                     container, false);
         } else {
-            rootView = inflater.inflate(R.layout.fragment_palate_white_a,
+            rootView = inflater.inflate(R.layout.fragment_nose_white,
                     container, false);
         }
 
@@ -109,9 +112,9 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
     private void saveScrollState() {
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (mIsRedWine) {
-            editor.putInt(RED_PALATE_A_Y_SCROLL, mScrollViewPalateA.getScrollY());
+            editor.putInt(RED_NOSE_Y_SCROLL, mScrollViewNose.getScrollY());
         } else {
-            editor.putInt(WHITE_PALATE_A_Y_SCROLL, mScrollViewPalateA.getScrollY());
+            editor.putInt(WHITE_NOSE_Y_SCROLL, mScrollViewNose.getScrollY());
         }
         editor.apply();
     }
@@ -119,27 +122,26 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
     private void loadScrollState() {
         if (mIsRedWine) {
             AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateA.scrollTo(0, mActivityPreferences
-                            .getInt(RED_PALATE_A_Y_SCROLL, 0)));
+                    mScrollViewNose.scrollTo(0, mActivityPreferences
+                            .getInt(RED_NOSE_Y_SCROLL, 0)));
         } else {
             AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateA.scrollTo(0, mActivityPreferences
-                            .getInt(WHITE_PALATE_A_Y_SCROLL, 0)));
+                    mScrollViewNose.scrollTo(0, mActivityPreferences
+                            .getInt(WHITE_NOSE_Y_SCROLL, 0)));
         }
     }
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewPalateA.scrollTo(0, 0));
+                mScrollViewNose.scrollTo(0, 0));
     }
-
 
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int view = Helpers.castKey(entry.getKey());
 
-            if (mIsRedWine && redPalateViewsA.contains(view)) {
+            if (mIsRedWine && redNoseViews.contains(view)) {
                 if (AllRadioGroups.contains(view)) {
                     ((RadioGroup) mFragmentActivity.findViewById(view))
                             .check(Helpers.parseEntryValue(entry.getValue()));
@@ -150,7 +152,7 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
                     ((Switch) mFragmentActivity.findViewById(view))
                             .setChecked(Helpers.parseChecked(entry.getValue()));
                 }
-            } else if (!mIsRedWine && whitePalateViewsA.contains(view)) {
+            } else if (!mIsRedWine && whiteNoseViews.contains(view)) {
                 if (AllRadioGroups.contains(view)) {
                     ((RadioGroup) mFragmentActivity.findViewById(view))
                             .check(Helpers.parseEntryValue(entry.getValue()));
@@ -171,10 +173,10 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
     }
 
     public void syncWoodRadioState() {
-        if (getCheckBoxState(SWITCH_PALATE_WOOD)) {
-            ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
+        if (getCheckBoxState(SWITCH_NOSE_WOOD)) {
+            ButterKnife.apply(mRadioGroupsNoseWood, WOOD_ENABLE);
         } else {
-            ButterKnife.apply(mRadioGroupsPalateWood, WOOD_DISABLE);
+            ButterKnife.apply(mRadioGroupsNoseWood, WOOD_DISABLE);
         }
     }
 }

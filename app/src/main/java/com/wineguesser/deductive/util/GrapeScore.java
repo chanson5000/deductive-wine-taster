@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.ui.DeductionFormContract;
+import com.wineguesser.deductive.view.DeductionFormContract;
 
 import java.util.Collections;
 import java.util.HashMap;

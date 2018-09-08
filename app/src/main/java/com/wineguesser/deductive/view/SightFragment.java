@@ -1,4 +1,4 @@
-package com.wineguesser.deductive.ui;
+package com.wineguesser.deductive.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,8 +22,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PalateFragmentB extends Fragment implements DeductionFormContract,
-        DatabaseContract {
+public class SightFragment extends Fragment implements DeductionFormContract, DatabaseContract {
 
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
@@ -31,10 +30,10 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
     private boolean mIsRedWine;
 
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.scrollView_palate_b)
-    ScrollView mScrollViewPalateB;
+    @BindView(R.id.scrollView_sight)
+    ScrollView mScrollViewSight;
 
-    public PalateFragmentB() {
+    public SightFragment() {
     }
 
     @Override
@@ -47,8 +46,7 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActivityPreferences =
-                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
         if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
             mWinePreferences = mFragmentActivity
@@ -67,10 +65,10 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
         View rootView;
 
         if (mIsRedWine) {
-            rootView = inflater.inflate(R.layout.fragment_palate_red_b,
+            rootView = inflater.inflate(R.layout.fragment_sight_red,
                     container, false);
         } else {
-            rootView = inflater.inflate(R.layout.fragment_palate_white_b,
+            rootView = inflater.inflate(R.layout.fragment_sight_white,
                     container, false);
         }
 
@@ -95,9 +93,9 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
     private void saveScrollState() {
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (mIsRedWine) {
-            editor.putInt(RED_PALATE_B_Y_SCROLL, mScrollViewPalateB.getScrollY());
+            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
         } else {
-            editor.putInt(WHITE_PALATE_B_Y_SCROLL, mScrollViewPalateB.getScrollY());
+            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
         }
         editor.apply();
     }
@@ -105,18 +103,18 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
     private void loadScrollState() {
         if (mIsRedWine) {
             AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateB.scrollTo(0, mActivityPreferences
-                            .getInt(RED_PALATE_B_Y_SCROLL, 0)));
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(RED_SIGHT_Y_SCROLL, 0)));
         } else {
             AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateB.scrollTo(0, mActivityPreferences
-                            .getInt(WHITE_PALATE_B_Y_SCROLL, 0)));
+                    mScrollViewSight.scrollTo(0, mActivityPreferences
+                            .getInt(WHITE_SIGHT_Y_SCROLL, 0)));
         }
     }
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewPalateB.scrollTo(0, 0));
+                mScrollViewSight.scrollTo(0, 0));
     }
 
     private void loadSelectionState() {
@@ -124,10 +122,10 @@ public class PalateFragmentB extends Fragment implements DeductionFormContract,
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             int view = Helpers.castKey(entry.getKey());
 
-            if (mIsRedWine && redPalateViewsB.contains(view) && AllRadioGroups.contains(view)) {
+            if (mIsRedWine && redSightViews.contains(view) && AllRadioGroups.contains(view)) {
                 ((RadioGroup) mFragmentActivity.findViewById(view))
                         .check(Helpers.parseEntryValue(entry.getValue()));
-            } else if (!mIsRedWine && whitePalateViewsB.contains(view) && AllRadioGroups.contains(view)) {
+            } else if (!mIsRedWine && whiteSightViews.contains(view) && AllRadioGroups.contains(view)) {
                 ((RadioGroup) mFragmentActivity.findViewById(view))
                         .check(Helpers.parseEntryValue(entry.getValue()));
             }

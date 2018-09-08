@@ -10,9 +10,9 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.wineguesser.deductive.ui.DeductionFormActivity;
-import com.wineguesser.deductive.ui.DeductionFormContract;
-import com.wineguesser.deductive.ui.VarietyResultsActivity;
+import com.wineguesser.deductive.view.DeductionFormActivity;
+import com.wineguesser.deductive.view.DeductionFormContract;
+import com.wineguesser.deductive.view.VarietyResultsActivity;
 
 import org.junit.After;
 import org.junit.Before;

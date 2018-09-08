@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.wineguesser.deductive.ui.DeductionFormContract;
-import com.wineguesser.deductive.ui.VarietyResultsActivity;
+import com.wineguesser.deductive.view.DeductionFormContract;
+import com.wineguesser.deductive.view.VarietyResultsActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
