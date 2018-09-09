@@ -6,23 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.Text">
-
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="AppTheme.Text.Title" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">@dimen/xxx_large_text</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="AppTheme.Text.Descriptor" parent="TextAppearance.AppCompat.Subhead">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/small_text</item>
-        <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.Text.Error" parent="TextAppearance.AppCompat.Subhead">
@@ -81,8 +71,37 @@
 
     </style>
 
+    <style name="AppTheme.Text.Descriptor" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
+    <style name="AppTheme.Text">
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
+    <style name="AppTheme.Text.Item">
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.Text.Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
     <style name="AppTheme.EditText">
         <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="AppTheme.AutoText">
@@ -105,8 +124,45 @@
         <item name="android:layout_margin">@dimen/standard_margin</item>
     </style>
 
-    <style name="AppTheme.CardView" parent="CardView.Light">
-        <item name="android:padding">@dimen/standard_margin</item>
+    <style name="AppTheme.CardView">
+        <item name="android:layout_margin">@dimen/standard_margin</item>
+    </style>
+
+    <style name="AppTheme.CardView.Text">
+
+    </style>
+
+    <style name="AppTheme.CardView.Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
+    <style name="AppTheme.CardView.Text.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
+    <style name="AppTheme.RecordView">
+
+    </style>
+
+    <style name="AppTheme.RecordView.Text">
+
+    </style>
+
+    <style name="AppTheme.RecordView.Text.Subhead">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
+    </style>
+
+    <style name="AppTheme.RecordView.Text.Head">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/x_large_text</item>
+        <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
 </resources>
