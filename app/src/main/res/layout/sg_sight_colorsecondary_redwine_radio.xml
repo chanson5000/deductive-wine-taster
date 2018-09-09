@@ -1,57 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/secondary_color" />
 
     <RadioGroup
-        style="@style/AppTheme.RadioGroup"
-        android:id="@+id/radio_group_colorsecondary_redwine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        style="@style/AppTheme.SelectionGroup"
+        android:id="@+id/radio_group_colorsecondary_redwine">
 
         <RadioButton
             android:id="@+id/radio_secondary_color_orange"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/orange" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_blue"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/blue" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_ruby"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/ruby" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_garnet"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/garnet" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_brown"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/brown" />
     </RadioGroup>
-</merge>
+</LinearLayout>

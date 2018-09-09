@@ -1,186 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="historyRecord"
             type="com.wineguesser.deductive.viewmodel.HistoryRecordViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textStatic_app_conclusion_variety"
-            style="@style/AppTheme.Text.Descriptor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/app_conclusion"
-            app:layout_constraintBottom_toTopOf="@id/textView_app_conclusion_variety"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <include layout="@layout/toolbar_default" />
 
-        <TextView
-            android:id="@+id/textView_app_conclusion_variety"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.appConclusionVariety ?? @string/no_data, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/guideline_top_horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textStatic_app_conclusion_variety" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraint_header_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:padding="@dimen/standard_half_margin"
+            tools:context="com.wineguesser.deductive.view.HistoryRecordActivity">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_top_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="150dp" />
+            <TextView
+                android:id="@+id/textStatic_app_conclusion_variety"
+                style="@style/AppTheme.RecordView.Text.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/app_conclusion"
+                app:layout_constraintBottom_toTopOf="@id/textView_app_conclusion_variety"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textStatic_user_conclusion_variety"
-            style="@style/AppTheme.Text.Descriptor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/your_guess"
-            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_variety"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_top_horizontal" />
+            <TextView
+                android:id="@+id/textView_app_conclusion_variety"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.appConclusionVariety ?? @string/no_data, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textStatic_user_conclusion_variety"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textStatic_app_conclusion_variety" />
 
-        <TextView
-            android:id="@+id/textView_user_conclusion_variety"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.userConclusionVariety, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_country"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textStatic_user_conclusion_variety" />
+            <TextView
+                android:id="@+id/textStatic_user_conclusion_variety"
+                style="@style/AppTheme.RecordView.Text.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/your_guess"
+                app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_variety"
+                app:layout_constraintEnd_toStartOf="@id/textStatic_actual_variety"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_app_conclusion_variety" />
 
-        <TextView
-            android:id="@+id/textView_user_conclusion_country"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.userConclusionCountry, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_region"
-            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_variety" />
+            <TextView
+                android:id="@+id/textView_user_conclusion_variety"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.userConclusionVariety, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_country"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_variety"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textStatic_user_conclusion_variety" />
 
-        <TextView
-            android:id="@+id/textView_user_conclusion_region"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.userConclusionRegion, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_quality"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_country" />
+            <TextView
+                android:id="@+id/textView_user_conclusion_country"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.userConclusionCountry, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_region"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_country"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_variety" />
 
-        <TextView
-            android:id="@+id/textView_user_conclusion_quality"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.userConclusionQuality, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_vintage"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_region" />
+            <TextView
+                android:id="@+id/textView_user_conclusion_region"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.userConclusionRegion, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_quality"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_region"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_country" />
 
-        <TextView
-            android:id="@+id/textView_user_conclusion_vintage"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{String.valueOf(safeUnbox(historyRecord.userConclusionVintage)), default=@string/no_data}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_quality" />
+            <TextView
+                android:id="@+id/textView_user_conclusion_quality"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.userConclusionQuality, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_vintage"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_quality"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_region" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_vertical_divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".50" />
+            <TextView
+                android:id="@+id/textView_user_conclusion_vintage"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{String.valueOf(safeUnbox(historyRecord.userConclusionVintage)), default=@string/no_data}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_vintage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_quality" />
 
-        <TextView
-            android:id="@+id/textStatic_actual_variety"
-            style="@style/AppTheme.Text.Descriptor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/actual_wine"
-            app:layout_constraintBottom_toTopOf="@id/textView_actual_variety"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/guideline_top_horizontal" />
+            <TextView
+                android:id="@+id/textStatic_actual_variety"
+                style="@style/AppTheme.RecordView.Text.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/actual_wine"
+                app:layout_constraintBottom_toTopOf="@id/textView_actual_variety"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textStatic_user_conclusion_variety"
+                app:layout_constraintTop_toBottomOf="@id/textView_app_conclusion_variety" />
 
-        <TextView
-            android:id="@+id/textView_actual_variety"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.actualVariety, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_actual_country"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/textStatic_actual_variety" />
+            <TextView
+                android:id="@+id/textView_actual_variety"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.actualVariety, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_actual_country"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_variety"
+                app:layout_constraintTop_toBottomOf="@id/textStatic_actual_variety" />
 
-        <TextView
-            android:id="@+id/textView_actual_country"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.actualCountry, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_actual_region"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/textView_actual_variety" />
+            <TextView
+                android:id="@+id/textView_actual_country"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.actualCountry, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_actual_region"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_country"
+                app:layout_constraintTop_toBottomOf="@id/textView_actual_variety" />
 
-        <TextView
-            android:id="@+id/textView_actual_region"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.actualRegion, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_actual_quality"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/textView_actual_country" />
+            <TextView
+                android:id="@+id/textView_actual_region"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.actualRegion, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_actual_quality"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_region"
+                app:layout_constraintTop_toBottomOf="@id/textView_actual_country" />
 
-        <TextView
-            android:id="@+id/textView_actual_quality"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{historyRecord.actualQuality, default=@string/no_data}"
-            app:layout_constraintBottom_toTopOf="@id/textView_actual_vintage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/textView_actual_region" />
+            <TextView
+                android:id="@+id/textView_actual_quality"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.actualQuality, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textView_actual_vintage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_quality"
+                app:layout_constraintTop_toBottomOf="@id/textView_actual_region" />
 
-        <TextView
-            android:id="@+id/textView_actual_vintage"
-            style="@style/AppTheme.Text.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{String.valueOf(safeUnbox(historyRecord.actualVintage)), default=@string/no_data}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_divider"
-            app:layout_constraintTop_toBottomOf="@id/textView_actual_quality" />
+            <TextView
+                android:id="@+id/textView_actual_vintage"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{String.valueOf(safeUnbox(historyRecord.actualVintage)), default=@string/no_data}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_vintage"
+                app:layout_constraintTop_toBottomOf="@id/textView_actual_quality" />
 
-
-    </android.support.constraint.ConstraintLayout>
-
+        </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

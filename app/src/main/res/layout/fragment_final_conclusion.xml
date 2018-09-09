@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:visibility="invisible" />
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/scrollView_final"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -39,129 +39,111 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView_final_grape_variety"
-                    style="@style/AppTheme.Text.Descriptor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:labelFor="@id/autoText_final_grape_variety"
-                    android:text="@string/grape_variety_blend" />
+                <LinearLayout style="@style/SelectionGroupContainer">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoText_final_grape_variety"
-                    style="@style/AppTheme.AutoText.Single"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    <TextView
+                        android:id="@+id/textView_final_grape_variety"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@id/autoText_final_grape_variety"
+                        android:text="@string/grape_variety_blend" />
 
-                <TextView
-                    android:id="@+id/textError_variety"
-                    style="@style/AppTheme.Text.Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{inputError.errorVariety}"
-                    android:visibility="@{inputError.errorVariety != null ? View.VISIBLE : View.GONE}" />
+                    <AutoCompleteTextView
+                        android:id="@+id/autoText_final_grape_variety"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:inputType="text" />
 
-                <include layout="@layout/spacer_horizontal" />
+                    <TextView
+                        android:id="@+id/textError_variety"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorVariety}"
+                        android:visibility="@{inputError.errorVariety != null ? View.VISIBLE : View.GONE}" />
 
-                <TextView
-                    android:id="@+id/textView_final_country"
-                    style="@style/AppTheme.Text.Descriptor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:labelFor="@id/autoText_final_country"
-                    android:text="@string/country_of_origin" />
+                </LinearLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoText_final_country"
-                    style="@style/AppTheme.AutoText.Single"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+                <LinearLayout style="@style/SelectionGroupContainer">
 
-                <TextView
-                    android:id="@+id/textError_country"
-                    style="@style/AppTheme.Text.Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{inputError.errorCountry}"
-                    android:visibility="@{inputError.errorCountry != null ? View.VISIBLE : View.GONE}" />
+                    <TextView
+                        android:id="@+id/textView_final_country"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@id/autoText_final_country"
+                        android:text="@string/country_of_origin" />
 
-                <include layout="@layout/spacer_horizontal" />
+                    <AutoCompleteTextView
+                        android:id="@+id/autoText_final_country"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:inputType="text" />
 
-                <TextView
-                    android:id="@+id/textView_final_region"
-                    style="@style/AppTheme.Text.Descriptor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:labelFor="@id/autoText_final_region"
-                    android:text="@string/region_appellation" />
+                    <TextView
+                        android:id="@+id/textError_country"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorCountry}"
+                        android:visibility="@{inputError.errorCountry != null ? View.VISIBLE : View.GONE}" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoText_final_region"
-                    style="@style/AppTheme.AutoText.Single"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textError_region"
-                    style="@style/AppTheme.Text.Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{inputError.errorRegion}"
-                    android:visibility="@{inputError.errorRegion != null ? View.VISIBLE : View.GONE}" />
+                <LinearLayout style="@style/SelectionGroupContainer">
 
-                <TextView
-                    android:id="@+id/textView_final_quality"
-                    style="@style/AppTheme.Text.Descriptor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:labelFor="@id/autoText_final_quality"
-                    android:text="@string/quality_regional_hierarchy" />
+                    <TextView
+                        android:id="@+id/textView_final_region"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@id/autoText_final_region"
+                        android:text="@string/region_appellation" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoText_final_quality"
-                    style="@style/AppTheme.AutoText.Single"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    <AutoCompleteTextView
+                        android:id="@+id/autoText_final_region"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:inputType="text" />
 
-                <TextView
-                    android:id="@+id/textError_quality"
-                    style="@style/AppTheme.Text.Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{inputError.errorQuality}"
-                    android:visibility="@{inputError.errorQuality != null ? View.VISIBLE : View.GONE}" />
+                    <TextView
+                        android:id="@+id/textError_region"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorRegion}"
+                        android:visibility="@{inputError.errorRegion != null ? View.VISIBLE : View.GONE}" />
 
-                <include layout="@layout/spacer_horizontal" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView_final_vintage"
-                    style="@style/AppTheme.Text.Descriptor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:labelFor="@+id/autoText_final_vintage"
-                    android:text="@string/vintage" />
+                <LinearLayout style="@style/SelectionGroupContainer">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoText_final_vintage"
-                    style="@style/AppTheme.AutoText.Single"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="4" />
+                    <TextView
+                        android:id="@+id/textView_final_quality"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@id/autoText_final_quality"
+                        android:text="@string/quality_regional_hierarchy" />
 
-                <TextView
-                    android:id="@+id/textError_vintage"
-                    style="@style/AppTheme.Text.Error"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{inputError.errorVintage}"
-                    android:visibility="@{inputError.errorVintage != null ? View.VISIBLE : View.GONE}" />
+                    <AutoCompleteTextView
+                        android:id="@+id/autoText_final_quality"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:inputType="text" />
 
-                <include layout="@layout/spacer_horizontal" />
+                    <TextView
+                        android:id="@+id/textError_quality"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorQuality}"
+                        android:visibility="@{inputError.errorQuality != null ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/SelectionGroupContainer">
+
+                    <TextView
+                        android:id="@+id/textView_final_vintage"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/autoText_final_vintage"
+                        android:text="@string/vintage" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoText_final_vintage"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:inputType="number"
+                        android:maxLength="4" />
+
+                    <TextView
+                        android:id="@+id/textError_vintage"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorVintage}"
+                        android:visibility="@{inputError.errorVintage != null ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/button_submit_final_conclusion"
@@ -172,9 +154,7 @@
                     android:onClick="onSubmitFinalConclusion"
                     android:text="@string/submit_final_conclusion" />
 
-                <include layout="@layout/spacer_horizontal" />
-
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </FrameLayout>
 </layout>

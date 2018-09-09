@@ -1,48 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/earth" />
 
-    <LinearLayout
-        style="@style/AppTheme.RadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout style="@style/AppTheme.SelectionGroup">
 
         <CheckBox
             android:id="@+id/check_palate_earth_forest_floor"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/forest_floor" />
 
         <CheckBox
             android:id="@+id/check_palate_earth_compost"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/compost" />
 
         <CheckBox
             android:id="@+id/check_palate_earth_mushrooms"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/mushrooms" />
 
         <CheckBox
             android:id="@+id/check_palate_earth_potting_soil"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/potting_soil" />
     </LinearLayout>
-</merge>
+</LinearLayout>

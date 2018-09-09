@@ -1,88 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/fruit_character" />
 
-    <LinearLayout
-        style="@style/AppTheme.RadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout style="@style/AppTheme.SelectionGroup">
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_ripe"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/ripe" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_fresh"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/fresh" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_tart"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/tart" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_baked"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/baked" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_stewed"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/stewed" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_dried"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/dried" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_desiccated"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/desiccated" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_bruised"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/bruised" />
 
         <CheckBox
             android:id="@+id/check_nose_fruit_character_jammy"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onCheckBoxButtonClicked"
+            style="@style/AppTheme.SelectionGroup.CheckBox"
             android:text="@string/jammy" />
     </LinearLayout>
-</merge>
+</LinearLayout>

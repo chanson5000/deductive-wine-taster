@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
@@ -42,7 +42,7 @@ public class FinalConclusionFragment extends Fragment implements
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_final)
-    ScrollView mScrollViewFinal;
+    NestedScrollView mScrollViewFinal;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_grape_variety)
     AutoCompleteTextView mAutoTextVariety;

@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
+    <include
+        layout="@layout/toolbar_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView_blind_taste"
         style="@style/AppTheme.Text.Title"
@@ -16,15 +22,15 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_top_middle"
         app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
-        app:layout_constraintTop_toTopOf="@+id/guideline_margin_top" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <Button
         android:id="@+id/button_red_wine"
         style="@style/AppTheme.Button"
         android:layout_width="@dimen/main_activity_wine_button_width"
         android:layout_height="wrap_content"
-        android:text="@string/button_red_wine"
         android:onClick="buttonRedWine"
+        android:text="@string/button_red_wine"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
         app:layout_constraintEnd_toStartOf="@+id/button_white_wine"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
@@ -35,8 +41,8 @@
         style="@style/AppTheme.Button"
         android:layout_width="@dimen/main_activity_wine_button_width"
         android:layout_height="wrap_content"
-        android:text="@string/button_white_wine"
         android:onClick="buttonWhiteWine"
+        android:text="@string/button_white_wine"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
         app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
         app:layout_constraintStart_toEndOf="@id/button_red_wine"
@@ -47,8 +53,8 @@
         style="@style/AppTheme.Button"
         android:layout_width="@dimen/main_activity_wine_button_width"
         android:layout_height="wrap_content"
-        android:text="@string/button_history"
         android:onClick="onHistoryButtonClicked"
+        android:text="@string/button_history"
         app:layout_constraintBottom_toTopOf="@+id/guideline_margin_bottom"
         app:layout_constraintEnd_toStartOf="@id/guideline_margin_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"

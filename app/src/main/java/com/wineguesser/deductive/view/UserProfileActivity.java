@@ -5,12 +5,13 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -54,9 +55,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private String mNewConfirmPassword;
 
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_auth_provider)
-    TextView mTextProviderName;
-    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.imageView_profile_photo)
     ImageView mImageProfilePhoto;
     @SuppressWarnings("WeakerAccess")
@@ -70,6 +68,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         super.onCreate(savedInstanceState);
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);
@@ -115,15 +115,11 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     }
 
     private void setUserLoggedIn(FirebaseUser user) {
-        String provider = user.getProviderId();
         String name = user.getDisplayName();
         String email = user.getEmail();
         Uri photoUrl = user.getPhotoUrl();
 
         userProfileModel.setUserName(name);
-
-        // TODO: Decide that you don't need this.
-        mTextProviderName.setText(provider);
 
         if (mNewTextDisplayName == null) {
             userProfileModel.setDisplayName(name);

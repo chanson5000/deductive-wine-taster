@@ -1,272 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="userProfileForm"
             type="com.wineguesser.deductive.viewmodel.UserProfileViewModel" />
     </data>
 
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <include layout="@layout/toolbar_default" />
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin"
-            android:orientation="vertical"
-            android:padding="@dimen/standard_margin">
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView_user_name"
-                style="@style/AppTheme.Text.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{userProfileForm.userName, default=@string/placeholder_user_name}" />
-
-            <TextView
-                android:id="@+id/textStatic_auth_provider"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/auth_provider" />
-
-            <TextView
-                android:id="@+id/textView_auth_provider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_provider" />
-
-            <TextView
-                android:id="@+id/textStatic_display_name"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/editText_display_name"
-                android:text="@string/profile_display_name" />
-
-            <EditText
-                android:id="@+id/editText_display_name"
-                style="@style/AppTheme.EditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={userProfileForm.displayName}"
-                android:inputType="textPersonName" />
+                android:orientation="vertical"
+                android:paddingTop="@dimen/standard_margin">
 
-            <TextView
-                android:id="@+id/textError_display_name"
-                style="@style/AppTheme.Text.Error"
-                android:text="@{userProfileForm.errorDisplayName}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{userProfileForm.errorDisplayName != null ? View.VISIBLE : View.GONE}" />
-
-            <TextView
-                android:id="@+id/textStatic_email_address"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/editText_email_address"
-                android:text="@string/profile_email_address" />
-
-            <EditText
-                android:id="@+id/editText_email_address"
-                style="@style/AppTheme.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={userProfileForm.emailAddress}"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/textError_email_address"
-                style="@style/AppTheme.Text.Error"
-                android:text="@{userProfileForm.errorEmailAddress}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{userProfileForm.errorEmailAddress != null ? View.VISIBLE : View.GONE}" />
-
-            <TextView
-                android:id="@+id/textStatic_confirm_email_address"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/editText_confirm_email_address"
-                android:text="@string/profile_confirm_email_address" />
-
-            <EditText
-                android:id="@+id/editText_confirm_email_address"
-                style="@style/AppTheme.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={userProfileForm.confirmEmailAddress}"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/textError_confirm_email_address"
-                style="@style/AppTheme.Text.Descriptor"
-                android:text="@{userProfileForm.errorConfirmEmailAddress}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/small_text"
-                android:visibility="@{userProfileForm.errorConfirmEmailAddress != null ? View.VISIBLE : View.GONE}" />
-
-            <Button
-                style="@style/AppTheme.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/standard_half_margin"
-                android:onClick="onClickUpdateDetails"
-                android:text="@string/button_update_details" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/standard_half_margin"
-                android:background="@color/colorPrimaryDark" />
-
-            <TextView
-                android:id="@+id/textStatic_photo_url"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/editText_photo_url"
-                android:text="@string/profile_photo_url" />
-
-            <EditText
-                android:id="@+id/editText_photo_url"
-                android:layout_width="match_parent"
-                style="@style/AppTheme.EditText"
-                android:text="@={userProfileForm.photoUrl}"
-                android:layout_height="wrap_content"
-                android:inputType="textUri" />
-
-            <TextView
-                android:id="@+id/textError_photo_url"
-                style="@style/AppTheme.Text.Error"
-                android:text="@{userProfileForm.errorPhotoUrl}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{userProfileForm.errorPhotoUrl != null ? View.VISIBLE : View.GONE}" />
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/container_photo_buttons"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView_user_name"
+                    style="@style/AppTheme.Text.Title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/imageView_profile_photo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:text="@{userProfileForm.userName, default=@string/placeholder_user_name}" />
+
+                <LinearLayout style="@style/SelectionGroupContainer">
+
+                    <TextView
+                        android:id="@+id/textStatic_display_name"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@id/editText_display_name"
+                        android:text="@string/profile_display_name" />
+
+                    <EditText
+                        android:id="@+id/editText_display_name"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textPersonName"
+                        android:text="@={userProfileForm.displayName}" />
+
+                    <TextView
+                        android:id="@+id/textError_display_name"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorDisplayName}"
+                        android:visibility="@{userProfileForm.errorDisplayName != null ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/textStatic_email_address"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_email_address"
+                        android:text="@string/profile_email_address" />
+
+                    <EditText
+                        android:id="@+id/editText_email_address"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textEmailAddress"
+                        android:text="@={userProfileForm.emailAddress}" />
+
+                    <TextView
+                        android:id="@+id/textError_email_address"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorEmailAddress}"
+                        android:visibility="@{userProfileForm.errorEmailAddress != null ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/textStatic_confirm_email_address"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_confirm_email_address"
+                        android:text="@string/profile_confirm_email_address" />
+
+                    <EditText
+                        android:id="@+id/editText_confirm_email_address"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textEmailAddress"
+                        android:text="@={userProfileForm.confirmEmailAddress}" />
+
+                    <TextView
+                        android:id="@+id/textError_confirm_email_address"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorConfirmEmailAddress}"
+                        android:visibility="@{userProfileForm.errorConfirmEmailAddress != null ? View.VISIBLE : View.GONE}" />
 
                     <Button
-                        android:id="@+id/button_update_photo"
                         style="@style/AppTheme.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:onClick="onClickUpdateProfilePhoto"
-                        android:text="@string/button_update_photo" />
-
-                    <Button
-                        android:id="@+id/button_delete_photo"
-                        style="@style/AppTheme.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:onClick="onClickDeleteProfilePhoto"
-                        android:text="@string/button_delete_photo" />
+                        android:onClick="onClickUpdateDetails"
+                        android:text="@string/button_update_details" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imageView_profile_photo"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/standard_margin"
-                    android:contentDescription="@string/profile_image"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/container_photo_buttons"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <include layout="@layout/divider_horizontal" />
 
-            </android.support.constraint.ConstraintLayout>
+                <LinearLayout style="@style/SelectionGroupContainer">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/standard_half_margin"
-                android:background="@color/colorPrimaryDark" />
+                    <TextView
+                        android:id="@+id/textStatic_photo_url"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_photo_url"
+                        android:text="@string/profile_photo_url" />
 
-            <TextView
-                android:id="@+id/textStatic_new_password"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/editText_new_password"
-                android:text="@string/profile_new_password" />
+                    <EditText
+                        android:id="@+id/editText_photo_url"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textUri"
+                        android:text="@={userProfileForm.photoUrl}" />
 
-            <EditText
-                android:id="@+id/editText_new_password"
-                android:layout_width="match_parent"
-                style="@style/AppTheme.EditText"
-                android:layout_height="wrap_content"
-                android:text="@={userProfileForm.password}"
-                android:inputType="textPassword" />
+                    <TextView
+                        android:id="@+id/textError_photo_url"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorPhotoUrl}"
+                        android:visibility="@{userProfileForm.errorPhotoUrl != null ? View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:id="@+id/textError_new_password"
-                style="@style/AppTheme.Text.Error"
-                android:text="@{userProfileForm.errorPassword}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{userProfileForm.errorPassword != null ? View.VISIBLE : View.GONE}" />
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textStatic_confirm_password"
-                style="@style/AppTheme.Text.Descriptor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/editText_confirm_password"
-                android:text="@string/profile_confirm_password" />
+                        <LinearLayout
+                            android:id="@+id/container_photo_buttons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/imageView_profile_photo"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/editText_confirm_password"
-                android:layout_width="match_parent"
-                style="@style/AppTheme.EditText"
-                android:layout_height="wrap_content"
-                android:text="@={userProfileForm.confirmPassword}"
-                android:inputType="textPassword" />
+                            <Button
+                                android:id="@+id/button_update_photo"
+                                style="@style/AppTheme.Button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:onClick="onClickUpdateProfilePhoto"
+                                android:text="@string/button_update_photo" />
 
-            <TextView
-                android:id="@+id/textError_confirm_password"
-                style="@style/AppTheme.Text.Error"
-                android:text="@{userProfileForm.errorConfirmPassword}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{userProfileForm.errorConfirmPassword != null ? View.VISIBLE : View.GONE}" />
+                            <Button
+                                android:id="@+id/button_delete_photo"
+                                style="@style/AppTheme.Button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:onClick="onClickDeleteProfilePhoto"
+                                android:text="@string/button_delete_photo" />
 
-            <Button
-                style="@style/AppTheme.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/standard_half_margin"
-                android:onClick="onClickUpdatePassword"
-                android:text="@string/button_update_password" />
+                        </LinearLayout>
 
-        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/imageView_profile_photo"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/standard_margin"
+                            android:contentDescription="@string/profile_image"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_placeholder_profile_photo"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/container_photo_buttons"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-    </ScrollView>
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+
+                <include layout="@layout/divider_horizontal" />
+
+                <LinearLayout style="@style/SelectionGroupContainer">
+
+                    <TextView
+                        android:id="@+id/textStatic_new_password"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_new_password"
+                        android:text="@string/profile_new_password" />
+
+                    <EditText
+                        android:id="@+id/editText_new_password"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textPassword"
+                        android:text="@={userProfileForm.password}" />
+
+                    <TextView
+                        android:id="@+id/textError_new_password"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorPassword}"
+                        android:visibility="@{userProfileForm.errorPassword != null ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/textStatic_confirm_password"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_confirm_password"
+                        android:text="@string/profile_confirm_password" />
+
+                    <EditText
+                        android:id="@+id/editText_confirm_password"
+                        style="@style/AppTheme.EditText"
+                        android:inputType="textPassword"
+                        android:text="@={userProfileForm.confirmPassword}" />
+
+                    <TextView
+                        android:id="@+id/textError_confirm_password"
+                        style="@style/AppTheme.Text.Error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{userProfileForm.errorConfirmPassword}"
+                        android:visibility="@{userProfileForm.errorConfirmPassword != null ? View.VISIBLE : View.GONE}" />
+
+                    <Button
+                        style="@style/AppTheme.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="onClickUpdatePassword"
+                        android:text="@string/button_update_password" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

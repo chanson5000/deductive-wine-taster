@@ -374,7 +374,7 @@
     <string name="no_data">No Data</string>
     <string name="app_conclusion">Our Conclusion</string>
     <string name="verify_email_request">Please check your e-mail to verify your account!</string>
-    <string name="button_history">HISTORY</string>
+    <string name="button_history">History</string>
     <string name="menu_account_profile">Profile</string>
     <string name="placeholder_user_name">User Name</string>
     <string name="profile_display_name">Display Name: </string>
@@ -382,14 +382,14 @@
     <string name="profile_email_address">Email Address: </string>
     <string name="profile_confirm_email_address">Confirm Email Address: </string>
     <string name="profile_image">Profile Image</string>
-    <string name="button_update_details">UPDATE DETAILS</string>
+    <string name="button_update_details">Update Details</string>
     <string name="profile_new_password">New Password: </string>
     <string name="profile_confirm_password">Confirm Password: </string>
-    <string name="button_update_password">UPDATE PASSWORD</string>
+    <string name="button_update_password">Update Password</string>
     <string name="auth_provider">Authentication Provider: </string>
     <string name="placeholder_provider">Provider</string>
-    <string name="button_delete_photo">DELETE PHOTO</string>
-    <string name="button_update_photo">UPDATE PHOTO</string>
+    <string name="button_delete_photo">Delete</string>
+    <string name="button_update_photo">Update</string>
     <string name="placeholder_wine_variety">Wine Variety</string>
     <string name="placeholder_user_conclusion">User Conclusion</string>
     <string name="placeholder_app_conclusion">App Conclusion</string>
@@ -409,4 +409,9 @@
     <string name="add_widget">Add widget</string>
     <string name="widget_red">Red</string>
     <string name="widget_white">White</string>
+
+    <string name="usage">Usage</string>
+    <string name="size">Size</string>
+    <string name="type">Type</string>
+
 </resources>

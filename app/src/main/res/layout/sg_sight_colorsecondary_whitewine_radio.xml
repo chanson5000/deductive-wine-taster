@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SelectionGroupContainer">
 
     <TextView
         style="@style/AppTheme.Text.Descriptor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/secondary_color" />
 
     <RadioGroup
-        style="@style/AppTheme.RadioGroup"
-        android:id="@+id/radio_group_colorsecondary_whitewine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        style="@style/AppTheme.SelectionGroup"
+        android:id="@+id/radio_group_colorsecondary_whitewine">
 
         <RadioButton
             android:id="@+id/radio_secondary_color_silver"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/silver" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_green"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/green" />
 
         <RadioButton
             android:id="@+id/radio_secondary_color_copper"
-            style="@style/AppTheme.RadioGroup.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
+            style="@style/AppTheme.SelectionGroup.RadioButton"
             android:text="@string/copper" />
     </RadioGroup>
-</merge>
+</LinearLayout>
