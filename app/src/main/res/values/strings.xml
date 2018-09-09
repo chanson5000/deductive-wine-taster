@@ -158,9 +158,9 @@
     <string name="acid">Acid</string>
     <string name="alcohol">Alcohol</string>
     <string name="low">Low</string>
-    <string name="med_minus">Med-</string>
-    <string name="med">Med</string>
-    <string name="med_plus">Med+</string>
+    <string name="med_minus">Medium Minus</string>
+    <string name="med">Medium</string>
+    <string name="med_plus">Medium Plus</string>
     <string name="high">High</string>
 
     <string name="body">Body</string>

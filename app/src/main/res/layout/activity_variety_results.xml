@@ -92,6 +92,7 @@
 
                     <TextView
                         android:id="@+id/textView_actual_wine"
+                        android:gravity="center"
                         style="@style/AppTheme.Text.Header"
                         android:text="@string/actual_wine" />
 
