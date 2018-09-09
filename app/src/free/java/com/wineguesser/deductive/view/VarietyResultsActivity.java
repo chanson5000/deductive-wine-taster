@@ -36,11 +36,11 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+    private static String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
+    private static String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
+    private static String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
+    private static String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
+    private static String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
     VarietyResultsViewModel inputForm;
     ConclusionInputErrorsViewModel inputErrors;
@@ -65,6 +65,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private FirebaseAuth.AuthStateListener mAuthListener;
     private InterstitialAd mInterstitialAd;
     private boolean mIsRedWine;
+    private boolean mAdDisplayed;
 
     private String mActualVariety;
     private String mActualCountry;
@@ -97,6 +98,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
+            mAdDisplayed = true;
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
             inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
             inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
@@ -139,9 +141,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        if (!mAdDisplayed) {
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     @Override
@@ -185,13 +189,15 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mInterstitialAd.show();
-            }
-        });
-
+        if (!mAdDisplayed) {
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mAdDisplayed = true;
+                    mInterstitialAd.show();
+                }
+            });
+        }
     }
 
     @Override
