@@ -236,9 +236,12 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
             ConclusionsRepository conclusionsRepository = new ConclusionsRepository();
             conclusionsRepository.saveConclusionRecord(uid, conclusionRecord);
+            conclusionRecord.setUserId(uid);
 
-            Intent intent = new Intent(this, HistoryActivity.class);
+            Intent intent = new Intent(this, HistoryRecordActivity.class);
+            intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
             startActivity(intent);
+            finish();
         } else {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
