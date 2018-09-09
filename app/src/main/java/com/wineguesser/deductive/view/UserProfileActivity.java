@@ -5,8 +5,10 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,6 +68,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         super.onCreate(savedInstanceState);
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);

@@ -4,7 +4,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +28,8 @@ public class HistoryRecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityHistoryRecordBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history_record);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
         historyRecord = ViewModelProviders.of(this)
                 .get(HistoryRecordViewModel.class);
