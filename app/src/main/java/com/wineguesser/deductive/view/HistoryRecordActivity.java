@@ -1,9 +1,11 @@
 package com.wineguesser.deductive.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,10 +23,12 @@ import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel;
 public class HistoryRecordActivity extends AppCompatActivity {
 
     private HistoryRecordViewModel historyRecord;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         ActivityHistoryRecordBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history_record);
         Toolbar myToolbar = findViewById(R.id.toolbar);
@@ -57,9 +61,23 @@ public class HistoryRecordActivity extends AppCompatActivity {
                 ConclusionsRepository repository = new ConclusionsRepository();
                 ConclusionRecord conclusionRecord = historyRecord.getConclusionRecord().getValue();
                 if (conclusionRecord != null) {
-                    repository.removeConclusionRecord(conclusionRecord);
-                    Toast.makeText(this, R.string.record_removed, Toast.LENGTH_SHORT).show();
-                    onBackPressed();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setCancelable(true);
+                    builder.setTitle("Delete Conclusion Record");
+                    builder.setMessage("Are you sure you want to delete this conclusion record?");
+                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                        repository.removeConclusionRecord(conclusionRecord);
+                        Toast.makeText(this, R.string.record_removed, Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    });
+
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                        Toast.makeText(mContext, "Cancelled record deletion.", Toast.LENGTH_SHORT).show();
+
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 return true;
             default:

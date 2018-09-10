@@ -1,10 +1,12 @@
 package com.wineguesser.deductive.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,10 +31,12 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
     private FirebaseUser mCurrentUser;
     private HistoryActivityViewModel historyActivity;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         ActivityHistoryBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history);
         Toolbar myToolbar = findViewById(R.id.toolbar);
@@ -79,10 +83,24 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         switch (item.getItemId()) {
             case R.id.clear_history:
                 if (mCurrentUser != null) {
-                    ConclusionsRepository repository = new ConclusionsRepository();
-                    repository.clearUserConclusions(mCurrentUser.getUid());
-                    Toast.makeText(this, getString(R.string.history_cleared),
-                            Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setCancelable(true);
+                    builder.setTitle("Clear History");
+                    builder.setMessage("Are you sure you want to clear your conclusion history?");
+                    builder.setPositiveButton("yes", (dialog, which) -> {
+                        ConclusionsRepository repository = new ConclusionsRepository();
+                        repository.clearUserConclusions(mCurrentUser.getUid());
+                        Toast.makeText(this, getString(R.string.history_cleared),
+                                Toast.LENGTH_SHORT).show();
+                    });
+
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                        Toast.makeText(mContext, "Cancelled clearing history.", Toast.LENGTH_SHORT).show();
+
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 return true;
             default:
