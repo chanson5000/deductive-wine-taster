@@ -9,7 +9,7 @@
             style="@style/AppTheme.SelectionGroup.Switch"
             android:text="@string/oak" />
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/group_nose_wood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
