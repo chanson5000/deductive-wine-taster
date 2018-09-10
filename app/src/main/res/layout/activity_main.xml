@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_title_margin"
-        android:text="@string/blind_taste"
+        android:text="@string/start_blind_tasting"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top_middle"
         app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"

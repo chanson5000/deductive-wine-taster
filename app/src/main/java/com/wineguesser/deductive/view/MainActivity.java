@@ -3,7 +3,6 @@ package com.wineguesser.deductive.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -140,14 +139,15 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
     private void setUserLoggedIn(FirebaseUser user) {
         mUserLoggedIn = true;
-
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        if (name == null) {
-            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
-        } else {
-            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
-        }
+        // TODO: Decide if you want to do anything with this.
+//          Comment this for now.
+//        String name = user.getDisplayName();
+//        String email = user.getEmail();
+//        if (name == null) {
+//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
+//        } else {
+//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
+//        }
         setMenuLoggedIn();
     }
 
