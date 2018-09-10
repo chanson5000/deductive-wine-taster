@@ -19,6 +19,8 @@
 
             <MultiAutoCompleteTextView
                 android:id="@+id/multiText_initial_varieties"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 style="@style/AppTheme.AutoText.Multi" />
 
         </LinearLayout>
@@ -90,6 +92,8 @@
 
             <MultiAutoCompleteTextView
                 android:id="@+id/multiText_initial_countries"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 style="@style/AppTheme.AutoText.Multi" />
 
         </LinearLayout>
