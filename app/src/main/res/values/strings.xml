@@ -361,11 +361,6 @@
         <item>@string/france</item>
     </string-array>
 
-
-    <!-- AdMob -->
-    <string name="app_add_id">ca-app-pub-6240294942266099~9194679928</string>
-    <string name="interstitial_ad_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
-
     <string name="log_in">Log In</string>
     <string name="welcome_tag">Welcome, %1$s</string>
     <string name="log_out">Log Out</string>
