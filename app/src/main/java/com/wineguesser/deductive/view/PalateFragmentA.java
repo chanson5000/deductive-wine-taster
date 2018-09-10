@@ -11,8 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
@@ -20,11 +21,9 @@ import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 import com.wineguesser.deductive.util.Helpers;
 
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class PalateFragmentA extends Fragment implements DeductionFormContract, DatabaseContract {
@@ -39,16 +38,8 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
     NestedScrollView mScrollViewPalateA;
 
     @SuppressWarnings("WeakerAccess")
-    @BindViews({R.id.radio_palate_wood_old, R.id.radio_palate_wood_new,
-            R.id.radio_palate_wood_large, R.id.radio_palate_wood_small,
-            R.id.radio_palate_wood_french, R.id.radio_palate_wood_american})
-    List<RadioButton> mRadioGroupsPalateWood;
-
-    private static final ButterKnife.Action<RadioButton> WOOD_ENABLE = (view, index) ->
-            view.setEnabled(true);
-
-    private static final ButterKnife.Action<RadioButton> WOOD_DISABLE = (view, index) ->
-            view.setEnabled(false);
+    @BindView(R.id.group_palate_wood)
+    LinearLayout mWoodGroup;
 
     public PalateFragmentA() {
     }
@@ -132,7 +123,7 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewPalateA.scrollTo(0, 0));
+                mScrollViewPalateA.fullScroll(ScrollView.FOCUS_UP));
     }
 
 
@@ -174,9 +165,11 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
 
     public void syncWoodRadioState() {
         if (getCheckBoxState(SWITCH_PALATE_WOOD)) {
-            ButterKnife.apply(mRadioGroupsPalateWood, WOOD_ENABLE);
+            mWoodGroup.setVisibility(View.VISIBLE);
+            AppExecutors.getInstance().mainThread().execute(() ->
+                    mScrollViewPalateA.fullScroll(ScrollView.FOCUS_DOWN));
         } else {
-            ButterKnife.apply(mRadioGroupsPalateWood, WOOD_DISABLE);
+            mWoodGroup.setVisibility(View.GONE);
         }
     }
 }

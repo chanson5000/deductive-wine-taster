@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,11 +37,11 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+    private static String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
+    private static String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
+    private static String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
+    private static String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
+    private static String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
     VarietyResultsViewModel inputForm;
     ConclusionInputErrorsViewModel inputErrors;
@@ -65,6 +66,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private FirebaseAuth.AuthStateListener mAuthListener;
     private InterstitialAd mInterstitialAd;
     private boolean mIsRedWine;
+    private boolean mAdDisplayed;
 
     private String mActualVariety;
     private String mActualCountry;
@@ -80,6 +82,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                 .setContentView(this, R.layout.activity_variety_results);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         // Initialize our view models.
         inputForm = ViewModelProviders.of(this)
                 .get(VarietyResultsViewModel.class);
@@ -97,6 +103,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
+            mAdDisplayed = true;
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
             inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
             inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
@@ -139,9 +146,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        if (!mAdDisplayed) {
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     @Override
@@ -185,13 +194,15 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mInterstitialAd.show();
-            }
-        });
-
+        if (!mAdDisplayed) {
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mAdDisplayed = true;
+                    mInterstitialAd.show();
+                }
+            });
+        }
     }
 
     @Override
@@ -230,9 +241,12 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
             ConclusionsRepository conclusionsRepository = new ConclusionsRepository();
             conclusionsRepository.saveConclusionRecord(uid, conclusionRecord);
+            conclusionRecord.setUserId(uid);
 
-            Intent intent = new Intent(this, HistoryActivity.class);
+            Intent intent = new Intent(this, HistoryRecordActivity.class);
+            intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
             startActivity(intent);
+            finish();
         } else {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
@@ -297,6 +311,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                     || actualVintageInteger < 1900) {
                 inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
                 isValid = false;
+            } else {
+                inputErrors.setErrorVintage(null);
             }
         }
 

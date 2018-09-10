@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Deductive Wine Taster</string>
     <string name="blind_taste">Blind Taste</string>
-    <string name="button_red_wine">RED WINE</string>
-    <string name="button_white_wine">WHITE WINE</string>
-    <string name="button_statistics">STATISTICS</string>
+    <string name="button_red_wine">Red Wine</string>
+    <string name="button_white_wine">White Wine</string>
+    <string name="button_statistics">Statistics</string>
     <string name="clear_form">Clear Form</string>
 
     <!-- Descriptors -->
@@ -158,9 +158,9 @@
     <string name="acid">Acid</string>
     <string name="alcohol">Alcohol</string>
     <string name="low">Low</string>
-    <string name="med_minus">Med-</string>
-    <string name="med">Med</string>
-    <string name="med_plus">Med+</string>
+    <string name="med_minus">Medium Minus</string>
+    <string name="med">Medium</string>
+    <string name="med_plus">Medium Plus</string>
     <string name="high">High</string>
 
     <string name="body">Body</string>
@@ -413,5 +413,8 @@
     <string name="usage">Usage</string>
     <string name="size">Size</string>
     <string name="type">Type</string>
+
+    <string name="start_blind_tasting">Start Blind Tasting!</string>
+    <string name="snack_log_in">Log in to view history.</string>
 
 </resources>

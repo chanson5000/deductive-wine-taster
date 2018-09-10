@@ -6,7 +6,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimaryBackground</item>
         <item name="cardViewStyle">@style/CardView</item>
+    </style>
+
+    <style name="WhiteTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimaryWhiteTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkWhiteTheme</item>
+        <item name="colorAccent">@color/colorPrimaryAccentWhiteTheme</item>
+        <item name="android:windowBackground">@color/colorBackgroundWhiteTheme</item>
+    </style>
+
+    <style name="RedTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimaryRedTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRedTheme</item>
+        <item name="colorAccent">@color/colorAccentRedTheme</item>
+        <item name="android:windowBackground">@color/colorBackgroundRedTheme</item>
+    </style>
+
+    <style name="RedPopupTheme">
+        <item name="titleTextColor">@color/colorPrimaryTextRedTheme</item>
+        <item name="android:colorControlNormal">@color/colorPrimaryTextRedTheme</item>
     </style>
 
     <style name="AppTheme.Text.Title" parent="TextAppearance.AppCompat.Title">
@@ -18,7 +38,7 @@
     <style name="AppTheme.Text.Error" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/x_small_text</item>
+        <item name="android:textSize">@dimen/small_text</item>
         <item name="android:layout_marginStart">@dimen/standard_margin</item>
         <item name="android:textColor">@color/errorRed</item>
     </style>
@@ -27,7 +47,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:colorButtonNormal">@color/black</item>
+        <item name="android:textSize">@dimen/large_text</item>
     </style>
 
     <style name="AppTheme.SelectionGroup.RadioButton">
@@ -52,18 +73,21 @@
 
     <style name="AppTheme.SelectionGroup.Switch">
         <item name="android:padding">@dimen/standard_margin</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:onClick">onSwitchToggleClicked</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:switchPadding">24dp</item>
+        <!--<item name="android:gravity">left</item>-->
         <item name="android:focusable">true</item>
     </style>
 
     <style name="SelectionGroupContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/standard_margin</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">@dimen/standard_margin</item>
+        <item name="android:layout_marginBottom">@dimen/standard_margin</item>
         <item name="android:orientation">vertical</item>
     </style>
 
@@ -72,19 +96,20 @@
     </style>
 
     <style name="AppTheme.Text.Descriptor" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/black</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:textSize">@dimen/medium_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.Text">
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.Text.Item">
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -93,19 +118,19 @@
     <style name="AppTheme.Text.Header">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:textSize">@dimen/x_large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.EditText">
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/large_text</item>
         <item name="android:focusable">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="AppTheme.AutoText">
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/large_text</item>
         <item name="android:focusable">true</item>
     </style>
 
@@ -119,8 +144,8 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Button" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">@dimen/small_text</item>
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textSize">@dimen/medium_text</item>
         <item name="android:layout_margin">@dimen/standard_margin</item>
     </style>
 
@@ -134,14 +159,14 @@
 
     <style name="AppTheme.CardView.Text.Title" parent="TextAppearance.AppCompat.Title">
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:textSize">@dimen/xx_large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.CardView.Text.Subhead" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/darkGrey</item>
-        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:textSize">@dimen/medium_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
@@ -155,13 +180,13 @@
 
     <style name="AppTheme.RecordView.Text.Subhead">
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textSize">@dimen/large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 
     <style name="AppTheme.RecordView.Text.Head">
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/x_large_text</item>
+        <item name="android:textSize">@dimen/xx_large_text</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 

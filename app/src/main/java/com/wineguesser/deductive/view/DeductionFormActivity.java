@@ -71,6 +71,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
+            setTheme(R.style.RedTheme);
+
             setContentView(R.layout.activity_red_deduction_form);
 
             editor.putString(IS_RED_WINE, RED_WINE);
@@ -82,6 +84,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         } else {
+            setTheme(R.style.WhiteTheme);
+
             setContentView(R.layout.activity_white_deduction_form);
 
             editor.putString(IS_RED_WINE, WHITE_WINE);
@@ -198,6 +202,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return mPager.getCurrentItem();
     }
 
+    // Make the built in back press work with the view pager while the
+    // Toolbar back press will take you to the parent activity.
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -208,7 +214,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     // When shared preferences are changed, the view is also updated. This is most useful when
-    // clearing preferences.
+    // clearing preferences
     private void registerPreferencesListener() {
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
@@ -518,6 +524,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mFinalFragment.errorsFinalForm()
                     .setErrorVintage(getString(R.string.error_input_valid_vintage));
             isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorVintage(null);
         }
 
         return isValid;
@@ -594,6 +602,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         isScoring(false);
         // We can now launch the activity that will show results to the user.
         startActivity(intent);
+        finish();
     }
 
     public void isScoring(Boolean loading) {

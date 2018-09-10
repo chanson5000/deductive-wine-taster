@@ -2,10 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/SelectionGroupContainer">
 
-    <TextView
-        style="@style/AppTheme.Text.Descriptor"
-        android:text="@string/wood" />
-
     <LinearLayout style="@style/AppTheme.SelectionGroup">
 
         <Switch
@@ -13,10 +9,9 @@
             style="@style/AppTheme.SelectionGroup.Switch"
             android:text="@string/oak" />
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/group_nose_wood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:orientation="vertical">
 
             <TextView

@@ -3,7 +3,7 @@ package com.wineguesser.deductive.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -140,20 +140,21 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
 
     private void setUserLoggedIn(FirebaseUser user) {
         mUserLoggedIn = true;
-
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        if (name == null) {
-            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
-        } else {
-            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
-        }
+        // TODO: Decide if you want to do anything with this.
+//          Comment this for now.
+//        String name = user.getDisplayName();
+//        String email = user.getEmail();
+//        if (name == null) {
+//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
+//        } else {
+//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
+//        }
         setMenuLoggedIn();
     }
 
     private void setUserLoggedOut() {
         mUserLoggedIn = false;
-        mTextViewBlindTaste.setText(R.string.log_in);
+//        mTextViewBlindTaste.setText(R.string.log_in);
         setMenuLoggedOut();
     }
 
@@ -180,9 +181,23 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         }
     }
 
+    public class SnackLogInListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            startLoginUI();
+        }
+    }
+
     public void onHistoryButtonClicked(View view) {
-        Intent intent = new Intent(mContext, HistoryActivity.class);
-        startActivity(intent);
+        if (mUserLoggedIn) {
+            Intent intent = new Intent(mContext, HistoryActivity.class);
+            startActivity(intent);
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_main),
+                    R.string.snack_log_in, Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.log_in, new SnackLogInListener());
+            snackbar.show();
+        }
     }
 
     private void signOutCurrentFirebaseUser() {
