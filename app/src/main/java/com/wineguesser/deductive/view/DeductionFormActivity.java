@@ -66,11 +66,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mContext = this;
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
+
+
         Intent parentIntent = getIntent();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
+            setTheme(R.style.RedTheme);
+
             setContentView(R.layout.activity_red_deduction_form);
 
             editor.putString(IS_RED_WINE, RED_WINE);
@@ -82,6 +86,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         } else {
+            setTheme(R.style.WhiteTheme);
+
             setContentView(R.layout.activity_white_deduction_form);
 
             editor.putString(IS_RED_WINE, WHITE_WINE);

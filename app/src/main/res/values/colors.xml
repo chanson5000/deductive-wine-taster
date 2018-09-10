@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="greyTransparent">#80D3D3D3</color>
+    <color name="colorPrimary">#f8bbd0</color>
+    <color name="colorPrimaryDark">#c48b9f</color>
+    <color name="colorPrimaryLight">#ffeeff</color>
+    <color name="colorAccent">#9c27b0</color>
+    <color name="colorPrimaryText">#000000</color>
+    <color name="colorPrimaryBackground">#f5f5f5</color>
+
+    <color name="colorPrimaryRedTheme">#ad1457</color>
+    <color name="colorPrimaryDarkRedTheme">#78002e</color>
+    <color name="colorPrimaryLightRedTheme">#e35183</color>
+    <color name="colorAccentRedTheme">#9c27b0</color>
+    <color name="colorPrimaryTextRedTheme">#ffffff</color>
+    <color name="colorBackgroundRedTheme">#f5f5f5</color>
+
+    <color name="colorPrimaryWhiteTheme">#ffecb3</color>
+    <color name="colorPrimaryDarkWhiteTheme">#cbba83</color>
+    <color name="colorPrimaryLightWhiteTheme">#ffffe5</color>
+    <color name="colorPrimaryAccentWhiteTheme">#9c27b0</color>
+    <color name="colorPrimaryTextWhiteTheme">#000000</color>
+    <color name="colorBackgroundWhiteTheme">#f5f5f5</color>
+
+
+    <color name="greyTransparent">#d6636363</color>
     <color name="darkGrey">#757575</color>
     <color name="errorRed">#d50000</color>
     <color name="black">#000000</color>
