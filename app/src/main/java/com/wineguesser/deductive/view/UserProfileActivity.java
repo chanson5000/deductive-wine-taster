@@ -70,6 +70,10 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 this, R.layout.activity_user_profile);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);
