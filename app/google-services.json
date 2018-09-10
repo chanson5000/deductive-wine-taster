@@ -39,9 +39,71 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:611411436297:android:69d9ed2ceb8bccba",
+        "android_client_info": {
+          "package_name": "com.wineguesser.deductive.free.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzQL6g_QIuAVZrvH2Uvd0CDrHYAKjIF0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:611411436297:android:ea538af7af923ce2",
         "android_client_info": {
           "package_name": "com.wineguesser.deductive.paid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611411436297-a7pn1gp0a7rlsru54qi7kj3a42jmgue3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzQL6g_QIuAVZrvH2Uvd0CDrHYAKjIF0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611411436297:android:58a5560852cbe3c9",
+        "android_client_info": {
+          "package_name": "com.wineguesser.deductive.paid.debug"
         }
       },
       "oauth_client": [
