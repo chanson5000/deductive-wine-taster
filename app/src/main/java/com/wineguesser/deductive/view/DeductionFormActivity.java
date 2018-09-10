@@ -66,8 +66,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mContext = this;
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
-
-
         Intent parentIntent = getIntent();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
