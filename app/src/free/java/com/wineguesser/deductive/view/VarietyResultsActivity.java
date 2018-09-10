@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wineguesser.deductive.BuildConfig;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
@@ -148,7 +149,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         if (!mAdDisplayed) {
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+            mInterstitialAd.setAdUnitId(BuildConfig.InterstitialAdKey);
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
     }
