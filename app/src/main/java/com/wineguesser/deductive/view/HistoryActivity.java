@@ -41,6 +41,10 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
                 this, R.layout.activity_history);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         historyActivity = ViewModelProviders.of(this)
                 .get(HistoryActivityViewModel.class);
