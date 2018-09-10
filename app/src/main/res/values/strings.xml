@@ -415,5 +415,6 @@
     <string name="type">Type</string>
 
     <string name="start_blind_tasting">Start Blind Tasting!</string>
+    <string name="snack_log_in">Log in to view history.</string>
 
 </resources>

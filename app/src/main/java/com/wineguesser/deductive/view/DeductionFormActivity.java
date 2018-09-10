@@ -524,6 +524,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mFinalFragment.errorsFinalForm()
                     .setErrorVintage(getString(R.string.error_input_valid_vintage));
             isValid = false;
+        } else {
+            mFinalFragment.errorsFinalForm().setErrorVintage(null);
         }
 
         return isValid;

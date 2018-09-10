@@ -306,6 +306,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
                     || actualVintageInteger < 1900) {
                 inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
                 isValid = false;
+            } else {
+                inputErrors.setErrorVintage(null);
             }
         }
 
