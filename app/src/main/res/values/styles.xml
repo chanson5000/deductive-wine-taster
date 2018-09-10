@@ -144,7 +144,7 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Button" parent="TextAppearance.AppCompat.Button">
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textSize">@dimen/medium_text</item>
         <item name="android:layout_margin">@dimen/standard_margin</item>
     </style>
