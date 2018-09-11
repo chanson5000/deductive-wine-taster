@@ -30,10 +30,12 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
+import com.wineguesser.deductive.util.Helpers;
 
 import java.util.Calendar;
 import java.util.Map;
 
+// TODO: Make this activity better.
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
         DatabaseContract, GrapeResult {
 
@@ -45,6 +47,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     private Context mContext;
     private SightFragment mSightFragment;
@@ -71,8 +74,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
-            setTheme(R.style.RedTheme);
-
             setContentView(R.layout.activity_red_deduction_form);
 
             editor.putString(IS_RED_WINE, RED_WINE);
@@ -84,8 +85,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         } else {
-            setTheme(R.style.WhiteTheme);
-
             setContentView(R.layout.activity_white_deduction_form);
 
             editor.putString(IS_RED_WINE, WHITE_WINE);
@@ -111,7 +110,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onStart() {
         super.onStart();
 
-        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -126,13 +125,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         };
 
-        mPager.addOnPageChangeListener(onPageChangeListener);
+        mPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
+        mPager.removeOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
@@ -219,7 +218,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
 
-            View view = findViewById(castKey(key));
+            View view = findViewById(Helpers.castKey(key));
 
             if (view != null) {
                 if (view instanceof RadioGroup) {
@@ -227,10 +226,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                             sharedPreferences.getInt(key, NONE_SELECTED));
                 } else if (view instanceof CheckBox) {
                     ((CheckBox) view).setChecked(
-                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
                     ((Switch) view).setChecked(
-                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof MultiAutoCompleteTextView) {
                     ((MultiAutoCompleteTextView) view).setText(
                             sharedPreferences.getString(key, ""));
@@ -250,7 +249,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         Map<String, ?> allEntries = mWinePreferences.getAll();
         SharedPreferences.Editor winePreferencesEditor = mWinePreferences.edit();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int key = castKey(entry.getKey());
+            int key = Helpers.castKey(entry.getKey());
             if (AllRadioGroups.contains(key)) {
                 winePreferencesEditor.putInt(entry.getKey(), NONE_SELECTED);
             } else if (AllCheckBoxes.contains(key)) {
@@ -272,6 +271,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         }
         winePreferencesEditor.apply();
+
         SharedPreferences.Editor activityPreferencesEditor = mActivityPreferences.edit();
         if (mIsRedWine) {
             activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0);
@@ -288,11 +288,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
             activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
         }
-
         activityPreferencesEditor.apply();
-
-        activityPreferencesEditor.commit();
-
     }
 
     private void saveRadioGroupState(int key, int state) {
@@ -307,37 +303,25 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         editor.apply();
     }
 
-    private int castKey(String key) {
-        return Integer.parseInt(key);
-    }
-
-    private boolean castChecked(int checkedInt) {
-        return checkedInt == CHECKED;
-    }
-
-    private int castChecked(boolean checkedBoolean) {
-        if (checkedBoolean) {
-            return CHECKED;
-        } else {
-            return NOT_CHECKED;
-        }
-    }
-
+    // These click listeners are actually used.
+    @SuppressWarnings("unused")
     public void onRadioButtonClicked(View view) {
         RadioGroup radioGroup = (RadioGroup) view.getParent();
         saveRadioGroupState(radioGroup.getId(), radioGroup.getCheckedRadioButtonId());
     }
 
+    @SuppressWarnings("unused")
     public void onCheckBoxButtonClicked(View view) {
         CheckBox checkBox = (CheckBox) view;
-        saveCheckBoxState(checkBox.getId(), castChecked(checkBox.isChecked()));
+        saveCheckBoxState(checkBox.getId(), Helpers.castChecked(checkBox.isChecked()));
     }
 
+    @SuppressWarnings("unused")
     public void onSwitchToggleClicked(View view) {
         Switch switchToggle = (Switch) view;
         int switchId = switchToggle.getId();
         boolean checked = switchToggle.isChecked();
-        saveCheckBoxState(switchId, castChecked(checked));
+        saveCheckBoxState(switchId, Helpers.castChecked(checked));
         if (switchId == SWITCH_NOSE_WOOD) {
             mNoseFragment.syncWoodRadioState();
         } else if (switchId == SWITCH_PALATE_WOOD) {
@@ -348,23 +332,18 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private void resetAllTopScroll() {
         if (mSightFragment != null) {
             mSightFragment.scrollToTop();
-
         }
         if (mNoseFragment != null) {
             mNoseFragment.scrollToTop();
-
         }
         if (mPalateFragmentA != null) {
             mPalateFragmentA.scrollToTop();
-
         }
         if (mPalateFragmentB != null) {
             mPalateFragmentB.scrollToTop();
-
         }
         if (mInitialFragment != null) {
             mInitialFragment.scrollToTop();
-
         }
         if (mFinalFragment != null) {
             mFinalFragment.scrollToTop();
@@ -374,22 +353,22 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private void syncCurrentTitle() {
         switch (mPager.getCurrentItem()) {
             case SIGHT_PAGE:
-                setTitle(SIGHT_PAGE_TITLE);
+                setTitle(R.string.sight_page_title);
                 break;
             case NOSE_PAGE:
-                setTitle(NOSE_PAGE_TITLE);
+                setTitle(R.string.nose_page_title);
                 break;
             case PALATE_PAGE_A:
-                setTitle(PALATE_PAGE_TITLE);
+                setTitle(R.string.palate_page_title);
                 break;
             case PALATE_PAGE_B:
-                setTitle(PALATE_PAGE_TITLE);
+                setTitle(R.string.palate_page_title);
                 break;
             case INITIAL_CONCLUSION_PAGE:
-                setTitle(INITIAL_CONCLUSION_PAGE_TITLE);
+                setTitle(R.string.initial_conclusion_page_title);
                 break;
             case FINAL_CONCLUSION_PAGE:
-                setTitle(FINAL_CONCLUSION_PAGE_TITLE);
+                setTitle(R.string.final_conclusion_page_title);
                 break;
             default:
                 break;
@@ -543,7 +522,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         // *** Combing through our form input keys and parsing for relevance. ***
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Integer wineFormKey = castKey(entry.getKey());
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
             // Radio groups and check boxes will be handled slightly differently because
             // a radio group will return either an Id that will be included in our map or
             // return -1 (for none selected) and result in no map put.
@@ -568,6 +547,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return wineFormSelections;
     }
 
+    @SuppressWarnings("unused")
     public void onSubmitFinalConclusion(View view) {
         // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
         if (!validInputs()) {

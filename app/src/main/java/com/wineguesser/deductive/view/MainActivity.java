@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
 import com.firebase.ui.auth.AuthUI;
@@ -17,25 +16,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class MainActivity extends AppCompatActivity implements
+        DeductionFormContract, DatabaseContract {
 
-public class MainActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract {
-
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private Context mContext;
     private boolean mUserLoggedIn;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_blind_taste)
-    TextView mTextViewBlindTaste;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private MenuItem mMenuAuthToggle;
     private MenuItem mMenuProfile;
@@ -44,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        ButterKnife.bind(this);
+
         mAuth = FirebaseAuth.getInstance();
         mContext = this;
     }
@@ -54,17 +46,13 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     @Override
     public void onStart() {
         super.onStart();
-
         // Set a listener for authentications so we may set states.
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
-
             if (user != null) {
-                setUserLoggedIn(user);
-                UserRepository userRepository = new UserRepository();
-                userRepository.checkEmailVerification(user);
+                setUserLoggedIn(true);
             } else {
-                setUserLoggedOut();
+                setUserLoggedIn(false);
             }
         };
 
@@ -74,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
     @Override
     public void onStop() {
         super.onStop();
-
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
@@ -85,23 +72,19 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         mMenuAuthToggle = menu.findItem(R.id.auth_toggle);
         mMenuProfile = menu.findItem(R.id.profile_settings);
         if (mUserLoggedIn) {
-            setMenuLoggedIn();
+            setMenuLoggedIn(true);
         } else {
-            setMenuLoggedOut();
+            setMenuLoggedIn(false);
         }
         return true;
     }
 
-    private void setMenuLoggedIn() {
-        if (mMenuAuthToggle != null) {
+    private void setMenuLoggedIn(boolean loggedIn) {
+        if (loggedIn && mMenuAuthToggle != null) {
             mMenuAuthToggle.setTitle(R.string.log_out);
             mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             mMenuProfile.setVisible(true);
-        }
-    }
-
-    private void setMenuLoggedOut() {
-        if (mMenuAuthToggle != null) {
+        } else if (!loggedIn && mMenuAuthToggle != null) {
             mMenuAuthToggle.setTitle(R.string.log_in);
             mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             mMenuProfile.setVisible(false);
@@ -138,24 +121,14 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         startActivity(intent);
     }
 
-    private void setUserLoggedIn(FirebaseUser user) {
-        mUserLoggedIn = true;
-        // TODO: Decide if you want to do anything with this.
-//          Comment this for now.
-//        String name = user.getDisplayName();
-//        String email = user.getEmail();
-//        if (name == null) {
-//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, email));
-//        } else {
-//            mTextViewBlindTaste.setText(getString(R.string.welcome_tag, name));
-//        }
-        setMenuLoggedIn();
-    }
-
-    private void setUserLoggedOut() {
-        mUserLoggedIn = false;
-//        mTextViewBlindTaste.setText(R.string.log_in);
-        setMenuLoggedOut();
+    private void setUserLoggedIn(boolean loggedIn) {
+        if (loggedIn) {
+            mUserLoggedIn = true;
+            setMenuLoggedIn(true);
+        } else {
+            mUserLoggedIn = false;
+            setMenuLoggedIn(false);
+        }
     }
 
     private void startLoginUI() {
@@ -181,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         }
     }
 
-    public class SnackLogInListener implements View.OnClickListener {
+    public class SnackbarLogInListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             startLoginUI();
@@ -195,13 +168,13 @@ public class MainActivity extends AppCompatActivity implements DeductionFormCont
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_main),
                     R.string.snack_log_in, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.log_in, new SnackLogInListener());
+            snackbar.setAction(R.string.log_in, new SnackbarLogInListener());
             snackbar.show();
         }
     }
 
     private void signOutCurrentFirebaseUser() {
         AuthUI.getInstance().signOut(mContext).addOnCompleteListener(task ->
-                setUserLoggedOut());
+                setUserLoggedIn(false));
     }
 }

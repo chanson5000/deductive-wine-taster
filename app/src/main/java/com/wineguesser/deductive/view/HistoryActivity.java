@@ -89,19 +89,18 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
                 if (mCurrentUser != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setCancelable(true);
-                    builder.setTitle("Clear History");
-                    builder.setMessage("Are you sure you want to clear your conclusion history?");
-                    builder.setPositiveButton("yes", (dialog, which) -> {
+                    builder.setTitle(R.string.dialog_clear_history);
+                    builder.setMessage(R.string.dialog_clear_history_ask);
+                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         ConclusionsRepository repository = new ConclusionsRepository();
                         repository.clearUserConclusions(mCurrentUser.getUid());
-                        Toast.makeText(this, getString(R.string.history_cleared),
+                        Toast.makeText(mContext, R.string.history_cleared,
                                 Toast.LENGTH_SHORT).show();
                     });
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                        Toast.makeText(mContext, "Cancelled clearing history.", Toast.LENGTH_SHORT).show();
-
-                    });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                            Toast.makeText(mContext, R.string.cancel_history_clear,
+                            Toast.LENGTH_SHORT).show());
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
