@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void buttonRedWine(View view) {
         Intent intent = new Intent(mContext, DeductionFormActivity.class);
-        intent.putExtra(IS_RED_WINE, RED_WINE);
+        intent.putExtra(IS_RED_WINE, TRUE);
         startActivity(intent);
     }
 

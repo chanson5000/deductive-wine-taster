@@ -68,18 +68,18 @@ public class HistoryRecordActivity extends AppCompatActivity {
                 if (conclusionRecord != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setCancelable(true);
-                    builder.setTitle("Delete Conclusion Record");
-                    builder.setMessage("Are you sure you want to delete this conclusion record?");
-                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                    builder.setTitle(R.string.up_dialog_delete_conclusion_record);
+                    builder.setMessage(R.string.up_dialog_confirm_delete_record);
+                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         repository.removeConclusionRecord(conclusionRecord);
-                        Toast.makeText(this, R.string.record_removed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.record_removed,
+                                Toast.LENGTH_SHORT).show();
                         onBackPressed();
                     });
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                        Toast.makeText(mContext, "Cancelled record deletion.", Toast.LENGTH_SHORT).show();
-
-                    });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                            Toast.makeText(mContext, R.string.up_dialog_cancel_record_deletion,
+                            Toast.LENGTH_SHORT).show());
 
                     AlertDialog dialog = builder.create();
                     dialog.show();

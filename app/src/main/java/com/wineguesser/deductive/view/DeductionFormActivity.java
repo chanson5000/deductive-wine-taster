@@ -76,7 +76,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
-            editor.putString(IS_RED_WINE, RED_WINE);
+            editor.putBoolean(IS_RED_WINE, TRUE);
             mIsRedWine = true;
 
             mWinePreferences =
@@ -87,7 +87,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         } else {
             setContentView(R.layout.activity_white_deduction_form);
 
-            editor.putString(IS_RED_WINE, WHITE_WINE);
+            editor.putBoolean(IS_RED_WINE, FALSE);
             mIsRedWine = false;
 
             mWinePreferences =
@@ -569,7 +569,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         Intent intent = new Intent(mContext, VarietyResultsActivity.class);
         if (mIsRedWine) {
-            intent.putExtra(IS_RED_WINE, true);
+            intent.putExtra(IS_RED_WINE, TRUE);
         }
         // We put our guess into the intent to be launched.
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);

@@ -55,7 +55,8 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        ConclusionItemAdapter conclusionAdapter = new ConclusionItemAdapter(this, this);
+        ConclusionItemAdapter conclusionAdapter =
+                new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();

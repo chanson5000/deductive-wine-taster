@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
@@ -81,17 +82,11 @@ public class FinalConclusionFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mActivityPreferences =
-                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
-            mIsRedWine = true;
-        }
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
         String wineColorPreferenceType;
-
-        if (mIsRedWine) {
+        if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
+            mIsRedWine = true;
             wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
         } else {
             wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
@@ -120,15 +115,6 @@ public class FinalConclusionFragment extends Fragment implements
         ButterKnife.bind(this, rootView);
 
         setAutoTextVarietyByType(mIsRedWine);
-
-        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
-        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
-
-        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries));
-
-        mAutoTextRegion.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, regions));
 
         return rootView;
     }
@@ -185,7 +171,7 @@ public class FinalConclusionFragment extends Fragment implements
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewFinal.scrollTo(0, 0));
+                mScrollViewFinal.fullScroll(ScrollView.FOCUS_UP));
     }
 
     private void saveSelectionState() {
@@ -226,6 +212,15 @@ public class FinalConclusionFragment extends Fragment implements
 
         mAutoTextVariety.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
+
+        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
+        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
+
+        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries));
+
+        mAutoTextRegion.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, regions));
     }
 
     public void showLoadingIndicator() {

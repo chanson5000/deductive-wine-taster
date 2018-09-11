@@ -29,8 +29,6 @@ import com.wineguesser.deductive.viewmodel.UserProfileViewModel;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class UserProfileActivity extends AppCompatActivity implements DatabaseContract {
@@ -54,12 +52,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private String mNewPassword;
     private String mNewConfirmPassword;
 
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.imageView_profile_photo)
-    ImageView mImageProfilePhoto;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.button_delete_photo)
-    Button mButtonDeletePhoto;
+    private ImageView mImageProfilePhoto;
+    private Button mButtonDeletePhoto;
 
     private UserProfileViewModel userProfileModel;
 
@@ -68,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         super.onCreate(savedInstanceState);
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -78,10 +73,10 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);
         binding.setLifecycleOwner(this);
-
         binding.setUserProfileForm(userProfileModel);
 
-        ButterKnife.bind(this);
+        mImageProfilePhoto = findViewById(R.id.imageView_profile_photo);
+        mButtonDeletePhoto = findViewById(R.id.button_delete_photo);
 
         if (savedInstanceState != null) {
             mNewTextDisplayName = savedInstanceState.getString(NEW_DISPLAY_NAME);
@@ -218,7 +213,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
                         @Override
                         public void onError(Exception e) {
-                            Timber.d("Error loading profile image.");
+                            Timber.e("Error loading profile image.");
+                            mButtonDeletePhoto.setVisibility(View.GONE);
                         }
                     });
         } else {
@@ -267,7 +263,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (user != null) {
             if (newDisplayName != null && !newDisplayName.equals(user.getDisplayName())) {
                 if (newDisplayName.isEmpty()) {
-                    errorDisplayName = "Display Name field must not be empty.";
+                    errorDisplayName = getString(R.string.up_error_display_name_field_empty);
                 } else {
                     errorDisplayName = null;
                     updateDisplayName = true;
@@ -276,11 +272,11 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
             if (newEmailAddress != null && !newEmailAddress.equals(user.getEmail())) {
                 if (newEmailAddress.isEmpty()) {
-                    errorEmailAddress = "Email address field must not be empty.";
+                    errorEmailAddress = getString(R.string.up_error_email_field_empty);
                 } else if (newConfirmEmailAddress != null && newConfirmEmailAddress.isEmpty()) {
-                    errorConfirmEmailAddress = "Confirm Email address field must not be empty.";
+                    errorConfirmEmailAddress = getString(R.string.up_error_confirm_email_field_empty);
                 } else if (!newEmailAddress.equals(newConfirmEmailAddress)) {
-                    errorEmailAddress = "Email address fields must match.";
+                    errorEmailAddress = getString(R.string.up_error_email_fields_must_match);
                 } else {
                     errorEmailAddress = null;
                     errorConfirmEmailAddress = null;
@@ -298,8 +294,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         userProfileModel.setUserName(newDisplayName);
                         userProfileModel.setDisplayName(newDisplayName);
                         resetErrorDisplayName();
-                        Toast.makeText(mContext,
-                                "Updated display name.",
+                        Toast.makeText(mContext, R.string.up_toast_updated_display_name,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -314,10 +309,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user email address.");
                         userProfileModel.setEmailAddress(newEmailAddress);
-                        userProfileModel.setConfirmEmailAddress("");
+                        userProfileModel.setConfirmEmailAddress(null);
                         resetAllErrorEmailAddress();
-                        Toast.makeText(mContext,
-                                "Updated email address.",
+                        Toast.makeText(mContext, R.string.up_toast_updated_email,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -349,7 +343,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
                 if (newPhotoUrl != null && !newPhotoUrl.equals(oldPhotoUrl)) {
                     if (newPhotoUrl.isEmpty()) {
-                        errorPhotoUrl = "Photo URL field must not be empty.";
+                        errorPhotoUrl = getString(R.string.up_error_photo_url);
                     } else {
                         errorPhotoUrl = null;
                         updatePhotoUrl = true;
@@ -372,8 +366,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         showProfilePhoto(newPhotoUri);
                         userProfileModel.setPhotoUrl(newPhotoUrl);
                         resetErrorPhotoUrl();
-                        Toast.makeText(mContext,
-                                "Update photo URL.",
+                        Toast.makeText(mContext, R.string.up_toast_updated_photo_url,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -382,7 +375,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             } else {
                 resetErrorPhotoUrl();
             }
-
         } else {
             startLoginUI();
         }
@@ -394,25 +386,26 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (user != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setCancelable(true);
-            builder.setTitle("Remove Profile Photo");
-            builder.setMessage("Are you sure you want to remove your profile photo?");
-            builder.setPositiveButton("Yes", (dialog, which) -> {
+            builder.setTitle(R.string.up_dialog_remove_photo);
+            builder.setMessage(R.string.up_dialog_confirm_remove_photo);
+            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(null).build();
 
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully removed user photo URI.");
-                        Toast.makeText(mContext, "Removed profile photo.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.up_toast_removed_photo,
+                                Toast.LENGTH_SHORT).show();
                         resetErrorPhotoUrl();
                         showProfilePhoto(null);
                     }
                 });
             });
 
-            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-
-            });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                    Toast.makeText(mContext, R.string.up_toast_canceled_remove_photo,
+                    Toast.LENGTH_SHORT).show());
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -434,9 +427,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (user != null) {
             if (newPassword != null && !newPassword.isEmpty()) {
                 if (newConfirmPassword != null && newConfirmPassword.isEmpty()) {
-                    errorPassword = "Confirm password field must not be empty.";
+                    errorPassword = getString(R.string.up_error_password_empty);
                 } else if (!newPassword.equals(newConfirmPassword)) {
-                    errorConfirmPassword = "Passwords must match.";
+                    errorConfirmPassword = getString(R.string.up_error_passwords_must_match);
                 } else {
                     updatePassword = true;
                 }
@@ -448,8 +441,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         Timber.d("Successfully updated user password.");
                         resetAllPasswordFields();
                         resetAllErrorPassword();
-                        Toast.makeText(mContext,
-                                "Updated password.",
+                        Toast.makeText(mContext, R.string.up_toast_updated_password,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -11,8 +11,8 @@ public interface DeductionFormContract {
 
     String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
     String IS_RED_WINE = "IS_RED_WINE";
-    String RED_WINE = "RED_WINE";
-    String WHITE_WINE = "WHITE_WINE";
+    Boolean TRUE = true;
+    Boolean FALSE = false;
     String USER_CONCLUSION_VARIETY = "USER_CONCLUSION_VARIETY";
     String USER_CONCLUSION_COUNTRY = "USER_CONCLUSION_COUNTRY";
     String USER_CONCLUSION_REGION = "USER_CONCLUSION_REGION";
