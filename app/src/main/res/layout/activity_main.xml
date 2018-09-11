@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.MainActivity">
+        android:layout_height="match_parent">
 
         <include
             layout="@layout/toolbar_default"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_title_margin"
             android:text="@string/start_blind_tasting"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_top_middle"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
             app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -36,10 +36,10 @@
             android:layout_height="wrap_content"
             android:onClick="buttonRedWine"
             android:text="@string/button_red_wine"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_white_wine"
             app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_top_middle" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <Button
             android:id="@+id/button_white_wine"
@@ -48,10 +48,10 @@
             android:layout_height="wrap_content"
             android:onClick="buttonWhiteWine"
             android:text="@string/button_white_wine"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
             app:layout_constraintStart_toEndOf="@id/button_red_wine"
-            app:layout_constraintTop_toTopOf="@+id/guideline_top_middle" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <Button
             android:id="@+id/button_history"
@@ -60,10 +60,10 @@
             android:layout_height="wrap_content"
             android:onClick="onHistoryButtonClicked"
             android:text="@string/button_history"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_margin_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline_margin_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
-            app:layout_constraintTop_toTopOf="@+id/guideline_bottom_middle" />
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_center" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline_margin_top"
