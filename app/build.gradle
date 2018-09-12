@@ -1,6 +1,18 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId 'com.wineguesser.deductive'
@@ -20,8 +32,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             it.buildConfigField('String', 'InterstitialAdKey', InterstitialAdKeyRelease)
+            signingConfig signingConfigs.config
         }
-
         buildTypes.each {
             it.buildConfigField('String', 'AdMobAppIdKey', AdMobAppIdKey)
         }
@@ -33,9 +45,7 @@ android {
     dataBinding {
         enabled = true
     }
-
     flavorDimensions "tier"
-
     productFlavors {
         free {
             applicationIdSuffix ".free"
@@ -72,7 +82,6 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:8.8.1"
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
-
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
