@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/RedTheme"
+    android:id="@+id/deduction_form_coordinator"
     tools:context=".view.DeductionFormActivity">
 
     <include layout="@layout/toolbar_dark" />

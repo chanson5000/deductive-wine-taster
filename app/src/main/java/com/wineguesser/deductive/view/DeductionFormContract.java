@@ -219,9 +219,9 @@ public interface DeductionFormContract {
     int CHECK_NOSE_MINERAL_SLATE = R.id.check_nose_mineral_slate;
     int CHECK_NOSE_MINERAL_FLINT = R.id.check_nose_mineral_flint;
     int SWITCH_NOSE_WOOD = R.id.switch_nose_wood;
-    int RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW = R.id.radio_group_wood_old_vs_new;
-    int RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL = R.id.radio_group_wood_large_vs_small;
-    int RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_wood_french_vs_american;
+    int RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW = R.id.radio_group_nose_wood_old_vs_new;
+    int RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL = R.id.radio_group_nose_wood_large_vs_small;
+    int RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_nose_wood_french_vs_american;
 
     int RADIO_GROUP_PALATE_SWEETNESS = R.id.radio_group_palate_sweetness;
     int CHECK_PALATE_FRUIT_RED = R.id.check_palate_fruit_red;
@@ -261,9 +261,9 @@ public interface DeductionFormContract {
     int CHECK_PALATE_MINERAL_FLINT = R.id.check_palate_mineral_flint;
     int SWITCH_PALATE_WOOD = R.id.switch_palate_wood;
 
-    int RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW = R.id.radio_group_wood_old_vs_new;
-    int RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL = R.id.radio_group_wood_large_vs_small;
-    int RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_wood_french_vs_american;
+    int RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW = R.id.radio_group_palate_wood_old_vs_new;
+    int RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL = R.id.radio_group_palate_wood_large_vs_small;
+    int RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN = R.id.radio_group_palate_french_vs_american;
 
     int RADIO_GROUP_PALATE_PHENOLIC_BITTER = R.id.radio_group_phenolic_bitter;
     int RADIO_GROUP_PALATE_TANNIN = R.id.radio_group_palate_tannin;
@@ -280,6 +280,97 @@ public interface DeductionFormContract {
     int RADIO_GROUP_INITIAL_CLIMATE = R.id.radio_group_initial_climate;
     int TEXT_MULTI_INITIAL_COUNTRIES = R.id.multiText_initial_countries;
     int RADIO_GROUP_INITIAL_AGE_RANGE = R.id.radio_group_initial_age;
+
+    int RADIO_CLARITY_CLEAR = R.id.radio_clarity_clear;
+    int RADIO_CLARITY_HAZY = R.id.radio_clarity_hazy;
+    int RADIO_CLARITY_TURBID = R.id.radio_clarity_turbid;
+    int RADIO_CONCENTRATION_PALE = R.id.radio_concentration_pale;
+    int RADIO_CONCENTRATION_MEDIUM = R.id.radio_concentration_medium;
+    int RADIO_CONCENTRATION_DEEP = R.id.radio_concentration_deep;
+    int RADIO_COLOR_PURPLE = R.id.radio_color_purple;
+    int RADIO_COLOR_RUBY = R.id.radio_color_ruby;
+    int RADIO_COLOR_GARNET = R.id.radio_color_garnet;
+    int RADIO_COLOR_STRAW = R.id.radio_color_straw;
+    int RADIO_COLOR_YELLOW = R.id.radio_color_yellow;
+    int RADIO_COLOR_GOLD = R.id.radio_color_gold;
+    int RADIO_SECONDARY_COLOR_ORANGE = R.id.radio_secondary_color_orange;
+    int RADIO_SECONDARY_COLOR_BLUE = R.id.radio_secondary_color_blue;
+    int RADIO_SECONDARY_COLOR_RUBY = R.id.radio_secondary_color_ruby;
+    int RADIO_SECONDARY_COLOR_GARNET = R.id.radio_secondary_color_garnet;
+    int RADIO_SECONDARY_COLOR_BROWN = R.id.radio_secondary_color_brown;
+    int RADIO_SECONDARY_COLOR_SILVER = R.id.radio_secondary_color_silver;
+    int RADIO_SECONDARY_COLOR_GREEN = R.id.radio_secondary_color_green;
+    int RADIO_SECONDARY_COLOR_COPPER = R.id.radio_secondary_color_copper;
+    int RADIO_RIM_VARIATION_YES = R.id.radio_rim_variation_yes;
+    int RADIO_RIM_VARIATION_NO = R.id.radio_rim_variation_no;
+    int RADIO_STAIN_NONE = R.id.radio_extract_stain_none;
+    int RADIO_STAIN_LIGHT = R.id.radio_extract_stain_light;
+    int RADIO_STAIN_MEDIUM = R.id.radio_extract_stain_medium;
+    int RADIO_STAIN_HEAVY = R.id.radio_extract_stain_heavy;
+    int RADIO_TEARING_LIGHT = R.id.radio_tearing_light;
+    int RADIO_TEARING_MEDIUM = R.id.radio_tearing_medium;
+    int RADIO_TEARING_HEAVY = R.id.radio_tearing_heavy;
+    int RADIO_GAS_EVIDENCE_YES = R.id.radio_gas_evidence_yes;
+    int RADIO_GAS_EVIDENCE_NO = R.id.radio_gas_evidence_no;
+    int RADIO_INTENSITY_DELICATE = R.id.radio_intensity_delicate;
+    int RADIO_INTENSITY_MODERATE = R.id.radio_intensity_moderate;
+    int RADIO_INTENSITY_POWERFUL = R.id.radio_intensity_powerful;
+    int RADIO_AGE_ASSESSMENT_YOUTHFUL = R.id.radio_age_assessment_youthful;
+    int RADIO_AGE_ASSESSMENT_DEVELOPING = R.id.radio_age_assessment_developing;
+    int RADIO_AGE_ASSESSMENT_VINOUS = R.id.radio_age_assessment_vinous;
+    int RADIO_NOSE_WOOD_OLD = R.id.radio_nose_wood_old;
+    int RADIO_NOSE_WOOD_NEW = R.id.radio_nose_wood_new;
+    int RADIO_NOSE_WOOD_LARGE = R.id.radio_nose_wood_large;
+    int RADIO_NOSE_WOOD_SMALL = R.id.radio_nose_wood_small;
+    int RADIO_NOSE_WOOD_FRENCH = R.id.radio_nose_wood_french;
+    int RADIO_NOSE_WOOD_AMERICAN = R.id.radio_nose_wood_american;
+    int RADIO_SWEETNESS_BONE_DRY = R.id.radio_palate_sweetness_bone_dry;
+    int RADIO_SWEETNESS_DRY = R.id.radio_palate_sweetness_dry;
+    int RADIO_SWEETNESS_OFF_DRY = R.id.radio_palate_sweetness_off_dry;
+    int RADIO_SWEETNESS_MEDIUM_SWEET = R.id.radio_palate_sweetness_medium_sweet;
+    int RADIO_SWEETNESS_SWEET = R.id.radio_palate_sweetness_sweet;
+    int RADIO_SWEETNESS_LUSCIOUSLY_SWEET = R.id.radio_palate_sweetness_lusciously_sweet;
+    int RADIO_PALATE_WOOD_OLD = R.id.radio_palate_wood_old;
+    int RADIO_PALATE_WOOD_NEW = R.id.radio_palate_wood_new;
+    int RADIO_PALATE_WOOD_LARGE = R.id.radio_palate_wood_large;
+    int RADIO_PALATE_WOOD_SMALL = R.id.radio_palate_wood_small;
+    int RADIO_PALATE_WOOD_FRENCH = R.id.radio_palate_wood_french;
+    int RADIO_PALATE_WOOD_AMERICAN = R.id.radio_palate_wood_american;
+    int RADIO_PHENOLIC_BITTER_YES = R.id.radio_palate_phenolic_bitter_yes;
+    int RADIO_PHENOLIC_BITTER_NO = R.id.radio_palate_phenolic_bitter_no;
+    int RADIO_TANNIN_LOW = R.id.radio_palate_tannin_low;
+    int RADIO_TANNIN_MED_MINUS = R.id.radio_palate_tannin_med_minus;
+    int RADIO_TANNIN_MED = R.id.radio_palate_tannin_med;
+    int RADIO_TANNIN_MED_PLUS = R.id.radio_palate_tannin_med_plus;
+    int RADIO_TANNIN_HIGH = R.id.radio_palate_tannin_high;
+    int RADIO_ACID_LOW = R.id.radio_palate_acid_low;
+    int RADIO_ACID_MED_MINUS = R.id.radio_palate_acid_med_minus;
+    int RADIO_ACID_MED = R.id.radio_palate_acid_med;
+    int RADIO_ACID_MED_PLUS = R.id.radio_palate_acid_med_plus;
+    int RADIO_ACID_HIGH = R.id.radio_palate_acid_high;
+    int RADIO_ALCOHOL_LOW = R.id.radio_palate_alcohol_low;
+    int RADIO_ALCOHOL_MED_MINUS = R.id.radio_palate_alcohol_med_minus;
+    int RADIO_ALCOHOL_MED = R.id.radio_palate_alcohol_med;
+    int RADIO_ALCOHOL_MED_PLUS = R.id.radio_palate_alcohol_med_plus;
+    int RADIO_ALCOHOL_HIGH = R.id.radio_palate_alcohol_high;
+    int RADIO_BODY_LIGHT = R.id.radio_palate_body_light;
+    int RADIO_BODY_MEDIUM = R.id.radio_palate_body_medium;
+    int RADIO_BODY_FULL = R.id.radio_palate_body_full;
+    int RADIO_TEXTURE_CREAMY = R.id.radio_palate_texture_creamy;
+    int RADIO_TEXTURE_ROUND = R.id.radio_palate_texture_round;
+    int RADIO_TEXTURE_LEAN = R.id.radio_palate_texture_lean;
+    int RADIO_BALANCED_YES = R.id.radio_palate_balanced_yes;
+    int RADIO_BALANCED_NO = R.id.radio_palate_balanced_no;
+    int RADIO_FINISH_SHORT = R.id.radio_palate_length_finish_short;
+    int RADIO_FINISH_MED_MINUS = R.id.radio_palate_length_finish_med_minus;
+    int RADIO_FINISH_MED = R.id.radio_palate_length_finish_med;
+    int RADIO_FINISH_MED_PLUS = R.id.radio_palate_length_finish_med_plus;
+    int RADIO_FINISH_LONG = R.id.radio_palate_length_finish_long;
+    int RADIO_COMPLEXITY_LOW = R.id.radio_palate_complexity_low;
+    int RADIO_COMPLEXITY_MED_MINUS = R.id.radio_palate_complexity_med_minus;
+    int RADIO_COMPLEXITY_MED = R.id.radio_palate_complexity_med;
+    int RADIO_COMPLEXITY_MED_PLUS = R.id.radio_palate_complexity_med_plus;
+    int RADIO_COMPLEXITY_HIGH = R.id.radio_palate_complexity_high;
 
     List<Integer> InitialConclusionMultiAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
             TEXT_MULTI_INITIAL_GRAPE_VARIETIES,
@@ -300,6 +391,21 @@ public interface DeductionFormContract {
             TEXT_SINGLE_FINAL_VINTAGE
     ));
 
+    List<Integer> PalateSwitches = new ArrayList<>(Arrays.asList(SWITCH_NOSE_WOOD,
+            SWITCH_PALATE_WOOD));
+
+    List<Integer> AllWoodRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW,
+            RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL,
+            RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW, RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN,
+            RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL));
+
+    List<Integer> NoseWoodRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW,
+            RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL));
+
+    List<Integer> PalateWoodRadioGroups = new ArrayList<>(Arrays.asList(
+            RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW, RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN,
+            RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL));
+
     List<Integer> AllRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_CLARITY,
             RADIO_GROUP_CONCENTRATION, RADIO_GROUP_COLOR_RED_WINE, RADIO_GROUP_COLOR_WHITE_WINE,
             RADIO_GROUP_SECONDARY_COLOR_RED_WINE, RADIO_GROUP_SECONDARY_COLOR_WHITE_WINE,
@@ -311,6 +417,34 @@ public interface DeductionFormContract {
             RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_PALATE_PHENOLIC_BITTER,
             RADIO_GROUP_PALATE_TANNIN, RADIO_GROUP_PALATE_ACID, RADIO_GROUP_PALATE_ALCOHOL,
             RADIO_GROUP_PALATE_BODY, RADIO_GROUP_PALATE_TEXTURE, RADIO_GROUP_PALATE_BALANCE,
+            RADIO_GROUP_PALATE_LENGTH_FINISH, RADIO_GROUP_PALATE_COMPLEXITY,
+            RADIO_GROUP_INITIAL_WORLD, RADIO_GROUP_INITIAL_CLIMATE, RADIO_GROUP_INITIAL_AGE_RANGE));
+
+    List<Integer> AllRedRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_CLARITY,
+            RADIO_GROUP_CONCENTRATION, RADIO_GROUP_COLOR_RED_WINE,
+            RADIO_GROUP_SECONDARY_COLOR_RED_WINE, RADIO_GROUP_RIM_VARIATION,
+            RADIO_GROUP_EXTRACT_STAINING, RADIO_GROUP_TEARING, RADIO_GROUP_GAS_EVIDENCE,
+            RADIO_GROUP_NOSE_INTENSITY, RADIO_GROUP_NOSE_AGE_ASSESSMENT,
+            RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW, RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL,
+            RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_PALATE_SWEETNESS,
+            RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW, RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL,
+            RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_PALATE_TANNIN,
+            RADIO_GROUP_PALATE_ACID, RADIO_GROUP_PALATE_ALCOHOL, RADIO_GROUP_PALATE_BODY,
+            RADIO_GROUP_PALATE_TEXTURE, RADIO_GROUP_PALATE_BALANCE,
+            RADIO_GROUP_PALATE_LENGTH_FINISH, RADIO_GROUP_PALATE_COMPLEXITY,
+            RADIO_GROUP_INITIAL_WORLD, RADIO_GROUP_INITIAL_CLIMATE, RADIO_GROUP_INITIAL_AGE_RANGE));
+
+    List<Integer> AllWhiteRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_CLARITY,
+            RADIO_GROUP_CONCENTRATION, RADIO_GROUP_COLOR_WHITE_WINE,
+            RADIO_GROUP_SECONDARY_COLOR_WHITE_WINE, RADIO_GROUP_RIM_VARIATION,
+            RADIO_GROUP_EXTRACT_STAINING, RADIO_GROUP_TEARING, RADIO_GROUP_GAS_EVIDENCE,
+            RADIO_GROUP_NOSE_INTENSITY, RADIO_GROUP_NOSE_AGE_ASSESSMENT,
+            RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW, RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL,
+            RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_PALATE_SWEETNESS,
+            RADIO_GROUP_PALATE_WOOD_OLD_VS_NEW, RADIO_GROUP_PALATE_WOOD_LARGE_VS_SMALL,
+            RADIO_GROUP_PALATE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_PALATE_PHENOLIC_BITTER,
+            RADIO_GROUP_PALATE_ACID, RADIO_GROUP_PALATE_ALCOHOL, RADIO_GROUP_PALATE_BODY,
+            RADIO_GROUP_PALATE_TEXTURE, RADIO_GROUP_PALATE_BALANCE,
             RADIO_GROUP_PALATE_LENGTH_FINISH, RADIO_GROUP_PALATE_COMPLEXITY,
             RADIO_GROUP_INITIAL_WORLD, RADIO_GROUP_INITIAL_CLIMATE, RADIO_GROUP_INITIAL_AGE_RANGE));
 
@@ -455,94 +589,4 @@ public interface DeductionFormContract {
             TEXT_SINGLE_FINAL_COUNTRY_ORIGIN, TEXT_SINGLE_FINAL_REGION, TEXT_SINGLE_FINAL_QUALITY,
             TEXT_SINGLE_FINAL_VINTAGE));
 
-    int RADIO_CLARITY_CLEAR = R.id.radio_clarity_clear;
-    int RADIO_CLARITY_HAZY = R.id.radio_clarity_hazy;
-    int RADIO_CLARITY_TURBID = R.id.radio_clarity_turbid;
-    int RADIO_CONCENTRATION_PALE = R.id.radio_concentration_pale;
-    int RADIO_CONCENTRATION_MEDIUM = R.id.radio_concentration_medium;
-    int RADIO_CONCENTRATION_DEEP = R.id.radio_concentration_deep;
-    int RADIO_COLOR_PURPLE = R.id.radio_color_purple;
-    int RADIO_COLOR_RUBY = R.id.radio_color_ruby;
-    int RADIO_COLOR_GARNET = R.id.radio_color_garnet;
-    int RADIO_COLOR_STRAW = R.id.radio_color_straw;
-    int RADIO_COLOR_YELLOW = R.id.radio_color_yellow;
-    int RADIO_COLOR_GOLD = R.id.radio_color_gold;
-    int RADIO_SECONDARY_COLOR_ORANGE = R.id.radio_secondary_color_orange;
-    int RADIO_SECONDARY_COLOR_BLUE = R.id.radio_secondary_color_blue;
-    int RADIO_SECONDARY_COLOR_RUBY = R.id.radio_secondary_color_ruby;
-    int RADIO_SECONDARY_COLOR_GARNET = R.id.radio_secondary_color_garnet;
-    int RADIO_SECONDARY_COLOR_BROWN = R.id.radio_secondary_color_brown;
-    int RADIO_SECONDARY_COLOR_SILVER = R.id.radio_secondary_color_silver;
-    int RADIO_SECONDARY_COLOR_GREEN = R.id.radio_secondary_color_green;
-    int RADIO_SECONDARY_COLOR_COPPER = R.id.radio_secondary_color_copper;
-    int RADIO_RIM_VARIATION_YES = R.id.radio_rim_variation_yes;
-    int RADIO_RIM_VARIATION_NO = R.id.radio_rim_variation_no;
-    int RADIO_STAIN_NONE = R.id.radio_extract_stain_none;
-    int RADIO_STAIN_LIGHT = R.id.radio_extract_stain_light;
-    int RADIO_STAIN_MEDIUM = R.id.radio_extract_stain_medium;
-    int RADIO_STAIN_HEAVY = R.id.radio_extract_stain_heavy;
-    int RADIO_TEARING_LIGHT = R.id.radio_tearing_light;
-    int RADIO_TEARING_MEDIUM = R.id.radio_tearing_medium;
-    int RADIO_TEARING_HEAVY = R.id.radio_tearing_heavy;
-    int RADIO_GAS_EVIDENCE_YES = R.id.radio_gas_evidence_yes;
-    int RADIO_GAS_EVIDENCE_NO = R.id.radio_gas_evidence_no;
-    int RADIO_INTENSITY_DELICATE = R.id.radio_intensity_delicate;
-    int RADIO_INTENSITY_MODERATE = R.id.radio_intensity_moderate;
-    int RADIO_INTENSITY_POWERFUL = R.id.radio_intensity_powerful;
-    int RADIO_AGE_ASSESSMENT_YOUTHFUL = R.id.radio_age_assessment_youthful;
-    int RADIO_AGE_ASSESSMENT_DEVELOPING = R.id.radio_age_assessment_developing;
-    int RADIO_AGE_ASSESSMENT_VINOUS = R.id.radio_age_assessment_vinous;
-    int RADIO_NOSE_WOOD_OLD = R.id.radio_nose_wood_old;
-    int RADIO_NOSE_WOOD_NEW = R.id.radio_nose_wood_new;
-    int RADIO_NOSE_WOOD_LARGE = R.id.radio_nose_wood_large;
-    int RADIO_NOSE_WOOD_SMALL = R.id.radio_nose_wood_small;
-    int RADIO_NOSE_WOOD_FRENCH = R.id.radio_nose_wood_french;
-    int RADIO_NOSE_WOOD_AMERICAN = R.id.radio_nose_wood_american;
-    int RADIO_SWEETNESS_BONE_DRY = R.id.radio_palate_sweetness_bone_dry;
-    int RADIO_SWEETNESS_DRY = R.id.radio_palate_sweetness_dry;
-    int RADIO_SWEETNESS_OFF_DRY = R.id.radio_palate_sweetness_off_dry;
-    int RADIO_SWEETNESS_MEDIUM_SWEET = R.id.radio_palate_sweetness_medium_sweet;
-    int RADIO_SWEETNESS_SWEET = R.id.radio_palate_sweetness_sweet;
-    int RADIO_SWEETNESS_LUSCIOUSLY_SWEET = R.id.radio_palate_sweetness_lusciously_sweet;
-    int RADIO_PALATE_WOOD_OLD = R.id.radio_palate_wood_old;
-    int RADIO_PALATE_WOOD_NEW = R.id.radio_palate_wood_new;
-    int RADIO_PALATE_WOOD_LARGE = R.id.radio_palate_wood_large;
-    int RADIO_PALATE_WOOD_SMALL = R.id.radio_palate_wood_small;
-    int RADIO_PALATE_WOOD_FRENCH = R.id.radio_palate_wood_french;
-    int RADIO_PALATE_WOOD_AMERICAN = R.id.radio_palate_wood_american;
-    int RADIO_PHENOLIC_BITTER_YES = R.id.radio_palate_phenolic_bitter_yes;
-    int RADIO_PHENOLIC_BITTER_NO = R.id.radio_palate_phenolic_bitter_no;
-    int RADIO_TANNIN_LOW = R.id.radio_palate_tannin_low;
-    int RADIO_TANNIN_MED_MINUS = R.id.radio_palate_tannin_med_minus;
-    int RADIO_TANNIN_MED = R.id.radio_palate_tannin_med;
-    int RADIO_TANNIN_MED_PLUS = R.id.radio_palate_tannin_med_plus;
-    int RADIO_TANNIN_HIGH = R.id.radio_palate_tannin_high;
-    int RADIO_ACID_LOW = R.id.radio_palate_acid_low;
-    int RADIO_ACID_MED_MINUS = R.id.radio_palate_acid_med_minus;
-    int RADIO_ACID_MED = R.id.radio_palate_acid_med;
-    int RADIO_ACID_MED_PLUS = R.id.radio_palate_acid_med_plus;
-    int RADIO_ACID_HIGH = R.id.radio_palate_acid_high;
-    int RADIO_ALCOHOL_LOW = R.id.radio_palate_alcohol_low;
-    int RADIO_ALCOHOL_MED_MINUS = R.id.radio_palate_alcohol_med_minus;
-    int RADIO_ALCOHOL_MED = R.id.radio_palate_alcohol_med;
-    int RADIO_ALCOHOL_MED_PLUS = R.id.radio_palate_alcohol_med_plus;
-    int RADIO_ALCOHOL_HIGH = R.id.radio_palate_alcohol_high;
-    int RADIO_BODY_LIGHT = R.id.radio_palate_body_light;
-    int RADIO_BODY_MEDIUM = R.id.radio_palate_body_medium;
-    int RADIO_BODY_FULL = R.id.radio_palate_body_full;
-    int RADIO_TEXTURE_CREAMY = R.id.radio_palate_texture_creamy;
-    int RADIO_TEXTURE_ROUND = R.id.radio_palate_texture_round;
-    int RADIO_TEXTURE_LEAN = R.id.radio_palate_texture_lean;
-    int RADIO_BALANCED_YES = R.id.radio_palate_balanced_yes;
-    int RADIO_BALANCED_NO = R.id.radio_palate_balanced_no;
-    int RADIO_FINISH_SHORT = R.id.radio_palate_length_finish_short;
-    int RADIO_FINISH_MED_MINUS = R.id.radio_palate_length_finish_med_minus;
-    int RADIO_FINISH_MED = R.id.radio_palate_length_finish_med;
-    int RADIO_FINISH_MED_PLUS = R.id.radio_palate_length_finish_med_plus;
-    int RADIO_FINISH_LONG = R.id.radio_palate_length_finish_long;
-    int RADIO_COMPLEXITY_LOW = R.id.radio_palate_complexity_low;
-    int RADIO_COMPLEXITY_MED_MINUS = R.id.radio_palate_complexity_med_minus;
-    int RADIO_COMPLEXITY_MED = R.id.radio_palate_complexity_med;
-    int RADIO_COMPLEXITY_MED_PLUS = R.id.radio_palate_complexity_med_plus;
-    int RADIO_COMPLEXITY_HIGH = R.id.radio_palate_complexity_high;
 }
