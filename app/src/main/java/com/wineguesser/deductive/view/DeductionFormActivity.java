@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,7 +33,9 @@ import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
 import com.wineguesser.deductive.util.Helpers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 // TODO: Make this activity better.
@@ -323,9 +326,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         boolean checked = switchToggle.isChecked();
         saveCheckBoxState(switchId, Helpers.castChecked(checked));
         if (switchId == SWITCH_NOSE_WOOD) {
-            mNoseFragment.syncWoodRadioState();
+            mNoseFragment.syncWoodRadioState(true);
+
         } else if (switchId == SWITCH_PALATE_WOOD) {
-            mPalateFragmentA.syncWoodRadioState();
+            mPalateFragmentA.syncWoodRadioState(true);
         }
     }
 
@@ -505,6 +509,124 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             isValid = false;
         } else {
             mFinalFragment.errorsFinalForm().setErrorVintage(null);
+        }
+
+        Map<String, ?> allEntries = mWinePreferences.getAll();
+
+        List<Integer> requiredKeysInPreferences = new ArrayList<>();
+
+        boolean needNoseWoodRadios = false;
+        boolean needPalateWoodRadios = false;
+        boolean needSnackbar = false;
+
+        // Determine if the form is red or white radio groups.
+        List<Integer> radioGroups;
+        if (mIsRedWine) {
+            radioGroups = AllRedRadioGroups;
+        } else {
+            radioGroups = AllWhiteRadioGroups;
+        }
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
+            if (SWITCH_NOSE_WOOD == wineFormKey) {
+                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                if (isChecked) {
+                    needNoseWoodRadios = true;
+                }
+            } else if (SWITCH_PALATE_WOOD == wineFormKey) {
+                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                if (isChecked) {
+                    needPalateWoodRadios = true;
+                }
+            }
+        }
+
+
+        // Here we are checking if all saved radio button values in preferences have a
+        // selection for validity.
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
+
+            if (radioGroups.contains(wineFormKey)) {
+                if (needNoseWoodRadios && NoseWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                } else if (needPalateWoodRadios && PalateWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                } else if (!AllWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    // Checking to see if a selection has been made.
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                }
+            }
+        }
+
+        // After checking for valid entries in shared preferences, we make sure that all
+        // radio button references actually existed in shared preferences to begin with
+        // because they may not if the user never made any selections previously.
+//        if (!needSnackbar) {
+//            for (Integer key : radioGroups) {
+//                if (!requiredKeysList.contains(key)) {
+//                    if (NoseWoodRadioGroups.contains(key) && needNoseWoodRadios) {
+//                        isValid = false;
+//                        needSnackbar = true;
+//                    } else if (PalateWoodRadioGroups.contains(key) && needPalateWoodRadios) {
+//                        isValid = false;
+//                        needSnackbar = true;
+//                    } else if (!AllWoodRadioGroups.contains(key)) {
+//                        isValid = false;
+//                        needSnackbar = true;
+//                    }
+//                } else {
+//
+//                    isValid = false;
+//                    needSnackbar = true;
+//                }
+//            }
+//        }
+
+
+        if (!needSnackbar) {
+            for (Integer key : radioGroups) {
+                if (!requiredKeysInPreferences.contains(key)) {
+                    if (AllWoodRadioGroups.contains(key)) {
+                        if (NoseWoodRadioGroups.contains(key) && needNoseWoodRadios) {
+                            isValid = false;
+                            needSnackbar = true;
+                            break;
+                        } else if (PalateWoodRadioGroups.contains(key) && needPalateWoodRadios) {
+                            isValid = false;
+                            needSnackbar = true;
+                            break;
+                        }
+                    } else {
+                        isValid = false;
+                        needSnackbar = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (needSnackbar) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.deduction_form_coordinator),
+                    R.string.df_snackbar_make_selections, Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.df_snackbar_dismiss, v -> snackbar.dismiss());
+            snackbar.show();
         }
 
         return isValid;
