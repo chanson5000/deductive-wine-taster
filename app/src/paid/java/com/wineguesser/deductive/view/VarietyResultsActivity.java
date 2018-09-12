@@ -26,6 +26,7 @@ import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,12 +53,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_region)
     AutoCompleteTextView mSingleViewActualRegion;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_quality)
-    AutoCompleteTextView mSingleViewActualQuality;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_vintage)
-    AutoCompleteTextView mSingleViewActualVintage;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -223,7 +218,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
         } else {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
@@ -276,7 +271,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputForm.setActualQuality("None");
         }
 
-        // TODO: See if this can structured like DeductionFormActivity.
         if (parseInteger == null || parseInteger.isEmpty()) {
             inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
             isValid = false;

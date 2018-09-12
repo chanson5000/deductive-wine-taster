@@ -19,9 +19,6 @@ import com.wineguesser.deductive.util.Helpers;
 
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class PalateFragmentB extends Fragment implements DeductionFormContract,
         DatabaseContract {
 

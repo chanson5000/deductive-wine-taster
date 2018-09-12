@@ -3,7 +3,6 @@
     <string name="blind_taste">Blind Taste</string>
     <string name="button_red_wine">Red Wine</string>
     <string name="button_white_wine">White Wine</string>
-    <string name="button_statistics">Statistics</string>
     <string name="clear_form">Clear Form</string>
 
     <!-- Descriptors -->
@@ -23,7 +22,6 @@
     <string name="ruby">Ruby</string>
     <string name="red">Red</string>
     <string name="garnet">Garnet</string>
-    <string name="water_white">Water White</string>
     <string name="straw">Straw</string>
     <string name="yellow">Yellow</string>
     <string name="gold">Gold</string>
@@ -122,7 +120,6 @@
     <string name="slate">Slate</string>
     <string name="flint">Flint</string>
 
-    <string name="wood">Wood</string>
     <string name="oak">Oak</string>
     <!-- None -->
     <string name="old">Old</string>
@@ -211,10 +208,6 @@
     <string name="our_guess">Our Conclusion</string>
     <string name="actual_wine">Actual Wine</string>
     <string name="save_result">Save Result</string>
-
-    <string name="our_conclusion_colon">Our Conclusion: </string>
-    <string name="actual_wine_colon">Actual Wine: </string>
-    <string name="user_conclusion_colon">Your Conclusion: </string>
 
     <!-- Varieties -->
     <string name="albarino" translatable="false">Albariño</string>
@@ -362,7 +355,6 @@
     </string-array>
 
     <string name="log_in">Log In</string>
-    <string name="welcome_tag">Welcome, %1$s</string>
     <string name="log_out">Log Out</string>
     <string name="log_in_for_result_save">Log In To Save Result</string>
     <string name="your_guess">Your Conclusion</string>
@@ -381,8 +373,6 @@
     <string name="profile_new_password">New Password: </string>
     <string name="profile_confirm_password">Confirm Password: </string>
     <string name="button_update_password">Update Password</string>
-    <string name="auth_provider">Authentication Provider: </string>
-    <string name="placeholder_provider">Provider</string>
     <string name="button_delete_photo">Delete</string>
     <string name="button_update_photo">Update</string>
     <string name="placeholder_wine_variety">Wine Variety</string>
@@ -400,8 +390,6 @@
     <string name="history_cleared">History Cleared!</string>
     <string name="remove_record">Remove Record</string>
     <string name="record_removed">Record Removed!</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="widget_red">Red</string>
     <string name="widget_white">White</string>
 

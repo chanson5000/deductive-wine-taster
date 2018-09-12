@@ -4,7 +4,6 @@ import com.wineguesser.deductive.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public interface DeductionFormContract {
@@ -43,13 +42,6 @@ public interface DeductionFormContract {
     int INITIAL_CONCLUSION_PAGE = 4;
     int FINAL_CONCLUSION_PAGE = 5;
 
-    String SIGHT_PAGE_TITLE = "Sight";
-    String NOSE_PAGE_TITLE = "Nose";
-    String PALATE_PAGE_TITLE = "Palate";
-
-    String INITIAL_CONCLUSION_PAGE_TITLE = "Initial Conclusion";
-    String FINAL_CONCLUSION_PAGE_TITLE = "Final Conclusion";
-
     String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
     String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
 
@@ -62,7 +54,6 @@ public interface DeductionFormContract {
     // Resources.getSystem().getString(android.R.string.string_name)
 
     String Albarino = "Albarino";
-    String Cabernet_Franc = "Cabernet Franc";
     String Cabernet_Sauvignon = "Cabernet Sauvignon";
     String Chardonnay = "Chardonnay";
     String Chenin_Blanc = "Chenin Blanc";
@@ -113,25 +104,8 @@ public interface DeductionFormContract {
             Western_Australia, Central_Valley, California, Rhone_Valley, Victoria, Piedmont, Oregon,
             South_Island, North_Island, Tuscany));
 
-    List<String> RegionsFrance = new ArrayList<>(Arrays.asList(Alsace, Burgundy, Bordeaux, Loire_Valley, Rhone_Valley));
-    List<String> RegionsUnitedStates = new ArrayList<>(Arrays.asList(California, Oregon));
-    List<String> RegionsAustralia = new ArrayList<>(Arrays.asList(South_Australia, Western_Australia, Victoria));
-    List<String> RegionsNewZealand = new ArrayList<>(Arrays.asList(North_Island, South_Island));
-    List<String> RegionsItaly = new ArrayList<>(Arrays.asList(Piedmont, Tuscany));
-    List<String> RegionsChile = Collections.singletonList(Central_Valley);
-
     List<String> AllCountries = new ArrayList<>(Arrays.asList(Argentina, Australia, Chile, France, Germany,
             Italy, New_Zealand, Spain, United_States));
-
-    List<String> NewWorldCountries = new ArrayList<>(Arrays.asList(Argentina, Australia, Chile, New_Zealand,
-            United_States));
-
-    List<String> OldWorldCountries = new ArrayList<>(Arrays.asList(France, Germany, Italy, Spain));
-
-    List<String> AllVarieties = new ArrayList<>(Arrays.asList(Albarino, Cabernet_Franc, Cabernet_Sauvignon,
-            Chardonnay, Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Malbec, Merlot,
-            Nebbiolo, Pinot_Gris, Pinot_Noir, Riesling, Sangiovese, Sauvignon_Blanc,
-            Syrah, Tempranillo, Torrontes, Viognier, Zinfandel));
 
     List<String> RedVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Gamay,
             Grenache, Malbec, Merlot, Nebbiolo, Pinot_Noir, Sangiovese, Syrah,
@@ -139,29 +113,6 @@ public interface DeductionFormContract {
 
     List<String> WhiteVarieties = new ArrayList<>(Arrays.asList(Albarino, Chardonnay, Chenin_Blanc,
             Gewurztraminer, Pinot_Gris, Riesling, Sauvignon_Blanc, Torrontes, Viognier));
-
-    List<String> ArgentinaVarieties = new ArrayList<>(Arrays.asList(Malbec, Torrontes));
-
-    List<String> AustraliaVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Grenache, Riesling,
-            Syrah));
-
-    List<String> ChileVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon));
-
-    List<String> FranceVarieties = new ArrayList<>(Arrays.asList(Cabernet_Franc, Cabernet_Sauvignon, Chardonnay,
-            Chenin_Blanc, Gamay, Gewurztraminer, Grenache, Merlot, Pinot_Gris, Riesling,
-            Sauvignon_Blanc, Syrah, Viognier));
-
-    List<String> GermanyVarieties = new ArrayList<>(Arrays.asList(Riesling));
-
-    List<String> ItalyVarieties = new ArrayList<>(Arrays.asList(Nebbiolo, Pinot_Gris, Sangiovese));
-
-    List<String> NewZealandVarieties = new ArrayList<>(Arrays.asList(Pinot_Noir, Sauvignon_Blanc));
-
-    List<String> SpainVarieties = new ArrayList<>(Arrays.asList(Albarino, Tempranillo));
-
-    List<String> UnitedStatesVarieties = new ArrayList<>(Arrays.asList(Cabernet_Sauvignon, Chardonnay, Merlot,
-            Pinot_Noir, Sauvignon_Blanc, Syrah, Zinfandel));
-
 
     int RADIO_GROUP_CLARITY = R.id.radio_group_clarity;
     int RADIO_GROUP_CONCENTRATION = R.id.radio_group_concentration;
@@ -372,27 +323,11 @@ public interface DeductionFormContract {
     int RADIO_COMPLEXITY_MED_PLUS = R.id.radio_palate_complexity_med_plus;
     int RADIO_COMPLEXITY_HIGH = R.id.radio_palate_complexity_high;
 
-    List<Integer> InitialConclusionMultiAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
-            TEXT_MULTI_INITIAL_GRAPE_VARIETIES,
-            TEXT_MULTI_INITIAL_COUNTRIES
-    ));
-
     int TEXT_SINGLE_FINAL_GRAPE_VARIETY = R.id.autoText_final_grape_variety;
     int TEXT_SINGLE_FINAL_COUNTRY_ORIGIN = R.id.autoText_final_country;
     int TEXT_SINGLE_FINAL_REGION = R.id.autoText_final_region;
     int TEXT_SINGLE_FINAL_QUALITY = R.id.autoText_final_quality;
     int TEXT_SINGLE_FINAL_VINTAGE = R.id.autoText_final_vintage;
-
-    List<Integer> FinalConclusionAutoCompleteTextViews = new ArrayList<>(Arrays.asList(
-            TEXT_SINGLE_FINAL_GRAPE_VARIETY,
-            TEXT_SINGLE_FINAL_COUNTRY_ORIGIN,
-            TEXT_SINGLE_FINAL_REGION,
-            TEXT_SINGLE_FINAL_QUALITY,
-            TEXT_SINGLE_FINAL_VINTAGE
-    ));
-
-    List<Integer> PalateSwitches = new ArrayList<>(Arrays.asList(SWITCH_NOSE_WOOD,
-            SWITCH_PALATE_WOOD));
 
     List<Integer> AllWoodRadioGroups = new ArrayList<>(Arrays.asList(RADIO_GROUP_NOSE_WOOD_OLD_VS_NEW,
             RADIO_GROUP_NOSE_WOOD_FRENCH_VS_AMERICAN, RADIO_GROUP_NOSE_WOOD_LARGE_VS_SMALL,

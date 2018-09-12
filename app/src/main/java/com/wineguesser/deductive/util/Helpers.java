@@ -2,8 +2,7 @@ package com.wineguesser.deductive.util;
 
 public class Helpers {
 
-    private static int CHECKED = 1;
-    private static int NOT_CHECKED = 0;
+
 
     public static int castKey(String key) { return Integer.parseInt(key); }
 
@@ -12,6 +11,8 @@ public class Helpers {
     }
 
     public static int castChecked(boolean checkedBoolean) {
+        int CHECKED = 1;
+        int NOT_CHECKED = 0;
         if (checkedBoolean) {
             return CHECKED;
         } else {

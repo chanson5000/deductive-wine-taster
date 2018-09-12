@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -110,12 +110,14 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @SuppressWarnings("unused")
     public void buttonRedWine(View view) {
         Intent intent = new Intent(mContext, DeductionFormActivity.class);
         intent.putExtra(IS_RED_WINE, TRUE);
         startActivity(intent);
     }
 
+    @SuppressWarnings("unused")
     public void buttonWhiteWine(View view) {
         Intent intent = new Intent(mContext, DeductionFormActivity.class);
         startActivity(intent);
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (user == null) {
             // TODO: Decide if more providers are wanted.
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    @SuppressWarnings("unused")
     public void onHistoryButtonClicked(View view) {
         if (mUserLoggedIn) {
             Intent intent = new Intent(mContext, HistoryActivity.class);

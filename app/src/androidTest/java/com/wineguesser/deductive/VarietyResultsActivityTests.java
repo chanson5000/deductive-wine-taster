@@ -25,7 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class VarietyResultsActivityTests implements DeductionFormContract {
 
     @Rule
-    public ActivityTestRule<VarietyResultsActivity> activityTestRule =
+    public final ActivityTestRule<VarietyResultsActivity> activityTestRule =
             new ActivityTestRule<>(VarietyResultsActivity.class, false, false);
 
     @Test

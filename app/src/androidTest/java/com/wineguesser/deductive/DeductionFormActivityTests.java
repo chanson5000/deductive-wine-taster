@@ -155,7 +155,7 @@ public class DeductionFormActivityTests implements DeductionFormContract {
 //    }
 
     @Rule
-    public ActivityTestRule<DeductionFormActivity> activityTestRule =
+    public final ActivityTestRule<DeductionFormActivity> activityTestRule =
             new ActivityTestRule<>(DeductionFormActivity.class, true, false);
 
     @Test

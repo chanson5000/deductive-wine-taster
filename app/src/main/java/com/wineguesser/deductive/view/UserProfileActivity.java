@@ -27,6 +27,7 @@ import com.wineguesser.deductive.repository.UserRepository;
 import com.wineguesser.deductive.viewmodel.UserProfileViewModel;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import timber.log.Timber;
@@ -231,7 +232,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
         if (user == null) {
             // TODO: Decide if more providers are wanted.
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 

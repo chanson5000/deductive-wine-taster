@@ -30,6 +30,7 @@ import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,14 +39,14 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    private static String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    private static String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    private static String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    private static String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    private static String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+    private static final String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
+    private static final String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
+    private static final String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
+    private static final String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
+    private static final String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
-    VarietyResultsViewModel inputForm;
-    ConclusionInputErrorsViewModel inputErrors;
+    private VarietyResultsViewModel inputForm;
+    private ConclusionInputErrorsViewModel inputErrors;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_variety)
@@ -56,12 +57,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_region)
     AutoCompleteTextView mSingleViewActualRegion;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_quality)
-    AutoCompleteTextView mSingleViewActualQuality;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_vintage)
-    AutoCompleteTextView mSingleViewActualVintage;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -249,7 +244,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             startActivity(intent);
             finish();
         } else {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 

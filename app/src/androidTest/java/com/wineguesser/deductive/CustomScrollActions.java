@@ -1,10 +1,5 @@
 package com.wineguesser.deductive;
 
-
-/**
- * Created by F1sherKK on 18/05/2017.
- */
-
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.test.espresso.PerformException;
@@ -30,7 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
  * Created by F1sherKK on 07/03/2017.
  */
 
-public class CustomScrollActions {
+class CustomScrollActions {
 
     public static ViewAction nestedScrollTo() {
         return new ViewAction() {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude the shared preferences file that contains the GCM registrationId -->
+    <exclude
+        domain="sharedpref"
+        path="WHITE_WINE_FORM_PREFERENCES.xml" />
+    <exclude
+        domain="sharedpref"
+        path="RED_WINE_FORM_PREFERENCES.xml" />
+</full-backup-content>
