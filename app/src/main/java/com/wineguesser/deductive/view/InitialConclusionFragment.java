@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
@@ -37,7 +37,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_initial)
-    NestedScrollView mScrollViewInitial;
+    ScrollView mScrollViewInitial;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.multiText_initial_varieties)

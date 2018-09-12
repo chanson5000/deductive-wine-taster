@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_nose)
-    NestedScrollView mScrollViewNose;
+    ScrollView mScrollViewNose;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.group_nose_wood)
