@@ -31,11 +31,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            it.buildConfigField('String', 'InterstitialAdKey', InterstitialAdKeyRelease)
+            it.buildConfigField('String', 'InterstitialAdKey', keystoreProperties['InterstitialAdKeyRelease'])
             signingConfig signingConfigs.config
         }
         buildTypes.each {
-            it.buildConfigField('String', 'AdMobAppIdKey', AdMobAppIdKey)
+            it.buildConfigField('String', 'AdMobAppIdKey', keystoreProperties['AdMobAppIdKey'])
         }
     }
     compileOptions {
