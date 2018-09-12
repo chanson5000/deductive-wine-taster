@@ -407,7 +407,10 @@
     <string name="dialog_clear_history_ask">Are you sure you want to clear your conclusion history?</string>
     <string name="cancel_history_clear">Cancelled clearing history.</string>
 
-
+    <string name="history_activity_title">Conclusion History</string>
+    <string name="history_record_activity_title">Conclusion Record</string>
+    <string name="user_profile_activity_title">Your Profile</string>
+    <string name="variety_results_activity_title">Wine Results</string>
 
 
 </resources>

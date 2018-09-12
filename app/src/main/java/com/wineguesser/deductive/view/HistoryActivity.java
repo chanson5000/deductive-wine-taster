@@ -45,6 +45,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.history_activity_title);
 
         historyActivity = ViewModelProviders.of(this)
                 .get(HistoryActivityViewModel.class);

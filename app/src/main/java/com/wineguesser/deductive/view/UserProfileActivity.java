@@ -70,6 +70,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.user_profile_activity_title);
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);

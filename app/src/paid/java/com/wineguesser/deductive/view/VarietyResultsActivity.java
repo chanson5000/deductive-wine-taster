@@ -76,6 +76,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.variety_results_activity_title);
         // Initialize our view models.
         inputForm = ViewModelProviders.of(this)
                 .get(VarietyResultsViewModel.class);

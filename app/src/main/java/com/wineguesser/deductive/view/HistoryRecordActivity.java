@@ -38,6 +38,7 @@ public class HistoryRecordActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.history_record_activity_title);
 
         historyRecord = ViewModelProviders.of(this)
                 .get(HistoryRecordViewModel.class);
