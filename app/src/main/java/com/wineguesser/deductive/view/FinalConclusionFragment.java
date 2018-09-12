@@ -171,7 +171,7 @@ public class FinalConclusionFragment extends Fragment implements
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewFinal.fullScroll(ScrollView.FOCUS_UP));
+                mScrollViewFinal.scrollTo(0, 0));
     }
 
     private void saveSelectionState() {

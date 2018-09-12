@@ -154,13 +154,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public class SnackbarLogInListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            startLoginUI();
-        }
-    }
-
     public void onHistoryButtonClicked(View view) {
         if (mUserLoggedIn) {
             Intent intent = new Intent(mContext, HistoryActivity.class);
@@ -168,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_main),
                     R.string.snack_log_in, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.log_in, new SnackbarLogInListener());
+            snackbar.setAction(R.string.log_in, v -> startLoginUI());
             snackbar.show();
         }
     }

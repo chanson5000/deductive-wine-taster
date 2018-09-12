@@ -112,7 +112,7 @@ public class SightFragment extends Fragment implements DeductionFormContract, Da
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewSight.fullScroll(ScrollView.FOCUS_UP));
+                mScrollViewSight.scrollTo(0, 0));
     }
 
     private void loadSelectionState() {

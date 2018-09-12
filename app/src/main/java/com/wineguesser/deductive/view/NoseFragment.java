@@ -122,7 +122,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewNose.fullScroll(ScrollView.FOCUS_UP));
+                mScrollViewNose.scrollTo(0, 0));
     }
 
     private void loadSelectionState() {
@@ -154,18 +154,20 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
                 }
             }
         }
-        syncWoodRadioState();
+        syncWoodRadioState(false);
     }
 
     private boolean getCheckBoxState(int key) {
         return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
-    public void syncWoodRadioState() {
+    public void syncWoodRadioState(boolean viewToggled) {
         if (getCheckBoxState(SWITCH_NOSE_WOOD)) {
             mWoodGroup.setVisibility(View.VISIBLE);
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewNose.fullScroll(ScrollView.FOCUS_DOWN));
+            if (viewToggled) {
+                AppExecutors.getInstance().mainThread().execute(() ->
+                        mScrollViewNose.fullScroll(ScrollView.FOCUS_DOWN));
+            }
         } else {
             mWoodGroup.setVisibility(View.GONE);
         }

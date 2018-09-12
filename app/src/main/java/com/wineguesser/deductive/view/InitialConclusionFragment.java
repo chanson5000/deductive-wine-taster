@@ -125,7 +125,7 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewInitial.fullScroll(ScrollView.FOCUS_UP));
+                mScrollViewInitial.scrollTo(0, 0));
     }
 
     private void saveSelectionState() {
