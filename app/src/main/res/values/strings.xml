@@ -376,7 +376,7 @@
     <string name="profile_photo_url">Photo URL: </string>
     <string name="profile_email_address">Email Address: </string>
     <string name="profile_confirm_email_address">Confirm Email Address: </string>
-    <string name="profile_image">Profile Image</string>
+    <string name="profile_image">Your Profile Image</string>
     <string name="button_update_details">Update Details</string>
     <string name="profile_new_password">New Password: </string>
     <string name="profile_confirm_password">Confirm Password: </string>
