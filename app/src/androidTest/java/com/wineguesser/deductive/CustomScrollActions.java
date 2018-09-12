@@ -25,6 +25,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVi
  * Created by F1sherKK on 07/03/2017.
  */
 
+// Was having problems with testing nested scroll views and found this code.
+// This code did not even work for me although others say it did.
 class CustomScrollActions {
 
     public static ViewAction nestedScrollTo() {
