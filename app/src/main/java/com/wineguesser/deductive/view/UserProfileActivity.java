@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,9 +23,9 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityUserProfileBinding;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.repository.UserRepository;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.viewmodel.UserProfileViewModel;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -296,8 +295,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         userProfileModel.setUserName(newDisplayName);
                         userProfileModel.setDisplayName(newDisplayName);
                         resetErrorDisplayName();
-                        Toast.makeText(mContext, R.string.up_toast_updated_display_name,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_display_name);
                     }
                 });
             } else if (errorDisplayName != null) {
@@ -313,8 +311,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         userProfileModel.setEmailAddress(newEmailAddress);
                         userProfileModel.setConfirmEmailAddress(null);
                         resetAllErrorEmailAddress();
-                        Toast.makeText(mContext, R.string.up_toast_updated_email,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_email);
                     }
                 });
             } else if (errorEmailAddress != null) {
@@ -368,8 +365,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         showProfilePhoto(newPhotoUri);
                         userProfileModel.setPhotoUrl(newPhotoUrl);
                         resetErrorPhotoUrl();
-                        Toast.makeText(mContext, R.string.up_toast_updated_photo_url,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_photo_url);
                     }
                 });
             } else if (errorPhotoUrl != null) {
@@ -397,8 +393,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully removed user photo URI.");
-                        Toast.makeText(mContext, R.string.up_toast_removed_photo,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_removed_photo);
                         resetErrorPhotoUrl();
                         showProfilePhoto(null);
                     }
@@ -406,8 +401,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             });
 
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
-                    Toast.makeText(mContext, R.string.up_toast_canceled_remove_photo,
-                    Toast.LENGTH_SHORT).show());
+                    Helpers.makeToastShort(mContext, R.string.up_toast_canceled_remove_photo));
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -443,8 +437,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         Timber.d("Successfully updated user password.");
                         resetAllPasswordFields();
                         resetAllErrorPassword();
-                        Toast.makeText(mContext, R.string.up_toast_updated_password,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_password);
                     }
                 });
 

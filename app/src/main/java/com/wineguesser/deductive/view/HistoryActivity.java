@@ -14,11 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.view.adapter.ConclusionItemAdapter;
 import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
@@ -96,13 +96,11 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
                     builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         ConclusionsRepository repository = new ConclusionsRepository();
                         repository.clearUserConclusions(mCurrentUser.getUid());
-                        Toast.makeText(mContext, R.string.history_cleared,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.history_cleared);
                     });
 
                     builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
-                            Toast.makeText(mContext, R.string.cancel_history_clear,
-                            Toast.LENGTH_SHORT).show());
+                            Helpers.makeToastShort(mContext, R.string.cancel_history_clear));
 
                     AlertDialog dialog = builder.create();
                     dialog.show();

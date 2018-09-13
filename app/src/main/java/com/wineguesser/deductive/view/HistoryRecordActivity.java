@@ -12,12 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel;
 
 
@@ -73,14 +73,13 @@ public class HistoryRecordActivity extends AppCompatActivity {
                     builder.setMessage(R.string.up_dialog_confirm_delete_record);
                     builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         repository.removeConclusionRecord(conclusionRecord);
-                        Toast.makeText(mContext, R.string.record_removed,
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.record_removed);
                         onBackPressed();
                     });
 
                     builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
-                            Toast.makeText(mContext, R.string.up_dialog_cancel_record_deletion,
-                            Toast.LENGTH_SHORT).show());
+                            Helpers.makeToastShort(mContext,
+                                    R.string.up_dialog_cancel_record_deletion));
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
