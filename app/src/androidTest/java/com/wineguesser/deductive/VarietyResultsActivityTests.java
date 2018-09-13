@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -32,7 +33,6 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
     public void onInputInvalidVariety_ErrorTextShows() {
         Intent intent = new Intent();
         intent.putExtra(IS_RED_WINE, true);
-        intent.putExtra("DISABLE_AD", true);
         intent.putExtra(APP_VARIETY_GUESS_ID, "cabernetSauvignonNewWorld");
         intent.putExtra(USER_CONCLUSION_VARIETY, "Merlot");
         intent.putExtra(USER_CONCLUSION_COUNTRY, "United States");
@@ -42,16 +42,16 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
         activityTestRule.launchActivity(intent);
 
         onView(withId(R.id.autoText_actual_variety))
-                .perform(scrollTo(), replaceText("NebbioloNotValid"));
+                .perform(replaceText("NebbioloNotValid"));
 
         onView(withId(R.id.autoText_actual_country))
-                .perform(scrollTo(), replaceText("ItalyNotValid"));
+                .perform(replaceText("ItalyNotValid"));
 
         onView(withId(R.id.autoText_actual_region))
-                .perform(scrollTo(), replaceText("PiedmontNotValid"));
+                .perform(replaceText("PiedmontNotValid"));
 
         onView(withId(R.id.autoText_actual_quality))
-                .perform(scrollTo(), replaceText("None"));
+                .perform(replaceText("None"));
 
         onView(withId(R.id.autoText_actual_vintage))
                 .perform(scrollTo(), replaceText("1800"));
@@ -73,8 +73,6 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
     public void onInputActualWine_LaunchHistoryActivity() {
         Intent intent = new Intent();
         intent.putExtra(IS_RED_WINE, true);
-        intent.putExtra("DISABLE_AD", true);
-
         intent.putExtra(APP_VARIETY_GUESS_ID, "cabernetSauvignonNewWorld");
         intent.putExtra(USER_CONCLUSION_VARIETY, "Merlot");
         intent.putExtra(USER_CONCLUSION_COUNTRY, "United States");
@@ -100,6 +98,6 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
                 .perform(scrollTo(), replaceText("2012"));
 
         onView(withId(R.id.wine_result_save)).perform(scrollTo(), click());
-        onView(withId(R.id.conclusion_item_recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.textStatic_app_conclusion_variety)).check(matches(isDisplayed()));
     }
 }
