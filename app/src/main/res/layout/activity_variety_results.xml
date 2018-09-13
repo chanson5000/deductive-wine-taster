@@ -14,13 +14,13 @@
             type="com.wineguesser.deductive.viewmodel.VarietyResultsViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include layout="@layout/toolbar_default" />
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize">
@@ -211,6 +211,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.CoordinatorLayout>
+        </ScrollView>
+    </FrameLayout>
 </layout>

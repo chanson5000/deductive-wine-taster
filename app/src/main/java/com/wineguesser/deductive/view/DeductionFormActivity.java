@@ -24,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -47,6 +48,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private SharedPreferences mActivityPreferences;
     private boolean mIsRedWine;
     private boolean mLaunchingIntent;
+
+    private MenuItem mMenuShowWhite;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -120,7 +123,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
             @Override
             public void onPageSelected(int position) {
-                syncCurrentTitle();
+                syncCurrentTitle(position);
+                syncCurrentMenuOptions(position);
             }
 
             @Override
@@ -141,6 +145,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.wine_deduction_menu, menu);
+        mMenuShowWhite = menu.findItem(R.id.menu_show_white_screen);
+        if (mPager.getCurrentItem() != SIGHT_PAGE) {
+            mMenuShowWhite.setVisible(false);
+        }
         return true;
     }
 
@@ -153,7 +161,26 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 if (mPager.getCurrentItem() != SIGHT_PAGE) {
                     mPager.setCurrentItem(SIGHT_PAGE);
                 }
-                Toast.makeText(this, getString(R.string.form_cleared), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.form_cleared),
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_show_white_screen:
+                if (getCurrentPageFromPager() == SIGHT_PAGE) {
+                    ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+                    if (sightScroll != null) {
+                        if (sightScroll.getVisibility() == View.VISIBLE) {
+                            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                            sightScroll.setVisibility(View.INVISIBLE);
+                            Toast.makeText(mContext, R.string.da_showing_screen_for_wine,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                            sightScroll.setVisibility(View.VISIBLE);
+                            Toast.makeText(mContext, R.string.da_hiding_screen_for_wine,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -173,8 +200,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     @Override
     public void onResume() {
         super.onResume();
-        setCurrentPage(getCurrentPageFromPreferences());
-        syncCurrentTitle();
+        int currentPage = getCurrentPageFromPreferences();
+        setCurrentPage(currentPage);
+        syncCurrentTitle(currentPage);
         registerPreferencesListener();
     }
 
@@ -354,8 +382,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-    private void syncCurrentTitle() {
-        switch (mPager.getCurrentItem()) {
+    private void syncCurrentMenuOptions(int page) {
+        if (page == SIGHT_PAGE) {
+            mMenuShowWhite.setVisible(true);
+            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+        } else {
+            mMenuShowWhite.setVisible(false);
+        }
+    }
+
+    private void syncCurrentTitle(int page) {
+        switch (page) {
             case SIGHT_PAGE:
                 setTitle(R.string.sight_page_title);
                 break;
@@ -574,31 +611,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                 }
             }
         }
-
-        // After checking for valid entries in shared preferences, we make sure that all
-        // radio button references actually existed in shared preferences to begin with
-        // because they may not if the user never made any selections previously.
-//        if (!needSnackbar) {
-//            for (Integer key : radioGroups) {
-//                if (!requiredKeysList.contains(key)) {
-//                    if (NoseWoodRadioGroups.contains(key) && needNoseWoodRadios) {
-//                        isValid = false;
-//                        needSnackbar = true;
-//                    } else if (PalateWoodRadioGroups.contains(key) && needPalateWoodRadios) {
-//                        isValid = false;
-//                        needSnackbar = true;
-//                    } else if (!AllWoodRadioGroups.contains(key)) {
-//                        isValid = false;
-//                        needSnackbar = true;
-//                    }
-//                } else {
-//
-//                    isValid = false;
-//                    needSnackbar = true;
-//                }
-//            }
-//        }
-
 
         if (!needSnackbar) {
             for (Integer key : radioGroups) {
