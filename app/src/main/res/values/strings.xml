@@ -413,6 +413,7 @@
     <string name="variety_results_activity_title">Wine Results</string>
 
     <string name="da_menu_show_white">White Screen</string>
-    <string name="da_showing_screen_for_wine">Turned on white screen for wine evaluation.</string>
-    <string name="da_hiding_screen_for_wine">White screen turned off.</string>
+    <string name="da_toast_showing_screen_for_wine">Turned on white screen for wine evaluation.</string>
+    <string name="da_toast_hiding_screen_for_wine">White screen turned off.</string>
+    <string name="da_toast_unable_to_score">Unable to score grape variety!</string>
 </resources>
