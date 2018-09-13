@@ -32,6 +32,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
     private FirebaseUser mCurrentUser;
     private HistoryActivityViewModel historyActivity;
     private Context mContext;
+    private static String CONCLUSION_PARCEL = "CONCLUSION_PARCEL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
     public void onHistoryItemClick(ConclusionRecord conclusionRecord) {
         Intent intent = new Intent(this, HistoryRecordActivity.class);
         conclusionRecord.setUserId(mCurrentUser.getUid());
-        intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
+        intent.putExtra(Helpers.CONCLUSION_PARCEL, conclusionRecord);
         startActivity(intent);
     }
 }

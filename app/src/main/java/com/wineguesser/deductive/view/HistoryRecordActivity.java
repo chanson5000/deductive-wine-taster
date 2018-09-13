@@ -46,9 +46,9 @@ public class HistoryRecordActivity extends AppCompatActivity {
         binding.setHistoryRecord(historyRecord);
 
         Intent parentIntent = getIntent();
-        if (parentIntent != null && parentIntent.hasExtra("PARCELABLE_CONCLUSION")) {
+        if (parentIntent != null && parentIntent.hasExtra(Helpers.CONCLUSION_PARCEL)) {
             ConclusionRecord conclusionRecord =
-                    parentIntent.getParcelableExtra("PARCELABLE_CONCLUSION");
+                    parentIntent.getParcelableExtra(Helpers.CONCLUSION_PARCEL);
             historyRecord.setConclusionRecord(conclusionRecord);
         }
     }

@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 public class Helpers {
 
+    public static String CONCLUSION_PARCEL = "CONCLUSION_PARCEL";
+
     public static int castKey(String key) { return Integer.parseInt(key); }
 
     public static boolean castChecked(int checkedInt) {
