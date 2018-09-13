@@ -1,5 +1,8 @@
 package com.wineguesser.deductive.util;
 
+import android.content.Context;
+import android.widget.Toast;
+
 public class Helpers {
 
 
@@ -26,5 +29,9 @@ public class Helpers {
 
     public static boolean parseChecked(Object value) {
         return castChecked(parseEntryValue(value));
+    }
+
+    public static void makeToastShort(Context context, int resId) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 }
