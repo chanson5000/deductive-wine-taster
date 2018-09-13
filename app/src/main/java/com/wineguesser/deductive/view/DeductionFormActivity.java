@@ -146,7 +146,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.wine_deduction_menu, menu);
         mMenuShowWhite = menu.findItem(R.id.menu_show_white_screen);
-        if (mPager.getCurrentItem() != SIGHT_PAGE) {
+        if (getCurrentPageFromPager() != SIGHT_PAGE) {
             mMenuShowWhite.setVisible(false);
         }
         return true;
@@ -158,32 +158,75 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             case R.id.clear_selections:
                 resetSharedPreferences();
                 resetAllTopScroll();
-                if (mPager.getCurrentItem() != SIGHT_PAGE) {
-                    mPager.setCurrentItem(SIGHT_PAGE);
-                }
-                Toast.makeText(this, getString(R.string.form_cleared),
-                        Toast.LENGTH_SHORT).show();
+                resetCurrentPage();
+                resetWhiteScreen();
+                Helpers.makeToastShort(mContext, R.string.form_cleared);
                 return true;
             case R.id.menu_show_white_screen:
-                if (getCurrentPageFromPager() == SIGHT_PAGE) {
-                    ScrollView sightScroll = findViewById(R.id.scrollView_sight);
-                    if (sightScroll != null) {
-                        if (sightScroll.getVisibility() == View.VISIBLE) {
-                            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                            sightScroll.setVisibility(View.INVISIBLE);
-                            Toast.makeText(mContext, R.string.da_showing_screen_for_wine,
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
-                            sightScroll.setVisibility(View.VISIBLE);
-                            Toast.makeText(mContext, R.string.da_hiding_screen_for_wine,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
+                toggleSightWhiteScreen();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void syncCurrentMenuOptions(int page) {
+        if (mMenuShowWhite != null) {
+            if (page == SIGHT_PAGE) {
+                mMenuShowWhite.setVisible(true);
+                ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+                if (sightScroll != null) {
+                    if (sightScroll.getVisibility() == View.VISIBLE) {
+                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                    } else {
+                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                    }
+                }
+            } else {
+                mMenuShowWhite.setVisible(false);
+            }
+        }
+    }
+
+    private void resetWhiteScreen() {
+        if (mMenuShowWhite != null && getCurrentPageFromPager() == SIGHT_PAGE) {
+            mMenuShowWhite.setVisible(true);
+            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+            if (sightScroll != null) {
+                sightScroll.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void setSightWhiteScreen(boolean isEnabled, View view) {
+        if (view != null) {
+            if (isEnabled) {
+                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                view.setVisibility(View.INVISIBLE);
+                Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
+            } else {
+                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                view.setVisibility(View.VISIBLE);
+                Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine);
+            }
+        }
+    }
+
+    private void toggleSightWhiteScreen() {
+        ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+        if (getCurrentPageFromPager() == SIGHT_PAGE && sightScroll != null) {
+            if (sightScroll.getVisibility() == View.VISIBLE) {
+                setSightWhiteScreen(true, sightScroll);
+            } else {
+                setSightWhiteScreen(false, sightScroll);
+            }
+        }
+    }
+
+    private void resetCurrentPage() {
+        if (mPager.getCurrentItem() != SIGHT_PAGE) {
+            mPager.setCurrentItem(SIGHT_PAGE);
         }
     }
 
@@ -379,15 +422,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
         if (mFinalFragment != null) {
             mFinalFragment.scrollToTop();
-        }
-    }
-
-    private void syncCurrentMenuOptions(int page) {
-        if (page == SIGHT_PAGE) {
-            mMenuShowWhite.setVisible(true);
-            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
-        } else {
-            mMenuShowWhite.setVisible(false);
         }
     }
 
@@ -683,15 +717,16 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     @SuppressWarnings("unused")
     public void onSubmitFinalConclusion(View view) {
+        isScoring(true);
         // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
         if (!validInputs()) {
+            isScoring(false);
             return;
         }
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
         GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
-        isScoring(true);
         scoreTask.execute(formSelections);
     }
 
@@ -729,7 +764,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     public void onGrapeFailure() {
         isScoring(false);
-        Toast.makeText(mContext,
-                "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
+        Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score);
     }
 }
