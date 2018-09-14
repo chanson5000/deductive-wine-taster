@@ -153,6 +153,7 @@ public class ConclusionRecord implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(conclusionId);
         dest.writeString(userId);
+        dest.writeString(actualLabel);
         dest.writeString(actualVariety);
         dest.writeString(actualCountry);
         dest.writeString(actualRegion);
@@ -181,6 +182,7 @@ public class ConclusionRecord implements Parcelable {
     public ConclusionRecord(Parcel in) {
         this.conclusionId = in.readString();
         this.userId = in.readString();
+        this.actualLabel = in.readString();
         this.actualVariety = in.readString();
         this.actualCountry = in.readString();
         this.actualRegion = in.readString();

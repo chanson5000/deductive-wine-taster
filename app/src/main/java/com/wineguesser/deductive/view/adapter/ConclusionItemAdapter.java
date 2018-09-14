@@ -32,6 +32,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
     class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder
     implements View.OnClickListener {
 
+        final TextView mActualLabel;
         final TextView mActualGrape;
         final TextView mUserGrape;
         final TextView mAppGrape;
@@ -39,6 +40,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
         ConclusionItemAdapterViewHolder(View view) {
             super(view);
 
+            mActualLabel = view.findViewById(R.id.textView_actual_label);
             mActualGrape = view.findViewById(R.id.textView_actual_variety);
             mUserGrape = view.findViewById(R.id.textView_user_conclusion_grape);
             mAppGrape = view.findViewById(R.id.textView_app_conclusion_grape);
@@ -66,6 +68,8 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
 
     @Override
     public void onBindViewHolder(@NonNull ConclusionItemAdapterViewHolder conclusionItemAdapterViewHolder, int position) {
+
+        conclusionItemAdapterViewHolder.mActualLabel.setText(mConclusionRecords.get(position).getActualLabel());
 
         conclusionItemAdapterViewHolder.mActualGrape.setText(mConclusionRecords.get(position).getActualVariety());
         conclusionItemAdapterViewHolder.mUserGrape.setText(mConclusionRecords.get(position).getUserConclusionVariety());
