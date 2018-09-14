@@ -40,8 +40,8 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         mContext = this;
         ActivityHistoryBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

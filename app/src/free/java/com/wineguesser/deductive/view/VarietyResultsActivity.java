@@ -76,8 +76,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         // Set data binding.
         ActivityVarietyResultsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_variety_results);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
