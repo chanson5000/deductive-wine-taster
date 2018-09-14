@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/AppTheme.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textStatic_label"
+            style="@style/AppTheme.CardView.Text.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/variety_results_label"
+            app:layout_constraintBottom_toTopOf="@id/textView_actual_label"
+            app:layout_constraintEnd_toStartOf="@id/textStatic_variety"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textStatic_variety"
+            style="@style/AppTheme.CardView.Text.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/variety"
+            app:layout_constraintBottom_toBottomOf="@id/textStatic_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textStatic_label"
+            app:layout_constraintTop_toTopOf="@id/textStatic_label" />
+
+        <TextView
+            android:id="@+id/textView_actual_label"
+            style="@style/AppTheme.CardView.Text.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/variety_results_label"
+            app:layout_constraintBottom_toTopOf="@id/textStatic_user_conclusion_grape"
+            app:layout_constraintEnd_toStartOf="@id/textView_actual_variety"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textStatic_label" />
+
+
+        <TextView
+            android:id="@+id/textView_actual_variety"
+            style="@style/AppTheme.CardView.Text.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_wine_variety"
+            app:layout_constraintBottom_toBottomOf="@id/textView_actual_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textView_actual_label"
+            app:layout_constraintTop_toTopOf="@id/textView_actual_label" />
+
+        <TextView
+            android:id="@+id/textStatic_user_conclusion_grape"
+            style="@style/AppTheme.CardView.Text.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/your_guess"
+            app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_grape"
+            app:layout_constraintEnd_toStartOf="@id/textStatic_app_conclusion_grape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_actual_label" />
+
+        <TextView
+            android:id="@+id/textStatic_app_conclusion_grape"
+            style="@style/AppTheme.CardView.Text.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/app_conclusion"
+            app:layout_constraintBottom_toBottomOf="@id/textStatic_user_conclusion_grape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textStatic_user_conclusion_grape"
+            app:layout_constraintTop_toTopOf="@id/textStatic_user_conclusion_grape" />
+
+        <TextView
+            android:id="@+id/textView_user_conclusion_grape"
+            style="@style/AppTheme.CardView.Text.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_user_conclusion"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textView_app_conclusion_grape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textStatic_user_conclusion_grape" />
+
+        <TextView
+            android:id="@+id/textView_app_conclusion_grape"
+            style="@style/AppTheme.CardView.Text.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_app_conclusion"
+            app:layout_constraintBottom_toBottomOf="@id/textView_user_conclusion_grape"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_grape"
+            app:layout_constraintTop_toTopOf="@id/textView_user_conclusion_grape" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

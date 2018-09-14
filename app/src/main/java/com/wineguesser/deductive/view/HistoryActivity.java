@@ -32,7 +32,6 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
     private FirebaseUser mCurrentUser;
     private HistoryActivityViewModel historyActivity;
     private Context mContext;
-    private static String CONCLUSION_PARCEL = "CONCLUSION_PARCEL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,6 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
         ConclusionItemAdapter conclusionAdapter =
                 new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);

@@ -97,6 +97,26 @@
                         android:text="@string/actual_wine" />
 
                     <TextView
+                        android:id="@+id/textStatic_actual_label"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_actual_label"
+                        android:text="@string/variety_results_label" />
+
+                    <EditText
+                        android:id="@+id/editText_actual_label"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text="@={actualWine.actualLabel}" />
+
+                    <TextView
+                        android:id="@+id/textError_label"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorLabel}"
+                        android:visibility="@{inputError.errorLabel != null ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
                         android:id="@+id/textView_actual_variety"
                         style="@style/AppTheme.Text.Descriptor"
                         android:labelFor="@id/autoText_actual_variety"

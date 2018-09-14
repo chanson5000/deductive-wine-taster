@@ -31,7 +31,7 @@
                 android:layout_height="0dp"
                 android:text="@string/app_conclusion"
                 app:layout_constraintBottom_toTopOf="@id/textView_app_conclusion_variety"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textStatic_actual_variety"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +42,7 @@
                 android:layout_height="0dp"
                 android:text="@{historyRecord.appConclusionVariety ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textStatic_user_conclusion_variety"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textView_actual_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textStatic_app_conclusion_variety" />
 
@@ -62,7 +62,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.userConclusionVariety, default=@string/no_data}"
+                android:text="@{historyRecord.userConclusionVariety ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_country"
                 app:layout_constraintEnd_toStartOf="@id/textView_actual_variety"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.userConclusionCountry, default=@string/no_data}"
+                android:text="@{historyRecord.userConclusionCountry ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_region"
                 app:layout_constraintEnd_toStartOf="@id/textView_actual_country"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.userConclusionRegion, default=@string/no_data}"
+                android:text="@{historyRecord.userConclusionRegion ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_quality"
                 app:layout_constraintEnd_toStartOf="@id/textView_actual_region"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +95,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.userConclusionQuality, default=@string/no_data}"
+                android:text="@{historyRecord.userConclusionQuality ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_user_conclusion_vintage"
                 app:layout_constraintEnd_toStartOf="@id/textView_actual_quality"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,11 +106,33 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{String.valueOf(safeUnbox(historyRecord.userConclusionVintage)), default=@string/no_data}"
+                android:text="@{String.valueOf(safeUnbox(historyRecord.userConclusionVintage)) ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/textView_actual_vintage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView_user_conclusion_quality" />
+
+            <TextView
+                android:id="@+id/textStatic_label"
+                style="@style/AppTheme.RecordView.Text.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@string/variety_results_label"
+                app:layout_constraintBottom_toTopOf="@+id/textView_actual_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textStatic_app_conclusion_variety"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_actual_label"
+                style="@style/AppTheme.RecordView.Text.Head"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="@{historyRecord.actualLabel ?? @string/no_data, default=@string/no_data}"
+                app:layout_constraintBottom_toTopOf="@id/textStatic_actual_variety"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView_app_conclusion_variety"
+                app:layout_constraintTop_toBottomOf="@id/textStatic_label" />
 
             <TextView
                 android:id="@+id/textStatic_actual_variety"
@@ -118,28 +140,28 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="@string/actual_wine"
-                app:layout_constraintBottom_toTopOf="@id/textView_actual_variety"
+                app:layout_constraintBottom_toTopOf="@+id/textView_actual_variety"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textStatic_user_conclusion_variety"
-                app:layout_constraintTop_toBottomOf="@id/textView_app_conclusion_variety" />
+                app:layout_constraintTop_toBottomOf="@id/textView_actual_label" />
 
             <TextView
                 android:id="@+id/textView_actual_variety"
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.actualVariety, default=@string/no_data}"
+                android:text="@{historyRecord.actualVariety ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_actual_country"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_variety"
-                app:layout_constraintTop_toBottomOf="@id/textStatic_actual_variety" />
+                app:layout_constraintTop_toBottomOf="@+id/textStatic_actual_variety" />
 
             <TextView
                 android:id="@+id/textView_actual_country"
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.actualCountry, default=@string/no_data}"
+                android:text="@{historyRecord.actualCountry ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_actual_region"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_country"
@@ -150,7 +172,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.actualRegion, default=@string/no_data}"
+                android:text="@{historyRecord.actualRegion ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_actual_quality"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_region"
@@ -161,7 +183,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{historyRecord.actualQuality, default=@string/no_data}"
+                android:text="@{historyRecord.actualQuality ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toTopOf="@id/textView_actual_vintage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_quality"
@@ -172,7 +194,7 @@
                 style="@style/AppTheme.RecordView.Text.Head"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@{String.valueOf(safeUnbox(historyRecord.actualVintage)), default=@string/no_data}"
+                android:text="@{String.valueOf(safeUnbox(historyRecord.actualVintage)) ?? @string/no_data, default=@string/no_data}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_vintage"
