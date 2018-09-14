@@ -17,7 +17,7 @@
 
         <include layout="@layout/toolbar_default" />
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
@@ -49,6 +49,7 @@
                         style="@style/AppTheme.EditText"
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
+                        android:maxLength="70"
                         android:singleLine="true"
                         android:text="@={userProfileForm.displayName}" />
 
@@ -71,6 +72,7 @@
                         style="@style/AppTheme.EditText"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
+                        android:maxLength="70"
                         android:singleLine="true"
                         android:text="@={userProfileForm.emailAddress}" />
 
@@ -93,6 +95,7 @@
                         style="@style/AppTheme.EditText"
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
+                        android:maxLength="70"
                         android:singleLine="true"
                         android:text="@={userProfileForm.confirmEmailAddress}" />
 
@@ -209,6 +212,7 @@
                         style="@style/AppTheme.EditText"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={userProfileForm.password}" />
 
@@ -231,6 +235,7 @@
                         style="@style/AppTheme.EditText"
                         android:imeOptions="actionDone"
                         android:inputType="textPassword"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={userProfileForm.confirmPassword}" />
 
@@ -254,6 +259,6 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

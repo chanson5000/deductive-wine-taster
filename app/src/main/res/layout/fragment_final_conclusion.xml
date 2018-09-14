@@ -52,6 +52,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true" />
 
                     <TextView
@@ -75,6 +76,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true" />
 
                     <TextView
@@ -98,6 +100,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true" />
 
                     <TextView
@@ -121,6 +124,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true" />
 
                     <TextView

@@ -107,6 +107,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="50"
                         android:singleLine="true"
                         android:text="@={actualWine.actualLabel}" />
 
@@ -127,6 +128,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualVariety}" />
 
@@ -147,6 +149,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualCountry}" />
 
@@ -167,6 +170,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualRegion}" />
 
@@ -187,6 +191,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualQuality}" />
 
