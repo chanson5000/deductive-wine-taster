@@ -26,7 +26,6 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
@@ -172,18 +171,26 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     private void syncCurrentMenuOptions(int page) {
         if (mMenuShowWhite != null) {
+            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
             if (page == SIGHT_PAGE) {
                 mMenuShowWhite.setVisible(true);
-                ScrollView sightScroll = findViewById(R.id.scrollView_sight);
                 if (sightScroll != null) {
+                    View root = sightScroll.getRootView();
                     if (sightScroll.getVisibility() == View.VISIBLE) {
                         mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                        root.setBackgroundColor(getResources()
+                                .getColor(R.color.colorPrimaryBackground));
                     } else {
                         mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                        root.setBackgroundColor(getResources().getColor(R.color.white));
                     }
                 }
             } else {
                 mMenuShowWhite.setVisible(false);
+                if (sightScroll != null) {
+                    View root = sightScroll.getRootView();
+                    root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
+                }
             }
         }
     }
@@ -194,6 +201,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
             if (sightScroll != null) {
+                View root = sightScroll.getRootView();
+                root.setBackgroundColor(getResources()
+                        .getColor(R.color.colorPrimaryBackground));
                 sightScroll.setVisibility(View.VISIBLE);
             }
         }
@@ -203,10 +213,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         if (view != null) {
             if (isEnabled) {
                 mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                View root = view.getRootView();
+                root.setBackgroundColor(getResources().getColor(R.color.white));
                 view.setVisibility(View.INVISIBLE);
                 Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
             } else {
                 mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                View root = view.getRootView();
+                root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
                 view.setVisibility(View.VISIBLE);
                 Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine);
             }
