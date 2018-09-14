@@ -24,34 +24,51 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_title_margin"
             android:text="@string/start_blind_tasting"
-            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_center"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
+            app:layout_constraintBottom_toTopOf="@id/red_glass_full"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <Button
-            android:id="@+id/button_red_wine"
-            style="@style/AppTheme.Button"
-            android:layout_width="@dimen/main_activity_wine_button_width"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/red_glass_full"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:contentDescription="@string/main_blind_taste_red"
             android:onClick="buttonRedWine"
-            android:text="@string/button_red_wine"
+            android:padding="@dimen/standard_margin"
+            android:scaleType="fitCenter"
+            android:src="@drawable/glass_full_red"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_white_wine"
-            app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
+            app:layout_constraintEnd_toStartOf="@id/white_glass_full"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <Button
-            android:id="@+id/button_white_wine"
-            style="@style/AppTheme.Button"
-            android:layout_width="@dimen/main_activity_wine_button_width"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/white_glass_full"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:contentDescription="@string/main_blind_taste_white"
             android:onClick="buttonWhiteWine"
-            android:text="@string/button_white_wine"
+            android:padding="@dimen/standard_margin"
+            android:scaleType="fitCenter"
+            android:src="@drawable/glass_full_white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_margin_end"
-            app:layout_constraintStart_toEndOf="@id/button_red_wine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/red_glass_full"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <ImageView
+            android:id="@+id/history_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/main_view_history"
+            android:onClick="onHistoryButtonClicked"
+            android:padding="@dimen/standard_margin"
+            android:src="@drawable/ic_history_accent_48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/red_glass_full" />
 
         <Button
             android:id="@+id/button_history"
@@ -60,59 +77,11 @@
             android:layout_height="wrap_content"
             android:onClick="onHistoryButtonClicked"
             android:text="@string/button_history"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideline_margin_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_margin_start"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_center" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_margin_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".10" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_top_middle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".25" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_horizontal_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".50" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_margin_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".90" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_margin_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".10" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_bottom_middle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".75" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline_margin_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".90" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/red_glass_full" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

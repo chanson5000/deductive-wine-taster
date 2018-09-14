@@ -421,4 +421,8 @@
     <string name="variety_results_label">Label</string>
     <string name="variety">Variety</string>
 
+    <string name="main_blind_taste_red">Blind taste red wine.</string>
+    <string name="main_blind_taste_white">Blind taste white wine.</string>
+    <string name="main_view_history">View tasting history.</string>
+
 </resources>
