@@ -11,6 +11,7 @@ import com.wineguesser.deductive.model.ConclusionRecord;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import timber.log.Timber;
@@ -76,6 +77,7 @@ public class ConclusionsRepository extends FirebaseRepository {
                         }
                         data.add(conclusionRecord);
                     }
+                    Collections.reverse(data);
                     setValue(data);
                 } else {
                     setValue(null);
