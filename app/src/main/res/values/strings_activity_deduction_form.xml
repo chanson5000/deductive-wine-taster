@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<resources>
-    <string name="df_snackbar_make_selections">Please make all selections before continuing.</string>
-    <string name="df_snackbar_dismiss">Dismiss</string>
-</resources>

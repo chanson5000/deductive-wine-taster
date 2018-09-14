@@ -425,6 +425,9 @@
     <string name="main_blind_taste_white">Blind taste white wine.</string>
     <string name="main_view_history">View tasting history.</string>
 
+    <string name="df_snackbar_make_selections">Please make all selections before continuing.</string>
+    <string name="df_snackbar_dismiss">Dismiss</string>
+
     <string name="feedback_title">Feedback</string>
     <string name="feedback_contact_us">Tell us what you think!</string>
     <string name="feedback_detail">Want more features? Found a bug? We want to know!</string>
@@ -433,5 +436,30 @@
     <string name="feedback_subject" translatable="false">Deductive Wine Taster App Feedback</string>
     <string name="feedback_select_client">Select an email client to send feedback.</string>
     <string name="feedback_requires_email_app">*Requires an installed email app.</string>
+
+    <string name="up_dialog_delete_conclusion_record">Delete Conclusion Record</string>
+    <string name="up_dialog_confirm_delete_record">Are you sure you want delete this conclusion record?</string>
+    <string name="up_dialog_cancel_record_deletion">Cancelled record deletion.</string>
+
+    <string name="up_toast_updated_display_name">Updated display name.</string>
+    <string name="up_toast_updated_email">Updated e-mail address.</string>
+    <string name="up_error_photo_url">Photo URL field must not be empty.</string>
+    <string name="up_toast_updated_photo_url">Updated photo URL.</string>
+
+    <string name="up_dialog_remove_photo">Remove Profile Photo</string>
+    <string name="up_dialog_confirm_remove_photo">Are you sure you want to remove your profile photo?</string>
+    <string name="up_toast_removed_photo">Removed profile photo.</string>
+
+    <string name="up_toast_canceled_remove_photo">Cancelled photo removal.</string>
+
+    <string name="up_error_display_name_field_empty">Display Name field must not be empty.</string>
+    <string name="up_error_email_field_empty">Email Address field must not be empty.</string>
+    <string name="up_error_confirm_email_field_empty">Confirm Email Address field must not be empty.</string>
+    <string name="up_error_email_fields_must_match">Email Address fields must match.</string>
+
+    <string name="up_error_password_empty">Confirm password field must not be empty.</string>
+    <string name="up_error_passwords_must_match">Passwords must match.</string>
+
+    <string name="up_toast_updated_password">Updated password.</string>
 
 </resources>
