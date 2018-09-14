@@ -6,12 +6,12 @@
     <application
         android:name=".DeductiveWineTaster"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".view.MainActivity"
@@ -42,6 +42,10 @@
             android:name=".view.HistoryRecordActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.HistoryActivity" />
+        <activity
+            android:name=".view.FeedbackActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.MainActivity" />
 
         <receiver android:name=".widget.StartDeductionWidget">
             <intent-filter>

@@ -425,4 +425,13 @@
     <string name="main_blind_taste_white">Blind taste white wine.</string>
     <string name="main_view_history">View tasting history.</string>
 
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_contact_us">Tell us what you think!</string>
+    <string name="feedback_detail">Want more features? Found a bug? We want to know!</string>
+    <string name="feedback_button_submit">Submit Feedback</string>
+    <string name="feedback_email" translatable="false">feedback@wineguesser.com</string>
+    <string name="feedback_subject" translatable="false">Deductive Wine Taster App Feedback</string>
+    <string name="feedback_select_client">Select an email client to send feedback.</string>
+    <string name="feedback_requires_email_app">*Requires an installed email app.</string>
+
 </resources>

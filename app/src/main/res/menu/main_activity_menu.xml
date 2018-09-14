@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/auth_toggle"
-        android:title="@string/log_in"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/profile_settings"
         android:icon="@drawable/ic_menu_account_circle_24px"
         android:title="@string/menu_account_profile"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/feedback"
+        android:icon="@drawable/ic_feedback_black_24dp"
+        android:title="@string/feedback_title"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/auth_toggle"
+        android:title="@string/log_in"
+        app:showAsAction="ifRoom" />
+
 </menu>

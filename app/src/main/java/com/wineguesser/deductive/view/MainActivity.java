@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private MenuItem mMenuAuthToggle;
     private MenuItem mMenuProfile;
+    private MenuItem mMenuFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         inflater.inflate(R.menu.main_activity_menu, menu);
         mMenuAuthToggle = menu.findItem(R.id.auth_toggle);
         mMenuProfile = menu.findItem(R.id.profile_settings);
+        mMenuFeedback = menu.findItem(R.id.feedback);
         if (mUserLoggedIn) {
             setMenuLoggedIn(true);
         } else {
@@ -102,8 +104,12 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 return true;
             case R.id.profile_settings:
-                Intent intent = new Intent(mContext, UserProfileActivity.class);
-                startActivity(intent);
+                Intent profileIntent = new Intent(mContext, UserProfileActivity.class);
+                startActivity(profileIntent);
+                return true;
+            case R.id.feedback:
+                Intent feedbackIntent = new Intent(mContext, FeedbackActivity.class);
+                startActivity(feedbackIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
