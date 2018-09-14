@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,8 +54,11 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         binding.setHistoryActivity(historyActivity);
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (findViewById(R.id.is_600dp) != null) {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
         ConclusionItemAdapter conclusionAdapter =
                 new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);
