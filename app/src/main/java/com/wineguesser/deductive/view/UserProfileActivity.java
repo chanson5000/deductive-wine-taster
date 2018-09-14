@@ -247,6 +247,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdateDetails(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -326,6 +327,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdateProfilePhoto(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -378,6 +380,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickDeleteProfilePhoto(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -410,6 +413,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdatePassword(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 

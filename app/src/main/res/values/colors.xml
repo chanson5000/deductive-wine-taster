@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#f8bbd0</color>
     <color name="colorPrimaryDark">#c48b9f</color>
-    <color name="colorPrimaryLight">#ffeeff</color>
+    <color name="colorPrimaryLight" tools:keep="@color/colorPrimaryLight">#ffeeff</color>
     <color name="colorAccent">#9c27b0</color>
-    <color name="colorPrimaryText">#000000</color>
+    <color name="colorPrimaryText" tools:keep="@color/colorPrimaryText">#000000</color>
     <color name="colorPrimaryBackground">#fce4ec</color>
 
     <color name="colorPrimaryRedTheme">#ad1457</color>
     <color name="colorPrimaryDarkRedTheme">#78002e</color>
-    <color name="colorPrimaryLightRedTheme">#e35183</color>
-    <color name="colorAccentRedTheme">#9c27b0</color>
-    <color name="colorPrimaryTextRedTheme">#ffffff</color>
+    <color name="colorAccentRedTheme" tools:keep="@color/colorAccentRedTheme">#9c27b0</color>
+    <color name="colorPrimaryTextRedTheme" tools:keep="@color/colorPrimaryTextRedTheme">#ffffff</color>
     <color name="colorBackgroundRedTheme">#fce4ec</color>
 
     <color name="colorPrimaryWhiteTheme">#fff8e1</color>
     <color name="colorPrimaryDarkWhiteTheme">#ccc5af</color>
-    <color name="colorPrimaryLightWhiteTheme">#ffffff</color>
+    <color name="colorPrimaryLightWhiteTheme" tools:keep="@color/colorPrimaryLightWhiteTheme">#ffffff</color>
     <color name="colorPrimaryAccentWhiteTheme">#9c27b0</color>
-    <color name="colorPrimaryTextWhiteTheme">#000000</color>
+    <color name="colorPrimaryTextWhiteTheme" tools:keep="@color/colorPrimaryTextWhiteTheme">#000000</color>
     <color name="colorBackgroundWhiteTheme">#fce4ec</color>
 
 

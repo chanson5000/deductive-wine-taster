@@ -40,6 +40,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         return errorQuality;
     }
 
+    @SuppressWarnings("unused")
     public void setErrorQuality(String errorQuality) {
         this.errorQuality.setValue(errorQuality);
     }

@@ -156,6 +156,7 @@ public class PalateFragmentA extends Fragment implements DeductionFormContract, 
         syncWoodRadioState(false);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private boolean getCheckBoxState(int key) {
         return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }

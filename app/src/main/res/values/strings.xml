@@ -1,8 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Deductive Wine Taster</string>
     <string name="blind_taste">Blind Taste</string>
-    <string name="button_red_wine">Red Wine</string>
-    <string name="button_white_wine">White Wine</string>
     <string name="clear_form">Clear Form</string>
 
     <!-- Descriptors -->
@@ -130,7 +128,7 @@
     <string name="american">American</string>
 
     <!-- Palate -->
-    <string name="palate">Palate</string>
+    <string name="palate" tools:keep="@string/palate">Palate</string>
     <string name="sweetness">Sweetness</string>
     <string name="bone_dry">Bone Dry</string>
     <string name="dry">Dry</string>
@@ -180,7 +178,6 @@
     <string name="complexity">Complexity</string>
     <!-- Low, Med-, Medium, Med+, High -->
 
-    <string name="initial_conclusion">Initial Conclusion</string>
     <string name="possible_grape_varieties">Possible Grape Varieties</string>
     <string name="new_world">New World</string>
     <string name="old_world">Old World</string>
@@ -195,7 +192,6 @@
     <string name="five_to_ten_years">5–10 years</string>
     <string name="ten_plus_years">10+ years</string>
 
-    <string name="final_conclusion">Final Conclusion</string>
     <string name="grape_variety_blend">Grape Variety/Blend</string>
     <string name="country_of_origin">Country of Origin</string>
     <string name="region_appellation">Region/Appellation</string>
@@ -339,19 +335,12 @@
         <item>@string/united_states</item>
     </string-array>
 
-    <string-array name="new_world_countries">
+    <string-array name="new_world_countries" tools:keep="@array/new_world_countries">
         <item>@string/argentina</item>
         <item>@string/australia</item>
         <item>@string/chile</item>
         <item>@string/new_zealand</item>
         <item>@string/united_states</item>
-    </string-array>
-
-    <string-array name="old_world_countries">
-        <item>@string/france</item>
-        <item>@string/germany</item>
-        <item>@string/italy</item>
-        <item>@string/france</item>
     </string-array>
 
     <string name="log_in">Log In</string>

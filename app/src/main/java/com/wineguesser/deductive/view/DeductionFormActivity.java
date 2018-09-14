@@ -768,7 +768,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         finish();
     }
 
-    public void isScoring(Boolean loading) {
+    private void isScoring(Boolean loading) {
         if (loading) {
             mFinalFragment.showLoadingIndicator();
         } else {

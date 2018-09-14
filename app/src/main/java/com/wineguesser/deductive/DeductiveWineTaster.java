@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import timber.log.Timber;
 
+@SuppressWarnings("WeakerAccess")
 public class DeductiveWineTaster extends Application {
     @Override
     public void onCreate() {

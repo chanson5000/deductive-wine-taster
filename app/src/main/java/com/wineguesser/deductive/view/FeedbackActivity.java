@@ -51,6 +51,7 @@ public class FeedbackActivity extends AppCompatActivity {
         savedInstanceState.putString(FEEDBACK_TEXT, mFeedbackText);
     }
 
+    @SuppressWarnings("unused")
     public void onClickSubmitFeedback(View view) {
         Intent email = new Intent(Intent.ACTION_SEND);
         email.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.feedback_email)});

@@ -184,6 +184,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
+    @SuppressWarnings("unused")
     public void onButtonWineResultSave(View view) {
         // Validate our inputs.
         if (!validInputs()) {
