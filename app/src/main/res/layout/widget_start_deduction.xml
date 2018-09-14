@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/widget_bg"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/staticText_blind_taste"
         style="@style/AppTheme.Text.Title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="@string/blind_taste"
         android:textSize="16sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/staticText_blind_taste"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_red_wine"
-            style="@style/AppTheme.Button"
-            android:layout_marginEnd="2dp"
-            android:padding="@dimen/standard_half_margin"
-            android:textSize="12sp"
-            android:layout_width="50dp"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/widget_red" />
+            android:layout_gravity="center"
+            android:width="60dp"
+            android:backgroundTint="@color/colorPrimaryRedTheme"
+            android:padding="2dp"
+            android:text="@string/widget_red"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_white_wine"
-            style="@style/AppTheme.Button"
-            android:layout_marginStart="2dp"
-            android:padding="@dimen/standard_half_margin"
-            android:textSize="12sp"
-            android:layout_width="50dp"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/widget_white" />
+            android:layout_gravity="center"
+            android:width="60dp"
+            android:backgroundTint="@color/colorPrimaryWhiteTheme"
+            android:padding="2dp"
+            android:text="@string/widget_white"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -19,25 +19,17 @@ public class StartDeductionWidget extends AppWidgetProvider {
                                         int appWidgetId) {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_start_deduction);
+        Intent intent = new Intent(context, DeductionFormActivity.class);
 
-        views.setOnClickPendingIntent(R.id.button_red_wine,
-                getPendingSelfIntent(context, true));
         views.setOnClickPendingIntent(R.id.button_white_wine,
-                getPendingSelfIntent(context, false));
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        intent.putExtra("IS_RED_WINE", true);
+        views.setOnClickPendingIntent(R.id.button_red_wine,
+                PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
-    private static PendingIntent getPendingSelfIntent(Context context, boolean isRedWine) {
-        Intent intent = new Intent(context, DeductionFormActivity.class);
-        if (isRedWine) {
-            String IS_RED_WINE = "IS_RED_WINE";
-            intent.putExtra(IS_RED_WINE, true);
-        }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(context,
-                0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
