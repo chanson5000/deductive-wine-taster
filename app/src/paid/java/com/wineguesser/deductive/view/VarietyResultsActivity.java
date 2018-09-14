@@ -35,12 +35,6 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    private static final String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    private static final String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    private static final String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    private static final String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    private static final String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
-
     private VarietyResultsViewModel inputForm;
     private ConclusionInputErrorsViewModel inputErrors;
 
@@ -58,6 +52,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private FirebaseAuth.AuthStateListener mAuthListener;
     private boolean mIsRedWine;
 
+    private String mActualLabel;
     private String mActualVariety;
     private String mActualCountry;
     private String mActualRegion;
@@ -94,6 +89,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
+            inputForm.setActualLabel(savedInstanceState.getString(FORM_ACTUAL_LABEL));
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
             inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
             inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
@@ -141,6 +137,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     public void onPause() {
         super.onPause();
 
+        mActualLabel = inputForm.getActualLabel().getValue();
         mActualVariety = inputForm.getActualVariety().getValue();
         mActualCountry = inputForm.getActualCountry().getValue();
         mActualRegion = inputForm.getActualRegion().getValue();
@@ -152,6 +149,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
+        savedInstanceState.putString(FORM_ACTUAL_LABEL, mActualLabel);
         savedInstanceState.putString(FORM_ACTUAL_VARIETY, mActualVariety);
         savedInstanceState.putString(FORM_ACTUAL_COUNTRY, mActualCountry);
         savedInstanceState.putString(FORM_ACTUAL_REGION, mActualRegion);
@@ -199,6 +197,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
             ConclusionRecord conclusionRecord = new ConclusionRecord();
             conclusionRecord.setAppConclusionVariety(inputForm.getAppVariety().getValue());
+            conclusionRecord.setActualLabel(inputForm.getActualLabel().getValue());
             conclusionRecord.setActualVariety(inputForm.getActualVariety().getValue());
             conclusionRecord.setActualCountry(inputForm.getActualCountry().getValue());
             conclusionRecord.setActualRegion(inputForm.getActualRegion().getValue());
@@ -235,6 +234,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     private boolean validInputs() {
+        String actualLabelString = inputForm.getActualLabel().getValue();
         String actualVarietyString = inputForm.getActualVariety().getValue();
         String actualCountryString = inputForm.getActualCountry().getValue();
         String actualRegionString = inputForm.getActualRegion().getValue();
@@ -244,6 +244,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         boolean isValid = true;
 
         // Check that user has provided their conclusion of grape variety.
+        if (actualLabelString == null || actualLabelString.isEmpty()) {
+            inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
+        }
+
         if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;

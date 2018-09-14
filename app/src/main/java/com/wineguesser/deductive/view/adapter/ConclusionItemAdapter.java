@@ -39,7 +39,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
         ConclusionItemAdapterViewHolder(View view) {
             super(view);
 
-            mActualGrape = view.findViewById(R.id.textView_actual_grape);
+            mActualGrape = view.findViewById(R.id.textView_actual_variety);
             mUserGrape = view.findViewById(R.id.textView_user_conclusion_grape);
             mAppGrape = view.findViewById(R.id.textView_app_conclusion_grape);
             view.setOnClickListener(this);
@@ -55,7 +55,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
 
     @NonNull
     public ConclusionItemAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_grape_conclusion_record;
+        int layoutId = R.layout.item_conclusion_record;
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         View view = inflater.inflate(layoutId, viewGroup, false);
@@ -74,7 +74,6 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
             conclusionItemAdapterViewHolder.mAppGrape.setText(R.string.no_data);
         } else {
             conclusionItemAdapterViewHolder.mAppGrape.setText(appConclusionVariety);
-
         }
     }
 
