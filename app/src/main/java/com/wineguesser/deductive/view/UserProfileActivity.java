@@ -2,19 +2,29 @@ package com.wineguesser.deductive.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.squareup.picasso.Callback;
@@ -313,6 +323,39 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         userProfileModel.setConfirmEmailAddress(null);
                         resetAllErrorEmailAddress();
                         Helpers.makeToastShort(mContext, R.string.up_toast_updated_email);
+                    } else if (task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle(R.string.up_re_authenticate);
+                        final EditText password = new EditText(this);
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        builder.setView(password);
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            String email = user.getEmail();
+                            if (email != null) {
+                                AuthCredential credential = EmailAuthProvider
+                                        .getCredential(user.getEmail(), password.getText().toString());
+
+                                user.reauthenticate(credential).addOnCompleteListener(reAuthTask ->
+                                        user.updateEmail(newEmailAddress).addOnCompleteListener(updateEmailTask -> {
+                                            Timber.d("Successfully updated user email address.");
+                                            userProfileModel.setEmailAddress(newEmailAddress);
+                                            userProfileModel.setConfirmEmailAddress(null);
+                                            resetAllErrorEmailAddress();
+                                            Helpers.makeToastShort(mContext, R.string.up_toast_updated_email);
+                                        }));
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+                        builder.show();
+                    } else {
+                        if (task.getException() != null) {
+                            Timber.e("Error updating email address: %s", task.getException().toString());
+                        } else if (task.getResult() != null) {
+                            Timber.e("Error updating email address: %s", task.getResult().toString());
+                        } else {
+                            Timber.e("Unknown error while updating email address.");
+                        }
+                        setErrorEmailAddress(getString(R.string.up_unable_to_update_email));
                     }
                 });
             } else if (errorEmailAddress != null) {
@@ -442,6 +485,40 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         resetAllPasswordFields();
                         resetAllErrorPassword();
                         Helpers.makeToastShort(mContext, R.string.up_toast_updated_password);
+                    } else if (task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle(R.string.up_re_authenticate);
+                        final EditText password = new EditText(this);
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        builder.setView(password);
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            String email = user.getEmail();
+                            if (email != null) {
+                                AuthCredential credential = EmailAuthProvider
+                                        .getCredential(user.getEmail(), password.getText().toString());
+
+                                user.reauthenticate(credential).addOnCompleteListener(reAuthTask ->
+                                        user.updatePassword(newPassword)).addOnCompleteListener(updateEmailTask -> {
+                                    Timber.d("Successfully updated user password.");
+                                    resetAllPasswordFields();
+                                    resetAllErrorPassword();
+                                    Helpers.makeToastShort(mContext, R.string.up_toast_updated_password);
+                                });
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+                        builder.show();
+                    } else if (task.getException() instanceof FirebaseAuthWeakPasswordException) {
+                        setErrorNewPassword(getString(R.string.up_weak_password));
+                    } else {
+                        if (task.getException() != null) {
+                            Timber.e("Error updating password: %s", task.getException().toString());
+                        } else if (task.getResult() != null) {
+                            Timber.e("Error updating password: %s", task.getResult().toString());
+                        } else {
+                            Timber.e("Unknown error while updating password.");
+                        }
+                        setErrorNewPassword(getString(R.string.up_unable_to_update_password));
                     }
                 });
 

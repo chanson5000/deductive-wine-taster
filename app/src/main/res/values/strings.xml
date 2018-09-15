@@ -450,5 +450,8 @@
     <string name="up_error_passwords_must_match">Passwords must match.</string>
 
     <string name="up_toast_updated_password">Updated password.</string>
-
+    <string name="up_weak_password">Please provide a stronger password.</string>
+    <string name="up_re_authenticate">Re-Authenticate</string>
+    <string name="up_unable_to_update_email">Unable to update email address.</string>
+    <string name="up_unable_to_update_password">Unable to update password.</string>
 </resources>
