@@ -283,10 +283,12 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
         }
 
-        if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)) {
+        if (mIsRedWine
+                && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
-        } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)) {
+        } else if (!mIsRedWine
+                && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
         } else {
