@@ -56,6 +56,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/start_deduction_widget_info" />
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="e84b72b0ac9cece9b733c57a6ad980e615e60735" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
