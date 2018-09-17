@@ -303,6 +303,60 @@
     <string name="south_island" translatable="false">South Island</string>
     <string name="north_island" translatable="false">North Island</string>
     <string name="tuscany" translatable="false">Tuscany</string>
+    <string name="rioja" translatable="false">Rioja</string>
+    <string name="ribera_del_duero" translatable="false">Ribera del Duero</string>
+    <string name="mosel" translatable="false">Mosel</string>
+    <string name="rhein" translatable="false">Rhein</string>
+    
+
+    <!-- Quality -->
+    <string name="reserva" translatable="false">Reserva</string>
+    <string name="gran_reserva" translatable="false">Gran Reserva</string>
+    <string name="brunello_di_montalchino" translatable="false">Brunello di Montalchino</string>
+    <string name="chianti_classico" translatable="false">Chianti Classico</string>
+    <string name="annata" translatable="false">Annata</string>
+    <string name="riserva" translatable="false">Riserva</string>
+    <string name="napa_valley" translatable="false">Napa Valley</string>
+    <string name="paso_robles" translatable="false">Paso Robles</string>
+    <string name="sonoma" translatable="false">Sonoma</string>
+    <string name="central_coast" translatable="false">Central Coast</string>
+    <string name="northern_rhone" translatable="false">Northern Rhône</string>
+    <string name="mendoza" translatable="false">Mendoza</string>
+    <string name="barolo" translatable="false">Barolo</string>
+    <string name="barbaresco" translatable="false">Barbaresco</string>
+    <string name="normale" translatable="false">Normale</string>
+    <string name="graves" translatable="false">Graves</string>
+    <string name="haut_medoc" translatable="false">Haut-Médoc</string>
+    <string name="aoc" translatable="false">AOC</string>
+    <string name="cru_classe" translatable="false">Cru Classé</string>
+    <string name="beaujolais" translatable="false">Beaujolais</string>
+    <string name="villages" translatable="false">Villages</string>
+    <string name="cru" translatable="false">Cru</string>
+    <string name="chateauneuf_du_papa">Châteauneuf-du-Pape</string>
+    <string name="gigondas" translatable="false">Gigondas</string>
+    <string name="pomeral" translatable="false">Pomeral</string>
+    <string name="st_emilion" translatable="false">St.-Émilion</string>
+    <string name="saint_emilion">Saint-Émilion</string>
+    <string name="willamette_valley" translatable="false">Willamette Valley</string>
+    <string name="central_otago" translatable="false">Central Otago</string>
+    <string name="martinborough" translatable="false">Martinborough</string>
+    <string name="cote_dor" translatable="false">Côte d\'Or</string>
+    <string name="premer_cru" translatable="false">1er Cru</string>
+    <string name="premiere_cru" translatable="false">Premiere Cru</string>
+
+    <string name="rias_baixas" translatable="false">Rías Baixas</string>
+    <string name="savenniere" translatable="false">Savennières</string>
+    <string name="vouvray" translatable="false">Vouvray</string>
+    <string name="chablis" translatable="false">Chablis</string>
+    <string name="maconnais" translatable="false">Mâconnais</string>
+    <string name="friuli" translatable="false">Friuli</string>
+    <string name="trentino_alto_adige" translatable="false">Trentino-Alto Adige</string>
+    <string name="trocken" translatable="false">Trocken</string>
+    <string name="kabinett" translatable="false">Kabinett</string>
+    <string name="spatlese" translatable="false">Spätlese</string>
+    <string name="clare_valley" translatable="false">Clare Valley</string>
+    <string name="eden_valley" translatable="false">Eden Valley</string>
+
 
     <string-array name="all_regions">
         <item>@string/alsace</item>
@@ -321,6 +375,59 @@
         <item>@string/south_island</item>
         <item>@string/north_island</item>
         <item>@string/tuscany</item>
+        <item>@string/rioja</item>
+        <item>@string/ribera_del_duero</item>
+        <item>@string/mosel</item>
+        <item>@string/rhein</item>
+    </string-array>
+
+    <string-array name="all_qualities">
+        <item>@string/reserva</item>
+        <item>@string/gran_reserva</item>
+        <item>@string/brunello_di_montalchino</item>
+        <item>@string/chianti_classico</item>
+        <item>@string/annata</item>
+        <item>@string/riserva</item>
+        <item>@string/napa_valley</item>
+        <item>@string/paso_robles</item>
+        <item>@string/sonoma</item>
+        <item>@string/central_coast</item>
+        <item>@string/northern_rhone</item>
+        <item>@string/mendoza</item>
+        <item>@string/barolo</item>
+        <item>@string/barbaresco</item>
+        <item>@string/normale</item>
+        <item>@string/graves</item>
+        <item>@string/haut_medoc</item>
+        <item>@string/aoc</item>
+        <item>@string/cru_classe</item>
+        <item>@string/beaujolais</item>
+        <item>@string/villages</item>
+        <item>@string/cru</item>
+        <item>@string/chateauneuf_du_papa</item>
+        <item>@string/gigondas</item>
+        <item>@string/pomeral</item>
+        <item>@string/st_emilion</item>
+        <item>@string/saint_emilion</item>
+        <item>@string/willamette_valley</item>
+        <item>@string/central_otago</item>
+        <item>@string/martinborough</item>
+        <item>@string/cote_dor</item>
+        <item>@string/premer_cru</item>
+        <item>@string/premiere_cru</item>
+        <item>@string/rias_baixas</item>
+        <item>@string/savenniere</item>
+        <item>@string/vouvray</item>
+        <item>@string/chablis</item>ia
+        <item>@string/maconnais</item>
+        <item>@string/friuli</item>
+        <item>@string/trentino_alto_adige</item>
+        <item>@string/trocken</item>
+        <item>@string/kabinett</item>
+        <item>@string/spatlese</item>
+        <item>@string/clare_valley</item>
+        <item>@string/eden_valley</item>
+        <item>@string/none</item>
     </string-array>
 
     <string-array name="all_countries">

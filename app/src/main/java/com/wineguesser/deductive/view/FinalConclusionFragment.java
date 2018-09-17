@@ -14,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 import com.wineguesser.deductive.util.Helpers;
+import com.wineguesser.deductive.util.InternationalCharactersArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ public class FinalConclusionFragment extends Fragment implements
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_final)
-    NestedScrollView mScrollViewFinal;
+    ScrollView mScrollViewFinal;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_grape_variety)
     AutoCompleteTextView mAutoTextVariety;
@@ -209,17 +212,21 @@ public class FinalConclusionFragment extends Fragment implements
             varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
         }
 
-        mAutoTextVariety.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+        mAutoTextVariety.setAdapter(new InternationalCharactersArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
         List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
+        List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mAutoTextCountry.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+        mAutoTextCountry.setAdapter(new InternationalCharactersArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mAutoTextRegion.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+        mAutoTextRegion.setAdapter(new InternationalCharactersArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, regions));
+
+        mAutoTextQuality.setAdapter((new InternationalCharactersArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, qualities)));
     }
 
     public void showLoadingIndicator() {

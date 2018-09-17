@@ -25,6 +25,7 @@ import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.Helpers;
+import com.wineguesser.deductive.util.InternationalCharactersArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
@@ -52,6 +53,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_region)
     AutoCompleteTextView mSingleViewActualRegion;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.autoText_actual_quality)
+    AutoCompleteTextView mSingleViewActualQuality;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -130,15 +134,19 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
         List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
+        List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mSingleViewActualVariety.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualVariety.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
-        mSingleViewActualCountry.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualCountry.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualRegion.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
+
+        mSingleViewActualQuality.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+                android.R.layout.simple_dropdown_item_1line, qualities));
 
         if (!mAdDisplayed) {
             mInterstitialAd = new InterstitialAd(this);

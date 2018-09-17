@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:visibility="invisible" />
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:id="@+id/scrollView_final"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -169,6 +169,6 @@
                     android:text="@string/submit_final_conclusion" />
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </FrameLayout>
 </layout>
