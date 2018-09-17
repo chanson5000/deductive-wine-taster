@@ -1,9 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Deductive Wine Taster</string>
     <string name="blind_taste">Blind Taste</string>
-    <string name="button_red_wine">Red Wine</string>
-    <string name="button_white_wine">White Wine</string>
-    <string name="button_statistics">Statistics</string>
     <string name="clear_form">Clear Form</string>
 
     <!-- Descriptors -->
@@ -23,7 +20,6 @@
     <string name="ruby">Ruby</string>
     <string name="red">Red</string>
     <string name="garnet">Garnet</string>
-    <string name="water_white">Water White</string>
     <string name="straw">Straw</string>
     <string name="yellow">Yellow</string>
     <string name="gold">Gold</string>
@@ -122,7 +118,6 @@
     <string name="slate">Slate</string>
     <string name="flint">Flint</string>
 
-    <string name="wood">Wood</string>
     <string name="oak">Oak</string>
     <!-- None -->
     <string name="old">Old</string>
@@ -133,7 +128,7 @@
     <string name="american">American</string>
 
     <!-- Palate -->
-    <string name="palate">Palate</string>
+    <string name="palate" tools:keep="@string/palate">Palate</string>
     <string name="sweetness">Sweetness</string>
     <string name="bone_dry">Bone Dry</string>
     <string name="dry">Dry</string>
@@ -183,7 +178,6 @@
     <string name="complexity">Complexity</string>
     <!-- Low, Med-, Medium, Med+, High -->
 
-    <string name="initial_conclusion">Initial Conclusion</string>
     <string name="possible_grape_varieties">Possible Grape Varieties</string>
     <string name="new_world">New World</string>
     <string name="old_world">Old World</string>
@@ -198,7 +192,6 @@
     <string name="five_to_ten_years">5–10 years</string>
     <string name="ten_plus_years">10+ years</string>
 
-    <string name="final_conclusion">Final Conclusion</string>
     <string name="grape_variety_blend">Grape Variety/Blend</string>
     <string name="country_of_origin">Country of Origin</string>
     <string name="region_appellation">Region/Appellation</string>
@@ -211,10 +204,6 @@
     <string name="our_guess">Our Conclusion</string>
     <string name="actual_wine">Actual Wine</string>
     <string name="save_result">Save Result</string>
-
-    <string name="our_conclusion_colon">Our Conclusion: </string>
-    <string name="actual_wine_colon">Actual Wine: </string>
-    <string name="user_conclusion_colon">Your Conclusion: </string>
 
     <!-- Varieties -->
     <string name="albarino" translatable="false">Albariño</string>
@@ -314,6 +303,60 @@
     <string name="south_island" translatable="false">South Island</string>
     <string name="north_island" translatable="false">North Island</string>
     <string name="tuscany" translatable="false">Tuscany</string>
+    <string name="rioja" translatable="false">Rioja</string>
+    <string name="ribera_del_duero" translatable="false">Ribera del Duero</string>
+    <string name="mosel" translatable="false">Mosel</string>
+    <string name="rhein" translatable="false">Rhein</string>
+    
+
+    <!-- Quality -->
+    <string name="reserva" translatable="false">Reserva</string>
+    <string name="gran_reserva" translatable="false">Gran Reserva</string>
+    <string name="brunello_di_montalchino" translatable="false">Brunello di Montalchino</string>
+    <string name="chianti_classico" translatable="false">Chianti Classico</string>
+    <string name="annata" translatable="false">Annata</string>
+    <string name="riserva" translatable="false">Riserva</string>
+    <string name="napa_valley" translatable="false">Napa Valley</string>
+    <string name="paso_robles" translatable="false">Paso Robles</string>
+    <string name="sonoma" translatable="false">Sonoma</string>
+    <string name="central_coast" translatable="false">Central Coast</string>
+    <string name="northern_rhone" translatable="false">Northern Rhône</string>
+    <string name="mendoza" translatable="false">Mendoza</string>
+    <string name="barolo" translatable="false">Barolo</string>
+    <string name="barbaresco" translatable="false">Barbaresco</string>
+    <string name="normale" translatable="false">Normale</string>
+    <string name="graves" translatable="false">Graves</string>
+    <string name="haut_medoc" translatable="false">Haut-Médoc</string>
+    <string name="aoc" translatable="false">AOC</string>
+    <string name="cru_classe" translatable="false">Cru Classé</string>
+    <string name="beaujolais" translatable="false">Beaujolais</string>
+    <string name="villages" translatable="false">Villages</string>
+    <string name="cru" translatable="false">Cru</string>
+    <string name="chateauneuf_du_papa">Châteauneuf-du-Pape</string>
+    <string name="gigondas" translatable="false">Gigondas</string>
+    <string name="pomeral" translatable="false">Pomeral</string>
+    <string name="st_emilion" translatable="false">St.-Émilion</string>
+    <string name="saint_emilion">Saint-Émilion</string>
+    <string name="willamette_valley" translatable="false">Willamette Valley</string>
+    <string name="central_otago" translatable="false">Central Otago</string>
+    <string name="martinborough" translatable="false">Martinborough</string>
+    <string name="cote_dor" translatable="false">Côte d\'Or</string>
+    <string name="premer_cru" translatable="false">1er Cru</string>
+    <string name="premiere_cru" translatable="false">Premiere Cru</string>
+
+    <string name="rias_baixas" translatable="false">Rías Baixas</string>
+    <string name="savenniere" translatable="false">Savennières</string>
+    <string name="vouvray" translatable="false">Vouvray</string>
+    <string name="chablis" translatable="false">Chablis</string>
+    <string name="maconnais" translatable="false">Mâconnais</string>
+    <string name="friuli" translatable="false">Friuli</string>
+    <string name="trentino_alto_adige" translatable="false">Trentino-Alto Adige</string>
+    <string name="trocken" translatable="false">Trocken</string>
+    <string name="kabinett" translatable="false">Kabinett</string>
+    <string name="spatlese" translatable="false">Spätlese</string>
+    <string name="clare_valley" translatable="false">Clare Valley</string>
+    <string name="eden_valley" translatable="false">Eden Valley</string>
+
 
     <string-array name="all_regions">
         <item>@string/alsace</item>
@@ -332,6 +375,59 @@
         <item>@string/south_island</item>
         <item>@string/north_island</item>
         <item>@string/tuscany</item>
+        <item>@string/rioja</item>
+        <item>@string/ribera_del_duero</item>
+        <item>@string/mosel</item>
+        <item>@string/rhein</item>
+    </string-array>
+
+    <string-array name="all_qualities">
+        <item>@string/reserva</item>
+        <item>@string/gran_reserva</item>
+        <item>@string/brunello_di_montalchino</item>
+        <item>@string/chianti_classico</item>
+        <item>@string/annata</item>
+        <item>@string/riserva</item>
+        <item>@string/napa_valley</item>
+        <item>@string/paso_robles</item>
+        <item>@string/sonoma</item>
+        <item>@string/central_coast</item>
+        <item>@string/northern_rhone</item>
+        <item>@string/mendoza</item>
+        <item>@string/barolo</item>
+        <item>@string/barbaresco</item>
+        <item>@string/normale</item>
+        <item>@string/graves</item>
+        <item>@string/haut_medoc</item>
+        <item>@string/aoc</item>
+        <item>@string/cru_classe</item>
+        <item>@string/beaujolais</item>
+        <item>@string/villages</item>
+        <item>@string/cru</item>
+        <item>@string/chateauneuf_du_papa</item>
+        <item>@string/gigondas</item>
+        <item>@string/pomeral</item>
+        <item>@string/st_emilion</item>
+        <item>@string/saint_emilion</item>
+        <item>@string/willamette_valley</item>
+        <item>@string/central_otago</item>
+        <item>@string/martinborough</item>
+        <item>@string/cote_dor</item>
+        <item>@string/premer_cru</item>
+        <item>@string/premiere_cru</item>
+        <item>@string/rias_baixas</item>
+        <item>@string/savenniere</item>
+        <item>@string/vouvray</item>
+        <item>@string/chablis</item>ia
+        <item>@string/maconnais</item>
+        <item>@string/friuli</item>
+        <item>@string/trentino_alto_adige</item>
+        <item>@string/trocken</item>
+        <item>@string/kabinett</item>
+        <item>@string/spatlese</item>
+        <item>@string/clare_valley</item>
+        <item>@string/eden_valley</item>
+        <item>@string/none</item>
     </string-array>
 
     <string-array name="all_countries">
@@ -346,7 +442,7 @@
         <item>@string/united_states</item>
     </string-array>
 
-    <string-array name="new_world_countries">
+    <string-array name="new_world_countries" tools:keep="@array/new_world_countries">
         <item>@string/argentina</item>
         <item>@string/australia</item>
         <item>@string/chile</item>
@@ -354,20 +450,7 @@
         <item>@string/united_states</item>
     </string-array>
 
-    <string-array name="old_world_countries">
-        <item>@string/france</item>
-        <item>@string/germany</item>
-        <item>@string/italy</item>
-        <item>@string/france</item>
-    </string-array>
-
-
-    <!-- AdMob -->
-    <string name="app_add_id">ca-app-pub-6240294942266099~9194679928</string>
-    <string name="interstitial_ad_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
-
     <string name="log_in">Log In</string>
-    <string name="welcome_tag">Welcome, %1$s</string>
     <string name="log_out">Log Out</string>
     <string name="log_in_for_result_save">Log In To Save Result</string>
     <string name="your_guess">Your Conclusion</string>
@@ -381,13 +464,11 @@
     <string name="profile_photo_url">Photo URL: </string>
     <string name="profile_email_address">Email Address: </string>
     <string name="profile_confirm_email_address">Confirm Email Address: </string>
-    <string name="profile_image">Profile Image</string>
+    <string name="profile_image">Your Profile Image</string>
     <string name="button_update_details">Update Details</string>
     <string name="profile_new_password">New Password: </string>
     <string name="profile_confirm_password">Confirm Password: </string>
     <string name="button_update_password">Update Password</string>
-    <string name="auth_provider">Authentication Provider: </string>
-    <string name="placeholder_provider">Provider</string>
     <string name="button_delete_photo">Delete</string>
     <string name="button_update_photo">Update</string>
     <string name="placeholder_wine_variety">Wine Variety</string>
@@ -399,22 +480,85 @@
     <string name="error_input_valid_grape">Please input a valid primary grape variety.</string>
     <string name="error_input_valid_region">Please input a valid region/appellation.</string>
     <string name="error_input_valid_vintage">Please input a valid vintage. (1900 - Present)</string>
+    <string name="error_input_valid_label">Please input a wine label.</string>
 
     <string name="form_cleared">Form Cleared!</string>
     <string name="menu_clear_history">Clear History</string>
     <string name="history_cleared">History Cleared!</string>
     <string name="remove_record">Remove Record</string>
     <string name="record_removed">Record Removed!</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="widget_red">Red</string>
     <string name="widget_white">White</string>
 
     <string name="usage">Usage</string>
     <string name="size">Size</string>
     <string name="type">Type</string>
-
     <string name="start_blind_tasting">Start Blind Tasting!</string>
     <string name="snack_log_in">Log in to view history.</string>
+    <string name="sight_page_title">Sight</string>
+    <string name="nose_page_title">Nose</string>
+    <string name="palate_page_title">Palate</string>
+    <string name="initial_conclusion_page_title">Initial Conclusion</string>
+    <string name="final_conclusion_page_title">Final Conclusion</string>
+    <string name="dialog_clear_history">Clear History</string>
+    <string name="dialog_clear_history_ask">Are you sure you want to clear your conclusion history?</string>
+    <string name="cancel_history_clear">Cancelled clearing history.</string>
 
+    <string name="history_activity_title">Conclusion History</string>
+    <string name="history_record_activity_title">Conclusion Record</string>
+    <string name="user_profile_activity_title">Your Profile</string>
+    <string name="variety_results_activity_title">Wine Results</string>
+
+    <string name="da_menu_show_white">White Screen</string>
+    <string name="da_toast_showing_screen_for_wine">Turned on white screen for wine evaluation.</string>
+    <string name="da_toast_hiding_screen_for_wine">White screen turned off.</string>
+    <string name="da_toast_unable_to_score">Unable to score grape variety!</string>
+
+    <string name="variety_results_label">Label</string>
+    <string name="variety">Variety</string>
+
+    <string name="main_blind_taste_red">Blind taste red wine.</string>
+    <string name="main_blind_taste_white">Blind taste white wine.</string>
+    <string name="main_view_history">View tasting history.</string>
+
+    <string name="df_snackbar_make_selections">Please make all selections before continuing.</string>
+    <string name="df_snackbar_dismiss">Dismiss</string>
+
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_contact_us">Tell us what you think!</string>
+    <string name="feedback_detail">Want more features? Found a bug? We want to know!</string>
+    <string name="feedback_button_submit">Submit Feedback</string>
+    <string name="feedback_email" translatable="false">feedback@wineguesser.com</string>
+    <string name="feedback_subject" translatable="false">Deductive Wine Taster App Feedback</string>
+    <string name="feedback_select_client">Select an email client to send feedback.</string>
+    <string name="feedback_requires_email_app">*Requires an installed email app.</string>
+
+    <string name="up_dialog_delete_conclusion_record">Delete Conclusion Record</string>
+    <string name="up_dialog_confirm_delete_record">Are you sure you want delete this conclusion record?</string>
+    <string name="up_dialog_cancel_record_deletion">Cancelled record deletion.</string>
+
+    <string name="up_toast_updated_display_name">Updated display name.</string>
+    <string name="up_toast_updated_email">Updated e-mail address.</string>
+    <string name="up_error_photo_url">Photo URL field must not be empty.</string>
+    <string name="up_toast_updated_photo_url">Updated photo URL.</string>
+
+    <string name="up_dialog_remove_photo">Remove Profile Photo</string>
+    <string name="up_dialog_confirm_remove_photo">Are you sure you want to remove your profile photo?</string>
+    <string name="up_toast_removed_photo">Removed profile photo.</string>
+
+    <string name="up_toast_canceled_remove_photo">Cancelled photo removal.</string>
+
+    <string name="up_error_display_name_field_empty">Display Name field must not be empty.</string>
+    <string name="up_error_email_field_empty">Email Address field must not be empty.</string>
+    <string name="up_error_confirm_email_field_empty">Confirm Email Address field must not be empty.</string>
+    <string name="up_error_email_fields_must_match">Email Address fields must match.</string>
+
+    <string name="up_error_password_empty">Confirm password field must not be empty.</string>
+    <string name="up_error_passwords_must_match">Passwords must match.</string>
+
+    <string name="up_toast_updated_password">Updated password.</string>
+    <string name="up_weak_password">Please provide a stronger password.</string>
+    <string name="up_re_authenticate">Re-Authenticate</string>
+    <string name="up_unable_to_update_email">Unable to update email address.</string>
+    <string name="up_unable_to_update_password">Unable to update password.</string>
 </resources>

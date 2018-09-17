@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorPrimaryBackground</item>
         <item name="cardViewStyle">@style/CardView</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
     </style>
 
     <style name="WhiteTheme" parent="AppTheme">
@@ -22,11 +23,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkRedTheme</item>
         <item name="colorAccent">@color/colorAccentRedTheme</item>
         <item name="android:windowBackground">@color/colorBackgroundRedTheme</item>
-    </style>
-
-    <style name="RedPopupTheme">
-        <item name="titleTextColor">@color/colorPrimaryTextRedTheme</item>
-        <item name="android:colorControlNormal">@color/colorPrimaryTextRedTheme</item>
     </style>
 
     <style name="AppTheme.Text.Title" parent="TextAppearance.AppCompat.Title">
@@ -150,10 +146,10 @@
     </style>
 
     <style name="AppTheme.CardView">
-        <item name="android:layout_margin">@dimen/standard_margin</item>
+        <item name="android:layout_margin">@dimen/standard_half_margin</item>
     </style>
 
-    <style name="AppTheme.CardView.Text">
+    <style name="AppTheme.CardView.Text" tools:keep="@style/AppTheme_CardView_Text">
 
     </style>
 
@@ -180,7 +176,8 @@
 
     <style name="AppTheme.RecordView.Text.Subhead">
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textColor">@color/darkGrey</item>
         <item name="android:padding">@dimen/standard_half_margin</item>
     </style>
 

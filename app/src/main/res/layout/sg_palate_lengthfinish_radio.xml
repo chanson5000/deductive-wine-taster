@@ -34,6 +34,6 @@
         <RadioButton
             android:id="@+id/radio_palate_length_finish_long"
             style="@style/AppTheme.SelectionGroup.RadioButton"
-            android:text="@string/high" />
+            android:text="@string/word_long" />
     </RadioGroup>
 </LinearLayout>

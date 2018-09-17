@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_nose)
-    NestedScrollView mScrollViewNose;
+    ScrollView mScrollViewNose;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.group_nose_wood)
@@ -54,19 +53,17 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        mActivityPreferences =
-                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+        String wineColorPreferenceType;
+        if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
             mIsRedWine = true;
+            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
         } else {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-            mIsRedWine = false;
+            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
         }
+        mWinePreferences = mFragmentActivity
+                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -124,7 +121,7 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
 
     public void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewNose.fullScroll(ScrollView.FOCUS_UP));
+                mScrollViewNose.scrollTo(0, 0));
     }
 
     private void loadSelectionState() {
@@ -156,18 +153,21 @@ public class NoseFragment extends Fragment implements DeductionFormContract,
                 }
             }
         }
-        syncWoodRadioState();
+        syncWoodRadioState(false);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private boolean getCheckBoxState(int key) {
         return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
     }
 
-    public void syncWoodRadioState() {
+    public void syncWoodRadioState(boolean viewToggled) {
         if (getCheckBoxState(SWITCH_NOSE_WOOD)) {
             mWoodGroup.setVisibility(View.VISIBLE);
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewNose.fullScroll(ScrollView.FOCUS_DOWN));
+            if (viewToggled) {
+                AppExecutors.getInstance().mainThread().execute(() ->
+                        mScrollViewNose.fullScroll(ScrollView.FOCUS_DOWN));
+            }
         } else {
             mWoodGroup.setVisibility(View.GONE);
         }

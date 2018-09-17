@@ -10,6 +10,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
     private final MutableLiveData<String> errorRegion = new MutableLiveData<>();
     private final MutableLiveData<String> errorQuality = new MutableLiveData<>();
     private final MutableLiveData<String> errorVintage = new MutableLiveData<>();
+    private final MutableLiveData<String> errorLabel = new MutableLiveData<>();
 
     public MutableLiveData<String> getErrorVariety() {
         return errorVariety;
@@ -39,6 +40,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         return errorQuality;
     }
 
+    @SuppressWarnings("unused")
     public void setErrorQuality(String errorQuality) {
         this.errorQuality.setValue(errorQuality);
     }
@@ -49,5 +51,13 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
 
     public void setErrorVintage(String errorVintage) {
         this.errorVintage.setValue(errorVintage);
+    }
+
+    public MutableLiveData<String> getErrorLabel() {
+        return errorLabel;
+    }
+
+    public void setErrorLabel(String errorLabel) {
+        this.errorLabel.setValue(errorLabel);
     }
 }

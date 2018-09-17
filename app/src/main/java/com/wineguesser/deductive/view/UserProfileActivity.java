@@ -2,20 +2,29 @@ package com.wineguesser.deductive.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.squareup.picasso.Callback;
@@ -24,13 +33,12 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityUserProfileBinding;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.repository.UserRepository;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.viewmodel.UserProfileViewModel;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class UserProfileActivity extends AppCompatActivity implements DatabaseContract {
@@ -54,12 +62,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
     private String mNewPassword;
     private String mNewConfirmPassword;
 
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.imageView_profile_photo)
-    ImageView mImageProfilePhoto;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.button_delete_photo)
-    Button mButtonDeletePhoto;
+    private ImageView mImageProfilePhoto;
+    private Button mButtonDeletePhoto;
 
     private UserProfileViewModel userProfileModel;
 
@@ -68,20 +72,22 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         super.onCreate(savedInstanceState);
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.user_profile_activity_title);
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);
         binding.setLifecycleOwner(this);
-
         binding.setUserProfileForm(userProfileModel);
 
-        ButterKnife.bind(this);
+        mImageProfilePhoto = findViewById(R.id.imageView_profile_photo);
+        mButtonDeletePhoto = findViewById(R.id.button_delete_photo);
 
         if (savedInstanceState != null) {
             mNewTextDisplayName = savedInstanceState.getString(NEW_DISPLAY_NAME);
@@ -218,7 +224,8 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
                         @Override
                         public void onError(Exception e) {
-                            Timber.d("Error loading profile image.");
+                            Timber.e("Error loading profile image.");
+                            mButtonDeletePhoto.setVisibility(View.GONE);
                         }
                     });
         } else {
@@ -235,7 +242,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
         if (user == null) {
             // TODO: Decide if more providers are wanted.
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
@@ -250,6 +257,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdateDetails(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -267,7 +275,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (user != null) {
             if (newDisplayName != null && !newDisplayName.equals(user.getDisplayName())) {
                 if (newDisplayName.isEmpty()) {
-                    errorDisplayName = "Display Name field must not be empty.";
+                    errorDisplayName = getString(R.string.up_error_display_name_field_empty);
                 } else {
                     errorDisplayName = null;
                     updateDisplayName = true;
@@ -276,11 +284,11 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
             if (newEmailAddress != null && !newEmailAddress.equals(user.getEmail())) {
                 if (newEmailAddress.isEmpty()) {
-                    errorEmailAddress = "Email address field must not be empty.";
+                    errorEmailAddress = getString(R.string.up_error_email_field_empty);
                 } else if (newConfirmEmailAddress != null && newConfirmEmailAddress.isEmpty()) {
-                    errorConfirmEmailAddress = "Confirm Email address field must not be empty.";
+                    errorConfirmEmailAddress = getString(R.string.up_error_confirm_email_field_empty);
                 } else if (!newEmailAddress.equals(newConfirmEmailAddress)) {
-                    errorEmailAddress = "Email address fields must match.";
+                    errorEmailAddress = getString(R.string.up_error_email_fields_must_match);
                 } else {
                     errorEmailAddress = null;
                     errorConfirmEmailAddress = null;
@@ -298,9 +306,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         userProfileModel.setUserName(newDisplayName);
                         userProfileModel.setDisplayName(newDisplayName);
                         resetErrorDisplayName();
-                        Toast.makeText(mContext,
-                                "Updated display name.",
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_display_name);
                     }
                 });
             } else if (errorDisplayName != null) {
@@ -314,11 +320,42 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                     if (task.isSuccessful()) {
                         Timber.d("Successfully updated user email address.");
                         userProfileModel.setEmailAddress(newEmailAddress);
-                        userProfileModel.setConfirmEmailAddress("");
+                        userProfileModel.setConfirmEmailAddress(null);
                         resetAllErrorEmailAddress();
-                        Toast.makeText(mContext,
-                                "Updated email address.",
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_email);
+                    } else if (task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle(R.string.up_re_authenticate);
+                        final EditText password = new EditText(this);
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        builder.setView(password);
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            String email = user.getEmail();
+                            if (email != null) {
+                                AuthCredential credential = EmailAuthProvider
+                                        .getCredential(user.getEmail(), password.getText().toString());
+
+                                user.reauthenticate(credential).addOnCompleteListener(reAuthTask ->
+                                        user.updateEmail(newEmailAddress).addOnCompleteListener(updateEmailTask -> {
+                                            Timber.d("Successfully updated user email address.");
+                                            userProfileModel.setEmailAddress(newEmailAddress);
+                                            userProfileModel.setConfirmEmailAddress(null);
+                                            resetAllErrorEmailAddress();
+                                            Helpers.makeToastShort(mContext, R.string.up_toast_updated_email);
+                                        }));
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+                        builder.show();
+                    } else {
+                        if (task.getException() != null) {
+                            Timber.e("Error updating email address: %s", task.getException().toString());
+                        } else if (task.getResult() != null) {
+                            Timber.e("Error updating email address: %s", task.getResult().toString());
+                        } else {
+                            Timber.e("Unknown error while updating email address.");
+                        }
+                        setErrorEmailAddress(getString(R.string.up_unable_to_update_email));
                     }
                 });
             } else if (errorEmailAddress != null) {
@@ -333,6 +370,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdateProfilePhoto(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -349,7 +387,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
                 if (newPhotoUrl != null && !newPhotoUrl.equals(oldPhotoUrl)) {
                     if (newPhotoUrl.isEmpty()) {
-                        errorPhotoUrl = "Photo URL field must not be empty.";
+                        errorPhotoUrl = getString(R.string.up_error_photo_url);
                     } else {
                         errorPhotoUrl = null;
                         updatePhotoUrl = true;
@@ -372,9 +410,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         showProfilePhoto(newPhotoUri);
                         userProfileModel.setPhotoUrl(newPhotoUrl);
                         resetErrorPhotoUrl();
-                        Toast.makeText(mContext,
-                                "Update photo URL.",
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_photo_url);
                     }
                 });
             } else if (errorPhotoUrl != null) {
@@ -382,37 +418,36 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
             } else {
                 resetErrorPhotoUrl();
             }
-
         } else {
             startLoginUI();
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickDeleteProfilePhoto(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setCancelable(true);
-            builder.setTitle("Remove Profile Photo");
-            builder.setMessage("Are you sure you want to remove your profile photo?");
-            builder.setPositiveButton("Yes", (dialog, which) -> {
+            builder.setTitle(R.string.up_dialog_remove_photo);
+            builder.setMessage(R.string.up_dialog_confirm_remove_photo);
+            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(null).build();
 
                 user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Timber.d("Successfully removed user photo URI.");
-                        Toast.makeText(mContext, "Removed profile photo.", Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_removed_photo);
                         resetErrorPhotoUrl();
                         showProfilePhoto(null);
                     }
                 });
             });
 
-            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-
-            });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                    Helpers.makeToastShort(mContext, R.string.up_toast_canceled_remove_photo));
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -421,6 +456,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
+    @SuppressWarnings("unused")
     public void onClickUpdatePassword(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -434,9 +470,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         if (user != null) {
             if (newPassword != null && !newPassword.isEmpty()) {
                 if (newConfirmPassword != null && newConfirmPassword.isEmpty()) {
-                    errorPassword = "Confirm password field must not be empty.";
+                    errorPassword = getString(R.string.up_error_password_empty);
                 } else if (!newPassword.equals(newConfirmPassword)) {
-                    errorConfirmPassword = "Passwords must match.";
+                    errorConfirmPassword = getString(R.string.up_error_passwords_must_match);
                 } else {
                     updatePassword = true;
                 }
@@ -448,9 +484,41 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
                         Timber.d("Successfully updated user password.");
                         resetAllPasswordFields();
                         resetAllErrorPassword();
-                        Toast.makeText(mContext,
-                                "Updated password.",
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.up_toast_updated_password);
+                    } else if (task.getException() instanceof FirebaseAuthRecentLoginRequiredException) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle(R.string.up_re_authenticate);
+                        final EditText password = new EditText(this);
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        builder.setView(password);
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            String email = user.getEmail();
+                            if (email != null) {
+                                AuthCredential credential = EmailAuthProvider
+                                        .getCredential(user.getEmail(), password.getText().toString());
+
+                                user.reauthenticate(credential).addOnCompleteListener(reAuthTask ->
+                                        user.updatePassword(newPassword)).addOnCompleteListener(updateEmailTask -> {
+                                    Timber.d("Successfully updated user password.");
+                                    resetAllPasswordFields();
+                                    resetAllErrorPassword();
+                                    Helpers.makeToastShort(mContext, R.string.up_toast_updated_password);
+                                });
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+                        builder.show();
+                    } else if (task.getException() instanceof FirebaseAuthWeakPasswordException) {
+                        setErrorNewPassword(getString(R.string.up_weak_password));
+                    } else {
+                        if (task.getException() != null) {
+                            Timber.e("Error updating password: %s", task.getException().toString());
+                        } else if (task.getResult() != null) {
+                            Timber.e("Error updating password: %s", task.getResult().toString());
+                        } else {
+                            Timber.e("Unknown error while updating password.");
+                        }
+                        setErrorNewPassword(getString(R.string.up_unable_to_update_password));
                     }
                 });
 

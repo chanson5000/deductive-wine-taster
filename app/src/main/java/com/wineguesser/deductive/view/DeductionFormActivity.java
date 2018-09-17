@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,17 +24,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
+import com.wineguesser.deductive.util.Helpers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
+// TODO: Make this activity better.
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
         DatabaseContract, GrapeResult {
 
@@ -43,8 +48,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private boolean mIsRedWine;
     private boolean mLaunchingIntent;
 
+    private MenuItem mMenuShowWhite;
+
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
 
     private Context mContext;
     private SightFragment mSightFragment;
@@ -71,11 +79,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SharedPreferences.Editor editor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
-            setTheme(R.style.RedTheme);
-
             setContentView(R.layout.activity_red_deduction_form);
 
-            editor.putString(IS_RED_WINE, RED_WINE);
+            editor.putBoolean(IS_RED_WINE, TRUE);
             mIsRedWine = true;
 
             mWinePreferences =
@@ -84,11 +90,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         } else {
-            setTheme(R.style.WhiteTheme);
-
             setContentView(R.layout.activity_white_deduction_form);
 
-            editor.putString(IS_RED_WINE, WHITE_WINE);
+            editor.putBoolean(IS_RED_WINE, FALSE);
             mIsRedWine = false;
 
             mWinePreferences =
@@ -99,8 +103,8 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
         editor.apply();
 
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -111,14 +115,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onStart() {
         super.onStart();
 
-        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-                syncCurrentTitle();
+                syncCurrentTitle(position);
+                syncCurrentMenuOptions(position);
             }
 
             @Override
@@ -126,19 +131,23 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         };
 
-        mPager.addOnPageChangeListener(onPageChangeListener);
+        mPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
+        mPager.removeOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.wine_deduction_menu, menu);
+        mMenuShowWhite = menu.findItem(R.id.menu_show_white_screen);
+        if (getCurrentPageFromPager() != SIGHT_PAGE) {
+            mMenuShowWhite.setVisible(false);
+        }
         return true;
     }
 
@@ -148,13 +157,90 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             case R.id.clear_selections:
                 resetSharedPreferences();
                 resetAllTopScroll();
-                if (mPager.getCurrentItem() != SIGHT_PAGE) {
-                    mPager.setCurrentItem(SIGHT_PAGE);
-                }
-                Toast.makeText(this, getString(R.string.form_cleared), Toast.LENGTH_SHORT).show();
+                resetCurrentPage();
+                resetWhiteScreen();
+                Helpers.makeToastShort(mContext, R.string.form_cleared);
+                return true;
+            case R.id.menu_show_white_screen:
+                toggleSightWhiteScreen();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void syncCurrentMenuOptions(int page) {
+        if (mMenuShowWhite != null) {
+            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+            if (page == SIGHT_PAGE) {
+                mMenuShowWhite.setVisible(true);
+                if (sightScroll != null) {
+                    View root = sightScroll.getRootView();
+                    if (sightScroll.getVisibility() == View.VISIBLE) {
+                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                        root.setBackgroundColor(getResources()
+                                .getColor(R.color.colorPrimaryBackground));
+                    } else {
+                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                        root.setBackgroundColor(getResources().getColor(R.color.white));
+                    }
+                }
+            } else {
+                mMenuShowWhite.setVisible(false);
+                if (sightScroll != null) {
+                    View root = sightScroll.getRootView();
+                    root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
+                }
+            }
+        }
+    }
+
+    private void resetWhiteScreen() {
+        if (mMenuShowWhite != null && getCurrentPageFromPager() == SIGHT_PAGE) {
+            mMenuShowWhite.setVisible(true);
+            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+            if (sightScroll != null) {
+                View root = sightScroll.getRootView();
+                root.setBackgroundColor(getResources()
+                        .getColor(R.color.colorPrimaryBackground));
+                sightScroll.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void setSightWhiteScreen(boolean isEnabled, View view) {
+        if (view != null) {
+            if (isEnabled) {
+                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                View root = view.getRootView();
+                root.setBackgroundColor(getResources().getColor(R.color.white));
+                view.setVisibility(View.INVISIBLE);
+                Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
+            } else {
+                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                View root = view.getRootView();
+                root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
+                view.setVisibility(View.VISIBLE);
+                Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine);
+            }
+        }
+    }
+
+    private void toggleSightWhiteScreen() {
+        ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+        if (getCurrentPageFromPager() == SIGHT_PAGE && sightScroll != null) {
+            if (sightScroll.getVisibility() == View.VISIBLE) {
+                setSightWhiteScreen(true, sightScroll);
+            } else {
+                setSightWhiteScreen(false, sightScroll);
+            }
+        }
+    }
+
+    private void resetCurrentPage() {
+        if (mPager.getCurrentItem() != SIGHT_PAGE) {
+            mPager.setCurrentItem(SIGHT_PAGE);
         }
     }
 
@@ -171,8 +257,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     @Override
     public void onResume() {
         super.onResume();
-        setCurrentPage(getCurrentPageFromPreferences());
-        syncCurrentTitle();
+        int currentPage = getCurrentPageFromPreferences();
+        setCurrentPage(currentPage);
+        syncCurrentTitle(currentPage);
         registerPreferencesListener();
     }
 
@@ -219,7 +306,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
                 = ((sharedPreferences, key) -> {
 
-            View view = findViewById(castKey(key));
+            View view = findViewById(Helpers.castKey(key));
 
             if (view != null) {
                 if (view instanceof RadioGroup) {
@@ -227,10 +314,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                             sharedPreferences.getInt(key, NONE_SELECTED));
                 } else if (view instanceof CheckBox) {
                     ((CheckBox) view).setChecked(
-                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof Switch) {
                     ((Switch) view).setChecked(
-                            castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
                 } else if (view instanceof MultiAutoCompleteTextView) {
                     ((MultiAutoCompleteTextView) view).setText(
                             sharedPreferences.getString(key, ""));
@@ -250,7 +337,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         Map<String, ?> allEntries = mWinePreferences.getAll();
         SharedPreferences.Editor winePreferencesEditor = mWinePreferences.edit();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int key = castKey(entry.getKey());
+            int key = Helpers.castKey(entry.getKey());
             if (AllRadioGroups.contains(key)) {
                 winePreferencesEditor.putInt(entry.getKey(), NONE_SELECTED);
             } else if (AllCheckBoxes.contains(key)) {
@@ -272,6 +359,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             }
         }
         winePreferencesEditor.apply();
+
         SharedPreferences.Editor activityPreferencesEditor = mActivityPreferences.edit();
         if (mIsRedWine) {
             activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0);
@@ -288,11 +376,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
             activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
         }
-
         activityPreferencesEditor.apply();
-
-        activityPreferencesEditor.commit();
-
     }
 
     private void saveRadioGroupState(int key, int state) {
@@ -307,89 +391,73 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         editor.apply();
     }
 
-    private int castKey(String key) {
-        return Integer.parseInt(key);
-    }
-
-    private boolean castChecked(int checkedInt) {
-        return checkedInt == CHECKED;
-    }
-
-    private int castChecked(boolean checkedBoolean) {
-        if (checkedBoolean) {
-            return CHECKED;
-        } else {
-            return NOT_CHECKED;
-        }
-    }
-
+    // These click listeners are actually used.
+    @SuppressWarnings("unused")
     public void onRadioButtonClicked(View view) {
         RadioGroup radioGroup = (RadioGroup) view.getParent();
         saveRadioGroupState(radioGroup.getId(), radioGroup.getCheckedRadioButtonId());
     }
 
+    @SuppressWarnings("unused")
     public void onCheckBoxButtonClicked(View view) {
         CheckBox checkBox = (CheckBox) view;
-        saveCheckBoxState(checkBox.getId(), castChecked(checkBox.isChecked()));
+        saveCheckBoxState(checkBox.getId(), Helpers.castChecked(checkBox.isChecked()));
     }
 
+    @SuppressWarnings("unused")
     public void onSwitchToggleClicked(View view) {
         Switch switchToggle = (Switch) view;
         int switchId = switchToggle.getId();
         boolean checked = switchToggle.isChecked();
-        saveCheckBoxState(switchId, castChecked(checked));
+        saveCheckBoxState(switchId, Helpers.castChecked(checked));
         if (switchId == SWITCH_NOSE_WOOD) {
-            mNoseFragment.syncWoodRadioState();
+            mNoseFragment.syncWoodRadioState(true);
+
         } else if (switchId == SWITCH_PALATE_WOOD) {
-            mPalateFragmentA.syncWoodRadioState();
+            mPalateFragmentA.syncWoodRadioState(true);
         }
     }
 
     private void resetAllTopScroll() {
         if (mSightFragment != null) {
             mSightFragment.scrollToTop();
-
         }
         if (mNoseFragment != null) {
             mNoseFragment.scrollToTop();
-
         }
         if (mPalateFragmentA != null) {
             mPalateFragmentA.scrollToTop();
-
         }
         if (mPalateFragmentB != null) {
             mPalateFragmentB.scrollToTop();
-
         }
         if (mInitialFragment != null) {
             mInitialFragment.scrollToTop();
-
         }
         if (mFinalFragment != null) {
             mFinalFragment.scrollToTop();
         }
     }
 
-    private void syncCurrentTitle() {
-        switch (mPager.getCurrentItem()) {
+    private void syncCurrentTitle(int page) {
+        switch (page) {
             case SIGHT_PAGE:
-                setTitle(SIGHT_PAGE_TITLE);
+                setTitle(R.string.sight_page_title);
                 break;
             case NOSE_PAGE:
-                setTitle(NOSE_PAGE_TITLE);
+                setTitle(R.string.nose_page_title);
                 break;
             case PALATE_PAGE_A:
-                setTitle(PALATE_PAGE_TITLE);
+                setTitle(R.string.palate_page_title);
                 break;
             case PALATE_PAGE_B:
-                setTitle(PALATE_PAGE_TITLE);
+                setTitle(R.string.palate_page_title);
                 break;
             case INITIAL_CONCLUSION_PAGE:
-                setTitle(INITIAL_CONCLUSION_PAGE_TITLE);
+                setTitle(R.string.initial_conclusion_page_title);
                 break;
             case FINAL_CONCLUSION_PAGE:
-                setTitle(FINAL_CONCLUSION_PAGE_TITLE);
+                setTitle(R.string.final_conclusion_page_title);
                 break;
             default:
                 break;
@@ -528,6 +596,99 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mFinalFragment.errorsFinalForm().setErrorVintage(null);
         }
 
+        Map<String, ?> allEntries = mWinePreferences.getAll();
+
+        List<Integer> requiredKeysInPreferences = new ArrayList<>();
+
+        boolean needNoseWoodRadios = false;
+        boolean needPalateWoodRadios = false;
+        boolean needSnackbar = false;
+
+        // Determine if the form is red or white radio groups.
+        List<Integer> radioGroups;
+        if (mIsRedWine) {
+            radioGroups = AllRedRadioGroups;
+        } else {
+            radioGroups = AllWhiteRadioGroups;
+        }
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
+            if (SWITCH_NOSE_WOOD == wineFormKey) {
+                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                if (isChecked) {
+                    needNoseWoodRadios = true;
+                }
+            } else if (SWITCH_PALATE_WOOD == wineFormKey) {
+                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                if (isChecked) {
+                    needPalateWoodRadios = true;
+                }
+            }
+        }
+
+
+        // Here we are checking if all saved radio button values in preferences have a
+        // selection for validity.
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
+
+            if (radioGroups.contains(wineFormKey)) {
+                if (needNoseWoodRadios && NoseWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                } else if (needPalateWoodRadios && PalateWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                } else if (!AllWoodRadioGroups.contains(wineFormKey)) {
+                    requiredKeysInPreferences.add(wineFormKey);
+                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    // Checking to see if a selection has been made.
+                    if (radioButtonSelection == NONE_SELECTED) {
+                        isValid = false;
+                        needSnackbar = true;
+                    }
+                }
+            }
+        }
+
+        if (!needSnackbar) {
+            for (Integer key : radioGroups) {
+                if (!requiredKeysInPreferences.contains(key)) {
+                    if (AllWoodRadioGroups.contains(key)) {
+                        if (NoseWoodRadioGroups.contains(key) && needNoseWoodRadios) {
+                            isValid = false;
+                            needSnackbar = true;
+                            break;
+                        } else if (PalateWoodRadioGroups.contains(key) && needPalateWoodRadios) {
+                            isValid = false;
+                            needSnackbar = true;
+                            break;
+                        }
+                    } else {
+                        isValid = false;
+                        needSnackbar = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (needSnackbar) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.deduction_form_coordinator),
+                    R.string.df_snackbar_make_selections, Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.df_snackbar_dismiss, v -> snackbar.dismiss());
+            snackbar.show();
+        }
+
         return isValid;
     }
 
@@ -543,7 +704,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         // *** Combing through our form input keys and parsing for relevance. ***
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Integer wineFormKey = castKey(entry.getKey());
+            Integer wineFormKey = Helpers.castKey(entry.getKey());
             // Radio groups and check boxes will be handled slightly differently because
             // a radio group will return either an Id that will be included in our map or
             // return -1 (for none selected) and result in no map put.
@@ -568,16 +729,18 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         return wineFormSelections;
     }
 
+    @SuppressWarnings("unused")
     public void onSubmitFinalConclusion(View view) {
+        isScoring(true);
         // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
         if (!validInputs()) {
+            isScoring(false);
             return;
         }
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
         GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
-        isScoring(true);
         scoreTask.execute(formSelections);
     }
 
@@ -589,7 +752,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         Intent intent = new Intent(mContext, VarietyResultsActivity.class);
         if (mIsRedWine) {
-            intent.putExtra(IS_RED_WINE, true);
+            intent.putExtra(IS_RED_WINE, TRUE);
         }
         // We put our guess into the intent to be launched.
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
@@ -605,7 +768,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         finish();
     }
 
-    public void isScoring(Boolean loading) {
+    private void isScoring(Boolean loading) {
         if (loading) {
             mFinalFragment.showLoadingIndicator();
         } else {
@@ -615,7 +778,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
     public void onGrapeFailure() {
         isScoring(false);
-        Toast.makeText(mContext,
-                "Unable to score grape variety.", Toast.LENGTH_SHORT).show();
+        Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score);
     }
 }

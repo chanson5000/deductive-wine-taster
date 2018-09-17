@@ -12,12 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel;
 
 
@@ -32,12 +32,13 @@ public class HistoryRecordActivity extends AppCompatActivity {
         mContext = this;
         ActivityHistoryRecordBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history_record);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.history_record_activity_title);
 
         historyRecord = ViewModelProviders.of(this)
                 .get(HistoryRecordViewModel.class);
@@ -45,9 +46,9 @@ public class HistoryRecordActivity extends AppCompatActivity {
         binding.setHistoryRecord(historyRecord);
 
         Intent parentIntent = getIntent();
-        if (parentIntent != null && parentIntent.hasExtra("PARCELABLE_CONCLUSION")) {
+        if (parentIntent != null && parentIntent.hasExtra(Helpers.CONCLUSION_PARCEL)) {
             ConclusionRecord conclusionRecord =
-                    parentIntent.getParcelableExtra("PARCELABLE_CONCLUSION");
+                    parentIntent.getParcelableExtra(Helpers.CONCLUSION_PARCEL);
             historyRecord.setConclusionRecord(conclusionRecord);
         }
     }
@@ -68,18 +69,17 @@ public class HistoryRecordActivity extends AppCompatActivity {
                 if (conclusionRecord != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setCancelable(true);
-                    builder.setTitle("Delete Conclusion Record");
-                    builder.setMessage("Are you sure you want to delete this conclusion record?");
-                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                    builder.setTitle(R.string.up_dialog_delete_conclusion_record);
+                    builder.setMessage(R.string.up_dialog_confirm_delete_record);
+                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         repository.removeConclusionRecord(conclusionRecord);
-                        Toast.makeText(this, R.string.record_removed, Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.record_removed);
                         onBackPressed();
                     });
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                        Toast.makeText(mContext, "Cancelled record deletion.", Toast.LENGTH_SHORT).show();
-
-                    });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                            Helpers.makeToastShort(mContext,
+                                    R.string.up_dialog_cancel_record_deletion));
 
                     AlertDialog dialog = builder.create();
                     dialog.show();

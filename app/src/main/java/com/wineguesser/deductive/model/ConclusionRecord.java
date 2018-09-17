@@ -13,6 +13,7 @@ public class ConclusionRecord implements Parcelable {
     @Exclude
     private String userId;
 
+    private String actualLabel;
     private String actualVariety;
     private String actualCountry;
     private String actualRegion;
@@ -45,6 +46,14 @@ public class ConclusionRecord implements Parcelable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getActualLabel() {
+        return actualLabel;
+    }
+
+    public void setActualLabel(String actualLabel) {
+        this.actualLabel = actualLabel;
     }
 
     public String getActualVariety() {
@@ -119,7 +128,9 @@ public class ConclusionRecord implements Parcelable {
         this.userConclusionQuality = userConclusionQuality;
     }
 
-    public Integer getUserConclusionVintage() { return userConclusionVintage; }
+    public Integer getUserConclusionVintage() {
+        return userConclusionVintage;
+    }
 
     public void setUserConclusionVintage(Integer userConclusionVintage) {
         this.userConclusionVintage = userConclusionVintage;
@@ -142,6 +153,7 @@ public class ConclusionRecord implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(conclusionId);
         dest.writeString(userId);
+        dest.writeString(actualLabel);
         dest.writeString(actualVariety);
         dest.writeString(actualCountry);
         dest.writeString(actualRegion);
@@ -170,6 +182,7 @@ public class ConclusionRecord implements Parcelable {
     public ConclusionRecord(Parcel in) {
         this.conclusionId = in.readString();
         this.userId = in.readString();
+        this.actualLabel = in.readString();
         this.actualVariety = in.readString();
         this.actualCountry = in.readString();
         this.actualRegion = in.readString();

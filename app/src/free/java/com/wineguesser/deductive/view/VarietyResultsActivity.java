@@ -18,17 +18,21 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wineguesser.deductive.BuildConfig;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
+import com.wineguesser.deductive.util.Helpers;
+import com.wineguesser.deductive.util.InternationalCharactersArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,14 +41,8 @@ import butterknife.ButterKnife;
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
-    private static String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    private static String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    private static String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    private static String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    private static String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
-
-    VarietyResultsViewModel inputForm;
-    ConclusionInputErrorsViewModel inputErrors;
+    private VarietyResultsViewModel inputForm;
+    private ConclusionInputErrorsViewModel inputErrors;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_variety)
@@ -58,9 +56,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_quality)
     AutoCompleteTextView mSingleViewActualQuality;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_vintage)
-    AutoCompleteTextView mSingleViewActualVintage;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -68,6 +63,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     private boolean mIsRedWine;
     private boolean mAdDisplayed;
 
+    private String mActualLabel;
     private String mActualVariety;
     private String mActualCountry;
     private String mActualRegion;
@@ -80,12 +76,13 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         // Set data binding.
         ActivityVarietyResultsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_variety_results);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.variety_results_activity_title);
         // Initialize our view models.
         inputForm = ViewModelProviders.of(this)
                 .get(VarietyResultsViewModel.class);
@@ -104,6 +101,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
             mAdDisplayed = true;
+            inputForm.setActualLabel(savedInstanceState.getString(FORM_ACTUAL_LABEL));
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
             inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
             inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
@@ -136,19 +134,23 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
         List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
+        List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mSingleViewActualVariety.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualVariety.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
-        mSingleViewActualCountry.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualCountry.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mSingleViewActualRegion.setAdapter(new ArrayAdapter<>(mContext,
+        mSingleViewActualRegion.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
+
+        mSingleViewActualQuality.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+                android.R.layout.simple_dropdown_item_1line, qualities));
 
         if (!mAdDisplayed) {
             mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+            mInterstitialAd.setAdUnitId(BuildConfig.InterstitialAdKey);
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
     }
@@ -157,6 +159,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     public void onPause() {
         super.onPause();
 
+        mActualLabel = inputForm.getActualLabel().getValue();
         mActualVariety = inputForm.getActualVariety().getValue();
         mActualCountry = inputForm.getActualCountry().getValue();
         mActualRegion = inputForm.getActualRegion().getValue();
@@ -168,6 +171,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
+        savedInstanceState.putString(FORM_ACTUAL_LABEL, mActualLabel);
         savedInstanceState.putString(FORM_ACTUAL_VARIETY, mActualVariety);
         savedInstanceState.putString(FORM_ACTUAL_COUNTRY, mActualCountry);
         savedInstanceState.putString(FORM_ACTUAL_REGION, mActualRegion);
@@ -225,6 +229,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
             ConclusionRecord conclusionRecord = new ConclusionRecord();
             conclusionRecord.setAppConclusionVariety(inputForm.getAppVariety().getValue());
+            conclusionRecord.setActualLabel(inputForm.getActualLabel().getValue());
             conclusionRecord.setActualVariety(inputForm.getActualVariety().getValue());
             conclusionRecord.setActualCountry(inputForm.getActualCountry().getValue());
             conclusionRecord.setActualRegion(inputForm.getActualRegion().getValue());
@@ -244,11 +249,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             conclusionRecord.setUserId(uid);
 
             Intent intent = new Intent(this, HistoryRecordActivity.class);
-            intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
+            intent.putExtra(Helpers.CONCLUSION_PARCEL, conclusionRecord);
             startActivity(intent);
             finish();
         } else {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(
                     new AuthUI.IdpConfig.EmailBuilder().build()
             );
 
@@ -264,6 +269,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     private boolean validInputs() {
+        String actualLabelString = inputForm.getActualLabel().getValue();
         String actualVarietyString = inputForm.getActualVariety().getValue();
         String actualCountryString = inputForm.getActualCountry().getValue();
         String actualRegionString = inputForm.getActualRegion().getValue();
@@ -273,6 +279,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         boolean isValid = true;
 
         // Check that user has provided their conclusion of grape variety.
+        if (actualLabelString == null || actualLabelString.isEmpty()) {
+            inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
+        }
+
         if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;

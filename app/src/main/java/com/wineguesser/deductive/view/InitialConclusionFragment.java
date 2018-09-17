@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
@@ -35,12 +35,17 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     private SharedPreferences mWinePreferences;
     private boolean mIsRedWine;
 
-    private MultiAutoCompleteTextView mMultiAutoTextVarieties;
-    private MultiAutoCompleteTextView mMultiAutoTextCountries;
-
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.scrollView_initial)
-    NestedScrollView mScrollViewInitial;
+    ScrollView mScrollViewInitial;
+
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.multiText_initial_varieties)
+    MultiAutoCompleteTextView mMultiAutoTextVarieties;
+
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.multiText_initial_countries)
+    MultiAutoCompleteTextView mMultiAutoTextCountries;
 
     public InitialConclusionFragment() {
     }
@@ -54,41 +59,29 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        mActivityPreferences =
-                mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        if (mActivityPreferences.getString(IS_RED_WINE, WHITE_WINE).equals(RED_WINE)) {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
+        String wineColorPreferenceType;
+        if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
             mIsRedWine = true;
+            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
         } else {
-            mWinePreferences = mFragmentActivity
-                    .getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-            mIsRedWine = false;
+            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
         }
+        mWinePreferences = mFragmentActivity
+                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView;
-
         rootView = inflater.inflate(R.layout.fragment_initial_conclusion,
                 container, false);
 
-        mMultiAutoTextVarieties = rootView.findViewById(R.id.multiText_initial_varieties);
-        mMultiAutoTextCountries = rootView.findViewById(R.id.multiText_initial_countries);
+        ButterKnife.bind(this, rootView);
 
         setAutoTextVarietyByType(mIsRedWine);
-
-        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
-
-        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries));
-        mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        ButterKnife.bind(this, rootView);
 
         return rootView;
     }
@@ -155,6 +148,11 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
         mMultiAutoTextVarieties.setAdapter(new ArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
         mMultiAutoTextVarieties.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
+        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line, countries));
+        mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }
 
     private List<String> parseResourceArray(int resourceId) {

@@ -12,6 +12,7 @@ public class VarietyResultsViewModel extends ViewModel {
 
     private LiveData<String> appVariety;
 
+    private final MutableLiveData<String> actualLabel = new MutableLiveData<>();
     private final MutableLiveData<String> actualVariety = new MutableLiveData<>();
     private final MutableLiveData<String> actualCountry = new MutableLiveData<>();
     private final MutableLiveData<String> actualRegion = new MutableLiveData<>();
@@ -85,6 +86,14 @@ public class VarietyResultsViewModel extends ViewModel {
         } else {
             this.appVariety = varietyDataRepository.getWhiteVarietyNameById(varietyId);
         }
+    }
+
+    public MutableLiveData<String> getActualLabel() {
+        return actualLabel;
+    }
+
+    public void setActualLabel(String actualLabel) {
+        this.actualLabel.setValue(actualLabel);
     }
 
     public MutableLiveData<String> getActualVariety() {

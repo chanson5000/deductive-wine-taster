@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_show_white_screen"
+        android:title="@string/da_menu_show_white"
+        android:icon="@drawable/ic_menu_visibility_off_24px"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/clear_selections"
         android:title="@string/clear_form"
         app:showAsAction="never" />

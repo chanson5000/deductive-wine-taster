@@ -32,6 +32,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
     class ConclusionItemAdapterViewHolder extends RecyclerView.ViewHolder
     implements View.OnClickListener {
 
+        final TextView mActualLabel;
         final TextView mActualGrape;
         final TextView mUserGrape;
         final TextView mAppGrape;
@@ -39,7 +40,8 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
         ConclusionItemAdapterViewHolder(View view) {
             super(view);
 
-            mActualGrape = view.findViewById(R.id.textView_actual_grape);
+            mActualLabel = view.findViewById(R.id.textView_actual_label);
+            mActualGrape = view.findViewById(R.id.textView_actual_variety);
             mUserGrape = view.findViewById(R.id.textView_user_conclusion_grape);
             mAppGrape = view.findViewById(R.id.textView_app_conclusion_grape);
             view.setOnClickListener(this);
@@ -55,7 +57,7 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
 
     @NonNull
     public ConclusionItemAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        int layoutId = R.layout.item_grape_conclusion_record;
+        int layoutId = R.layout.item_conclusion_record;
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         View view = inflater.inflate(layoutId, viewGroup, false);
@@ -67,6 +69,8 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
     @Override
     public void onBindViewHolder(@NonNull ConclusionItemAdapterViewHolder conclusionItemAdapterViewHolder, int position) {
 
+        conclusionItemAdapterViewHolder.mActualLabel.setText(mConclusionRecords.get(position).getActualLabel());
+
         conclusionItemAdapterViewHolder.mActualGrape.setText(mConclusionRecords.get(position).getActualVariety());
         conclusionItemAdapterViewHolder.mUserGrape.setText(mConclusionRecords.get(position).getUserConclusionVariety());
         String appConclusionVariety = mConclusionRecords.get(position).getAppConclusionVariety();
@@ -74,7 +78,6 @@ public class ConclusionItemAdapter extends RecyclerView.Adapter<ConclusionItemAd
             conclusionItemAdapterViewHolder.mAppGrape.setText(R.string.no_data);
         } else {
             conclusionItemAdapterViewHolder.mAppGrape.setText(appConclusionVariety);
-
         }
     }
 

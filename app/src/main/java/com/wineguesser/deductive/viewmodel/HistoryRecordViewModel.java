@@ -14,6 +14,8 @@ public class HistoryRecordViewModel extends ViewModel {
     private final LiveData<String> appConclusionVariety =
             Transformations.map(conclusionRecord, ConclusionRecord::getAppConclusionVariety);
 
+    private final LiveData<String> actualLabel =
+            Transformations.map(conclusionRecord, ConclusionRecord::getActualLabel);
     private final LiveData<String> actualVariety =
             Transformations.map(conclusionRecord, ConclusionRecord::getActualVariety);
     private final LiveData<String> actualCountry =
@@ -47,6 +49,8 @@ public class HistoryRecordViewModel extends ViewModel {
     public LiveData<String> getAppConclusionVariety() {
         return appConclusionVariety;
     }
+
+    public LiveData<String> getActualLabel() { return actualLabel; }
 
     public LiveData<String> getActualVariety() {
         return actualVariety;

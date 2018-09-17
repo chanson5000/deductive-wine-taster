@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_default" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="@dimen/standard_half_margin">
+
+        <TextView
+            android:id="@+id/feedback_header"
+            style="@style/AppTheme.Text.Header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_half_margin"
+            android:text="@string/feedback_contact_us"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/feedback_subhead"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/feedback_subhead"
+            style="@style/AppTheme.Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_half_margin"
+            android:labelFor="@id/editText_feedback"
+            android:text="@string/feedback_detail"
+            app:layout_constraintBottom_toTopOf="@id/editText_feedback"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feedback_header" />
+
+        <EditText
+            android:id="@+id/editText_feedback"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/standard_half_margin"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:maxLines="20"
+            android:padding="@dimen/standard_margin"
+            app:layout_constraintBottom_toTopOf="@id/button_submit_feedback"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feedback_subhead" />
+
+        <Button
+            android:id="@+id/button_submit_feedback"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:onClick="onClickSubmitFeedback"
+            android:text="@string/feedback_button_submit"
+            app:layout_constraintBottom_toTopOf="@id/textView_requires_app"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editText_feedback" />
+
+        <TextView
+            android:id="@+id/textView_requires_app"
+            style="@style/AppTheme.Text.Error"
+            android:text="@string/feedback_requires_email_app"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_submit_feedback" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.design.widget.CoordinatorLayout>

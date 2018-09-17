@@ -1,31 +1,9 @@
 package com.wineguesser.deductive.repository;
 
-import android.content.res.Resources;
-
 // These are the keys that our database must match.
 public interface DatabaseContract {
 
-    Resources RESOURCES = Resources.getSystem();
-
     String DB_EMAIL_VERIFICATION = "verificationEmailSent";
-
-    String DB_REFERENCE_USERS = "users";
-    String DB_REFERENCE_CONCLUSIONS = "conclusions";
-
-    String DB_REFERENCE_USER_CONCLUSIONS = "conclusions";
-    String DB_KEY_APP_CONCLUSION_VARIETY = "appConclusionVariety";
-
-    String DB_KEY_ACTUAL_VARIETY = "actualVariety";
-    String DB_KEY_ACTUAL_COUNTRY = "actualCountry";
-    String DB_KEY_ACTUAL_REGION = "actualRegion";
-    String DB_KEY_ACTUAL_QUALITY = "actualQuality";
-    String DB_KEY_ACTUAL_VINTAGE = "actualVintage";
-
-    String DB_USER_CONCLUSION_VARIETY = "userConclusionVariety";
-    String DB_USER_CONCLUSION_COUNTRY = "userConclusionCountry";
-    String DB_USER_CONCLUSION_REGION = "userConclusionRegion";
-    String DB_USER_CONCLUSION_QUALITY = "userConclusionQuality";
-    String DB_USER_CONCLUSION_VINTAGE = "userConclusionVintage";
 
     String DB_REFERENCE_RED_VARIETY_DESCRIPTORS = "/redVarietyDescriptors";
     String DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS = "/whiteVarietyDescriptors";
@@ -283,19 +261,4 @@ public interface DatabaseContract {
     String KEY_MINERAL_CHALK = MINERAL_PREPEND + CHALK;
     String KEY_MINERAL_SLATE = MINERAL_PREPEND + SLATE;
     String KEY_MINERAL_FLINT = MINERAL_PREPEND + FLINT;
-
-    String APPEND_NEW_WORLD = "_new_world";
-    String APPEND_OLD_WORLD = "_old_world";
-
-    String KEY_CABERNET_SAUVIGNON = "Cabernet_Sauvignon";
-    String KEY_GAMAY = "Gamay";
-    String KEY_GRENACHE = "Grenache";
-    String KEY_MALBEC = "Malbec";
-    String KEY_MERLOT = "Merlot";
-    String KEY_NEBBIOLO = "Nebbiolo";
-    String KEY_PINOT_NOIR = "Pinot_Noir";
-    String KEY_SANGIOVESE = "Sangiovese";
-    String KEY_SYRAH = "Syrah";
-    String KEY_TEMPRANILLO = "Tempranillo";
-    String KEY_ZINFANDEL = "Zinfandel";
 }

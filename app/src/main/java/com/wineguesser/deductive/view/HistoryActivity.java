@@ -10,15 +10,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.wineguesser.deductive.R;
+import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.view.adapter.ConclusionItemAdapter;
 import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
@@ -39,12 +40,13 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         mContext = this;
         ActivityHistoryBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history);
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.history_activity_title);
 
         historyActivity = ViewModelProviders.of(this)
                 .get(HistoryActivityViewModel.class);
@@ -52,10 +54,14 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         binding.setHistoryActivity(historyActivity);
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        ConclusionItemAdapter conclusionAdapter = new ConclusionItemAdapter(this, this);
+        if (findViewById(R.id.is_600dp) != null) {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,
+                    StaggeredGridLayoutManager.VERTICAL));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
+        ConclusionItemAdapter conclusionAdapter =
+                new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -89,19 +95,16 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
                 if (mCurrentUser != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setCancelable(true);
-                    builder.setTitle("Clear History");
-                    builder.setMessage("Are you sure you want to clear your conclusion history?");
-                    builder.setPositiveButton("yes", (dialog, which) -> {
+                    builder.setTitle(R.string.dialog_clear_history);
+                    builder.setMessage(R.string.dialog_clear_history_ask);
+                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
                         ConclusionsRepository repository = new ConclusionsRepository();
                         repository.clearUserConclusions(mCurrentUser.getUid());
-                        Toast.makeText(this, getString(R.string.history_cleared),
-                                Toast.LENGTH_SHORT).show();
+                        Helpers.makeToastShort(mContext, R.string.history_cleared);
                     });
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                        Toast.makeText(mContext, "Cancelled clearing history.", Toast.LENGTH_SHORT).show();
-
-                    });
+                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
+                            Helpers.makeToastShort(mContext, R.string.cancel_history_clear));
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
@@ -116,7 +119,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
     public void onHistoryItemClick(ConclusionRecord conclusionRecord) {
         Intent intent = new Intent(this, HistoryRecordActivity.class);
         conclusionRecord.setUserId(mCurrentUser.getUid());
-        intent.putExtra("PARCELABLE_CONCLUSION", conclusionRecord);
+        intent.putExtra(Helpers.CONCLUSION_PARCEL, conclusionRecord);
         startActivity(intent);
     }
 }

@@ -14,13 +14,13 @@
             type="com.wineguesser.deductive.viewmodel.VarietyResultsViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include layout="@layout/toolbar_default" />
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize">
@@ -97,6 +97,27 @@
                         android:text="@string/actual_wine" />
 
                     <TextView
+                        android:id="@+id/textStatic_actual_label"
+                        style="@style/AppTheme.Text.Descriptor"
+                        android:labelFor="@+id/editText_actual_label"
+                        android:text="@string/variety_results_label" />
+
+                    <EditText
+                        android:id="@+id/editText_actual_label"
+                        style="@style/AppTheme.AutoText.Single"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLength="50"
+                        android:singleLine="true"
+                        android:text="@={actualWine.actualLabel}" />
+
+                    <TextView
+                        android:id="@+id/textError_label"
+                        style="@style/AppTheme.Text.Error"
+                        android:text="@{inputError.errorLabel}"
+                        android:visibility="@{inputError.errorLabel != null ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
                         android:id="@+id/textView_actual_variety"
                         style="@style/AppTheme.Text.Descriptor"
                         android:labelFor="@id/autoText_actual_variety"
@@ -107,6 +128,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualVariety}" />
 
@@ -127,6 +149,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualCountry}" />
 
@@ -147,6 +170,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualRegion}" />
 
@@ -167,6 +191,7 @@
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionNext"
                         android:inputType="text"
+                        android:maxLength="25"
                         android:singleLine="true"
                         android:text="@={actualWine.actualQuality}" />
 
@@ -211,6 +236,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.CoordinatorLayout>
+        </ScrollView>
+    </FrameLayout>
 </layout>

@@ -15,7 +15,6 @@ public class VarietyDataRepository extends FirebaseRepository {
 
     private final DatabaseReference mRedReference;
     private final DatabaseReference mWhiteReference;
-    private DatabaseReference mReference;
 
     public VarietyDataRepository() {
         mRedReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETAL_DATA);
