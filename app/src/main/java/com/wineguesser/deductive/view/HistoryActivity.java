@@ -55,7 +55,8 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
         if (findViewById(R.id.is_600dp) != null) {
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+                    getResources().getInteger(R.integer.history_column_count),
                     StaggeredGridLayoutManager.VERTICAL));
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
