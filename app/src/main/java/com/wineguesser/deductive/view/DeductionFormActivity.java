@@ -35,6 +35,7 @@ import com.wineguesser.deductive.util.GrapeResult;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -554,11 +555,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         boolean isValid = true;
 
         // Check that user has provided their conclusion of grape variety.
-        if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
+        if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(mUserFinalVarietyString)) {
             mFinalFragment.errorsFinalForm()
                     .setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
-        } else if (!mIsRedWine && !WhiteVarieties.contains(mUserFinalVarietyString)) {
+        } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(mUserFinalVarietyString)) {
             mFinalFragment.errorsFinalForm()
                     .setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
@@ -778,5 +779,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onGrapeFailure() {
         isScoring(false);
         Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score);
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 }
