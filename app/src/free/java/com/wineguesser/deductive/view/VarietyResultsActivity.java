@@ -283,24 +283,26 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
         }
 
-        if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
+        if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
-        } else if (!mIsRedWine && !WhiteVarieties.contains(actualVarietyString)) {
+        } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
         } else {
             inputErrors.setErrorVariety(null);
         }
 
-        if (actualCountryString == null || actualCountryString.isEmpty() || !AllCountries.contains(actualCountryString)) {
+        if (actualCountryString == null || actualCountryString.isEmpty()
+                || !parseResourceArray(R.array.all_countries).contains(actualCountryString)) {
             inputErrors.setErrorCountry(getString(R.string.error_input_country_origin));
             isValid = false;
         } else {
             inputErrors.setErrorCountry(null);
         }
 
-        if (actualRegionString == null || actualRegionString.isEmpty() || !AllRegions.contains(actualRegionString)) {
+        if (actualRegionString == null || actualRegionString.isEmpty()
+                || !parseResourceArray(R.array.all_regions).contains(actualRegionString)) {
             inputErrors.setErrorRegion(getString(R.string.error_input_valid_region));
             isValid = false;
         } else {
