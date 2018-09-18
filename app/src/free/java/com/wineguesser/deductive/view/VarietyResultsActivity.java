@@ -24,7 +24,7 @@ import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.Helpers;
-import com.wineguesser.deductive.util.InternationalCharactersArrayAdapter;
+import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
@@ -135,16 +135,16 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
         List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mSingleViewActualVariety.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualVariety.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
-        mSingleViewActualCountry.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualCountry.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mSingleViewActualRegion.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualRegion.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mSingleViewActualQuality.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, qualities));
 
         if (!mAdDisplayed) {

@@ -53,7 +53,7 @@ import timber.log.Timber;
  * or to have some of data besides toString() results fill the views,
  * override {@link #getView(int, View, ViewGroup)} to return the type of view you want.
  */
-public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implements Filterable {
+public class SpecialCharArrayAdapter<T> extends BaseAdapter implements Filterable {
     /**
      * Contains the list of objects that represent the data of this ArrayAdapter.
      * The content of this list is referred to as "the array" in the documentation.
@@ -107,7 +107,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The resource ID for a layout file containing a TextView to use when
      *                 instantiating views.
      */
-    public InternationalCharactersArrayAdapter(Context context, int textViewResourceId) {
+    public SpecialCharArrayAdapter(Context context, int textViewResourceId) {
         init(context, textViewResourceId, 0, new ArrayList<>());
     }
 
@@ -119,7 +119,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId) {
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId) {
         init(context, resource, textViewResourceId, new ArrayList<>());
     }
 
@@ -131,7 +131,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param objects The objects to represent in the ListView.
      */
-    private InternationalCharactersArrayAdapter(Context context, int textViewResourceId, T[] objects) {
+    private SpecialCharArrayAdapter(Context context, int textViewResourceId, T[] objects) {
         init(context, textViewResourceId, 0, Arrays.asList(objects));
     }
 
@@ -144,7 +144,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects) {
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects) {
         init(context, resource, textViewResourceId, Arrays.asList(objects));
     }
 
@@ -156,7 +156,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int textViewResourceId, List<T> objects) {
+    public SpecialCharArrayAdapter(Context context, int textViewResourceId, List<T> objects) {
         init(context, textViewResourceId, 0, objects);
     }
 
@@ -169,7 +169,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
         init(context, resource, textViewResourceId, objects);
     }
 
@@ -391,10 +391,10 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *
      * @return An ArrayAdapter<CharSequence>.
      */
-    public static InternationalCharactersArrayAdapter<CharSequence> createFromResource(Context context,
-                                                                                       int textArrayResId, int textViewResId) {
+    public static SpecialCharArrayAdapter<CharSequence> createFromResource(Context context,
+                                                                           int textArrayResId, int textViewResId) {
         CharSequence[] strings = context.getResources().getTextArray(textArrayResId);
-        return new InternationalCharactersArrayAdapter<>(context, textViewResId, strings);
+        return new SpecialCharArrayAdapter<>(context, textViewResId, strings);
     }
 
     /**
