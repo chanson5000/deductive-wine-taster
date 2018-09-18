@@ -212,7 +212,7 @@
                     <AutoCompleteTextView
                         android:id="@+id/autoText_actual_vintage"
                         style="@style/AppTheme.AutoText.Single"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionGo"
                         android:inputType="number"
                         android:maxLength="4"
                         android:singleLine="true"

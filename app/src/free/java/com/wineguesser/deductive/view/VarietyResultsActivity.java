@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -55,6 +56,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_quality)
     AutoCompleteTextView mSingleViewActualQuality;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.autoText_actual_vintage)
+    AutoCompleteTextView mEditTextActualVintage;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -111,7 +115,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         // Check for the data from our parent intent.
         Intent parentIntent = getIntent();
         // A Guess Id should have been passed.
-        if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
+        if (parentIntent != null) {
+            if (parentIntent.hasExtra("TESTING")) {
+                mAdDisplayed = true;
+            }
+
             // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
@@ -146,6 +154,14 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         mSingleViewActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, qualities));
+
+        mEditTextActualVintage.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                onButtonWineResultSave(v);
+                return true;
+            }
+            return false;
+        });
 
         if (!mAdDisplayed) {
             mInterstitialAd = new InterstitialAd(this);
