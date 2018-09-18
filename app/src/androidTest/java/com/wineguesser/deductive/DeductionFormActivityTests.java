@@ -43,6 +43,7 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
@@ -128,7 +129,8 @@ public class DeductionFormActivityTests implements DeductionFormContract {
         onView(withId(R.id.button_submit_final_conclusion))
                 .perform(click());
 
-        onView(withId(R.id.progressBar_final_conclusion)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textView_our_guess)).check(matches(isDisplayed()));
+//        onView(withId(R.id.progressBar_final_conclusion)).check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -142,65 +144,148 @@ public class DeductionFormActivityTests implements DeductionFormContract {
 
         onView(withId(R.id.radio_clarity_clear)).check(matches(isDisplayed()));
         // Sight Fragment
-        onView(withId(R.id.radio_clarity_clear)).perform(scrollTo(), click()).check(matches(isDisplayed()));
-        onView(withId(R.id.radio_clarity_clear)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_concentration_medium)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_color_ruby)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_secondary_color_orange)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_rim_variation_no)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_extract_stain_medium)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_tearing_light)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_gas_evidence_no)).perform(scrollTo(), click()).check(matches(isChecked()));
+        onView(withId(R.id.radio_clarity_clear)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_concentration_medium)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_color_ruby)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_secondary_color_orange)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_rim_variation_no)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_extract_stain_medium)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_tearing_light)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_gas_evidence_no)).perform(scrollTo(), click());
         onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
 
         // Nose Fragment
-        onView(withId(R.id.radio_intensity_delicate)).perform(scrollTo(), click()).check(matches(isDisplayed()));
-        onView(withId(R.id.radio_intensity_delicate)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_age_assessment_youthful)).perform(scrollTo(), click()).check(matches(isChecked()));
+        onView(withId(R.id.radio_intensity_delicate)).perform(scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.radio_intensity_delicate)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_age_assessment_youthful)).perform(scrollTo(), click());
         onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
 
         // Palate Fragment A
-        onView(withId(R.id.radio_palate_sweetness_dry)).perform(scrollTo(), click()).check(matches(isDisplayed()));
-        onView(withId(R.id.radio_palate_sweetness_dry)).perform(click()).check(matches(isChecked()));
+        onView(withId(R.id.radio_palate_sweetness_dry)).perform(scrollTo(), click());
         onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
 
         // Palate Fragment B
-        onView(withId(R.id.radio_palate_tannin_med_plus)).perform(scrollTo(), click()).check(matches(isDisplayed()));
-        onView(withId(R.id.radio_palate_tannin_med_plus)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_acid_med_plus)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_alcohol_low)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_body_full)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_texture_round)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_balanced_yes)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_length_finish_med_plus)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_palate_complexity_med_plus)).perform(scrollTo(), click()).check(matches(isChecked()));
+        onView(withId(R.id.radio_palate_tannin_med_plus)).perform(scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.radio_palate_tannin_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_acid_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_alcohol_low)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_body_full)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_texture_round)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_balanced_yes)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_length_finish_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_complexity_med_plus)).perform(scrollTo(), click());
         onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
 
         // Initial Conclusion
-        onView(withId(R.id.multiText_initial_varieties)).perform(replaceText("Cabernet Sauvignon"));
-        onView(withId(R.id.radio_button_initial_world_new)).perform(scrollTo(), click()).check(matches(isDisplayed()));
-        onView(withId(R.id.radio_button_initial_world_new)).perform(click()).check(matches(isChecked()));
-        onView(withId(R.id.radio_button_climate_warm)).perform(scrollTo(), click()).check(matches(isChecked()));
-        onView(withId(R.id.multiText_initial_countries)).perform(replaceText("United States"));
-        onView(withId(R.id.radio_button_initial_age_onetothree)).perform(scrollTo(), click()).check(matches(isChecked()));
+        onView(withId(R.id.multiText_initial_varieties))
+                .perform(scrollTo(), replaceText("Cabernet Sauvignon"),
+                        pressImeActionButton());
+        onView(withId(R.id.radio_button_initial_world_new)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_button_climate_warm)).perform(scrollTo(), click());
+        onView(withId(R.id.multiText_initial_countries))
+                .perform(scrollTo(), replaceText("United States"),
+                        pressImeActionButton());
+        onView(withId(R.id.radio_button_initial_age_onetothree)).perform(scrollTo(), click());
         onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
 
         // Final Conclusion
         onView(withId(R.id.autoText_final_grape_variety))
-                .perform(replaceText("Cabernet Sauvignon"));
+                .perform(scrollTo(), replaceText("Cabernet Sauvignon"),
+                        pressImeActionButton());
         onView(withId(R.id.autoText_final_country))
-                .perform(replaceText("United States"));
+                .perform(replaceText("United States"), pressImeActionButton());
         onView(withId(R.id.autoText_final_region))
-                .perform(replaceText("California"));
+                .perform(replaceText("California"), pressImeActionButton());
         onView(withId(R.id.autoText_final_quality))
-                .perform(replaceText("None"));
+                .perform(replaceText("None"), pressImeActionButton());
         onView(withId(R.id.autoText_final_vintage))
-                .perform(replaceText("2012"));
+                .perform(replaceText("2012"), pressImeActionButton());
         onView(withId(R.id.button_submit_final_conclusion))
                 .perform(click());
 
-
-
         onView(withId(R.id.textView_our_guess)).check(matches(isDisplayed()));
+    }
+
+    @Ignore
+    @Test
+    public void onStartActivity_allFieldsAreDisplayed() {
+        Intent intent = new Intent();
+        intent.putExtra(IS_RED_WINE, TRUE);
+
+    }
+
+    @Test
+    public void onMissRadioSelection_displaySnackbarError() {
+        Intent intent = new Intent();
+        intent.putExtra(IS_RED_WINE, TRUE);
+        activityTestRule.launchActivity(intent);
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText("Clear Form")).perform(click());
+
+        // Sight fragment
+        onView(withId(R.id.radio_clarity_clear)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_concentration_medium)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_color_ruby)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_secondary_color_blue)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_rim_variation_no)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_extract_stain_medium)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_tearing_medium)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_gas_evidence_no)).perform(scrollTo(), click());
+        onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
+
+        // Nose fragment
+        onView(withId(R.id.radio_intensity_delicate)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_age_assessment_youthful)).perform(scrollTo(), click());
+        onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
+
+        // Palate fragment A
+        onView(withId(R.id.radio_palate_sweetness_dry)).perform(scrollTo(), click());
+        onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
+
+        // Palate fragment B
+        onView(withId(R.id.radio_palate_tannin_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_acid_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_alcohol_low)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_body_full)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_texture_round)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_balanced_yes)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_length_finish_med)).perform(scrollTo(), click());
+        onView(withId(R.id.radio_palate_complexity_med_plus)).perform(scrollTo(), click());
+        onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
+
+        // Initial conclusion
+        onView(withId(R.id.multiText_initial_varieties))
+                .perform(scrollTo(), replaceText("Cabernet Sauvignon"),
+                        pressImeActionButton());
+        onView(withId(R.id.radio_button_initial_world_new))
+                .perform(scrollTo(), click());
+        onView(withId(R.id.radio_button_initial_world_new))
+                .perform(scrollTo(), click());
+        onView(withId(R.id.radio_button_climate_warm))
+                .perform(scrollTo(), click());
+        onView(withId(R.id.multiText_initial_countries))
+                .perform(replaceText("United States"));
+//        onView(withId(R.id.radio_button_initial_age_onetothree))
+//                .perform(scrollTo(), click());
+        onView(withId(R.id.view_pager_red_deduction)).perform(swipeLeft());
+
+        // Final conclusion
+        onView(withId(R.id.autoText_final_grape_variety))
+                .perform(scrollTo(), replaceText("Cabernet Sauvignon"),
+                        pressImeActionButton());
+        onView(withId(R.id.autoText_final_country))
+                .perform(replaceText("United States"), pressImeActionButton());
+        onView(withId(R.id.autoText_final_region))
+                .perform(replaceText("California"), pressImeActionButton());
+        onView(withId(R.id.autoText_final_quality))
+                .perform(replaceText("None"), pressImeActionButton());
+        onView(withId(R.id.autoText_final_vintage))
+                .perform(replaceText("2012"), pressImeActionButton());
+        onView(withId(R.id.button_submit_final_conclusion))
+                .perform(click());
+
+        onView(withText("Please make all selections before continuing."))
+                .check(matches(isDisplayed()));
     }
 }
