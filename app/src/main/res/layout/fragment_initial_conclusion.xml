@@ -134,5 +134,8 @@
             </RadioGroup>
 
         </LinearLayout>
+
+        <include layout="@layout/button_deduction_form_next" />
+
     </LinearLayout>
 </ScrollView>

@@ -35,5 +35,7 @@
 
         <include layout="@layout/sg_sight_gasevidence_radio" />
 
+        <include layout="@layout/button_deduction_form_next" />
+
     </LinearLayout>
 </ScrollView>

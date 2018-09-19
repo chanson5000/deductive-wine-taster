@@ -293,11 +293,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     // Toolbar back press will take you to the parent activity.
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+        if (getCurrentPageFromPager() == 0) {
             super.onBackPressed();
         } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            setCurrentPage(getCurrentPageFromPager() - 1);
         }
+    }
+
+    public void onClickNext(View v) {
+        setCurrentPage(getCurrentPageFromPager() + 1);
     }
 
     // When shared preferences are changed, the view is also updated. This is most useful when

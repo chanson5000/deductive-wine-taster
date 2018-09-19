@@ -357,7 +357,6 @@
     <string name="clare_valley" translatable="false">Clare Valley</string>
     <string name="eden_valley" translatable="false">Eden Valley</string>
 
-
     <string-array name="all_regions">
         <item>@string/alsace</item>
         <item>@string/burgundy</item>
@@ -561,4 +560,6 @@
     <string name="up_re_authenticate">Re-Authenticate</string>
     <string name="up_unable_to_update_email">Unable to update email address.</string>
     <string name="up_unable_to_update_password">Unable to update password.</string>
+
+    <string name="button_next">Next</string>
 </resources>

@@ -35,5 +35,7 @@
 
         <include layout="@layout/sg_palate_wood_radio" />
 
+        <include layout="@layout/button_deduction_form_next" />
+
     </LinearLayout>
 </ScrollView>
