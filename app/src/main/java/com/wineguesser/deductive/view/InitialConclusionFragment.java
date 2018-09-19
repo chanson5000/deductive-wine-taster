@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -18,6 +17,7 @@ import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.util.AppExecutors;
 import com.wineguesser.deductive.util.Helpers;
+import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,12 +145,12 @@ public class InitialConclusionFragment extends Fragment implements DeductionForm
             varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
         }
 
-        mMultiAutoTextVarieties.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+        mMultiAutoTextVarieties.setAdapter(new SpecialCharArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, varieties));
         mMultiAutoTextVarieties.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
-        mMultiAutoTextCountries.setAdapter(new ArrayAdapter<>(mFragmentActivity,
+        mMultiAutoTextCountries.setAdapter(new SpecialCharArrayAdapter<>(mFragmentActivity,
                 android.R.layout.simple_dropdown_item_1line, countries));
         mMultiAutoTextCountries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
     }

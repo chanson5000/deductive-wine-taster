@@ -11,3 +11,4 @@
 .idea
 keystore.properties
 /app/DeductiveWineTasterKey.jks
+fabric.properties

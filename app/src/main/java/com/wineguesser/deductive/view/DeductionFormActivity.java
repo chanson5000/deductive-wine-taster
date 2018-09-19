@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -34,11 +35,11 @@ import com.wineguesser.deductive.util.GrapeResult;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Make this activity better.
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
         DatabaseContract, GrapeResult {
 
@@ -182,14 +183,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                                 .getColor(R.color.colorPrimaryBackground));
                     } else {
                         mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                        root.setBackgroundColor(getResources().getColor(R.color.white));
+                        root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                     }
                 }
             } else {
                 mMenuShowWhite.setVisible(false);
                 if (sightScroll != null) {
                     View root = sightScroll.getRootView();
-                    root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
+                    root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
                 }
             }
         }
@@ -202,8 +203,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
             if (sightScroll != null) {
                 View root = sightScroll.getRootView();
-                root.setBackgroundColor(getResources()
-                        .getColor(R.color.colorPrimaryBackground));
+                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
                 sightScroll.setVisibility(View.VISIBLE);
             }
         }
@@ -214,13 +214,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             if (isEnabled) {
                 mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
                 View root = view.getRootView();
-                root.setBackgroundColor(getResources().getColor(R.color.white));
+                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                 view.setVisibility(View.INVISIBLE);
                 Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
             } else {
                 mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
                 View root = view.getRootView();
-                root.setBackgroundColor(getResources().getColor(R.color.colorPrimaryBackground));
+                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
                 view.setVisibility(View.VISIBLE);
                 Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine);
             }
@@ -293,11 +293,15 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     // Toolbar back press will take you to the parent activity.
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+        if (getCurrentPageFromPager() == 0) {
             super.onBackPressed();
         } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            setCurrentPage(getCurrentPageFromPager() - 1);
         }
+    }
+
+    public void onClickNext(View v) {
+        setCurrentPage(getCurrentPageFromPager() + 1);
     }
 
     // When shared preferences are changed, the view is also updated. This is most useful when
@@ -555,11 +559,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         boolean isValid = true;
 
         // Check that user has provided their conclusion of grape variety.
-        if (mIsRedWine && !RedVarieties.contains(mUserFinalVarietyString)) {
+        if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(mUserFinalVarietyString)) {
             mFinalFragment.errorsFinalForm()
                     .setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
-        } else if (!mIsRedWine && !WhiteVarieties.contains(mUserFinalVarietyString)) {
+        } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(mUserFinalVarietyString)) {
             mFinalFragment.errorsFinalForm()
                     .setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
@@ -779,5 +783,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onGrapeFailure() {
         isScoring(false);
         Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score);
+    }
+
+    private List<String> parseResourceArray(int resourceId) {
+        return Arrays.asList(getResources().getStringArray(resourceId));
     }
 }

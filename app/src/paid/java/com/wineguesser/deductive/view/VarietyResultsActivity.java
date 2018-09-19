@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -20,7 +20,7 @@ import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
 import com.wineguesser.deductive.repository.ConclusionsRepository;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.InternationalCharactersArrayAdapter;
+import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
 
@@ -51,6 +51,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_actual_quality)
     AutoCompleteTextView mSingleViewActualQuality;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.autoText_actual_vintage)
+    AutoCompleteTextView mEditTextActualVintage;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -104,7 +107,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         // Check for the data from our parent intent.
         Intent parentIntent = getIntent();
         // A Guess Id should have been passed.
-        if (parentIntent != null && parentIntent.hasExtra(APP_VARIETY_GUESS_ID)) {
+        if (parentIntent != null) {
             // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
@@ -128,17 +131,25 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
         List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mSingleViewActualVariety.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualVariety.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
-        mSingleViewActualCountry.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualCountry.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mSingleViewActualRegion.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualRegion.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mSingleViewActualQuality.setAdapter(new InternationalCharactersArrayAdapter<>(mContext,
+        mSingleViewActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, qualities));
+
+        mEditTextActualVintage.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                onButtonWineResultSave(v);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
@@ -257,24 +268,28 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
         }
 
-        if (mIsRedWine && !RedVarieties.contains(actualVarietyString)) {
+        if (mIsRedWine
+                && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
-        } else if (!mIsRedWine && !WhiteVarieties.contains(actualVarietyString)) {
+        } else if (!mIsRedWine
+                && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)) {
             inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
             isValid = false;
         } else {
             inputErrors.setErrorVariety(null);
         }
 
-        if (actualCountryString == null || actualCountryString.isEmpty() || !AllCountries.contains(actualCountryString)) {
+        if (actualCountryString == null || actualCountryString.isEmpty()
+                || !parseResourceArray(R.array.all_countries).contains(actualCountryString)) {
             inputErrors.setErrorCountry(getString(R.string.error_input_country_origin));
             isValid = false;
         } else {
             inputErrors.setErrorCountry(null);
         }
 
-        if (actualRegionString == null || actualRegionString.isEmpty() || !AllRegions.contains(actualRegionString)) {
+        if (actualRegionString == null || actualRegionString.isEmpty()
+                || !parseResourceArray(R.array.all_regions).contains(actualRegionString)) {
             inputErrors.setErrorRegion(getString(R.string.error_input_valid_region));
             isValid = false;
         } else {

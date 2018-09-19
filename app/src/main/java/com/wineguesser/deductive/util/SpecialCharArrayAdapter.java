@@ -22,7 +22,6 @@
 package com.wineguesser.deductive.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
 import java.util.Collections;
+
+import timber.log.Timber;
 
 /**
  * A ListAdapter that manages a ListView backed by an array of arbitrary
@@ -52,7 +53,7 @@ import java.util.Collections;
  * or to have some of data besides toString() results fill the views,
  * override {@link #getView(int, View, ViewGroup)} to return the type of view you want.
  */
-public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implements Filterable {
+public class SpecialCharArrayAdapter<T> extends BaseAdapter implements Filterable {
     /**
      * Contains the list of objects that represent the data of this ArrayAdapter.
      * The content of this list is referred to as "the array" in the documentation.
@@ -80,7 +81,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
     private int mDropDownResource;
 
     /**
-     * If the inflated resource is not a TextView, {@link #mFieldId} is used to find
+     * If the inflated resource is not a TextView, { #mFieldId} is used to find
      * a TextView inside the inflated views hierarchy. This field must contain the
      * identifier that matches the one defined in the resource file.
      */
@@ -106,8 +107,8 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The resource ID for a layout file containing a TextView to use when
      *                 instantiating views.
      */
-    public InternationalCharactersArrayAdapter(Context context, int textViewResourceId) {
-        init(context, textViewResourceId, 0, new ArrayList<T>());
+    public SpecialCharArrayAdapter(Context context, int textViewResourceId) {
+        init(context, textViewResourceId, 0, new ArrayList<>());
     }
 
     /**
@@ -118,8 +119,8 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId) {
-        init(context, resource, textViewResourceId, new ArrayList<T>());
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId) {
+        init(context, resource, textViewResourceId, new ArrayList<>());
     }
 
     /**
@@ -130,7 +131,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int textViewResourceId, T[] objects) {
+    private SpecialCharArrayAdapter(Context context, int textViewResourceId, T[] objects) {
         init(context, textViewResourceId, 0, Arrays.asList(objects));
     }
 
@@ -143,7 +144,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects) {
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects) {
         init(context, resource, textViewResourceId, Arrays.asList(objects));
     }
 
@@ -155,7 +156,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *                 instantiating views.
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int textViewResourceId, List<T> objects) {
+    public SpecialCharArrayAdapter(Context context, int textViewResourceId, List<T> objects) {
         init(context, textViewResourceId, 0, objects);
     }
 
@@ -168,7 +169,7 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects The objects to represent in the ListView.
      */
-    public InternationalCharactersArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
+    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
         init(context, resource, textViewResourceId, objects);
     }
 
@@ -349,10 +350,10 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
                 text = (TextView) view;
             } else {
                 //  Otherwise, find the TextView field within the layout
-                text = (TextView) view.findViewById(mFieldId);
+                text = view.findViewById(mFieldId);
             }
         } catch (ClassCastException e) {
-            Log.e("ArrayAdapter", "You must supply a resource ID for a TextView");
+            Timber.tag("ArrayAdapter").e("You must supply a resource ID for a TextView");
             throw new IllegalStateException(
                     "ArrayAdapter requires the resource ID to be a TextView", e);
         }
@@ -390,10 +391,10 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
      *
      * @return An ArrayAdapter<CharSequence>.
      */
-    public static InternationalCharactersArrayAdapter<CharSequence> createFromResource(Context context,
-                                                                                       int textArrayResId, int textViewResId) {
+    public static SpecialCharArrayAdapter<CharSequence> createFromResource(Context context,
+                                                                           int textArrayResId, int textViewResId) {
         CharSequence[] strings = context.getResources().getTextArray(textArrayResId);
-        return new InternationalCharactersArrayAdapter<CharSequence>(context, textViewResId, strings);
+        return new SpecialCharArrayAdapter<>(context, textViewResId, strings);
     }
 
     /**
@@ -418,13 +419,13 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
 
             if (mOriginalValues == null) {
                 synchronized (mLock) {
-                    mOriginalValues = new ArrayList<T>(mObjects);
+                    mOriginalValues = new ArrayList<>(mObjects);
                 }
             }
 
             if (prefix == null || prefix.length() == 0) {
                 synchronized (mLock) {
-                    ArrayList<T> list = new ArrayList<T>(mOriginalValues);
+                    ArrayList<T> list = new ArrayList<>(mOriginalValues);
                     results.values = list;
                     results.count = list.size();
                 }
@@ -434,8 +435,8 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
                 ArrayList<T> values = mOriginalValues;
                 final int count = values.size();
 
-                final ArrayList<T> newValues = new ArrayList<T>(count);
-                final ArrayList<String> noPalatals = new ArrayList<String>();
+                final ArrayList<T> newValues = new ArrayList<>(count);
+                final ArrayList<String> noPalatals = new ArrayList<>();
 
                 for (int i = 0; i < count; i++) {
                     final T value = values.get(i);
@@ -453,8 +454,8 @@ public class InternationalCharactersArrayAdapter<T> extends BaseAdapter implemen
                         final String[] words = valueText.split(" ");
                         final int wordCount = words.length;
 
-                        for (int k = 0; k < wordCount; k++) {
-                            if (words[k].startsWith(prefixString)) {
+                        for (String word : words) {
+                            if (word.startsWith(prefixString)) {
                                 newValues.add(value);
                                 break;
                             }

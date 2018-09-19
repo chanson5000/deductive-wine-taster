@@ -45,5 +45,7 @@
 
         <include layout="@layout/divider_horizontal" />
 
+        <include layout="@layout/button_deduction_form_next" />
+
     </LinearLayout>
 </ScrollView>

@@ -39,6 +39,8 @@
 
         <include layout="@layout/sg_palate_complexity_radio" />
 
+        <include layout="@layout/button_deduction_form_next" />
+
     </LinearLayout>
 
 </ScrollView>

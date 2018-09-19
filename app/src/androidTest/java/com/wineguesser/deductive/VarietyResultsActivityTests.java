@@ -12,13 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 
@@ -30,9 +29,10 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
             new ActivityTestRule<>(VarietyResultsActivity.class, false, false);
 
     @Test
-    public void onInputInvalidVariety_ErrorTextShows() {
+    public void onInvalidInput_errorsShow() {
         Intent intent = new Intent();
         intent.putExtra(IS_RED_WINE, true);
+        intent.putExtra("TESTING", true);
         intent.putExtra(APP_VARIETY_GUESS_ID, "cabernetSauvignonNewWorld");
         intent.putExtra(USER_CONCLUSION_VARIETY, "Merlot");
         intent.putExtra(USER_CONCLUSION_COUNTRY, "United States");
@@ -41,63 +41,68 @@ public class VarietyResultsActivityTests implements DeductionFormContract {
         intent.putExtra(USER_CONCLUSION_VINTAGE, 2013);
         activityTestRule.launchActivity(intent);
 
+        onView(withId(R.id.editText_actual_label))
+                .perform(scrollTo(), replaceText("None"), pressImeActionButton());
+
         onView(withId(R.id.autoText_actual_variety))
-                .perform(replaceText("NebbioloNotValid"));
+                .perform(replaceText("NebbioloNotValid"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_country))
-                .perform(replaceText("ItalyNotValid"));
+                .perform(replaceText("ItalyNotValid"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_region))
-                .perform(replaceText("PiedmontNotValid"));
+                .perform(replaceText("PiedmontNotValid"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_quality))
-                .perform(replaceText("None"));
+                .perform(replaceText("None"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_vintage))
-                .perform(scrollTo(), replaceText("1800"));
+                .perform(replaceText("1800"), pressImeActionButton());
 
-        onView(withId(R.id.wine_result_save)).perform(scrollTo(), click());
-
-        onView(withId(R.id.textError_variety))
+        onView(withId(R.id.textError_variety)).perform(scrollTo())
                 .check(matches(withText(R.string.error_input_valid_grape)));
-        onView(withId(R.id.textError_country))
+        onView(withId(R.id.textError_country)).perform(scrollTo())
                 .check(matches(withText(R.string.error_input_country_origin)));
-        onView(withId(R.id.textError_region))
+        onView(withId(R.id.textError_region)).perform(scrollTo())
                 .check(matches(withText(R.string.error_input_valid_region)));
-        onView(withId(R.id.textError_vintage))
+        onView(withId(R.id.textError_vintage)).perform(scrollTo())
                 .check(matches(withText(R.string.error_input_valid_vintage)));
-
     }
 
     @Test
-    public void onInputActualWine_LaunchHistoryActivity() {
+    public void onValidInput_noErrorsShow() {
         Intent intent = new Intent();
         intent.putExtra(IS_RED_WINE, true);
+        intent.putExtra("TESTING", true);
         intent.putExtra(APP_VARIETY_GUESS_ID, "cabernetSauvignonNewWorld");
         intent.putExtra(USER_CONCLUSION_VARIETY, "Merlot");
         intent.putExtra(USER_CONCLUSION_COUNTRY, "United States");
         intent.putExtra(USER_CONCLUSION_REGION, "California");
         intent.putExtra(USER_CONCLUSION_QUALITY, "None");
         intent.putExtra(USER_CONCLUSION_VINTAGE, 2013);
-
         activityTestRule.launchActivity(intent);
 
+        onView(withId(R.id.editText_actual_label))
+                .perform(scrollTo(), replaceText("None"), pressImeActionButton());
+
         onView(withId(R.id.autoText_actual_variety))
-                .perform(scrollTo(), replaceText("Nebbiolo"));
+                .perform(replaceText("Nebbiolo"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_country))
-                .perform(scrollTo(), replaceText("Italy"));
+                .perform(replaceText("Italy"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_region))
-                .perform(scrollTo(), replaceText("Piedmont"));
+                .perform(replaceText("Piedmont"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_quality))
-                .perform(scrollTo(), replaceText("None"));
+                .perform(replaceText("None"), pressImeActionButton());
 
         onView(withId(R.id.autoText_actual_vintage))
-                .perform(scrollTo(), replaceText("2012"));
+                .perform(replaceText("2012"), pressImeActionButton());
 
-        onView(withId(R.id.wine_result_save)).perform(scrollTo(), click());
-        onView(withId(R.id.textStatic_app_conclusion_variety)).check(matches(isDisplayed()));
+        onView(withText(R.string.error_input_valid_grape)).check(doesNotExist());
+        onView(withText(R.string.error_input_country_origin)).check(doesNotExist());
+        onView(withText(R.string.error_input_valid_region)).check(doesNotExist());
+        onView(withText(R.string.error_input_valid_vintage)).check(doesNotExist());
     }
 }
