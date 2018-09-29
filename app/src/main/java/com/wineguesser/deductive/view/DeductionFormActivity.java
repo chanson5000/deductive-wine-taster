@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -179,11 +179,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
                     View root = sightScroll.getRootView();
                     if (sightScroll.getVisibility() == View.VISIBLE) {
                         mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
-                        root.setBackgroundColor(getResources()
-                                .getColor(R.color.colorPrimaryBackground));
+                        root.setBackgroundColor(ContextCompat
+                                .getColor(mContext, R.color.colorPrimaryBackground));
                     } else {
                         mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                        root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                        root.setBackgroundColor(ContextCompat
+                                .getColor(mContext, R.color.white));
                     }
                 }
             } else {

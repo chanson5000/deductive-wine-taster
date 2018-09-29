@@ -11,6 +11,8 @@
     <dimen name="x_large_text">20sp</dimen>
     <dimen name="xx_large_text">22sp</dimen>
     <dimen name="xxx_large_text">24sp</dimen>
+    <integer name="history_column_count">1</integer>
+
 
     <!--
 Refer to App Widget Documentation for margin information

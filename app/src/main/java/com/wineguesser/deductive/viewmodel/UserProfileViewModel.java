@@ -1,7 +1,7 @@
 package com.wineguesser.deductive.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class UserProfileViewModel extends ViewModel {
     private final MutableLiveData<String> userName = new MutableLiveData<>();
