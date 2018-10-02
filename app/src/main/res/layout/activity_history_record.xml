@@ -10,14 +10,14 @@
             type="com.wineguesser.deductive.viewmodel.HistoryRecordViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.HistoryRecordActivity">
 
         <include layout="@layout/toolbar_default" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_header_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -200,6 +200,6 @@
                 app:layout_constraintStart_toEndOf="@id/textView_user_conclusion_vintage"
                 app:layout_constraintTop_toBottomOf="@id/textView_actual_quality" />
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.design.widget.CoordinatorLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

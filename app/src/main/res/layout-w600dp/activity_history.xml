@@ -11,7 +11,7 @@
             type="com.wineguesser.deductive.viewmodel.HistoryActivityViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -33,12 +33,12 @@
             android:text="@string/no_data"
             android:visibility="@{safeUnbox(historyActivity.noData) == true ? View.VISIBLE : View.GONE}" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/conclusion_item_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             android:padding="@dimen/standard_half_margin" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
