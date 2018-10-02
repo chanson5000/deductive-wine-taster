@@ -9,6 +9,8 @@ Keep record of your tasting history! Save the results of your guess and the actu
 
 This is most useful for those studying and tasting for the Certified Sommelier examination for the Court of Master Sommeliers Americas. The application is modeled after and will only accept information in relation to the accepted grape varieties and growing regions for red and white wine that are used in the certified examination.
 
+<img src="./images/DWT-Home-small-400y.png"><img src="./images/DWT-Sight-small-400y.png"><img src="./images/DWT-FinalConclusion-small-400y.png">
+
 ## Distribution
 [Free version](https://play.google.com/store/apps/details?id=com.wineguesser.deductive.free) available in the Google Play Store.
 
