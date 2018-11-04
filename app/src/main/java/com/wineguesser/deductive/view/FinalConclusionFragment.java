@@ -21,6 +21,7 @@ import com.wineguesser.deductive.util.AppExecutors;
 import com.wineguesser.deductive.util.Helpers;
 import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
+import com.wineguesser.deductive.viewmodel.FinalConclusionFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class FinalConclusionFragment extends Fragment implements
@@ -37,7 +37,8 @@ public class FinalConclusionFragment extends Fragment implements
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mActivityPreferences;
     private SharedPreferences mWinePreferences;
-    private ConclusionInputErrorsViewModel inputErrors;
+    private ConclusionInputErrorsViewModel inputErrorsViewModel;
+    private FinalConclusionFragmentViewModel finalConclusionFragmentViewModel;
     private boolean mIsRedWine;
 
     @SuppressWarnings("WeakerAccess")
@@ -58,15 +59,6 @@ public class FinalConclusionFragment extends Fragment implements
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.autoText_final_vintage)
     AutoCompleteTextView mAutoTextVintage;
-    @SuppressWarnings("WeakerAccess")
-    @BindViews({R.id.progressBar_final_background, R.id.progressBar_final_conclusion})
-    List<View> mLoadingIndicator;
-
-    private static final ButterKnife.Action<View> HIDE = (view, index) ->
-            view.setVisibility(View.INVISIBLE);
-
-    private static final ButterKnife.Action<View> SHOW = (view, index) ->
-            view.setVisibility(View.VISIBLE);
 
     public FinalConclusionFragment() {
 
@@ -102,11 +94,15 @@ public class FinalConclusionFragment extends Fragment implements
         FragmentFinalConclusionBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_final_conclusion, container, false);
         // Initialize our view models.
-        inputErrors = ViewModelProviders.of(mFragmentActivity)
+        inputErrorsViewModel = ViewModelProviders.of(mFragmentActivity)
                 .get(ConclusionInputErrorsViewModel.class);
+
+        finalConclusionFragmentViewModel = ViewModelProviders.of(mFragmentActivity)
+                .get(FinalConclusionFragmentViewModel.class);
+
         // Set our lifecycle owner.
         binding.setLifecycleOwner(this);
-        binding.setInputError(inputErrors);
+        binding.setInputError(inputErrorsViewModel);
 
         // Retrieve our rootView.
         rootView = binding.getRoot();
@@ -118,8 +114,8 @@ public class FinalConclusionFragment extends Fragment implements
         return rootView;
     }
 
-    public ConclusionInputErrorsViewModel errorsFinalForm() {
-        return inputErrors;
+    ConclusionInputErrorsViewModel errorsFinalForm() {
+        return inputErrorsViewModel;
     }
 
     private List<String> parseResourceArray(int resourceId) {
@@ -168,7 +164,7 @@ public class FinalConclusionFragment extends Fragment implements
                         .getInt(scrollType, 0)));
     }
 
-    public void scrollToTop() {
+    void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
                 mScrollViewFinal.scrollTo(0, 0));
     }
@@ -226,11 +222,11 @@ public class FinalConclusionFragment extends Fragment implements
                 android.R.layout.simple_dropdown_item_1line, qualities)));
     }
 
-    public void showLoadingIndicator() {
-        ButterKnife.apply(mLoadingIndicator, SHOW);
+    void showLoadingIndicator() {
+        finalConclusionFragmentViewModel.setIsLoading(true);
     }
 
-    public void hideLoadingIndicator() {
-        ButterKnife.apply(mLoadingIndicator, HIDE);
+    void hideLoadingIndicator() {
+        finalConclusionFragmentViewModel.setIsLoading(false);
     }
 }
