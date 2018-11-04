@@ -103,6 +103,7 @@ public class FinalConclusionFragment extends Fragment implements
         // Set our lifecycle owner.
         binding.setLifecycleOwner(this);
         binding.setInputError(inputErrorsViewModel);
+        binding.setSelf(finalConclusionFragmentViewModel);
 
         // Retrieve our rootView.
         rootView = binding.getRoot();
