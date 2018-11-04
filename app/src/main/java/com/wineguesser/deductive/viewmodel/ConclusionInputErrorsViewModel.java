@@ -1,5 +1,6 @@
 package com.wineguesser.deductive.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,7 +13,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
     private final MutableLiveData<String> errorVintage = new MutableLiveData<>();
     private final MutableLiveData<String> errorLabel = new MutableLiveData<>();
 
-    public MutableLiveData<String> getErrorVariety() {
+    public LiveData<String> getErrorVariety() {
         return errorVariety;
     }
 
@@ -20,7 +21,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         this.errorVariety.setValue(errorVariety);
     }
 
-    public MutableLiveData<String> getErrorCountry() {
+    public LiveData<String> getErrorCountry() {
         return errorCountry;
     }
 
@@ -28,7 +29,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         this.errorCountry.setValue(errorCountry);
     }
 
-    public MutableLiveData<String> getErrorRegion() {
+    public LiveData<String> getErrorRegion() {
         return errorRegion;
     }
 
@@ -36,7 +37,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         this.errorRegion.setValue(errorRegion);
     }
 
-    public MutableLiveData<String> getErrorQuality() {
+    public LiveData<String> getErrorQuality() {
         return errorQuality;
     }
 
@@ -45,7 +46,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         this.errorQuality.setValue(errorQuality);
     }
 
-    public MutableLiveData<String> getErrorVintage() {
+    public LiveData<String> getErrorVintage() {
         return errorVintage;
     }
 
@@ -53,7 +54,7 @@ public class ConclusionInputErrorsViewModel extends ViewModel {
         this.errorVintage.setValue(errorVintage);
     }
 
-    public MutableLiveData<String> getErrorLabel() {
+    public LiveData<String> getErrorLabel() {
         return errorLabel;
     }
 
