@@ -8,26 +8,20 @@
         <variable
             name="inputError"
             type="com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel" />
+
+        <variable
+            name="self"
+            type="com.wineguesser.deductive.viewmodel.FinalConclusionFragmentViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
-            android:id="@+id/progressBar_final_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/greyTransparent"
-            android:visibility="invisible" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_final_conclusion"
-            style="@style/AppTheme.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
+        <include
+            android:id="@+id/loading_indicator"
+            layout="@layout/loading_indicator"
+            android:visibility="@{self.isLoading() ? View.VISIBLE : View.INVISIBLE}" />
 
         <ScrollView
             android:id="@+id/scrollView_final"
