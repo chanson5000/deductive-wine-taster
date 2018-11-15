@@ -21,7 +21,7 @@
         <include
             android:id="@+id/loading_indicator"
             layout="@layout/loading_indicator"
-            android:visibility="@{self.isLoading() ? View.VISIBLE : View.INVISIBLE}" />
+            android:visibility="@{safeUnbox(self.isLoading() ? View.VISIBLE : View.INVISIBLE)}" />
 
         <ScrollView
             android:id="@+id/scrollView_final"
