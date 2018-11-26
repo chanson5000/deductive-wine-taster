@@ -1,26 +1,16 @@
-package com.wineguesser.deductive.util;
+package com.wineguesser.deductive.util.Varietal;
 
-
-import android.os.AsyncTask;
-import androidx.annotation.NonNull;
 import android.util.SparseIntArray;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.wineguesser.deductive.repository.DatabaseContract;
 import com.wineguesser.deductive.view.DeductionFormContract;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import timber.log.Timber;
+public class VarietalFormResultFormatter implements DeductionFormContract, DatabaseContract {
 
-public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
-        implements DeductionFormContract, DatabaseContract {
+    private SparseIntArray formSelections;
 
     private static final Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
 
@@ -193,91 +183,17 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
     }};
 
-    private final GrapeResult mContext;
-    private static DatabaseReference mDatabaseReference;
-
-    public GrapeScore(GrapeResult context, Boolean isRedWine) {
-        mContext = context;
-
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        if (isRedWine) {
-            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
-        } else {
-            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
-        }
+    public VarietalFormResultFormatter(SparseIntArray formSelections) {
+        this.formSelections = formSelections;
     }
 
-    @Override
-    protected Void doInBackground(SparseIntArray... formSelections) {
-        // Convert our form collection keys to our database keys so that they can be compared.
-        HashMap<String, Integer> descriptorsMap = formToDbFormat(formSelections[0]);
-        // New empty map to hold scores.
-        HashMap<String, Integer> varietyScoresMap = new HashMap<>();
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through our database of descriptors for each wine variety and
-                // add point(s) for score each time there is a characteristic match.
-
-                // Here we iterate through each wine variety in our database.
-                for (DataSnapshot varietyRecord : dataSnapshot.getChildren()) {
-                    String varietyId = varietyRecord.getKey();
-                    int currentVarietyScore = 0;
-                    // Here we iterate through each descriptor of the variety.
-                    for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
-                        if (descriptorsMap.containsKey(varietyDescriptor.getKey())) {
-                            // Increment its score each time there is a match.
-                            Object varietyDescriptorValue = varietyDescriptor.getValue();
-                            if (varietyDescriptorValue instanceof Integer
-                                    && (Integer) varietyDescriptorValue > 1) {
-                                // Two points for key indicator of variety (value was a 2 or higher)
-                                currentVarietyScore += 2;
-                            } else {
-                                // On point for regular indicator
-                                currentVarietyScore++;
-                            }
-                        }
-                    }
-                    Timber.d("Putting score: %s, %s", varietyId, currentVarietyScore);
-                    // Putting the final score for the record into the map.
-                    varietyScoresMap.put(varietyId, currentVarietyScore);
-                }
-
-                // Find the wine variety key with the highest score.
-                String highestScoreId = Collections.max(
-                        varietyScoresMap.entrySet(),
-                        (wineId, wineScore) -> wineId.getValue() - wineScore.getValue()).getKey();
-
-                if (highestScoreId != null) {
-                    Timber.d("Result of wine scoring: %s", highestScoreId);
-                    // We now have a wine variety to call back;
-                    mContext.onGrapeResult(highestScoreId);
-                } else {
-                    mContext.onGrapeFailure();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                mContext.onGrapeFailure();
-
-                Timber.e(databaseError.toString());
-            }
-        };
-        // The listener that is triggering the code block above. Only needed to trigger once.
-        mDatabaseReference.addListenerForSingleValueEvent(listener);
-
-        return null;
-    }
-
-    private static HashMap<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
+    public HashMap<String, Integer> getDescriptorsHashMap() {
 
         HashMap<String, Integer> convertedData = new HashMap<>();
 
-        for (int i = 0; i < wineProperties.size(); i++) {
-            int key = wineProperties.keyAt(i);
-            int value = wineProperties.get(key);
+        for (int i = 0; i < formSelections.size(); i++) {
+            int key = formSelections.keyAt(i);
+            int value = formSelections.get(key);
 
             convertedData.put(FormToDbConversionMap.get(key), value);
         }

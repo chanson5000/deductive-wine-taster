@@ -30,8 +30,8 @@ import android.widget.Switch;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.GrapeScore;
-import com.wineguesser.deductive.util.GrapeResult;
+import com.wineguesser.deductive.util.Varietal.VarietalScore;
+import com.wineguesser.deductive.util.Varietal.VarietalScoreResult;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract, GrapeResult {
+        DatabaseContract, VarietalScoreResult {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -745,7 +745,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
-        GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
+        VarietalScore scoreTask = new VarietalScore(this, mIsRedWine);
         scoreTask.execute(formSelections);
     }
 
