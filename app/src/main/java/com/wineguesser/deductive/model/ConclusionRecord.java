@@ -2,9 +2,10 @@ package com.wineguesser.deductive.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
+
+import androidx.annotation.NonNull;
 
 public class ConclusionRecord implements Parcelable {
 
