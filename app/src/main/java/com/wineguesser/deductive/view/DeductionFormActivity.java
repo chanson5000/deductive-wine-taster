@@ -4,17 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +17,11 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Switch;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.GrapeResult;
+import com.wineguesser.deductive.util.GrapeScore;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
@@ -39,6 +29,17 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
         DatabaseContract, GrapeResult {
@@ -49,7 +50,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private boolean mIsRedWine;
     private boolean mLaunchingIntent;
 
-    private MenuItem mMenuShowWhite;
+    private MenuItem menuShowWhiteScreen;
 
     // Set a strong reference to the listener so that it avoids garbage collection.
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
@@ -78,11 +79,11 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         Intent parentIntent = getIntent();
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
+        SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
 
-            editor.putBoolean(IS_RED_WINE, TRUE);
+            sharedPreferencesEditor.putBoolean(IS_RED_WINE, TRUE);
             mIsRedWine = true;
 
             mWinePreferences =
@@ -93,7 +94,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         } else {
             setContentView(R.layout.activity_white_deduction_form);
 
-            editor.putBoolean(IS_RED_WINE, FALSE);
+            sharedPreferencesEditor.putBoolean(IS_RED_WINE, FALSE);
             mIsRedWine = false;
 
             mWinePreferences =
@@ -102,7 +103,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
             mPager.setAdapter(pagerAdapter);
         }
-        editor.apply();
+        sharedPreferencesEditor.apply();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,7 +117,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public void onStart() {
         super.onStart();
 
-        mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+        mOnPageChangeListener = createOnPageChangeListener();
+
+        mPager.addOnPageChangeListener(mOnPageChangeListener);
+    }
+
+    private ViewPager.OnPageChangeListener createOnPageChangeListener() {
+        return new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -124,15 +131,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             @Override
             public void onPageSelected(int position) {
                 syncCurrentTitle(position);
-                syncCurrentMenuOptions(position);
+                syncCurrentMenuOptions(position, menuShowWhiteScreen);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         };
-
-        mPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
@@ -145,9 +150,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.wine_deduction_menu, menu);
-        mMenuShowWhite = menu.findItem(R.id.menu_show_white_screen);
+        menuShowWhiteScreen = menu.findItem(R.id.menu_show_white_screen);
         if (getCurrentPageFromPager() != SIGHT_PAGE) {
-            mMenuShowWhite.setVisible(false);
+            menuShowWhiteScreen.setVisible(false);
         }
         return true;
     }
@@ -170,25 +175,25 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
-    private void syncCurrentMenuOptions(int page) {
-        if (mMenuShowWhite != null) {
+    private void syncCurrentMenuOptions(int page, MenuItem menuItem) {
+        if (menuItem != null) {
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
             if (page == SIGHT_PAGE) {
-                mMenuShowWhite.setVisible(true);
+                menuItem.setVisible(true);
                 if (sightScroll != null) {
                     View root = sightScroll.getRootView();
                     if (sightScroll.getVisibility() == View.VISIBLE) {
-                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                        menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
                         root.setBackgroundColor(ContextCompat
                                 .getColor(mContext, R.color.colorPrimaryBackground));
                     } else {
-                        mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                        menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
                         root.setBackgroundColor(ContextCompat
                                 .getColor(mContext, R.color.white));
                     }
                 }
             } else {
-                mMenuShowWhite.setVisible(false);
+                menuShowWhiteScreen.setVisible(false);
                 if (sightScroll != null) {
                     View root = sightScroll.getRootView();
                     root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
@@ -198,9 +203,9 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     }
 
     private void resetWhiteScreen() {
-        if (mMenuShowWhite != null && getCurrentPageFromPager() == SIGHT_PAGE) {
-            mMenuShowWhite.setVisible(true);
-            mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+        if (menuShowWhiteScreen != null && getCurrentPageFromPager() == SIGHT_PAGE) {
+            menuShowWhiteScreen.setVisible(true);
+            menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
             if (sightScroll != null) {
                 View root = sightScroll.getRootView();
@@ -213,13 +218,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
     private void setSightWhiteScreen(boolean isEnabled, View view) {
         if (view != null) {
             if (isEnabled) {
-                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_on_24px);
+                menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_on_24px);
                 View root = view.getRootView();
                 root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
                 view.setVisibility(View.INVISIBLE);
                 Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
             } else {
-                mMenuShowWhite.setIcon(R.drawable.ic_menu_visibility_off_24px);
+                menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
                 View root = view.getRootView();
                 root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
                 view.setVisibility(View.VISIBLE);
