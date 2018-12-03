@@ -2,7 +2,6 @@ package com.wineguesser.deductive.util;
 
 
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
 import android.util.SparseIntArray;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
@@ -198,13 +198,13 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
 
     public GrapeScore(GrapeResult context, Boolean isRedWine) {
         mContext = context;
+        mDatabaseReference = setDatabaseReference(isRedWine, FirebaseDatabase.getInstance());
+    }
 
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        if (isRedWine) {
-            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS);
-        } else {
-            mDatabaseReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
-        }
+    private DatabaseReference setDatabaseReference(boolean isRedWine, FirebaseDatabase database) {
+        return isRedWine
+                ? database.getReference(DB_REFERENCE_RED_VARIETY_DESCRIPTORS)
+                : database.getReference(DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS);
     }
 
     @Override
@@ -217,30 +217,10 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through our database of descriptors for each wine variety and
-                // add point(s) for score each time there is a characteristic match.
-
-                // Here we iterate through each wine variety in our database.
                 for (DataSnapshot varietyRecord : dataSnapshot.getChildren()) {
+                    int currentVarietyScore = getCurrentVarietyScore(varietyRecord, descriptorsMap);
                     String varietyId = varietyRecord.getKey();
-                    int currentVarietyScore = 0;
-                    // Here we iterate through each descriptor of the variety.
-                    for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
-                        if (descriptorsMap.containsKey(varietyDescriptor.getKey())) {
-                            // Increment its score each time there is a match.
-                            Object varietyDescriptorValue = varietyDescriptor.getValue();
-                            if (varietyDescriptorValue instanceof Integer
-                                    && (Integer) varietyDescriptorValue > 1) {
-                                // Two points for key indicator of variety (value was a 2 or higher)
-                                currentVarietyScore += 2;
-                            } else {
-                                // On point for regular indicator
-                                currentVarietyScore++;
-                            }
-                        }
-                    }
                     Timber.d("Putting score: %s, %s", varietyId, currentVarietyScore);
-                    // Putting the final score for the record into the map.
                     varietyScoresMap.put(varietyId, currentVarietyScore);
                 }
 
@@ -271,7 +251,30 @@ public class GrapeScore extends AsyncTask<SparseIntArray, Void, Void>
         return null;
     }
 
-    private static HashMap<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
+    private int getCurrentVarietyScore(DataSnapshot varietyRecord,
+                                       HashMap<String, Integer> descriptorsMap) {
+        int currentVarietyScore = 0;
+
+        for (DataSnapshot varietyDescriptor : varietyRecord.getChildren()) {
+            if (descriptorsMap.containsKey(varietyDescriptor.getKey())) {
+                currentVarietyScore +=
+                        calculateScoreIncrease(varietyDescriptor.getValue(Integer.class));
+            }
+        }
+        return currentVarietyScore;
+    }
+
+    private int calculateScoreIncrease(Integer varietyDescriptorValue) {
+        if (varietyDescriptorValue != null && varietyDescriptorValue > 1) {
+            // Two points for key indicator of variety (value is a 2 or higher)
+            return 2;
+        } else {
+            // One point for regular indicator
+            return 1;
+        }
+    }
+
+    private HashMap<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
 
         HashMap<String, Integer> convertedData = new HashMap<>();
 

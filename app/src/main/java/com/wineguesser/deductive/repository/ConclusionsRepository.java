@@ -1,19 +1,18 @@
 package com.wineguesser.deductive.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.annotation.NonNull;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.wineguesser.deductive.model.ConclusionRecord;
 import com.google.firebase.database.ValueEventListener;
+import com.wineguesser.deductive.model.ConclusionRecord;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import timber.log.Timber;
 
 public class ConclusionsRepository extends FirebaseRepository {
@@ -72,9 +71,7 @@ public class ConclusionsRepository extends FirebaseRepository {
                     for (DataSnapshot entry : dataSnapshot.getChildren()) {
                         String conclusionId = entry.getKey();
                         ConclusionRecord conclusionRecord = entry.getValue(ConclusionRecord.class);
-                        if (conclusionRecord != null) {
-                            conclusionRecord.setConclusionId(conclusionId);
-                        }
+                        conclusionRecord.setConclusionId(conclusionId);
                         data.add(conclusionRecord);
                     }
                     Collections.reverse(data);
@@ -92,4 +89,3 @@ public class ConclusionsRepository extends FirebaseRepository {
         }
     }
 }
-

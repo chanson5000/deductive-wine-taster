@@ -1,18 +1,14 @@
 package com.wineguesser.deductive.view;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
@@ -28,6 +24,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -75,13 +76,11 @@ public class FinalConclusionFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
 
-        String wineColorPreferenceType;
-        if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
-            mIsRedWine = true;
-            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
-        } else {
-            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
-        }
+        mIsRedWine = mActivityPreferences.getBoolean(IS_RED_WINE, FALSE);
+
+        String wineColorPreferenceType =
+                mIsRedWine ? RED_WINE_FORM_PREFERENCES : WHITE_WINE_FORM_PREFERENCES;
+
         mWinePreferences = mFragmentActivity
                 .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
     }
@@ -138,31 +137,20 @@ public class FinalConclusionFragment extends Fragment implements
     }
 
     private void saveScrollState() {
-        String scrollType;
+        SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
+        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), mScrollViewFinal.getScrollY());
+        sharedPreferencesEditor.apply();
+    }
 
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        if (mIsRedWine) {
-            scrollType = RED_FINAL_Y_SCROLL;
-        } else {
-            scrollType = WHITE_FINAL_Y_SCROLL;
-        }
-        editor.putInt(scrollType, mScrollViewFinal.getScrollY());
-        editor.apply();
+    private String getScrollType(boolean mIsRedWine) {
+        return mIsRedWine ? RED_FINAL_Y_SCROLL : WHITE_FINAL_Y_SCROLL;
     }
 
     private void loadScrollState() {
-        String scrollType;
-
-        if (mIsRedWine) {
-            scrollType = RED_FINAL_Y_SCROLL;
-        } else {
-            scrollType = WHITE_FINAL_Y_SCROLL;
-        }
-
         // scrollTo must not be executed on the main thread.
         AppExecutors.getInstance().mainThread().execute(() ->
                 mScrollViewFinal.scrollTo(0, mActivityPreferences
-                        .getInt(scrollType, 0)));
+                        .getInt(getScrollType(mIsRedWine), 0)));
     }
 
     void scrollToTop() {
@@ -172,17 +160,25 @@ public class FinalConclusionFragment extends Fragment implements
 
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
-                mAutoTextVariety.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
-                mAutoTextCountry.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_REGION),
-                mAutoTextRegion.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_QUALITY),
-                mAutoTextQuality.getText().toString());
-        editor.putString(Integer.toString(TEXT_SINGLE_FINAL_VINTAGE),
-                mAutoTextVintage.getText().toString());
+        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
+                getTextViewString(mAutoTextVariety));
+        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
+                getTextViewString(mAutoTextCountry));
+        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_REGION),
+                getTextViewString(mAutoTextRegion));
+        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
+                getTextViewString(mAutoTextQuality));
+        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
+                getTextViewString(mAutoTextVintage));
         editor.apply();
+    }
+
+    private String getTextViewString(TextView textView) {
+        return textView.getText().toString();
+    }
+
+    private String resourceIdToString(int resourceId) {
+        return Integer.toString(resourceId);
     }
 
     private void loadSelectionState() {
@@ -198,29 +194,38 @@ public class FinalConclusionFragment extends Fragment implements
     }
 
     private void setAutoTextVarietyByType(Boolean isRedWine) {
-        List<String> varieties;
+        mAutoTextVariety.setAdapter(
+                new SpecialCharArrayAdapter<>(
+                        mFragmentActivity,
+                        android.R.layout.simple_dropdown_item_1line,
+                        getVarietiesList(isRedWine)));
 
-        if (isRedWine) {
-            varieties = new ArrayList<>(parseResourceArray(R.array.red_varieties));
-        } else {
-            varieties = new ArrayList<>(parseResourceArray(R.array.white_varieties));
-        }
+        mAutoTextCountry.setAdapter(
+                new SpecialCharArrayAdapter<>(
+                        mFragmentActivity,
+                        android.R.layout.simple_dropdown_item_1line,
+                        getListFromArrayResourceId(R.array.all_countries)));
 
-        mAutoTextVariety.setAdapter(new SpecialCharArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, varieties));
+        mAutoTextRegion.setAdapter(
+                new SpecialCharArrayAdapter<>(
+                        mFragmentActivity,
+                        android.R.layout.simple_dropdown_item_1line,
+                        getListFromArrayResourceId(R.array.all_regions)));
 
-        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
-        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
-        List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
+        mAutoTextQuality.setAdapter(
+                new SpecialCharArrayAdapter<>(
+                        mFragmentActivity,
+                        android.R.layout.simple_dropdown_item_1line,
+                        getListFromArrayResourceId(R.array.all_qualities)));
+    }
 
-        mAutoTextCountry.setAdapter(new SpecialCharArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, countries));
+    private List<String> getVarietiesList(boolean isRedWine) {
+        int varietyType = isRedWine ? R.array.red_varieties : R.array.white_varieties;
+        return getListFromArrayResourceId(varietyType);
+    }
 
-        mAutoTextRegion.setAdapter(new SpecialCharArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, regions));
-
-        mAutoTextQuality.setAdapter((new SpecialCharArrayAdapter<>(mFragmentActivity,
-                android.R.layout.simple_dropdown_item_1line, qualities)));
+    private List<String> getListFromArrayResourceId(int arrayId) {
+        return new ArrayList<>(parseResourceArray(arrayId));
     }
 
     void showLoadingIndicator() {
