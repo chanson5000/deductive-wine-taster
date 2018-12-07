@@ -1,6 +1,6 @@
 package com.wineguesser.deductive.util;
 
-public interface GrapeResult {
+public interface GrapeVarietyScoreResult {
     void onGrapeResult(String topScoreVariety);
     void onGrapeFailure();
 }

@@ -20,8 +20,9 @@ import android.widget.Switch;
 import com.google.android.material.snackbar.Snackbar;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.GrapeResult;
-import com.wineguesser.deductive.util.GrapeScore;
+import com.wineguesser.deductive.util.FormMapper;
+import com.wineguesser.deductive.util.GrapeVarietyScoreResult;
+import com.wineguesser.deductive.util.GrapeVarietyScore;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract, GrapeResult {
+        DatabaseContract, GrapeVarietyScoreResult {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -750,8 +751,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
-        GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
-        scoreTask.execute(formSelections);
+        GrapeVarietyScore scoreTask = new GrapeVarietyScore(this, mIsRedWine);
+
+        FormMapper formMapper = new FormMapper();
+
+        Map varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections);
+
+        scoreTask.execute(varietyScoreDatabaseMap);
     }
 
     public void onGrapeResult(String topScoreVariety) {

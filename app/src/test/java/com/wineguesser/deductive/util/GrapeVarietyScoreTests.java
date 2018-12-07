@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(JUnit4.class)
-public class GrapeScoreTests {
+public class GrapeVarietyScoreTests {
 
     @Mock
     private DataSnapshot dataSnapshot;
