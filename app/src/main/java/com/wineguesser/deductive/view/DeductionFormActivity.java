@@ -182,16 +182,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             if (page == SIGHT_PAGE) {
                 menuItem.setVisible(true);
                 if (sightScroll != null) {
-                    View root = sightScroll.getRootView();
-                    if (sightScroll.getVisibility() == View.VISIBLE) {
-                        menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
-                        root.setBackgroundColor(ContextCompat
-                                .getColor(mContext, R.color.colorPrimaryBackground));
-                    } else {
-                        menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                        root.setBackgroundColor(ContextCompat
-                                .getColor(mContext, R.color.white));
-                    }
+                    toggleWineEvaluationMode(menuItem, sightScroll);
                 }
             } else {
                 menuShowWhiteScreen.setVisible(false);
@@ -203,16 +194,33 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
+    private void toggleWineEvaluationMode(MenuItem menuItem, ScrollView sightScroll) {
+        View root = sightScroll.getRootView();
+        if (sightScroll.getVisibility() == View.VISIBLE) {
+            menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
+            root.setBackgroundColor(ContextCompat
+                    .getColor(mContext, R.color.colorPrimaryBackground));
+        } else {
+            menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
+            root.setBackgroundColor(ContextCompat
+                    .getColor(mContext, R.color.white));
+        }
+    }
+
     private void resetWhiteScreen() {
         if (menuShowWhiteScreen != null && getCurrentPageFromPager() == SIGHT_PAGE) {
             menuShowWhiteScreen.setVisible(true);
             menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
-            if (sightScroll != null) {
-                View root = sightScroll.getRootView();
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
-                sightScroll.setVisibility(View.VISIBLE);
-            }
+            resetScrollView(sightScroll);
+        }
+    }
+
+    private void resetScrollView(ScrollView sightScroll) {
+        if (sightScroll != null) {
+            View root = sightScroll.getRootView();
+            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
+            sightScroll.setVisibility(View.VISIBLE);
         }
     }
 
@@ -557,11 +565,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         mUserFinalVintageInteger = null;
         String parseInteger = singleTextViewFinalVintage.getText().toString();
-        if (!parseInteger.isEmpty()) {
-            mUserFinalVintageInteger = Integer.parseInt(parseInteger);
-        } else {
-            mUserFinalVintageInteger = 0;
-        }
+
+        mUserFinalVintageInteger = !parseInteger.isEmpty()
+                        ? Integer.parseInt(parseInteger)
+                        : 0;
 
         boolean isValid = true;
 
@@ -616,12 +623,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         boolean needSnackbar = false;
 
         // Determine if the form is red or white radio groups.
-        List<Integer> radioGroups;
-        if (mIsRedWine) {
-            radioGroups = AllRedRadioGroups;
-        } else {
-            radioGroups = AllWhiteRadioGroups;
-        }
+        List<Integer> radioGroups = mIsRedWine ? AllRedRadioGroups : AllWhiteRadioGroups;
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Integer wineFormKey = Helpers.castKey(entry.getKey());
