@@ -2,15 +2,23 @@ package com.wineguesser.deductive.model.wine.red;
 
 import com.wineguesser.deductive.model.wine.WineVarietal;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class RedWineVarietal extends WineVarietal {
     private RedWineDescriptors redWineDescriptors;
+
+    public RedWineVarietal(String name,
+                           String description,
+                           String notes,
+                           String confusion,
+                           RedWineDescriptors redWineDescriptors) {
+        super(name, description, notes, confusion);
+
+        this.redWineDescriptors = redWineDescriptors;
+    }
 }
