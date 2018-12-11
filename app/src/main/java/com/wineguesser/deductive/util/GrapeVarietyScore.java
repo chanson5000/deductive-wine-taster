@@ -53,9 +53,7 @@ public class GrapeVarietyScore extends AsyncTask<Map<String, Integer>, Void, Voi
                 }
 
                 // Find the wine variety key with the highest score.
-                String highestScoreId = Collections.max(
-                        varietyScoresMap.entrySet(),
-                        (wineId, wineScore) -> wineId.getValue() - wineScore.getValue()).getKey();
+                String highestScoreId = getHighestScore(varietyScoresMap);
 
                 if (highestScoreId != null) {
                     Timber.d("Result of wine scoring: %s", highestScoreId);
@@ -77,6 +75,12 @@ public class GrapeVarietyScore extends AsyncTask<Map<String, Integer>, Void, Voi
         mDatabaseReference.addListenerForSingleValueEvent(listener);
 
         return null;
+    }
+
+    private String getHighestScore(Map<String, Integer> varietyScoresMap) {
+        return Collections.max(
+                varietyScoresMap.entrySet(),
+                (wineId, wineScore) -> wineId.getValue() - wineScore.getValue()).getKey();
     }
 
     private int getCurrentVarietyScore(DataSnapshot varietyRecord,
