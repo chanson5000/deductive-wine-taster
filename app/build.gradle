@@ -110,6 +110,8 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
     implementation 'com.google.dagger:dagger:2.16'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
