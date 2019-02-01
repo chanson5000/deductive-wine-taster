@@ -20,8 +20,9 @@ import android.widget.Switch;
 import com.google.android.material.snackbar.Snackbar;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.GrapeResult;
-import com.wineguesser.deductive.util.GrapeScore;
+import com.wineguesser.deductive.util.FormMapper;
+import com.wineguesser.deductive.util.GrapeVarietyScoreResult;
+import com.wineguesser.deductive.util.GrapeVarietyScore;
 import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract, GrapeResult {
+        DatabaseContract, GrapeVarietyScoreResult {
 
     private ViewPager mPager;
     private SharedPreferences mWinePreferences;
@@ -181,16 +182,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             if (page == SIGHT_PAGE) {
                 menuItem.setVisible(true);
                 if (sightScroll != null) {
-                    View root = sightScroll.getRootView();
-                    if (sightScroll.getVisibility() == View.VISIBLE) {
-                        menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
-                        root.setBackgroundColor(ContextCompat
-                                .getColor(mContext, R.color.colorPrimaryBackground));
-                    } else {
-                        menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                        root.setBackgroundColor(ContextCompat
-                                .getColor(mContext, R.color.white));
-                    }
+                    toggleWineEvaluationMode(menuItem, sightScroll);
                 }
             } else {
                 menuShowWhiteScreen.setVisible(false);
@@ -202,16 +194,33 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         }
     }
 
+    private void toggleWineEvaluationMode(MenuItem menuItem, ScrollView sightScroll) {
+        View root = sightScroll.getRootView();
+        if (sightScroll.getVisibility() == View.VISIBLE) {
+            menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
+            root.setBackgroundColor(ContextCompat
+                    .getColor(mContext, R.color.colorPrimaryBackground));
+        } else {
+            menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
+            root.setBackgroundColor(ContextCompat
+                    .getColor(mContext, R.color.white));
+        }
+    }
+
     private void resetWhiteScreen() {
         if (menuShowWhiteScreen != null && getCurrentPageFromPager() == SIGHT_PAGE) {
             menuShowWhiteScreen.setVisible(true);
             menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
             ScrollView sightScroll = findViewById(R.id.scrollView_sight);
-            if (sightScroll != null) {
-                View root = sightScroll.getRootView();
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
-                sightScroll.setVisibility(View.VISIBLE);
-            }
+            resetScrollView(sightScroll);
+        }
+    }
+
+    private void resetScrollView(ScrollView sightScroll) {
+        if (sightScroll != null) {
+            View root = sightScroll.getRootView();
+            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
+            sightScroll.setVisibility(View.VISIBLE);
         }
     }
 
@@ -508,7 +517,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // Using this to save our fragment state/reference on view rotation.
         @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
 
             switch (position) {
@@ -556,11 +565,10 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         mUserFinalVintageInteger = null;
         String parseInteger = singleTextViewFinalVintage.getText().toString();
-        if (!parseInteger.isEmpty()) {
-            mUserFinalVintageInteger = Integer.parseInt(parseInteger);
-        } else {
-            mUserFinalVintageInteger = 0;
-        }
+
+        mUserFinalVintageInteger = !parseInteger.isEmpty()
+                        ? Integer.parseInt(parseInteger)
+                        : 0;
 
         boolean isValid = true;
 
@@ -615,22 +623,17 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         boolean needSnackbar = false;
 
         // Determine if the form is red or white radio groups.
-        List<Integer> radioGroups;
-        if (mIsRedWine) {
-            radioGroups = AllRedRadioGroups;
-        } else {
-            radioGroups = AllWhiteRadioGroups;
-        }
+        List<Integer> radioGroups = mIsRedWine ? AllRedRadioGroups : AllWhiteRadioGroups;
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Integer wineFormKey = Helpers.castKey(entry.getKey());
             if (SWITCH_NOSE_WOOD == wineFormKey) {
-                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                boolean isChecked = Helpers.parseChecked(entry.getValue());
                 if (isChecked) {
                     needNoseWoodRadios = true;
                 }
             } else if (SWITCH_PALATE_WOOD == wineFormKey) {
-                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                boolean isChecked = Helpers.parseChecked(entry.getValue());
                 if (isChecked) {
                     needPalateWoodRadios = true;
                 }
@@ -646,21 +649,21 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             if (radioGroups.contains(wineFormKey)) {
                 if (needNoseWoodRadios && NoseWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
                         needSnackbar = true;
                     }
                 } else if (needPalateWoodRadios && PalateWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
                         needSnackbar = true;
                     }
                 } else if (!AllWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     // Checking to see if a selection has been made.
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
@@ -721,14 +724,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             // Check boxes will just be looking for check or no check.
 
             if (AllRadioGroups.contains(wineFormKey)) {
-                Integer radioButtonSelection = Integer.parseInt(entry.getValue().toString());
+                int radioButtonSelection = Integer.parseInt(entry.getValue().toString());
                 // Checking to see if a selection has been made.
                 if (radioButtonSelection != NONE_SELECTED) {
                     // If a selection has been made we add it as checked (value of 1)
                     wineFormSelections.put(radioButtonSelection, CHECKED);
                 }
             } else if (AllCheckBoxes.contains(wineFormKey)) {
-                Integer value = Integer.parseInt(entry.getValue().toString());
+                int value = Integer.parseInt(entry.getValue().toString());
                 // Only adding to map if element has been checked.
                 if (value == CHECKED) {
                     wineFormSelections.put(wineFormKey, value);
@@ -750,8 +753,13 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
 
         SparseIntArray formSelections = retrieveSharedPreferencesValues();
 
-        GrapeScore scoreTask = new GrapeScore(this, mIsRedWine);
-        scoreTask.execute(formSelections);
+        GrapeVarietyScore scoreTask = new GrapeVarietyScore(this, mIsRedWine);
+
+        FormMapper formMapper = new FormMapper();
+
+        Map varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections);
+
+        scoreTask.execute(varietyScoreDatabaseMap);
     }
 
     public void onGrapeResult(String topScoreVariety) {

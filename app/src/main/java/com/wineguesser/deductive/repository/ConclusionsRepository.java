@@ -71,7 +71,9 @@ public class ConclusionsRepository extends FirebaseRepository {
                     for (DataSnapshot entry : dataSnapshot.getChildren()) {
                         String conclusionId = entry.getKey();
                         ConclusionRecord conclusionRecord = entry.getValue(ConclusionRecord.class);
-                        conclusionRecord.setConclusionId(conclusionId);
+                        if (conclusionRecord != null) {
+                            conclusionRecord.setConclusionId(conclusionId);
+                        }
                         data.add(conclusionRecord);
                     }
                     Collections.reverse(data);
