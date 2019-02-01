@@ -6,7 +6,13 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 import androidx.annotation.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ConclusionRecord implements Parcelable {
 
     @Exclude
@@ -28,122 +34,6 @@ public class ConclusionRecord implements Parcelable {
     private Integer userConclusionVintage;
 
     private String appConclusionVariety;
-
-    public ConclusionRecord() {
-
-    }
-
-    public String getConclusionId() {
-        return conclusionId;
-    }
-
-    public void setConclusionId(String conclusionId) {
-        this.conclusionId = conclusionId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getActualLabel() {
-        return actualLabel;
-    }
-
-    public void setActualLabel(String actualLabel) {
-        this.actualLabel = actualLabel;
-    }
-
-    public String getActualVariety() {
-        return actualVariety;
-    }
-
-    public void setActualVariety(String actualVariety) {
-        this.actualVariety = actualVariety;
-    }
-
-    public String getActualCountry() {
-        return actualCountry;
-    }
-
-    public void setActualCountry(String actualCountry) {
-        this.actualCountry = actualCountry;
-    }
-
-    public String getActualRegion() {
-        return actualRegion;
-    }
-
-    public void setActualRegion(String actualRegion) {
-        this.actualRegion = actualRegion;
-    }
-
-    public String getActualQuality() {
-        return actualQuality;
-    }
-
-    public void setActualQuality(String actualQuality) {
-        this.actualQuality = actualQuality;
-    }
-
-    public Integer getActualVintage() {
-        return actualVintage;
-    }
-
-    public void setActualVintage(Integer actualVintage) {
-        this.actualVintage = actualVintage;
-    }
-
-    public String getUserConclusionVariety() {
-        return userConclusionVariety;
-    }
-
-    public void setUserConclusionVariety(String userConclusionGrape) {
-        this.userConclusionVariety = userConclusionGrape;
-    }
-
-    public String getUserConclusionCountry() {
-        return userConclusionCountry;
-    }
-
-    public void setUserConclusionCountry(String userConclusionCountry) {
-        this.userConclusionCountry = userConclusionCountry;
-    }
-
-    public String getUserConclusionRegion() {
-        return userConclusionRegion;
-    }
-
-    public void setUserConclusionRegion(String userConclusionRegion) {
-        this.userConclusionRegion = userConclusionRegion;
-    }
-
-    public String getUserConclusionQuality() {
-        return userConclusionQuality;
-    }
-
-    public void setUserConclusionQuality(String userConclusionQuality) {
-        this.userConclusionQuality = userConclusionQuality;
-    }
-
-    public Integer getUserConclusionVintage() {
-        return userConclusionVintage;
-    }
-
-    public void setUserConclusionVintage(Integer userConclusionVintage) {
-        this.userConclusionVintage = userConclusionVintage;
-    }
-
-    public String getAppConclusionVariety() {
-        return appConclusionVariety;
-    }
-
-    public void setAppConclusionVariety(String appConclusionGrape) {
-        this.appConclusionVariety = appConclusionGrape;
-    }
 
     @Override
     public int describeContents() {
@@ -196,5 +86,4 @@ public class ConclusionRecord implements Parcelable {
         this.userConclusionVintage = in.readInt();
         this.appConclusionVariety = in.readString();
     }
-
 }
