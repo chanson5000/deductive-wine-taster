@@ -517,7 +517,7 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         // Using this to save our fragment state/reference on view rotation.
         @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
 
             switch (position) {
@@ -628,12 +628,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Integer wineFormKey = Helpers.castKey(entry.getKey());
             if (SWITCH_NOSE_WOOD == wineFormKey) {
-                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                boolean isChecked = Helpers.parseChecked(entry.getValue());
                 if (isChecked) {
                     needNoseWoodRadios = true;
                 }
             } else if (SWITCH_PALATE_WOOD == wineFormKey) {
-                Boolean isChecked = Helpers.parseChecked(entry.getValue());
+                boolean isChecked = Helpers.parseChecked(entry.getValue());
                 if (isChecked) {
                     needPalateWoodRadios = true;
                 }
@@ -649,21 +649,21 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             if (radioGroups.contains(wineFormKey)) {
                 if (needNoseWoodRadios && NoseWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
                         needSnackbar = true;
                     }
                 } else if (needPalateWoodRadios && PalateWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
                         needSnackbar = true;
                     }
                 } else if (!AllWoodRadioGroups.contains(wineFormKey)) {
                     requiredKeysInPreferences.add(wineFormKey);
-                    Integer radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
                     // Checking to see if a selection has been made.
                     if (radioButtonSelection == NONE_SELECTED) {
                         isValid = false;
@@ -724,14 +724,14 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             // Check boxes will just be looking for check or no check.
 
             if (AllRadioGroups.contains(wineFormKey)) {
-                Integer radioButtonSelection = Integer.parseInt(entry.getValue().toString());
+                int radioButtonSelection = Integer.parseInt(entry.getValue().toString());
                 // Checking to see if a selection has been made.
                 if (radioButtonSelection != NONE_SELECTED) {
                     // If a selection has been made we add it as checked (value of 1)
                     wineFormSelections.put(radioButtonSelection, CHECKED);
                 }
             } else if (AllCheckBoxes.contains(wineFormKey)) {
-                Integer value = Integer.parseInt(entry.getValue().toString());
+                int value = Integer.parseInt(entry.getValue().toString());
                 // Only adding to map if element has been checked.
                 if (value == CHECKED) {
                     wineFormSelections.put(wineFormKey, value);
