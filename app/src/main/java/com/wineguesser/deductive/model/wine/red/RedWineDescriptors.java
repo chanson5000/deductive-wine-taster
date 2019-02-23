@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RedWineDescriptors extends WineDescriptors {
+class RedWineDescriptors extends WineDescriptors {
     private Color color;
     private SecondaryColor secondaryColor;
     private Tannin tannin;
