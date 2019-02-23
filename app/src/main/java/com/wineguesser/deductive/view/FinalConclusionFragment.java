@@ -78,8 +78,9 @@ public class FinalConclusionFragment extends Fragment implements
 
         mIsRedWine = mActivityPreferences.getBoolean(IS_RED_WINE, FALSE);
 
-        String wineColorPreferenceType =
-                mIsRedWine ? RED_WINE_FORM_PREFERENCES : WHITE_WINE_FORM_PREFERENCES;
+        String wineColorPreferenceType = mIsRedWine
+                ? RED_WINE_FORM_PREFERENCES
+                : WHITE_WINE_FORM_PREFERENCES;
 
         mWinePreferences = mFragmentActivity
                 .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
@@ -88,7 +89,7 @@ public class FinalConclusionFragment extends Fragment implements
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView;
+
         // Set data binding.
         FragmentFinalConclusionBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_final_conclusion, container, false);
@@ -99,14 +100,11 @@ public class FinalConclusionFragment extends Fragment implements
         finalConclusionFragmentViewModel = ViewModelProviders.of(mFragmentActivity)
                 .get(FinalConclusionFragmentViewModel.class);
 
-        // Set our lifecycle owner.
         binding.setLifecycleOwner(this);
         binding.setInputError(inputErrorsViewModel);
         binding.setSelf(finalConclusionFragmentViewModel);
 
-        // Retrieve our rootView.
-        rootView = binding.getRoot();
-
+        View rootView = binding.getRoot();
         ButterKnife.bind(this, rootView);
 
         setAutoTextVarietyByType(mIsRedWine);
