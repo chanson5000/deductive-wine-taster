@@ -1,5 +1,6 @@
 package com.wineguesser.deductive.view;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 
@@ -72,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
         userProfileModel = ViewModelProviders.of(this)
                 .get(UserProfileViewModel.class);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setUserProfileForm(userProfileModel);
 
         if (savedInstanceState != null) {

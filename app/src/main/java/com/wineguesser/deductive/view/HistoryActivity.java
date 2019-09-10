@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +52,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
 
         historyActivity = ViewModelProviders.of(this)
                 .get(HistoryActivityViewModel.class);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setHistoryActivity(historyActivity);
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
@@ -71,7 +72,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         if (mCurrentUser != null) {
             String uid = mCurrentUser.getUid();
 
-            historyActivity.getUserConclusions(uid).observe(this, conclusionRecords -> {
+            historyActivity.getUserConclusions(uid).observe((LifecycleOwner) this, conclusionRecords -> {
                 if (conclusionRecords != null && !conclusionRecords.isEmpty()) {
                     historyActivity.setNoData(false);
                     conclusionAdapter.setConclusionData(conclusionRecords);
