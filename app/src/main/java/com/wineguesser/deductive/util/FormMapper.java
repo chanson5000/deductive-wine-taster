@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class FormMapper implements DeductionFormContract, DatabaseContract {
 
-    private static final Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
+    public static final Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
 
         put(CHECK_FAULT_TCA, KEY_FAULT_TCA);
         put(CHECK_FAULT_HYDROGEN_SULFIDE, KEY_FAULT_HYDROGEN_SULFIDE);

@@ -10,6 +10,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import timber.log.Timber;
 
+import static com.wineguesser.deductive.repository.DatabaseContract.DB_EMAIL_VERIFICATION;
+
 public class UserRepository extends FirebaseRepository {
 
     private final DatabaseReference mDatabaseReference;

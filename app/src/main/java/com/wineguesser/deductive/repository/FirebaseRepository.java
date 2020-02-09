@@ -2,7 +2,7 @@ package com.wineguesser.deductive.repository;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-abstract class FirebaseRepository implements DatabaseContract {
+abstract class FirebaseRepository {
 
    final FirebaseDatabase mDatabase;
 

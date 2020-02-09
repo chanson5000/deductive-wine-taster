@@ -1,5 +1,6 @@
 package com.wineguesser.deductive.view;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -92,7 +93,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         inputErrors = ViewModelProviders.of(this)
                 .get(ConclusionInputErrorsViewModel.class);
         // Set our lifecycle owner for our view models to work.
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner((LifecycleOwner) this);
         // Set our variables to our binding.
         binding.setActualWine(inputForm);
         binding.setInputError(inputErrors);

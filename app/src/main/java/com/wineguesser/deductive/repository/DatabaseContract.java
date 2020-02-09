@@ -3,12 +3,12 @@ package com.wineguesser.deductive.repository;
 // These are the keys that our database must match.
 public interface DatabaseContract {
 
-    String DB_EMAIL_VERIFICATION = "verificationEmailSent";
+    public String DB_EMAIL_VERIFICATION = "verificationEmailSent";
 
     String DB_REFERENCE_RED_VARIETY_DESCRIPTORS = "/redVarietyDescriptors";
     String DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS = "/whiteVarietyDescriptors";
-    String DB_REFERENCE_RED_VARIETAL_DATA = "/redVarietyData";
-    String DB_REFERENCE_WHITE_VARIETAL_DATA = "/whiteVarietyData";
+    public String DB_REFERENCE_RED_VARIETAL_DATA = "/redVarietyData";
+    public String DB_REFERENCE_WHITE_VARIETAL_DATA = "/whiteVarietyData";
 
     String CLARITY_PREPEND = "clarity";
     String CONCENTRATION_PREPEND = "concentration";

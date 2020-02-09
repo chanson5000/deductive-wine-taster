@@ -1,14 +1,20 @@
 package com.wineguesser.deductive.view;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,9 +46,8 @@ public class HistoryRecordActivity extends AppCompatActivity {
         }
         setTitle(R.string.history_record_activity_title);
 
-        historyRecord = ViewModelProviders.of(this)
-                .get(HistoryRecordViewModel.class);
-        binding.setLifecycleOwner(this);
+        historyRecord = ViewModelProviders.of(this).get(HistoryRecordViewModel.class);
+        binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setHistoryRecord(historyRecord);
 
         Intent parentIntent = getIntent();

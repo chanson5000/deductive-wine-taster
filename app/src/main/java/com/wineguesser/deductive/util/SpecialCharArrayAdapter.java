@@ -470,6 +470,7 @@ public class SpecialCharArrayAdapter<T> extends BaseAdapter implements Filterabl
             return results;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             //noinspection unchecked

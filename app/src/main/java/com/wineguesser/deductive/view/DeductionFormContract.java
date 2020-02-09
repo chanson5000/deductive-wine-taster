@@ -8,104 +8,104 @@ import java.util.List;
 
 public interface DeductionFormContract {
 
-    String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
-    String IS_RED_WINE = "IS_RED_WINE";
-    Boolean TRUE = true;
-    Boolean FALSE = false;
-    String USER_CONCLUSION_VARIETY = "USER_CONCLUSION_VARIETY";
-    String USER_CONCLUSION_COUNTRY = "USER_CONCLUSION_COUNTRY";
-    String USER_CONCLUSION_REGION = "USER_CONCLUSION_REGION";
-    String USER_CONCLUSION_QUALITY = "USER_CONCLUSION_QUALITY";
-    String USER_CONCLUSION_VINTAGE = "USER_CONCLUSION_VINTAGE";
+    public String APP_VARIETY_GUESS_ID = "APP_VARIETY_GUESS_ID";
+    public String IS_RED_WINE = "IS_RED_WINE";
+    public Boolean TRUE = true;
+    public Boolean FALSE = false;
+    public String USER_CONCLUSION_VARIETY = "USER_CONCLUSION_VARIETY";
+    public String USER_CONCLUSION_COUNTRY = "USER_CONCLUSION_COUNTRY";
+    public String USER_CONCLUSION_REGION = "USER_CONCLUSION_REGION";
+    public String USER_CONCLUSION_QUALITY = "USER_CONCLUSION_QUALITY";
+    public String USER_CONCLUSION_VINTAGE = "USER_CONCLUSION_VINTAGE";
 
-    String FORM_ACTUAL_LABEL = "FORM_ACTUAL_LABEL";
-    String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
-    String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
-    String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
-    String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
-    String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
+    public String FORM_ACTUAL_LABEL = "FORM_ACTUAL_LABEL";
+    public String FORM_ACTUAL_VARIETY = "FORM_ACTUAL_VARIETY";
+    public String FORM_ACTUAL_COUNTRY = "FORM_ACTUAL_COUNTRY";
+    public String FORM_ACTUAL_REGION = "FORM_ACTUAL_REGION";
+    public String FORM_ACTUAL_QUALITY = "FORM_ACTUAL_QUALITY";
+    public String FORM_ACTUAL_VINTAGE = "FORM_ACTUAL_VINTAGE";
 
-    String CURRENT_PAGE_RED = "CURRENT_PAGE_RED";
-    String CURRENT_PAGE_WHITE = "CURRENT_PAGE_WHITE";
+    public String CURRENT_PAGE_RED = "CURRENT_PAGE_RED";
+    public String CURRENT_PAGE_WHITE = "CURRENT_PAGE_WHITE";
 
-    String RED_SIGHT_Y_SCROLL = "RED_SIGHT_Y_SCROLL";
-    String WHITE_SIGHT_Y_SCROLL = "WHITE_SIGHT_Y_SCROLL";
-    String RED_NOSE_Y_SCROLL = "RED_NOSE_Y_SCROLL";
-    String WHITE_NOSE_Y_SCROLL = "WHITE_NOSE_Y_SCROLL";
-    String RED_PALATE_A_Y_SCROLL = "RED_PALATE_A_Y_SCROLL";
-    String WHITE_PALATE_A_Y_SCROLL = "WHITE_PALATE_A_Y_SCROLL";
-    String RED_PALATE_B_Y_SCROLL = "RED_PALATE_B_Y_SCROLL";
-    String WHITE_PALATE_B_Y_SCROLL = "WHITE_PALATE_B_Y_SCROLL";
-    String RED_INITIAL_Y_SCROLL = "RED_INITIAL_Y_SCROLL";
-    String WHITE_INITIAL_Y_SCROLL = "WHITE_INITIAL_Y_SCROLL";
-    String RED_FINAL_Y_SCROLL = "RED_FINAL_Y_SCROLL";
-    String WHITE_FINAL_Y_SCROLL = "WHITE_FINAL_Y_SCROLL";
+    public String RED_SIGHT_Y_SCROLL = "RED_SIGHT_Y_SCROLL";
+    public String WHITE_SIGHT_Y_SCROLL = "WHITE_SIGHT_Y_SCROLL";
+    public String RED_NOSE_Y_SCROLL = "RED_NOSE_Y_SCROLL";
+    public String WHITE_NOSE_Y_SCROLL = "WHITE_NOSE_Y_SCROLL";
+    public String RED_PALATE_A_Y_SCROLL = "RED_PALATE_A_Y_SCROLL";
+    public String WHITE_PALATE_A_Y_SCROLL = "WHITE_PALATE_A_Y_SCROLL";
+    public String RED_PALATE_B_Y_SCROLL = "RED_PALATE_B_Y_SCROLL";
+    public String WHITE_PALATE_B_Y_SCROLL = "WHITE_PALATE_B_Y_SCROLL";
+    public String RED_INITIAL_Y_SCROLL = "RED_INITIAL_Y_SCROLL";
+    public String WHITE_INITIAL_Y_SCROLL = "WHITE_INITIAL_Y_SCROLL";
+    public String RED_FINAL_Y_SCROLL = "RED_FINAL_Y_SCROLL";
+    public String WHITE_FINAL_Y_SCROLL = "WHITE_FINAL_Y_SCROLL";
 
-    int NUM_PAGES = 6;
-    int SIGHT_PAGE = 0;
-    int NOSE_PAGE = 1;
-    int PALATE_PAGE_A = 2;
-    int PALATE_PAGE_B = 3;
-    int INITIAL_CONCLUSION_PAGE = 4;
-    int FINAL_CONCLUSION_PAGE = 5;
+    public int NUM_PAGES = 6;
+    public int SIGHT_PAGE = 0;
+    public int NOSE_PAGE = 1;
+    public int PALATE_PAGE_A = 2;
+    public int PALATE_PAGE_B = 3;
+    public int INITIAL_CONCLUSION_PAGE = 4;
+    public int FINAL_CONCLUSION_PAGE = 5;
 
-    String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
-    String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
+    public String RED_WINE_FORM_PREFERENCES = "RED_WINE_FORM_PREFERENCES";
+    public String WHITE_WINE_FORM_PREFERENCES = "WHITE_WINE_FORM_PREFERENCES";
 
-    int CHECKED = 1;
-    int NOT_CHECKED = 0;
-    int NONE_SELECTED = -1;
+    public int CHECKED = 1;
+    public int NOT_CHECKED = 0;
+    public int NONE_SELECTED = -1;
 
     // These strings I will not want translated so I am not using strings.xml.
     // If it does come to that we can use the snippet below.
-    // Resources.getSystem().getString(android.R.string.string_name)
+    // Resources.getSystem().getpublic String(android.R.string.string_name)
 
-    String Albarino = "Albarino";
-    String Cabernet_Sauvignon = "Cabernet Sauvignon";
-    String Chardonnay = "Chardonnay";
-    String Chenin_Blanc = "Chenin Blanc";
-    String Gamay = "Gamay";
-    String Gewurztraminer = "Gewurztraminer";
-    String Grenache = "Grenache";
-    String Malbec = "Malbec";
-    String Merlot = "Merlot";
-    String Nebbiolo = "Nebbiolo";
-    String Pinot_Gris = "Pinot Gris";
-    String Pinot_Noir = "Pinot Noir";
-    String Riesling = "Riesling";
-    String Sangiovese = "Sangiovese";
-    String Sauvignon_Blanc = "Sauvignon Blanc";
-    String Syrah = "Syrah";
-    String Tempranillo = "Tempranillo";
-    String Torrontes = "Torrontes";
-    String Viognier = "Viognier";
-    String Zinfandel = "Zinfandel";
+    public String Albarino = "Albarino";
+    public String Cabernet_Sauvignon = "Cabernet Sauvignon";
+    public String Chardonnay = "Chardonnay";
+    public String Chenin_Blanc = "Chenin Blanc";
+    public String Gamay = "Gamay";
+    public String Gewurztraminer = "Gewurztraminer";
+    public String Grenache = "Grenache";
+    public String Malbec = "Malbec";
+    public String Merlot = "Merlot";
+    public String Nebbiolo = "Nebbiolo";
+    public String Pinot_Gris = "Pinot Gris";
+    public String Pinot_Noir = "Pinot Noir";
+    public String Riesling = "Riesling";
+    public String Sangiovese = "Sangiovese";
+    public String Sauvignon_Blanc = "Sauvignon Blanc";
+    public String Syrah = "Syrah";
+    public String Tempranillo = "Tempranillo";
+    public String Torrontes = "Torrontes";
+    public String Viognier = "Viognier";
+    public String Zinfandel = "Zinfandel";
 
-    String Argentina = "Argentina";
-    String Australia = "Australia";
-    String Chile = "Chile";
-    String France = "France";
-    String Germany = "Germany";
-    String Italy = "Italy";
-    String New_Zealand = "New Zealand";
-    String Spain = "Spain";
-    String United_States = "United States";
+    public String Argentina = "Argentina";
+    public String Australia = "Australia";
+    public String Chile = "Chile";
+    public String France = "France";
+    public String Germany = "Germany";
+    public String Italy = "Italy";
+    public String New_Zealand = "New Zealand";
+    public String Spain = "Spain";
+    public String United_States = "United States";
 
-    String Alsace = "Alsace";
-    String Burgundy = "Burgundy";
-    String Bordeaux = "Bordeaux";
-    String Loire_Valley = "Loire Valley";
-    String South_Australia = "South Australia";
-    String Western_Australia = "Western Australia";
-    String Central_Valley = "Central Valley";
-    String California = "California";
-    String Rhone_Valley = "Rhone Valley";
-    String Victoria = "Victoria";
-    String Piedmont = "Piedmont";
-    String Oregon = "Oregon";
-    String South_Island = "South Island";
-    String North_Island = "North Island";
-    String Tuscany = "Tuscany";
+    public String Alsace = "Alsace";
+    public String Burgundy = "Burgundy";
+    public String Bordeaux = "Bordeaux";
+    public String Loire_Valley = "Loire Valley";
+    public String South_Australia = "South Australia";
+    public String Western_Australia = "Western Australia";
+    public String Central_Valley = "Central Valley";
+    public String California = "California";
+    public String Rhone_Valley = "Rhone Valley";
+    public String Victoria = "Victoria";
+    public String Piedmont = "Piedmont";
+    public String Oregon = "Oregon";
+    public String South_Island = "South Island";
+    public String North_Island = "North Island";
+    public String Tuscany = "Tuscany";
 
     List<String> AllRegions = new ArrayList<>(Arrays.asList(Alsace, Burgundy, Bordeaux, Loire_Valley, South_Australia,
             Western_Australia, Central_Valley, California, Rhone_Valley, Victoria, Piedmont, Oregon,

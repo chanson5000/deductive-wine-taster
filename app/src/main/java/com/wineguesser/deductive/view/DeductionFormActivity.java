@@ -20,10 +20,6 @@ import android.widget.Switch;
 import com.google.android.material.snackbar.Snackbar;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.FormMapper;
-import com.wineguesser.deductive.util.GrapeVarietyScoreResult;
-import com.wineguesser.deductive.util.GrapeVarietyScore;
-import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,9 +73,20 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         mContext = this;
         mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        Intent parentIntent = getIntent();
-        FragmentManager mFragmentManager = getSupportFragmentManager();
+        setSharedPreferences(getIntent(), getSupportFragmentManager());
 
+        setUpActionBar(findViewById(R.id.toolbar));
+    }
+
+    private void setUpActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void setSharedPreferences(Intent parentIntent, FragmentManager mFragmentManager) {
         SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
             setContentView(R.layout.activity_red_deduction_form);
@@ -105,13 +112,6 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
             mPager.setAdapter(pagerAdapter);
         }
         sharedPreferencesEditor.apply();
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override
