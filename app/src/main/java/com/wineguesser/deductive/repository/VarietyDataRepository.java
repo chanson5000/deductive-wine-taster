@@ -11,6 +11,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import timber.log.Timber;
 
+import static com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_RED_VARIETAL_DATA;
+import static com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_WHITE_VARIETAL_DATA;
+
 public class VarietyDataRepository extends FirebaseRepository {
 
     private final DatabaseReference mRedReference;

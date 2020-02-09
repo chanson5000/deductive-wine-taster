@@ -20,10 +20,6 @@ import android.widget.Switch;
 import com.google.android.material.snackbar.Snackbar;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.FormMapper;
-import com.wineguesser.deductive.util.GrapeVarietyScoreResult;
-import com.wineguesser.deductive.util.GrapeVarietyScore;
-import com.wineguesser.deductive.util.Helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
