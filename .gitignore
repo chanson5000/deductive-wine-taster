@@ -9,3 +9,5 @@
 keystore.properties
 /app/DeductiveWineTasterKey.jks
 fabric.properties
+/app/free/release
+local.properties

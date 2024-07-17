@@ -9,9 +9,12 @@ import com.wineguesser.deductive.repository.ConclusionsRepository;
 
 import java.util.List;
 
+import lombok.Getter;
+
 public class HistoryActivityViewModel extends ViewModel {
 
     private final ConclusionsRepository conclusionsRepository;
+    @Getter
     private final MutableLiveData<Boolean> noData = new MutableLiveData<>();
 
     public HistoryActivityViewModel() {
@@ -20,10 +23,6 @@ public class HistoryActivityViewModel extends ViewModel {
 
     public LiveData<List<ConclusionRecord>> getUserConclusions(String uid) {
         return conclusionsRepository.getConclusionsForUser(uid);
-    }
-
-    public MutableLiveData<Boolean> getNoData() {
-        return noData;
     }
 
     public void setNoData(Boolean isData) {

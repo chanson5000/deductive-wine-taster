@@ -1,5 +1,6 @@
 package com.wineguesser.deductive.view;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -14,12 +15,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.wineguesser.deductive.BuildConfig;
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
 import com.wineguesser.deductive.model.ConclusionRecord;
@@ -63,9 +60,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private InterstitialAd mInterstitialAd;
     private boolean mIsRedWine;
-    private boolean mAdDisplayed;
 
     private String mActualLabel;
     private String mActualVariety;
@@ -104,7 +99,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
-            mAdDisplayed = true;
             inputForm.setActualLabel(savedInstanceState.getString(FORM_ACTUAL_LABEL));
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
             inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
@@ -117,9 +111,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         Intent parentIntent = getIntent();
         // A Guess Id should have been passed.
         if (parentIntent != null) {
-            if (parentIntent.hasExtra("TESTING")) {
-                mAdDisplayed = true;
-            }
 
             // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
@@ -163,12 +154,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             }
             return false;
         });
-
-        if (!mAdDisplayed) {
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId(BuildConfig.InterstitialAdKey);
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        }
     }
 
     @Override
@@ -184,7 +169,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putString(FORM_ACTUAL_LABEL, mActualLabel);
@@ -213,16 +198,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         };
 
         mAuth.addAuthStateListener(mAuthListener);
-
-        if (!mAdDisplayed) {
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    mAdDisplayed = true;
-                    mInterstitialAd.show();
-                }
-            });
-        }
     }
 
     @Override
@@ -335,7 +310,7 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
             isValid = false;
         } else {
-            Integer actualVintageInteger = Integer.parseInt(parseInteger);
+            int actualVintageInteger = Integer.parseInt(parseInteger);
 
             if (actualVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
                     || actualVintageInteger < 1900) {

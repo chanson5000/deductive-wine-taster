@@ -22,11 +22,11 @@ public class StartDeductionWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, DeductionFormActivity.class);
 
         views.setOnClickPendingIntent(R.id.button_white_wine,
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE));
 
         intent.putExtra("IS_RED_WINE", true);
         views.setOnClickPendingIntent(R.id.button_red_wine,
-                PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_IMMUTABLE));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
