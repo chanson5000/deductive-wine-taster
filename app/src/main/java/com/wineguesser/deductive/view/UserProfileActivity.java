@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 
 import androidx.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -204,7 +203,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
-    @SuppressWarnings("unused")
     public void onClickUpdateDetails(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -317,7 +315,6 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
     }
 
-    @SuppressWarnings("unused")
     public void onClickUpdatePassword(View view) {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -394,6 +391,22 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         } else {
             startLoginUI();
         }
+    }
+
+    public void onClickDeleteAccount(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.up_confirm_account_deletion);
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user != null) {
+                user.delete();
+                Helpers.makeToastShort(mContext, R.string.up_account_deleted);
+            } else {
+                Helpers.makeToastShort(mContext, R.string.up_account_deletion_failed);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     private void setErrorEmailAddress(String error) {

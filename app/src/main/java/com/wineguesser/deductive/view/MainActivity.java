@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 return true;
             case R.id.profile_settings:
-                Intent profileIntent = new Intent(mContext, UserProfileActivity.class);
-                startActivity(profileIntent);
+                startActivity(new Intent(mContext, UserProfileActivity.class));
                 return true;
             case R.id.feedback:
-                Intent feedbackIntent = new Intent(mContext, FeedbackActivity.class);
-                startActivity(feedbackIntent);
+                startActivity(new Intent(mContext, FeedbackActivity.class));
                 return true;
+            case R.id.privacy_policy:
+                startActivity(new Intent(mContext, PrivacyPolicyActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }

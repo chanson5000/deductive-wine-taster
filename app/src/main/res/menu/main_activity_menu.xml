@@ -12,6 +12,10 @@
         android:title="@string/feedback_title"
         app:showAsAction="never" />
     <item
+        android:id="@+id/privacy_policy"
+        android:title="@string/privacy_policy"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/auth_toggle"
         android:title="@string/log_in"
         app:showAsAction="ifRoom" />

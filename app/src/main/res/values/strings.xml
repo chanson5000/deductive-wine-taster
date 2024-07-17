@@ -307,7 +307,6 @@
     <string name="ribera_del_duero" translatable="false">Ribera del Duero</string>
     <string name="mosel" translatable="false">Mosel</string>
     <string name="rhein" translatable="false">Rhein</string>
-    
 
     <!-- Quality -->
     <string name="reserva" translatable="false">Reserva</string>
@@ -470,6 +469,7 @@
     <string name="button_update_password">Update Password</string>
     <string name="button_delete_photo">Delete</string>
     <string name="button_update_photo">Update</string>
+    <string name="button_delete_account">Delete Account</string>
     <string name="placeholder_wine_variety">Wine Variety</string>
     <string name="placeholder_user_conclusion">User Conclusion</string>
     <string name="placeholder_app_conclusion">App Conclusion</string>
@@ -561,5 +561,14 @@
     <string name="up_unable_to_update_email">Unable to update email address.</string>
     <string name="up_unable_to_update_password">Unable to update password.</string>
 
+    <string name="up_confirm_account_deletion">Confirm Account Deletion</string>
+    <string name="up_account_deletion_are_you_sure">Are you sure you would like to delete your account? You will not be able to undo this.</string>
+    <string name="up_account_deleted">Account Deleted</string>
+    <string name="up_account_deletion_failed">Account Deletion Failed</string>
+
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_description">We collect information voluntarily provided by the user, such as: Email address, Username or Display Name, Wine tasting results. We may also collect performance and analytics data related to the application for development purposes. We do not share data with third parties.</string>
+
     <string name="button_next">Next</string>
+
 </resources>

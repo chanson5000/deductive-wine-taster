@@ -24,10 +24,9 @@ android {
         applicationId 'com.wineguesser.deductive'
         minSdkVersion 25
         targetSdkVersion 34
-        versionCode 4
-        versionName "0.8.9.2-beta"
+        versionCode 6
+        versionName "1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        manifestPlaceholders.AdMobAppIdKey = "ca-app-pub-6240294942266099~9194679928"
     }
     buildTypes {
         debug {

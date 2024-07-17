@@ -14,8 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <uses-library android:name="android.test.runner"
+
+        <uses-library
+            android:name="android.test.runner"
             android:required="false" />
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true"
@@ -33,7 +36,7 @@
         <activity
             android:name=".view.VarietyResultsActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".view.DeductionFormActivity"/>
+            android:parentActivityName=".view.DeductionFormActivity" />
         <activity
             android:name=".view.HistoryActivity"
             android:launchMode="singleTop"
@@ -50,8 +53,13 @@
             android:name=".view.FeedbackActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.MainActivity" />
+        <activity
+            android:name=".view.PrivacyPolicyActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.MainActivity" />
 
-        <receiver android:name=".widget.StartDeductionWidget"
+        <receiver
+            android:name=".widget.StartDeductionWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -61,12 +69,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/start_deduction_widget_info" />
         </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="e84b72b0ac9cece9b733c57a6ad980e615e60735" />
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="${AdMobAppIdKey}"/>-->
     </application>
 
 </manifest>

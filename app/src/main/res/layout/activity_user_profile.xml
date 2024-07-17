@@ -176,6 +176,14 @@
                         android:onClick="onClickUpdatePassword"
                         android:text="@string/button_update_password" />
 
+                    <Button
+                        style="@style/AppTheme.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="onClickDeleteAccount"
+                        android:text="@string/button_delete_account" />
+
                 </LinearLayout>
 
             </LinearLayout>
