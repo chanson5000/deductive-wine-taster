@@ -1,23 +1,21 @@
 package com.wineguesser.deductive.view;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding;
@@ -34,7 +32,9 @@ public class HistoryRecordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         mContext = this;
         ActivityHistoryRecordBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_history_record);

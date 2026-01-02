@@ -9,6 +9,8 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.auth.AuthUI;
@@ -49,7 +51,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         binding = ActivityVarietyResultsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

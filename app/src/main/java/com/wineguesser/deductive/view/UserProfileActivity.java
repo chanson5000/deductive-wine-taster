@@ -1,19 +1,20 @@
 package com.wineguesser.deductive.view;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.text.InputType;
-import android.view.View;
-import android.widget.EditText;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.AuthCredential;
@@ -58,7 +59,9 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         ActivityUserProfileBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_user_profile);
 
