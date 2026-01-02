@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -21,7 +22,7 @@
         <include
             android:id="@+id/loading_indicator"
             layout="@layout/loading_indicator"
-            android:visibility="@{safeUnbox(self.isLoading()) ? View.VISIBLE : View.INVISIBLE}" />
+            app:isLoading="@{safeUnbox(self.isLoading())}" />
 
         <ScrollView
             android:id="@+id/scrollView_final"
@@ -87,7 +88,7 @@
                         android:id="@+id/textView_final_region"
                         style="@style/AppTheme.Text.Descriptor"
                         android:labelFor="@id/autoText_final_region"
-                        android:text="@string/region_appellation" />
+                        android.text="@string/region_appellation" />
 
                     <AutoCompleteTextView
                         android:id="@+id/autoText_final_region"
@@ -141,9 +142,9 @@
                         android:id="@+id/autoText_final_vintage"
                         style="@style/AppTheme.AutoText.Single"
                         android:imeOptions="actionDone"
-                        android:inputType="number"
+                        android.inputType="number"
                         android:maxLength="4"
-                        android:singleLine="true" />
+                        android.singleLine="true" />
 
                     <TextView
                         android:id="@+id/textError_vintage"

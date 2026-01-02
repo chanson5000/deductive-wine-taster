@@ -1,18 +1,17 @@
 package com.wineguesser.deductive.view;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,30 +32,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
         DeductionFormContract {
 
     private VarietyResultsViewModel inputForm;
     private ConclusionInputErrorsViewModel inputErrors;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_variety)
-    AutoCompleteTextView mSingleViewActualVariety;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_country)
-    AutoCompleteTextView mSingleViewActualCountry;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_region)
-    AutoCompleteTextView mSingleViewActualRegion;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_quality)
-    AutoCompleteTextView mSingleViewActualQuality;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_actual_vintage)
-    AutoCompleteTextView mEditTextActualVintage;
+    private ActivityVarietyResultsBinding binding;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -72,9 +53,9 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set data binding.
-        ActivityVarietyResultsBinding binding = DataBindingUtil
-                .setContentView(this, R.layout.activity_variety_results);
+        binding = ActivityVarietyResultsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -82,22 +63,16 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         setTitle(R.string.variety_results_activity_title);
-        // Initialize our view models.
         inputForm = ViewModelProviders.of(this)
                 .get(VarietyResultsViewModel.class);
         inputErrors = ViewModelProviders.of(this)
                 .get(ConclusionInputErrorsViewModel.class);
-        // Set our lifecycle owner for our view models to work.
         binding.setLifecycleOwner((LifecycleOwner) this);
-        // Set our variables to our binding.
         binding.setActualWine(inputForm);
         binding.setInputError(inputErrors);
 
         Context mContext = this;
-        // Still using Butterknife for setting adapters for our AutoCompleteTextViews.
-        ButterKnife.bind(this);
 
-        // Check for any relevant data in our savedInstanceState.
         if (savedInstanceState != null) {
             inputForm.setActualLabel(savedInstanceState.getString(FORM_ACTUAL_LABEL));
             inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
@@ -107,15 +82,11 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             inputForm.setActualVintage(Integer.toString(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE)));
         }
 
-        // Check for the data from our parent intent.
         Intent parentIntent = getIntent();
-        // A Guess Id should have been passed.
         if (parentIntent != null) {
 
-            // Check to see if it was a red wine.
             mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
 
-            // Retrieve all of the data from the parent intent and put it to our view model.
             Bundle bundle = parentIntent.getExtras();
             if (bundle != null) {
                 inputForm.setAppVarietyById(mIsRedWine, bundle.getString(APP_VARIETY_GUESS_ID));
@@ -127,7 +98,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             }
         }
 
-        // Get our auth instance for user validation.
         mAuth = FirebaseAuth.getInstance();
 
         List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
@@ -135,19 +105,19 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
         List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
 
-        mSingleViewActualVariety.setAdapter(new SpecialCharArrayAdapter<>(mContext,
+        binding.autoTextActualVariety.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, varieties));
 
-        mSingleViewActualCountry.setAdapter(new SpecialCharArrayAdapter<>(mContext,
+        binding.autoTextActualCountry.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, countries));
 
-        mSingleViewActualRegion.setAdapter(new SpecialCharArrayAdapter<>(mContext,
+        binding.autoTextActualRegion.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, regions));
 
-        mSingleViewActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
+        binding.autoTextActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
                 android.R.layout.simple_dropdown_item_1line, qualities));
 
-        mEditTextActualVintage.setOnEditorActionListener((v, actionId, event) -> {
+        binding.autoTextActualVintage.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 onButtonWineResultSave(v);
                 return true;
@@ -208,12 +178,10 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
     }
 
     public void onButtonWineResultSave(View view) {
-        // Validate our inputs.
         if (!validInputs()) {
             return;
         }
 
-        // Validate our user.
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
@@ -269,7 +237,6 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
 
         boolean isValid = true;
 
-        // Check that user has provided their conclusion of grape variety.
         if (actualLabelString == null || actualLabelString.isEmpty()) {
             inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
         }
@@ -324,4 +291,3 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         return isValid;
     }
 }
-

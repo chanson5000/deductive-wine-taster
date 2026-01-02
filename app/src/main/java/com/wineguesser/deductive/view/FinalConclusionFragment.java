@@ -7,8 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
@@ -24,15 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class FinalConclusionFragment extends Fragment implements
         DeductionFormContract, DatabaseContract {
 
@@ -42,32 +38,14 @@ public class FinalConclusionFragment extends Fragment implements
     private ConclusionInputErrorsViewModel inputErrorsViewModel;
     private FinalConclusionFragmentViewModel finalConclusionFragmentViewModel;
     private boolean mIsRedWine;
-
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.scrollView_final)
-    ScrollView mScrollViewFinal;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_grape_variety)
-    AutoCompleteTextView mAutoTextVariety;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_country)
-    AutoCompleteTextView mAutoTextCountry;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_region)
-    AutoCompleteTextView mAutoTextRegion;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_quality)
-    AutoCompleteTextView mAutoTextQuality;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.autoText_final_vintage)
-    AutoCompleteTextView mAutoTextVintage;
+    private FragmentFinalConclusionBinding binding;
 
     public FinalConclusionFragment() {
 
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mFragmentActivity = getActivity();
     }
@@ -91,10 +69,7 @@ public class FinalConclusionFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Set data binding.
-        FragmentFinalConclusionBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_final_conclusion, container, false);
-        // Initialize our view models.
+        binding = FragmentFinalConclusionBinding.inflate(inflater, container, false);
         inputErrorsViewModel = ViewModelProviders.of(mFragmentActivity)
                 .get(ConclusionInputErrorsViewModel.class);
 
@@ -105,12 +80,20 @@ public class FinalConclusionFragment extends Fragment implements
         binding.setInputError(inputErrorsViewModel);
         binding.setSelf(finalConclusionFragmentViewModel);
 
-        View rootView = binding.getRoot();
-        ButterKnife.bind(this, rootView);
-
         setAutoTextVarietyByType(mIsRedWine);
 
-        return rootView;
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     ConclusionInputErrorsViewModel errorsFinalForm() {
@@ -137,7 +120,7 @@ public class FinalConclusionFragment extends Fragment implements
 
     private void saveScrollState() {
         SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
-        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), mScrollViewFinal.getScrollY());
+        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), binding.scrollViewFinal.getScrollY());
         sharedPreferencesEditor.apply();
     }
 
@@ -146,29 +129,28 @@ public class FinalConclusionFragment extends Fragment implements
     }
 
     private void loadScrollState() {
-        // scrollTo must not be executed on the main thread.
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewFinal.scrollTo(0, mActivityPreferences
+                binding.scrollViewFinal.scrollTo(0, mActivityPreferences
                         .getInt(getScrollType(mIsRedWine), 0)));
     }
 
     void scrollToTop() {
         AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewFinal.scrollTo(0, 0));
+                binding.scrollViewFinal.scrollTo(0, 0));
     }
 
     private void saveSelectionState() {
         SharedPreferences.Editor editor = mWinePreferences.edit();
         editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
-                getTextViewString(mAutoTextVariety));
+                getTextViewString(binding.autoTextFinalGrapeVariety));
         editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
-                getTextViewString(mAutoTextCountry));
+                getTextViewString(binding.autoTextFinalCountry));
         editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_REGION),
-                getTextViewString(mAutoTextRegion));
+                getTextViewString(binding.autoTextFinalRegion));
         editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
-                getTextViewString(mAutoTextQuality));
+                getTextViewString(binding.autoTextFinalQuality));
         editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
-                getTextViewString(mAutoTextVintage));
+                getTextViewString(binding.autoTextFinalVintage));
         editor.apply();
     }
 
@@ -182,36 +164,41 @@ public class FinalConclusionFragment extends Fragment implements
 
     private void loadSelectionState() {
         Map<String, ?> allEntries = mWinePreferences.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = Helpers.castKey(entry.getKey());
+        View rootView = getView();
+        if (rootView == null) return;
 
-            if (finalConclusionViews.contains(view) && AllAutoText.contains(view)) {
-                ((AutoCompleteTextView) mFragmentActivity.findViewById(view))
-                        .setText(entry.getValue().toString());
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            int viewId = Helpers.castKey(entry.getKey());
+
+            if (finalConclusionViews.contains(viewId) && AllAutoText.contains(viewId)) {
+                View view = rootView.findViewById(viewId);
+                if (view instanceof AutoCompleteTextView) {
+                    ((AutoCompleteTextView) view).setText(entry.getValue().toString());
+                }
             }
         }
     }
 
     private void setAutoTextVarietyByType(Boolean isRedWine) {
-        mAutoTextVariety.setAdapter(
+        binding.autoTextFinalGrapeVariety.setAdapter(
                 new SpecialCharArrayAdapter<>(
                         mFragmentActivity,
                         android.R.layout.simple_dropdown_item_1line,
                         getVarietiesList(isRedWine)));
 
-        mAutoTextCountry.setAdapter(
+        binding.autoTextFinalCountry.setAdapter(
                 new SpecialCharArrayAdapter<>(
                         mFragmentActivity,
                         android.R.layout.simple_dropdown_item_1line,
                         getListFromArrayResourceId(R.array.all_countries)));
 
-        mAutoTextRegion.setAdapter(
+        binding.autoTextFinalRegion.setAdapter(
                 new SpecialCharArrayAdapter<>(
                         mFragmentActivity,
                         android.R.layout.simple_dropdown_item_1line,
                         getListFromArrayResourceId(R.array.all_regions)));
 
-        mAutoTextQuality.setAdapter(
+        binding.autoTextFinalQuality.setAdapter(
                 new SpecialCharArrayAdapter<>(
                         mFragmentActivity,
                         android.R.layout.simple_dropdown_item_1line,

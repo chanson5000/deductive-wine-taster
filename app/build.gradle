@@ -19,11 +19,11 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         applicationId 'com.wineguesser.deductive'
         minSdkVersion 25
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 7
         versionName "1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
