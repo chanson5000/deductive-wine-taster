@@ -47,6 +47,9 @@ android {
     dataBinding {
         enabled = true
     }
+    viewBinding {
+        enabled = true
+    }
     flavorDimensions "tier"
     productFlavors {
         free {
@@ -94,14 +97,12 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:design:28.1.1'
 //    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'com.google.firebase:firebase-crashlytics:19.4.0'
     implementation 'com.google.firebase:firebase-analytics:22.2.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     implementation 'org.projectlombok:lombok:1.18.34'
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.8.7'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
