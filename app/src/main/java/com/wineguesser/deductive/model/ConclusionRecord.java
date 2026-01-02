@@ -16,24 +16,24 @@ import lombok.NoArgsConstructor;
 public class ConclusionRecord implements Parcelable {
 
     @Exclude
-    private String conclusionId;
+    public String conclusionId;
     @Exclude
-    private String userId;
+    public String userId;
 
-    private String actualLabel;
-    private String actualVariety;
-    private String actualCountry;
-    private String actualRegion;
-    private String actualQuality;
-    private Integer actualVintage;
+    public String actualLabel;
+    public String actualVariety;
+    public String actualCountry;
+    public String actualRegion;
+    public String actualQuality;
+    public Integer actualVintage;
 
-    private String userConclusionVariety;
-    private String userConclusionCountry;
-    private String userConclusionRegion;
-    private String userConclusionQuality;
-    private Integer userConclusionVintage;
+    public String userConclusionVariety;
+    public String userConclusionCountry;
+    public String userConclusionRegion;
+    public String userConclusionQuality;
+    public Integer userConclusionVintage;
 
-    private String appConclusionVariety;
+    public String appConclusionVariety;
 
     @Override
     public int describeContents() {

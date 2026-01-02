@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
@@ -70,10 +70,10 @@ public class FinalConclusionFragment extends Fragment implements
                              Bundle savedInstanceState) {
 
         binding = FragmentFinalConclusionBinding.inflate(inflater, container, false);
-        inputErrorsViewModel = ViewModelProviders.of(mFragmentActivity)
+        inputErrorsViewModel = new ViewModelProvider(mFragmentActivity)
                 .get(ConclusionInputErrorsViewModel.class);
 
-        finalConclusionFragmentViewModel = ViewModelProviders.of(mFragmentActivity)
+        finalConclusionFragmentViewModel = new ViewModelProvider(mFragmentActivity)
                 .get(FinalConclusionFragmentViewModel.class);
 
         binding.setLifecycleOwner(this);

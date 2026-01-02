@@ -15,7 +15,7 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.wineguesser.deductive.R;
 import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding;
@@ -46,7 +46,7 @@ public class HistoryRecordActivity extends AppCompatActivity {
         }
         setTitle(R.string.history_record_activity_title);
 
-        historyRecord = ViewModelProviders.of(this).get(HistoryRecordViewModel.class);
+        historyRecord = new ViewModelProvider(this).get(HistoryRecordViewModel.class);
         binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setHistoryRecord(historyRecord);
 
@@ -77,7 +77,7 @@ public class HistoryRecordActivity extends AppCompatActivity {
                     builder.setTitle(R.string.up_dialog_delete_conclusion_record);
                     builder.setMessage(R.string.up_dialog_confirm_delete_record);
                     builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                        repository.removeConclusionRecord(conclusionRecord);
+                        repository.removeConclusionRecord(conclusionRecord.getUserId(), conclusionRecord);
                         Helpers.makeToastShort(mContext, R.string.record_removed);
                         onBackPressed();
                     });

@@ -26,7 +26,7 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -54,8 +54,7 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         }
         setTitle(R.string.history_activity_title);
 
-        historyActivity = ViewModelProviders.of(this)
-                .get(HistoryActivityViewModel.class);
+        historyActivity = new ViewModelProvider(this).get(HistoryActivityViewModel.class);
         binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setHistoryActivity(historyActivity);
 

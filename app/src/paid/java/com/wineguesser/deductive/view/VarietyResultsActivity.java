@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowCompat;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,10 +64,8 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         setTitle(R.string.variety_results_activity_title);
-        inputForm = ViewModelProviders.of(this)
-                .get(VarietyResultsViewModel.class);
-        inputErrors = ViewModelProviders.of(this)
-                .get(ConclusionInputErrorsViewModel.class);
+        inputForm = new ViewModelProvider(this).get(VarietyResultsViewModel.class);
+        inputErrors = new ViewModelProvider(this).get(ConclusionInputErrorsViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setActualWine(inputForm);
         binding.setInputError(inputErrors);

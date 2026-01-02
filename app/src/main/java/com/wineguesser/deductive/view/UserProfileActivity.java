@@ -14,7 +14,7 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.AuthCredential;
@@ -73,8 +73,7 @@ public class UserProfileActivity extends AppCompatActivity implements DatabaseCo
         }
         setTitle(R.string.user_profile_activity_title);
 
-        userProfileModel = ViewModelProviders.of(this)
-                .get(UserProfileViewModel.class);
+        userProfileModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         binding.setLifecycleOwner((LifecycleOwner) this);
         binding.setUserProfileForm(userProfileModel);
 
