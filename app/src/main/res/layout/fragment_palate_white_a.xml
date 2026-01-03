@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView_palate_a"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:id="@+id/scrollView_palate_a"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/sg_palate_sweetness_radio" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_sweetness_radio" />
 
-        <include layout="@layout/sg_palate_fruit_whitewine_check" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_fruit_whitewine_check" />
 
-        <include layout="@layout/sg_palate_fruitcharacter_check" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_fruitcharacter_check" />
 
-        <include layout="@layout/sg_palate_nonfruit_check" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_nonfruit_check" />
 
-        <include layout="@layout/sg_palate_earth_check" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_earth_check" />
 
-        <include layout="@layout/sg_palate_mineral_check" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/divider_horizontal" />
+            <include layout="@layout/sg_palate_mineral_check" />
 
-        <include layout="@layout/sg_palate_wood_radio" />
+            <include layout="@layout/divider_horizontal" />
 
-        <include layout="@layout/button_deduction_form_next" />
+            <include android:id="@+id/palate_wood" layout="@layout/sg_palate_wood_radio" />
 
-    </LinearLayout>
-</ScrollView>
+            <include layout="@layout/button_deduction_form_next" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

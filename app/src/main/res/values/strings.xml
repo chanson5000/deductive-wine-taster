@@ -416,7 +416,7 @@
         <item>@string/rias_baixas</item>
         <item>@string/savenniere</item>
         <item>@string/vouvray</item>
-        <item>@string/chablis</item>ia
+        <item>@string/chablis</item>
         <item>@string/maconnais</item>
         <item>@string/friuli</item>
         <item>@string/trentino_alto_adige</item>
@@ -567,8 +567,35 @@
     <string name="up_account_deletion_failed">Account Deletion Failed</string>
 
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="privacy_policy_description">We collect information voluntarily provided by the user, such as: Email address, Username or Display Name, Wine tasting results. We may also collect performance and analytics data related to the application for development purposes. We do not share data with third parties.</string>
+    <string name="privacy_.policy_description">We collect information voluntarily provided by the user, such as: Email address, Username or Display Name, Wine tasting results. We may also collect performance and analytics data related to the application for development purposes. We do not share data with third parties.</string>
 
     <string name="button_next">Next</string>
 
+    <string name="feedback_instructions">Instructions</string>
+    <string name="feedback_hint">Hint</string>
+    <string name="submit_feedback_button">Submit</string>
+    <string name="no_history_yet">No History</string>
+    <string name="hr_header_actual_wine">Actual Wine</string>
+    <string name="hr_header_your_conclusion">Your Conclusion</string>
+    <string name="hr_subhead_app_conclusion">App Conclusion</string>
+    <string name="hr_subhead_user_conclusion">User Conclusion</string>
+    <string name="main_activity_title">Deductive Wine Taster</string>
+    <string name="red_wine">Red Wine</string>
+    <string name="white_wine">White Wine</string>
+    <string name="history_button">History</string>
+    <string name="privacy_policy_text">Privacy Policy</string>
+    <string name="up_display_name">Display Name</string>
+    <string name="up_display_name_hint">Display Name</string>
+    <string name="up_email_address">Email Address</string>
+    <string name="up_email_address_hint">Email Address</string>
+    <string name="up_confirm_email_address">Confirm Email Address</string>
+    <string name="up_confirm_email_address_hint">Confirm Email Address</string>
+    <string name="up_update_details">Update Details</string>
+    <string name="up_new_password">New Password</string>
+    <string name="up_new_password_hint">New Password</string>
+    <string name="up_confirm_new_password">Confirm New Password</string>
+    <string name="up_confirm_new_password_hint">Confirm New Password</string>
+    <string name="up_update_password">Update Password</string>
+    <string name="up_delete_account">Delete Account</string>
+    <string name="vr_actual_label">Actual Label</string>
 </resources>

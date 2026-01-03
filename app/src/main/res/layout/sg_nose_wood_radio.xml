@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/SelectionGroupContainer">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        style="@style/SelectionGroupContainer">
 
-    <LinearLayout style="@style/AppTheme.SelectionGroup">
+        <LinearLayout style="@style/AppTheme.SelectionGroup">
 
-        <Switch
-            android:id="@+id/switch_nose_wood"
-            style="@style/AppTheme.SelectionGroup.Switch"
-            android:text="@string/oak" />
+            <Switch
+                android:id="@+id/switch_nose_wood"
+                style="@style/AppTheme.SelectionGroup.Switch"
+                android:text="@string/oak" />
 
-        <LinearLayout android:id="@+id/group_nose_wood"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <LinearLayout android:id="@+id/group_nose_wood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/AppTheme.Text.Descriptor"
-                android:text="@string/usage" />
+                <TextView
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:text="@string/usage" />
 
-            <RadioGroup
-                android:id="@+id/radio_group_nose_wood_old_vs_new"
-                style="@style/AppTheme.SelectionGroup">
+                <RadioGroup
+                    android:id="@+id/radio_group_nose_wood_old_vs_new"
+                    style="@style/AppTheme.SelectionGroup">
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_old"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/old" />
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_old"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/old" />
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_new"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/word_new" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_new"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/word_new" />
+                </RadioGroup>
 
-            <TextView
-                style="@style/AppTheme.Text.Descriptor"
-                android:text="@string/size" />
+                <TextView
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:text="@string/size" />
 
-            <RadioGroup
-                android:id="@+id/radio_group_nose_wood_large_vs_small"
-                style="@style/AppTheme.SelectionGroup">
+                <RadioGroup
+                    android:id="@+id/radio_group_nose_wood_large_vs_small"
+                    style="@style/AppTheme.SelectionGroup">
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_large"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/large" />
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_large"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/large" />
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_small"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/small" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_small"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/small" />
+                </RadioGroup>
 
-            <TextView
-                style="@style/AppTheme.Text.Descriptor"
-                android:text="@string/type" />
+                <TextView
+                    style="@style/AppTheme.Text.Descriptor"
+                    android:text="@string/type" />
 
-            <RadioGroup
-                android:id="@+id/radio_group_nose_wood_french_vs_american"
-                style="@style/AppTheme.SelectionGroup">
+                <RadioGroup
+                    android:id="@+id/radio_group_nose_wood_french_vs_american"
+                    style="@style/AppTheme.SelectionGroup">
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_french"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/french" />
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_french"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/french" />
 
-                <RadioButton
-                    android:id="@+id/radio_nose_wood_american"
-                    style="@style/AppTheme.SelectionGroup.RadioButton"
-                    android:text="@string/american" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radio_nose_wood_american"
+                        style="@style/AppTheme.SelectionGroup.RadioButton"
+                        android:text="@string/american" />
+                </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>
