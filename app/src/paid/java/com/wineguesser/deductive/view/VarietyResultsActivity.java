@@ -9,8 +9,11 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.firebase.ui.auth.AuthUI;
@@ -63,6 +66,13 @@ public class VarietyResultsActivity extends AppCompatActivity implements Databas
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            return windowInsets;
+        });
+
         setTitle(R.string.variety_results_activity_title);
         inputForm = new ViewModelProvider(this).get(VarietyResultsViewModel.class);
         inputErrors = new ViewModelProvider(this).get(ConclusionInputErrorsViewModel.class);

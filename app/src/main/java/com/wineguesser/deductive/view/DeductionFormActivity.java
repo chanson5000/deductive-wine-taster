@@ -36,8 +36,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -84,6 +87,12 @@ public class DeductionFormActivity extends AppCompatActivity implements Deductio
         setSharedPreferences(getIntent(), getSupportFragmentManager());
 
         setUpActionBar(findViewById(R.id.toolbar));
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deduction_form_coordinator), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            return windowInsets;
+        });
     }
 
     private void setUpActionBar(Toolbar toolbar) {

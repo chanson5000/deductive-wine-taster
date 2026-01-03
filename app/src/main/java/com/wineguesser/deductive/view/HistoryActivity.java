@@ -3,6 +3,7 @@ package com.wineguesser.deductive.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,8 +23,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,6 +56,13 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            return windowInsets;
+        });
+
         setTitle(R.string.history_activity_title);
 
         historyActivity = new ViewModelProvider(this).get(HistoryActivityViewModel.class);
@@ -59,13 +70,26 @@ public class HistoryActivity extends AppCompatActivity implements DatabaseContra
         binding.setHistoryActivity(historyActivity);
 
         RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
-        if (findViewById(R.id.is_600dp) != null) {
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
-                    getResources().getInteger(R.integer.history_column_count),
-                    StaggeredGridLayoutManager.VERTICAL));
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float width = displayMetrics.widthPixels / displayMetrics.density;
+
+        int columnCount;
+        if (width > 800) {
+            columnCount = 3;
+        } else if (width > 600) {
+            columnCount = 2;
+        } else {
+            columnCount = 1;
+        }
+
+        if (columnCount > 1) {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL));
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
+
         ConclusionItemAdapter conclusionAdapter =
                 new ConclusionItemAdapter(this, this);
         recyclerView.setAdapter(conclusionAdapter);

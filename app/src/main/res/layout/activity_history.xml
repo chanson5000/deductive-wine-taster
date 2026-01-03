@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -13,26 +14,36 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.HistoryActivity">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar_default" />
-
-        <TextView
-            android:id="@+id/textStatic_no_data"
-            style="@style/AppTheme.Text.Title"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/no_data"
-            android:visibility="@{safeUnbox(historyActivity.noData) == true ? View.VISIBLE : View.GONE}" />
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:titleTextColor="@color/white" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/conclusion_item_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:padding="@dimen/standard_half_margin" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/conclusion_item" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_history_yet"
+            android:textAppearance="@style/AppTheme.Text.Title"
+            android:visibility="@{historyActivity.noData ? View.VISIBLE : View.GONE}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

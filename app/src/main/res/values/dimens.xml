@@ -4,6 +4,8 @@
     <dimen name="main_activity_wine_button_width">124dp</dimen>
     <dimen name="standard_margin">8dp</dimen>
     <dimen name="standard_half_margin">4dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="xxx_large_margin">32dp</dimen>
     <dimen name="x_small_text" tools:keep="@dimen/x_small_text">12sp</dimen>
     <dimen name="small_text">14sp</dimen>
     <dimen name="medium_text">16sp</dimen>

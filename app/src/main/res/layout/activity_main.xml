@@ -1,84 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_default" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
-            android:id="@+id/textView_blind_taste"
-            style="@style/AppTheme.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/xxx_large_margin"
+            android:text="@string/main_activity_title"
+            android:textAppearance="@style/AppTheme.Text.Title" />
+
+        <Button
+            android:id="@+id/button_red_wine"
+            style="@style/AppTheme.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_title_margin"
-            android:text="@string/start_blind_tasting"
-            app:layout_constraintBottom_toTopOf="@id/red_glass_full"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/red_glass_full"
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:contentDescription="@string/main_blind_taste_red"
             android:onClick="buttonRedWine"
-            android:padding="@dimen/standard_margin"
-            android:scaleType="fitCenter"
-            android:src="@drawable/glass_full_red"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/white_glass_full"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/red_wine" />
 
-        <ImageView
-            android:id="@+id/white_glass_full"
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:contentDescription="@string/main_blind_taste_white"
-            android:onClick="buttonWhiteWine"
-            android:padding="@dimen/standard_margin"
-            android:scaleType="fitCenter"
-            android:src="@drawable/glass_full_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/red_glass_full"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/history_image"
+        <Button
+            android:id="@+id/button_white_wine"
+            style="@style/AppTheme.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/main_view_history"
-            android:onClick="onHistoryButtonClicked"
-            android:padding="@dimen/standard_margin"
-            android:src="@drawable/ic_history_accent_48dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/red_glass_full" />
+            android:onClick="buttonWhiteWine"
+            android:text="@string/white_wine" />
 
         <Button
             android:id="@+id/button_history"
             style="@style/AppTheme.Button"
-            android:layout_width="@dimen/main_activity_wine_button_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onHistoryButtonClicked"
-            android:text="@string/button_history"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/red_glass_full" />
+            android:text="@string/history_button" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
