@@ -3,6 +3,7 @@ package com.wineguesser.deductive.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -126,7 +127,7 @@ class VarietyResultsActivity : AppCompatActivity() {
 
         binding.autoTextActualVintage.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                onButtonWineResultSave()
+                onButtonWineResultSave(v)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -198,7 +199,7 @@ class VarietyResultsActivity : AppCompatActivity() {
         mAuthListener?.let { mAuth.removeAuthStateListener(it) }
     }
 
-    fun onButtonWineResultSave() {
+    fun onButtonWineResultSave(view: View) {
         if (!validInputs()) {
             return
         }

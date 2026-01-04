@@ -1,6 +1,5 @@
 package com.wineguesser.deductive.view
 
-
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,7 +9,6 @@ import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.MultiAutoCompleteTextView
@@ -20,15 +18,17 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.wineguesser.deductive.R
 import com.wineguesser.deductive.util.FormMapper
@@ -38,45 +38,62 @@ import com.wineguesser.deductive.util.Helpers
 import kotlinx.coroutines.launch
 import java.util.Arrays
 import java.util.Calendar
-import androidx.core.content.edit
-import androidx.core.view.isVisible
 
 class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
-    private lateinit var mPager: ViewPager
-    private lateinit var mWinePreferences: SharedPreferences
-    private lateinit var mActivityPreferences: SharedPreferences
-    private var mIsRedWine: Boolean = false
-    private var mLaunchingIntent: Boolean = false
+    private lateinit var pager: ViewPager2
+    private lateinit var winePreferences: SharedPreferences
+    private lateinit var activityPreferences: SharedPreferences
+    private var isRedWine: Boolean = false
+    private var launchingIntent: Boolean = false
 
     private var menuShowWhiteScreen: MenuItem? = null
 
-    private var mSharedPreferenceChangeListener: OnSharedPreferenceChangeListener? = null
-    private var mOnPageChangeListener: ViewPager.OnPageChangeListener? = null
+    private var sharedPreferenceChangeListener: OnSharedPreferenceChangeListener? = null
+    private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
 
-    private lateinit var mContext: Context
-    private var mSightFragment: SightFragment? = null
-    private var mNoseFragment: NoseFragment? = null
-    private var mPalateFragmentA: PalateFragmentA? = null
-    private var mPalateFragmentB: PalateFragmentB? = null
-    private var mInitialFragment: InitialConclusionFragment? = null
-    private var mFinalFragment: FinalConclusionFragment? = null
+    private lateinit var context: Context
+    private var sightFragment: SightFragment? = null
+    private var noseFragment: NoseFragment? = null
+    private var palateFragmentA: PalateFragmentA? = null
+    private var palateFragmentB: PalateFragmentB? = null
+    private var initialFragment: InitialConclusionFragment? = null
+    private var finalFragment: FinalConclusionFragment? = null
 
-    private var mUserFinalVarietyString: String? = null
-    private var mUserFinalCountryString: String? = null
-    private var mUserFinalRegionString: String? = null
-    private var mUserFinalQualityString: String? = null
-    private var mUserFinalVintageInteger: Int? = null
+    private var userFinalVarietyString: String? = null
+    private var userFinalCountryString: String? = null
+    private var userFinalRegionString: String? = null
+    private var userFinalQualityString: String? = null
+    private var userFinalVintageInteger: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        mContext = this
-        mActivityPreferences = getPreferences(MODE_PRIVATE)
+        context = this
+        activityPreferences = getPreferences(MODE_PRIVATE)
 
-        setSharedPreferences(intent, supportFragmentManager)
-
+        setSharedPreferences(intent)
         setUpActionBar(findViewById(R.id.toolbar))
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    when (f) {
+                        is SightFragment -> sightFragment = f
+                        is NoseFragment -> noseFragment = f
+                        is PalateFragmentA -> palateFragmentA = f
+                        is PalateFragmentB -> palateFragmentB = f
+                        is InitialConclusionFragment -> initialFragment = f
+                        is FinalConclusionFragment -> finalFragment = f
+                    }
+                }
+            }, true
+        )
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deduction_form_coordinator)) { v, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -90,53 +107,50 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setSharedPreferences(parentIntent: Intent?, mFragmentManager: FragmentManager) {
-        mActivityPreferences.edit {
+    private fun setSharedPreferences(parentIntent: Intent?) {
+        activityPreferences.edit {
             if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
                 setContentView(R.layout.activity_red_deduction_form)
 
                 putBoolean(IS_RED_WINE, TRUE)
-                mIsRedWine = true
+                isRedWine = true
 
-                mWinePreferences =
+                winePreferences =
                     getSharedPreferences(RED_WINE_FORM_PREFERENCES, MODE_PRIVATE)
-                mPager = findViewById(R.id.view_pager_red_deduction)
+                pager = findViewById(R.id.view_pager_red_deduction)
             } else {
                 setContentView(R.layout.activity_white_deduction_form)
 
                 putBoolean(IS_RED_WINE, FALSE)
-                mIsRedWine = false
+                isRedWine = false
 
-                mWinePreferences =
+                winePreferences =
                     getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, MODE_PRIVATE)
-                mPager = findViewById(R.id.view_pager_white_deduction)
+                pager = findViewById(R.id.view_pager_white_deduction)
             }
-            val pagerAdapter: PagerAdapter = DeductionFormPagerAdapter(mFragmentManager)
-            mPager.adapter = pagerAdapter
+            val pagerAdapter = DeductionFormPagerAdapter(this@DeductionFormActivity)
+            pager.adapter = pagerAdapter
         }
     }
 
     override fun onStart() {
         super.onStart()
-        mOnPageChangeListener = createOnPageChangeListener()
-        mPager.addOnPageChangeListener(mOnPageChangeListener!!)
+        onPageChangeCallback = createOnPageChangeListener()
+        onPageChangeCallback?.let { pager.registerOnPageChangeCallback(it) }
     }
 
-    private fun createOnPageChangeListener(): ViewPager.OnPageChangeListener {
-        return object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    private fun createOnPageChangeListener(): ViewPager2.OnPageChangeCallback {
+        return object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 syncCurrentTitle(position)
                 syncCurrentMenuOptions(position, menuShowWhiteScreen)
             }
-
-            override fun onPageScrollStateChanged(state: Int) {}
         }
     }
 
     override fun onStop() {
         super.onStop()
-        mOnPageChangeListener?.let { mPager.removeOnPageChangeListener(it) }
+        onPageChangeCallback?.let { pager.unregisterOnPageChangeCallback(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -155,7 +169,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
                 resetAllTopScroll()
                 resetCurrentPage()
                 resetWhiteScreen()
-                Helpers.makeToastShort(mContext, R.string.form_cleared)
+                Helpers.makeToastShort(context, R.string.form_cleared)
                 true
             }
             R.id.menu_show_white_screen -> {
@@ -175,7 +189,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
             } else {
                 menuShowWhiteScreen?.isVisible = false
                 sightScroll?.rootView?.setBackgroundColor(
-                    ContextCompat.getColor(mContext, R.color.colorPrimaryBackground)
+                    ContextCompat.getColor(context, R.color.colorPrimaryBackground)
                 )
             }
         }
@@ -185,10 +199,10 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         val root = sightScroll.rootView
         if (sightScroll.isVisible) {
             menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px)
-            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
+            root.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryBackground))
         } else {
             menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px)
-            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
+            root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
     }
 
@@ -204,7 +218,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     private fun resetScrollView(sightScroll: ScrollView?) {
         if (sightScroll != null) {
             val root = sightScroll.rootView
-            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
+            root.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryBackground))
             sightScroll.visibility = View.VISIBLE
         }
     }
@@ -214,15 +228,15 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
             if (isEnabled) {
                 menuShowWhiteScreen?.setIcon(R.drawable.ic_menu_visibility_on_24px)
                 val root = view.rootView
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
+                root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
                 view.visibility = View.INVISIBLE
-                Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine)
+                Helpers.makeToastShort(context, R.string.da_toast_showing_screen_for_wine)
             } else {
                 menuShowWhiteScreen?.setIcon(R.drawable.ic_menu_visibility_off_24px)
                 val root = view.rootView
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
+                root.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryBackground))
                 view.visibility = View.VISIBLE
-                Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine)
+                Helpers.makeToastShort(context, R.string.da_toast_hiding_screen_for_wine)
             }
         }
     }
@@ -239,17 +253,17 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun resetCurrentPage() {
-        if (mPager.currentItem != SIGHT_PAGE) {
-            mPager.currentItem = SIGHT_PAGE
+        if (pager.currentItem != SIGHT_PAGE) {
+            pager.currentItem = SIGHT_PAGE
         }
     }
 
     override fun onPause() {
         super.onPause()
         unRegisterSharedPreferencesListener()
-        if (!mLaunchingIntent) {
+        if (!launchingIntent) {
             setCurrentPageInPreferences(getCurrentPageFromPager())
-            mLaunchingIntent = false
+            launchingIntent = false
         }
     }
 
@@ -262,8 +276,8 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun setCurrentPageInPreferences(page: Int) {
-        mActivityPreferences.edit {
-            if (mIsRedWine) {
+        activityPreferences.edit {
+            if (isRedWine) {
                 putInt(CURRENT_PAGE_RED, page)
             } else {
                 putInt(CURRENT_PAGE_WHITE, page)
@@ -272,19 +286,19 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun getCurrentPageFromPreferences(): Int {
-        return if (mIsRedWine) {
-            mActivityPreferences.getInt(CURRENT_PAGE_RED, 0)
+        return if (isRedWine) {
+            activityPreferences.getInt(CURRENT_PAGE_RED, 0)
         } else {
-            mActivityPreferences.getInt(CURRENT_PAGE_WHITE, 0)
+            activityPreferences.getInt(CURRENT_PAGE_WHITE, 0)
         }
     }
 
     private fun setCurrentPage(page: Int) {
-        mPager.currentItem = page
+        pager.currentItem = page
     }
 
     private fun getCurrentPageFromPager(): Int {
-        return mPager.currentItem
+        return pager.currentItem
     }
 
     override fun onBackPressed() {
@@ -295,40 +309,43 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
     }
 
-    fun onClickNext() {
+    fun onClickNext(v: View) {
         setCurrentPage(getCurrentPageFromPager() + 1)
     }
 
     private fun registerPreferencesListener() {
-        mSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            if (key == null) return@OnSharedPreferenceChangeListener
-            val viewId = Helpers.castKey(key)
-            val view = findViewById<View>(viewId)
+        sharedPreferenceChangeListener =
+            OnSharedPreferenceChangeListener { sharedPreferences, key ->
+                if (key == null) return@OnSharedPreferenceChangeListener
+                val viewId = Helpers.castKey(key)
+                val view = findViewById<View>(viewId)
 
-            if (view != null) {
-                if (view is RadioGroup) {
-                    view.check(sharedPreferences.getInt(key, NONE_SELECTED))
-                } else if (view is CheckBox) {
-                    view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
-                } else if (view is Switch) {
-                    view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
-                } else if (view is MultiAutoCompleteTextView) {
-                    view.setText(sharedPreferences.getString(key, ""))
-                } else if (view is AutoCompleteTextView) {
-                    view.setText(sharedPreferences.getString(key, ""))
+                if (view != null) {
+                    if (view is RadioGroup) {
+                        view.check(sharedPreferences.getInt(key, NONE_SELECTED))
+                    } else if (view is CheckBox) {
+                        view.isChecked =
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
+                    } else if (view is Switch) {
+                        view.isChecked =
+                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
+                    } else if (view is MultiAutoCompleteTextView) {
+                        view.setText(sharedPreferences.getString(key, ""))
+                    } else if (view is AutoCompleteTextView) {
+                        view.setText(sharedPreferences.getString(key, ""))
+                    }
                 }
             }
-        }
-        mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener)
+        winePreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
     }
 
     private fun unRegisterSharedPreferencesListener() {
-        mWinePreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener)
+        winePreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
     }
 
     private fun resetSharedPreferences() {
-        val allEntries = mWinePreferences.all
-        mWinePreferences.edit {
+        val allEntries = winePreferences.all
+        winePreferences.edit {
             for (key in allEntries.keys) {
                 val viewId = Helpers.castKey(key)
                 if (AllRadioGroups.contains(viewId)) {
@@ -349,8 +366,8 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
             }
         }
 
-        mActivityPreferences.edit {
-            if (mIsRedWine) {
+        activityPreferences.edit {
+            if (isRedWine) {
                 putInt(RED_SIGHT_Y_SCROLL, 0)
                 putInt(RED_NOSE_Y_SCROLL, 0)
                 putInt(RED_PALATE_A_Y_SCROLL, 0)
@@ -369,13 +386,13 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun saveRadioGroupState(key: Int, state: Int) {
-        mWinePreferences.edit {
+        winePreferences.edit {
             putInt(key.toString(), state)
         }
     }
 
     private fun saveCheckBoxState(key: Int, checkedInt: Int) {
-        mWinePreferences.edit {
+        winePreferences.edit {
             putInt(key.toString(), checkedInt)
         }
     }
@@ -396,19 +413,19 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         val checked = switchToggle.isChecked
         saveCheckBoxState(switchId, Helpers.castChecked(checked))
         if (switchId == SWITCH_NOSE_WOOD) {
-            mNoseFragment?.syncWoodRadioState(true)
+            noseFragment?.syncWoodRadioState(true)
         } else if (switchId == SWITCH_PALATE_WOOD) {
-            mPalateFragmentA?.syncWoodRadioState(true)
+            palateFragmentA?.syncWoodRadioState(true)
         }
     }
 
     private fun resetAllTopScroll() {
-        mSightFragment?.scrollToTop()
-        mNoseFragment?.scrollToTop()
-        mPalateFragmentA?.scrollToTop()
-        mPalateFragmentB?.scrollToTop()
-        mInitialFragment?.scrollToTop()
-        mFinalFragment?.scrollToTop()
+        sightFragment?.scrollToTop()
+        noseFragment?.scrollToTop()
+        palateFragmentA?.scrollToTop()
+        palateFragmentB?.scrollToTop()
+        initialFragment?.scrollToTop()
+        finalFragment?.scrollToTop()
     }
 
     private fun syncCurrentTitle(page: Int) {
@@ -423,14 +440,10 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
     }
 
-    internal inner class DeductionFormPagerAdapter(fragmentManager: FragmentManager) :
-        FragmentPagerAdapter(fragmentManager) {
+    private class DeductionFormPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = NUM_PAGES
 
-        override fun getCount(): Int {
-            return NUM_PAGES
-        }
-
-        override fun getItem(position: Int): Fragment {
+        override fun createFragment(position: Int): Fragment {
             return when (position) {
                 SIGHT_PAGE -> SightFragment()
                 NOSE_PAGE -> NoseFragment()
@@ -441,20 +454,6 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
                 else -> throw IllegalStateException("Unexpected position $position")
             }
         }
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val createdFragment = super.instantiateItem(container, position) as Fragment
-
-            when (position) {
-                SIGHT_PAGE -> mSightFragment = createdFragment as SightFragment
-                NOSE_PAGE -> mNoseFragment = createdFragment as NoseFragment
-                PALATE_PAGE_A -> mPalateFragmentA = createdFragment as PalateFragmentA
-                PALATE_PAGE_B -> mPalateFragmentB = createdFragment as PalateFragmentB
-                INITIAL_CONCLUSION_PAGE -> mInitialFragment = createdFragment as InitialConclusionFragment
-                FINAL_CONCLUSION_PAGE -> mFinalFragment = createdFragment as FinalConclusionFragment
-            }
-            return createdFragment
-        }
     }
 
     private fun validInputs(): Boolean {
@@ -464,15 +463,15 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         val singleTextViewFinalQuality = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_QUALITY)
         val singleTextViewFinalVintage = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_VINTAGE)
 
-        mUserFinalVarietyString = singleTextViewFinalVariety.text.toString()
-        mUserFinalCountryString = singleTextViewFinalCountry.text.toString()
-        mUserFinalRegionString = singleTextViewFinalRegion.text.toString()
-        mUserFinalQualityString = singleTextViewFinalQuality.text.toString()
+        userFinalVarietyString = singleTextViewFinalVariety.text.toString()
+        userFinalCountryString = singleTextViewFinalCountry.text.toString()
+        userFinalRegionString = singleTextViewFinalRegion.text.toString()
+        userFinalQualityString = singleTextViewFinalQuality.text.toString()
 
-        mUserFinalVintageInteger = null
+        userFinalVintageInteger = null
         val parseInteger = singleTextViewFinalVintage.text.toString()
 
-        mUserFinalVintageInteger = if (parseInteger.isNotEmpty()) {
+        userFinalVintageInteger = if (parseInteger.isNotEmpty()) {
             Integer.parseInt(parseInteger)
         } else {
             0
@@ -480,50 +479,50 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
         var isValid = true
 
-        if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(mUserFinalVarietyString)) {
-            mFinalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
+        if (isRedWine && !parseResourceArray(R.array.red_varieties).contains(userFinalVarietyString)) {
+            finalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
             isValid = false
-        } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(mUserFinalVarietyString)) {
-            mFinalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
-            isValid = false
-        } else {
-            mFinalFragment?.errorsFinalForm()?.setErrorVariety(null)
-        }
-
-        if (mUserFinalCountryString!!.isEmpty()) {
-            mFinalFragment?.errorsFinalForm()?.setErrorCountry(getString(R.string.error_input_country_origin))
+        } else if (!isRedWine && !parseResourceArray(R.array.white_varieties).contains(userFinalVarietyString)) {
+            finalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
             isValid = false
         } else {
-            mFinalFragment?.errorsFinalForm()?.setErrorCountry(null)
+            finalFragment?.errorsFinalForm()?.setErrorVariety(null)
         }
 
-        if (mUserFinalRegionString!!.isEmpty()) {
-            mFinalFragment?.errorsFinalForm()?.setErrorRegion(getString(R.string.error_input_valid_region))
+        if (userFinalCountryString!!.isEmpty()) {
+            finalFragment?.errorsFinalForm()?.setErrorCountry(getString(R.string.error_input_country_origin))
             isValid = false
         } else {
-            mFinalFragment?.errorsFinalForm()?.setErrorRegion(null)
+            finalFragment?.errorsFinalForm()?.setErrorCountry(null)
         }
 
-        if (mUserFinalQualityString!!.isEmpty()) {
-            mUserFinalQualityString = "None"
+        if (userFinalRegionString!!.isEmpty()) {
+            finalFragment?.errorsFinalForm()?.setErrorRegion(getString(R.string.error_input_valid_region))
+            isValid = false
+        } else {
+            finalFragment?.errorsFinalForm()?.setErrorRegion(null)
+        }
+
+        if (userFinalQualityString!!.isEmpty()) {
+            userFinalQualityString = "None"
         }
 
         val year = Calendar.getInstance().get(Calendar.YEAR)
-        if (mUserFinalVintageInteger!! > year || mUserFinalVintageInteger!! < 1900) {
-            mFinalFragment?.errorsFinalForm()?.setErrorVintage(getString(R.string.error_input_valid_vintage))
+        if (userFinalVintageInteger!! > year || userFinalVintageInteger!! < 1900) {
+            finalFragment?.errorsFinalForm()?.setErrorVintage(getString(R.string.error_input_valid_vintage))
             isValid = false
         } else {
-            mFinalFragment?.errorsFinalForm()?.setErrorVintage(null)
+            finalFragment?.errorsFinalForm()?.setErrorVintage(null)
         }
 
-        val allEntries = mWinePreferences.all
+        val allEntries = winePreferences.all
         val requiredKeysInPreferences = ArrayList<Int>()
 
         var needNoseWoodRadios = false
         var needPalateWoodRadios = false
         var needSnackbar = false
 
-        val radioGroups = if (mIsRedWine) AllRedRadioGroups else AllWhiteRadioGroups
+        val radioGroups = if (isRedWine) AllRedRadioGroups else AllWhiteRadioGroups
 
         for (entry in allEntries) {
             val key = entry.key
@@ -608,7 +607,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun retrieveSharedPreferencesValues(): SparseIntArray {
-        val allEntries = mWinePreferences.all
+        val allEntries = winePreferences.all
         val wineFormSelections = SparseIntArray()
 
         for (entry in allEntries) {
@@ -631,7 +630,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         return wineFormSelections
     }
 
-    fun onSubmitFinalConclusion() {
+    fun onSubmitFinalConclusion(view: View) {
         isScoring(true)
         if (!validInputs()) {
             isScoring(false)
@@ -639,7 +638,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
 
         val formSelections = retrieveSharedPreferencesValues()
-        val scoreTask = GrapeVarietyScore(mIsRedWine)
+        val scoreTask = GrapeVarietyScore(isRedWine)
         val formMapper = FormMapper()
         val varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections)
 
@@ -657,18 +656,18 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         resetSharedPreferences()
         resetAllTopScroll()
         setCurrentPageInPreferences(SIGHT_PAGE)
-        mLaunchingIntent = true
+        launchingIntent = true
 
-        val intent = Intent(mContext, VarietyResultsActivity::class.java)
-        if (mIsRedWine) {
+        val intent = Intent(context, VarietyResultsActivity::class.java)
+        if (isRedWine) {
             intent.putExtra(IS_RED_WINE, TRUE)
         }
         intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety)
-        intent.putExtra(USER_CONCLUSION_VARIETY, mUserFinalVarietyString)
-        intent.putExtra(USER_CONCLUSION_COUNTRY, mUserFinalCountryString)
-        intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString)
-        intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString)
-        intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger)
+        intent.putExtra(USER_CONCLUSION_VARIETY, userFinalVarietyString)
+        intent.putExtra(USER_CONCLUSION_COUNTRY, userFinalCountryString)
+        intent.putExtra(USER_CONCLUSION_REGION, userFinalRegionString)
+        intent.putExtra(USER_CONCLUSION_QUALITY, userFinalQualityString)
+        intent.putExtra(USER_CONCLUSION_VINTAGE, userFinalVintageInteger)
         isScoring(false)
         startActivity(intent)
         finish()
@@ -676,15 +675,15 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
     private fun isScoring(loading: Boolean) {
         if (loading) {
-            mFinalFragment?.showLoadingIndicator()
+            finalFragment?.showLoadingIndicator()
         } else {
-            mFinalFragment?.hideLoadingIndicator()
+            finalFragment?.hideLoadingIndicator()
         }
     }
 
     override fun onGrapeFailure() {
         isScoring(false)
-        Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score)
+        Helpers.makeToastShort(context, R.string.da_toast_unable_to_score)
     }
 
     private fun parseResourceArray(resourceId: Int): List<String> {

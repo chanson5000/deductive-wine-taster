@@ -2,6 +2,7 @@ package com.wineguesser.deductive.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -52,7 +53,7 @@ class FeedbackActivity : AppCompatActivity() {
         outState.putString(FEEDBACK_TEXT, mFeedbackText)
     }
 
-    fun onClickSubmitFeedback() {
+    fun onClickSubmitFeedback(view: View) {
         val email = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.feedback_email)))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject))
