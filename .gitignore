@@ -11,3 +11,4 @@ keystore.properties
 fabric.properties
 /app/free/release
 local.properties
+.kotlin/
