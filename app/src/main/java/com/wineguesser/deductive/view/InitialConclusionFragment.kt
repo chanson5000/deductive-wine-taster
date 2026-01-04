@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.MultiAutoCompleteTextView
 import android.widget.RadioGroup
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.wineguesser.deductive.R
@@ -15,8 +16,6 @@ import com.wineguesser.deductive.databinding.FragmentInitialConclusionBinding
 import com.wineguesser.deductive.util.AppExecutors
 import com.wineguesser.deductive.util.Helpers
 import com.wineguesser.deductive.util.SpecialCharArrayAdapter
-import java.util.Arrays
-import androidx.core.content.edit
 
 class InitialConclusionFragment : Fragment() {
 

@@ -376,7 +376,7 @@ class UserProfileActivity : AppCompatActivity() {
     fun onClickDeleteAccount(view: View) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.up_confirm_account_deletion)
-        builder.setPositiveButton(android.R.string.yes) { _, _ ->
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
             val user = mAuth.currentUser
             if (user != null) {
                 user.delete()

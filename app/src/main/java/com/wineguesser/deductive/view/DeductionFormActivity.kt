@@ -38,6 +38,8 @@ import com.wineguesser.deductive.util.Helpers
 import kotlinx.coroutines.launch
 import java.util.Arrays
 import java.util.Calendar
+import androidx.core.content.edit
+import androidx.core.view.isVisible
 
 class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
@@ -89,27 +91,29 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun setSharedPreferences(parentIntent: Intent?, mFragmentManager: FragmentManager) {
-        val sharedPreferencesEditor = mActivityPreferences.edit()
-        if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
-            setContentView(R.layout.activity_red_deduction_form)
+        mActivityPreferences.edit {
+            if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
+                setContentView(R.layout.activity_red_deduction_form)
 
-            sharedPreferencesEditor.putBoolean(IS_RED_WINE, TRUE)
-            mIsRedWine = true
+                putBoolean(IS_RED_WINE, TRUE)
+                mIsRedWine = true
 
-            mWinePreferences = getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE)
-            mPager = findViewById(R.id.view_pager_red_deduction)
-        } else {
-            setContentView(R.layout.activity_white_deduction_form)
+                mWinePreferences =
+                    getSharedPreferences(RED_WINE_FORM_PREFERENCES, MODE_PRIVATE)
+                mPager = findViewById(R.id.view_pager_red_deduction)
+            } else {
+                setContentView(R.layout.activity_white_deduction_form)
 
-            sharedPreferencesEditor.putBoolean(IS_RED_WINE, FALSE)
-            mIsRedWine = false
+                putBoolean(IS_RED_WINE, FALSE)
+                mIsRedWine = false
 
-            mWinePreferences = getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE)
-            mPager = findViewById(R.id.view_pager_white_deduction)
+                mWinePreferences =
+                    getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, MODE_PRIVATE)
+                mPager = findViewById(R.id.view_pager_white_deduction)
+            }
+            val pagerAdapter: PagerAdapter = DeductionFormPagerAdapter(mFragmentManager)
+            mPager.adapter = pagerAdapter
         }
-        val pagerAdapter: PagerAdapter = DeductionFormPagerAdapter(mFragmentManager)
-        mPager.adapter = pagerAdapter
-        sharedPreferencesEditor.apply()
     }
 
     override fun onStart() {
@@ -179,7 +183,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
     private fun toggleWineEvaluationMode(menuItem: MenuItem, sightScroll: ScrollView) {
         val root = sightScroll.rootView
-        if (sightScroll.visibility == View.VISIBLE) {
+        if (sightScroll.isVisible) {
             menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px)
             root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
         } else {
@@ -226,7 +230,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     private fun toggleSightWhiteScreen() {
         val sightScroll = findViewById<ScrollView>(R.id.scrollView_sight)
         if (getCurrentPageFromPager() == SIGHT_PAGE && sightScroll != null) {
-            if (sightScroll.visibility == View.VISIBLE) {
+            if (sightScroll.isVisible) {
                 setSightWhiteScreen(true, sightScroll)
             } else {
                 setSightWhiteScreen(false, sightScroll)
@@ -258,13 +262,13 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
     }
 
     private fun setCurrentPageInPreferences(page: Int) {
-        val editor = mActivityPreferences.edit()
-        if (mIsRedWine) {
-            editor.putInt(CURRENT_PAGE_RED, page)
-        } else {
-            editor.putInt(CURRENT_PAGE_WHITE, page)
+        mActivityPreferences.edit {
+            if (mIsRedWine) {
+                putInt(CURRENT_PAGE_RED, page)
+            } else {
+                putInt(CURRENT_PAGE_WHITE, page)
+            }
         }
-        editor.apply()
     }
 
     private fun getCurrentPageFromPreferences(): Int {
@@ -302,11 +306,11 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
             val view = findViewById<View>(viewId)
 
             if (view != null) {
-                if (view is RadioGroup && key != null) {
+                if (view is RadioGroup) {
                     view.check(sharedPreferences.getInt(key, NONE_SELECTED))
-                } else if (view is CheckBox && key != null) {
+                } else if (view is CheckBox) {
                     view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
-                } else if (view is Switch && key != null) {
+                } else if (view is Switch) {
                     view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
                 } else if (view is MultiAutoCompleteTextView) {
                     view.setText(sharedPreferences.getString(key, ""))
@@ -345,35 +349,35 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
         winePreferencesEditor.apply()
 
-        val activityPreferencesEditor = mActivityPreferences.edit()
-        if (mIsRedWine) {
-            activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(RED_NOSE_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(RED_PALATE_A_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(RED_PALATE_B_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(RED_INITIAL_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(RED_FINAL_Y_SCROLL, 0)
-        } else {
-            activityPreferencesEditor.putInt(WHITE_SIGHT_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(WHITE_NOSE_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(WHITE_PALATE_A_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(WHITE_PALATE_B_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0)
-            activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0)
+        mActivityPreferences.edit {
+            if (mIsRedWine) {
+                putInt(RED_SIGHT_Y_SCROLL, 0)
+                putInt(RED_NOSE_Y_SCROLL, 0)
+                putInt(RED_PALATE_A_Y_SCROLL, 0)
+                putInt(RED_PALATE_B_Y_SCROLL, 0)
+                putInt(RED_INITIAL_Y_SCROLL, 0)
+                putInt(RED_FINAL_Y_SCROLL, 0)
+            } else {
+                putInt(WHITE_SIGHT_Y_SCROLL, 0)
+                putInt(WHITE_NOSE_Y_SCROLL, 0)
+                putInt(WHITE_PALATE_A_Y_SCROLL, 0)
+                putInt(WHITE_PALATE_B_Y_SCROLL, 0)
+                putInt(WHITE_INITIAL_Y_SCROLL, 0)
+                putInt(WHITE_FINAL_Y_SCROLL, 0)
+            }
         }
-        activityPreferencesEditor.apply()
     }
 
     private fun saveRadioGroupState(key: Int, state: Int) {
-        val editor = mWinePreferences.edit()
-        editor.putInt(key.toString(), state)
-        editor.apply()
+        mWinePreferences.edit {
+            putInt(key.toString(), state)
+        }
     }
 
     private fun saveCheckBoxState(key: Int, checkedInt: Int) {
-        val editor = mWinePreferences.edit()
-        editor.putInt(key.toString(), checkedInt)
-        editor.apply()
+        mWinePreferences.edit {
+            putInt(key.toString(), checkedInt)
+        }
     }
 
     fun onRadioButtonClicked(view: View) {
