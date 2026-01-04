@@ -8,8 +8,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.Insets
-
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,7 +24,6 @@ import com.wineguesser.deductive.R
 import com.wineguesser.deductive.databinding.ActivityUserProfileBinding
 import com.wineguesser.deductive.repository.UserRepository
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.viewmodel.UserProfileViewModel
 import timber.log.Timber
 

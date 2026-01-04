@@ -16,9 +16,9 @@ import androidx.fragment.app.FragmentActivity
 import com.wineguesser.deductive.databinding.FragmentNoseRedBinding
 import com.wineguesser.deductive.databinding.FragmentNoseWhiteBinding
 import com.wineguesser.deductive.util.AppExecutors
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
+import androidx.core.content.edit
+
 class NoseFragment : Fragment() {
 
     private lateinit var mFragmentActivity: FragmentActivity
@@ -95,14 +95,14 @@ class NoseFragment : Fragment() {
     }
 
     private fun saveScrollState() {
-        val editor = mActivityPreferences.edit()
-        val scrollView = getScrollViewNose() ?: return
-        if (mIsRedWine) {
-            editor.putInt(RED_NOSE_Y_SCROLL, scrollView.scrollY)
-        } else {
-            editor.putInt(WHITE_NOSE_Y_SCROLL, scrollView.scrollY)
+        mActivityPreferences.edit {
+            val scrollView = getScrollViewNose() ?: return
+            if (mIsRedWine) {
+                putInt(RED_NOSE_Y_SCROLL, scrollView.scrollY)
+            } else {
+                putInt(WHITE_NOSE_Y_SCROLL, scrollView.scrollY)
+            }
         }
-        editor.apply()
     }
 
     private fun loadScrollState() {

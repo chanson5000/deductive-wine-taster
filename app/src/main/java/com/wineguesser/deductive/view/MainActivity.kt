@@ -8,8 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.Insets
-
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.wineguesser.deductive.R
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mContext: Context
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     private var mMenuProfile: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // SplashScreen.installSplashScreen(this)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_main)

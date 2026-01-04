@@ -16,9 +16,9 @@ import androidx.fragment.app.FragmentActivity
 import com.wineguesser.deductive.databinding.FragmentPalateRedABinding
 import com.wineguesser.deductive.databinding.FragmentPalateWhiteABinding
 import com.wineguesser.deductive.util.AppExecutors
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
+import androidx.core.content.edit
+
 class PalateFragmentA : Fragment() {
 
     private lateinit var mFragmentActivity: FragmentActivity
@@ -95,15 +95,15 @@ class PalateFragmentA : Fragment() {
     }
 
     private fun saveScrollState() {
-        val editor = mActivityPreferences.edit()
-        val scrollView = getScrollViewPalateA() ?: return
+        mActivityPreferences.edit {
+            val scrollView = getScrollViewPalateA() ?: return
 
-        if (mIsRedWine) {
-            editor.putInt(RED_PALATE_A_Y_SCROLL, scrollView.scrollY)
-        } else {
-            editor.putInt(WHITE_PALATE_A_Y_SCROLL, scrollView.scrollY)
+            if (mIsRedWine) {
+                putInt(RED_PALATE_A_Y_SCROLL, scrollView.scrollY)
+            } else {
+                putInt(WHITE_PALATE_A_Y_SCROLL, scrollView.scrollY)
+            }
         }
-        editor.apply()
     }
 
     private fun loadScrollState() {

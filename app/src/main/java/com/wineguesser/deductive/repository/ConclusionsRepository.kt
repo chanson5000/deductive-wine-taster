@@ -8,7 +8,6 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.wineguesser.deductive.model.ConclusionRecord
 import timber.log.Timber
-import java.util.Collections
 
 class ConclusionsRepository : FirebaseRepository() {
 
@@ -32,11 +31,11 @@ class ConclusionsRepository : FirebaseRepository() {
         }
     }
 
-    fun getConclusionsForUser(uid: String): LiveData<List<ConclusionRecord>> {
+    fun getConclusionsForUser(uid: String): LiveData<List<ConclusionRecord>?> {
         return ConclusionsList(uid)
     }
 
-    inner class ConclusionsList(uid: String) : LiveData<List<ConclusionRecord>>() {
+    inner class ConclusionsList(uid: String) : LiveData<List<ConclusionRecord>?>() {
         private val query: Query = mConclusionsReference.child(uid)
         private val listener: MyValueEventListener = MyValueEventListener()
 
@@ -61,7 +60,7 @@ class ConclusionsRepository : FirebaseRepository() {
                             data.add(conclusionRecord)
                         }
                     }
-                    Collections.reverse(data)
+                    data.reverse()
                     value = data
                 } else {
                     value = null

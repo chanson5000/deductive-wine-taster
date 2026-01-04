@@ -128,6 +128,7 @@ import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_NEW
 import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_OLD
 import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_SMALL
 import com.wineguesser.deductive.view.*
+import androidx.core.util.size
 
 class FormMapper {
 
@@ -306,7 +307,7 @@ class FormMapper {
     fun formToDbFormat(wineProperties: SparseIntArray): Map<String, Int> {
         val convertedData = HashMap<String, Int>()
 
-        for (i in 0 until wineProperties.size()) {
+        for (i in 0 until wineProperties.size) {
             val key = wineProperties.keyAt(i)
             val value = wineProperties.get(key)
             FormToDbConversionMap[key]?.let {

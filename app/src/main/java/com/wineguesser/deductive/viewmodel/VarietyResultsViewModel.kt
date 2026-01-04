@@ -8,7 +8,7 @@ import com.wineguesser.deductive.repository.VarietyDataRepository
 class VarietyResultsViewModel : ViewModel() {
     private val varietyDataRepository: VarietyDataRepository = VarietyDataRepository()
 
-    var appVariety: LiveData<String>? = null
+    var appVariety: LiveData<String?>? = null
         private set
 
     val actualLabel = MutableLiveData<String?>()

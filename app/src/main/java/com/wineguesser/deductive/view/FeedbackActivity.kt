@@ -6,8 +6,6 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.Insets
-
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,7 +17,6 @@ class FeedbackActivity : AppCompatActivity() {
     private lateinit var mEditTextFeedback: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // installSplashScreen()
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_feedback)

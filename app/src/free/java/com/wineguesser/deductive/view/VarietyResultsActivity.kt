@@ -6,29 +6,20 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.splashscreen.SplashScreen
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.wineguesser.deductive.R
 import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding
 import com.wineguesser.deductive.model.ConclusionRecord
 import com.wineguesser.deductive.repository.ConclusionsRepository
-import com.wineguesser.deductive.repository.DatabaseContract
 import com.wineguesser.deductive.util.Helpers
 import com.wineguesser.deductive.util.SpecialCharArrayAdapter
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel
-import com.wineguesser.deductive.view.*
-import java.util.ArrayList
-import java.util.Arrays
 import java.util.Calendar
 
 class VarietyResultsActivity : AppCompatActivity() {
@@ -49,7 +40,6 @@ class VarietyResultsActivity : AppCompatActivity() {
     private var mActualVintage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // SplashScreen.installSplashScreen(this)
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityVarietyResultsBinding.inflate(layoutInflater)
@@ -186,7 +176,7 @@ class VarietyResultsActivity : AppCompatActivity() {
     }
 
     private fun parseResourceArray(resourceId: Int): List<String> {
-        return Arrays.asList(*resources.getStringArray(resourceId))
+        return listOf(*resources.getStringArray(resourceId))
     }
 
     public override fun onStart() {
@@ -259,14 +249,14 @@ class VarietyResultsActivity : AppCompatActivity() {
                 AuthUI.IdpConfig.EmailBuilder().build()
             )
 
-            val RC_SIGN_IN = 43
+            val rcSignIn = 43
 
             startActivityForResult(
                 AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
                     .build(),
-                RC_SIGN_IN
+                rcSignIn
             )
         }
     }

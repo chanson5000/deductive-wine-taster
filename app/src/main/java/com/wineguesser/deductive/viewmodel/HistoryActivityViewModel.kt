@@ -10,7 +10,7 @@ class HistoryActivityViewModel : ViewModel() {
     private val conclusionsRepository: ConclusionsRepository = ConclusionsRepository()
     val noData = MutableLiveData<Boolean>()
 
-    fun getUserConclusions(uid: String): LiveData<List<ConclusionRecord>> {
+    fun getUserConclusions(uid: String): LiveData<List<ConclusionRecord>?> {
         return conclusionsRepository.getConclusionsForUser(uid)
     }
 

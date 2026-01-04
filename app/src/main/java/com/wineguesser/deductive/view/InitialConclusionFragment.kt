@@ -13,12 +13,10 @@ import androidx.fragment.app.FragmentActivity
 import com.wineguesser.deductive.R
 import com.wineguesser.deductive.databinding.FragmentInitialConclusionBinding
 import com.wineguesser.deductive.util.AppExecutors
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.SpecialCharArrayAdapter
-import com.wineguesser.deductive.view.*
 import java.util.Arrays
+import androidx.core.content.edit
 
 class InitialConclusionFragment : Fragment() {
 
@@ -73,9 +71,9 @@ class InitialConclusionFragment : Fragment() {
 
     private fun saveScrollState(isRedWine: Boolean, preferences: SharedPreferences) {
         if (_binding == null) return
-        val editor = preferences.edit()
-        editor.putInt(getScrollType(isRedWine), binding.scrollViewInitial.scrollY)
-        editor.apply()
+        preferences.edit {
+            putInt(getScrollType(isRedWine), binding.scrollViewInitial.scrollY)
+        }
     }
 
     private fun getScrollType(isRedWine: Boolean): String {
@@ -98,16 +96,16 @@ class InitialConclusionFragment : Fragment() {
 
     private fun saveSelectionState(preferences: SharedPreferences) {
         if (_binding == null) return
-        val editor = preferences.edit()
-        editor.putString(
-            TEXT_MULTI_INITIAL_GRAPE_VARIETIES.toString(),
-            binding.multiTextInitialVarieties.text.toString()
-        )
-        editor.putString(
-            TEXT_MULTI_INITIAL_COUNTRIES.toString(),
-            binding.multiTextInitialCountries.text.toString()
-        )
-        editor.apply()
+        preferences.edit {
+            putString(
+                TEXT_MULTI_INITIAL_GRAPE_VARIETIES.toString(),
+                binding.multiTextInitialVarieties.text.toString()
+            )
+            putString(
+                TEXT_MULTI_INITIAL_COUNTRIES.toString(),
+                binding.multiTextInitialCountries.text.toString()
+            )
+        }
     }
 
     private fun setAutoTextVarietyByType(isRedWine: Boolean) {
@@ -142,7 +140,7 @@ class InitialConclusionFragment : Fragment() {
     }
 
     private fun parseResourceArray(resourceId: Int): List<String> {
-        return Arrays.asList(*resources.getStringArray(resourceId))
+        return listOf(*resources.getStringArray(resourceId))
     }
 
     private fun loadSelectionState() {

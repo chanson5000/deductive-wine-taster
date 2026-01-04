@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import com.wineguesser.deductive.R
 import com.wineguesser.deductive.util.AppExecutors
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
+import androidx.core.content.edit
 
 class SightFragment : Fragment() {
 
@@ -68,13 +68,13 @@ class SightFragment : Fragment() {
     }
 
     private fun saveScrollState() {
-        val editor = mActivityPreferences.edit()
-        if (mIsRedWine) {
-            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
-        } else {
-            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
+        mActivityPreferences.edit {
+            if (mIsRedWine) {
+                putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
+            } else {
+                putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
+            }
         }
-        editor.apply()
     }
 
     private fun loadScrollState() {

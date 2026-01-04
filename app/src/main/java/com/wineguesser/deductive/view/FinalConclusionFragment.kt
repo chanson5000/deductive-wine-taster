@@ -8,20 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.wineguesser.deductive.R
 import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding
 import com.wineguesser.deductive.util.AppExecutors
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.SpecialCharArrayAdapter
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel
 import com.wineguesser.deductive.viewmodel.FinalConclusionFragmentViewModel
-import java.util.Arrays
 
 class FinalConclusionFragment : Fragment() {
 
@@ -77,7 +74,7 @@ class FinalConclusionFragment : Fragment() {
     }
 
     private fun parseResourceArray(resourceId: Int): List<String> {
-        return Arrays.asList(*resources.getStringArray(resourceId))
+        return listOf(*resources.getStringArray(resourceId))
     }
 
     override fun onPause() {
@@ -94,9 +91,9 @@ class FinalConclusionFragment : Fragment() {
 
     private fun saveScrollState() {
         if (_binding == null) return
-        val sharedPreferencesEditor = mActivityPreferences.edit()
-        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), binding.scrollViewFinal.scrollY)
-        sharedPreferencesEditor.apply()
+        mActivityPreferences.edit {
+            putInt(getScrollType(mIsRedWine), binding.scrollViewFinal.scrollY)
+        }
     }
 
     private fun getScrollType(isRedWine: Boolean): String {
@@ -119,28 +116,28 @@ class FinalConclusionFragment : Fragment() {
 
     private fun saveSelectionState() {
         if (_binding == null) return
-        val editor = mWinePreferences.edit()
-        editor.putString(
-            resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
-            getTextViewString(binding.autoTextFinalGrapeVariety)
-        )
-        editor.putString(
-            resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
-            getTextViewString(binding.autoTextFinalCountry)
-        )
-        editor.putString(
-            resourceIdToString(TEXT_SINGLE_FINAL_REGION),
-            getTextViewString(binding.autoTextFinalRegion)
-        )
-        editor.putString(
-            resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
-            getTextViewString(binding.autoTextFinalQuality)
-        )
-        editor.putString(
-            resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
-            getTextViewString(binding.autoTextFinalVintage)
-        )
-        editor.apply()
+        mWinePreferences.edit {
+            putString(
+                resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
+                getTextViewString(binding.autoTextFinalGrapeVariety)
+            )
+            putString(
+                resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
+                getTextViewString(binding.autoTextFinalCountry)
+            )
+            putString(
+                resourceIdToString(TEXT_SINGLE_FINAL_REGION),
+                getTextViewString(binding.autoTextFinalRegion)
+            )
+            putString(
+                resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
+                getTextViewString(binding.autoTextFinalQuality)
+            )
+            putString(
+                resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
+                getTextViewString(binding.autoTextFinalVintage)
+            )
+        }
     }
 
     private fun getTextViewString(textView: TextView): String {

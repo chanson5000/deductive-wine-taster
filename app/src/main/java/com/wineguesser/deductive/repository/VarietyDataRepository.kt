@@ -15,15 +15,15 @@ class VarietyDataRepository : FirebaseRepository() {
     private val mRedReference: DatabaseReference = databaseInstance.getReference(DB_REFERENCE_RED_VARIETAL_DATA)
     private val mWhiteReference: DatabaseReference = databaseInstance.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA)
 
-    fun getRedVarietyNameById(id: String): LiveData<String> {
+    fun getRedVarietyNameById(id: String): LiveData<String?> {
         return VarietyName(mRedReference, id)
     }
 
-    fun getWhiteVarietyNameById(id: String): LiveData<String> {
+    fun getWhiteVarietyNameById(id: String): LiveData<String?> {
         return VarietyName(mWhiteReference, id)
     }
 
-    inner class VarietyName(reference: DatabaseReference, private val varietyId: String) : LiveData<String>() {
+    inner class VarietyName(reference: DatabaseReference, private val varietyId: String) : LiveData<String?>() {
         private val query: Query = reference
         private val listener: MyValueEventListener = MyValueEventListener()
 
