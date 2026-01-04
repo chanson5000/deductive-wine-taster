@@ -295,7 +295,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
     }
 
-    fun onClickNext(v: View) {
+    fun onClickNext() {
         setCurrentPage(getCurrentPageFromPager() + 1)
     }
 
@@ -328,26 +328,26 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
     private fun resetSharedPreferences() {
         val allEntries = mWinePreferences.all
-        val winePreferencesEditor = mWinePreferences.edit()
-        for (key in allEntries.keys) {
-            val viewId = Helpers.castKey(key)
-            if (AllRadioGroups.contains(viewId)) {
-                winePreferencesEditor.putInt(key, NONE_SELECTED)
-            } else if (AllCheckBoxes.contains(viewId)) {
-                winePreferencesEditor.putInt(key, NOT_CHECKED)
-            } else if (AllSwitches.contains(viewId)) {
-                winePreferencesEditor.putInt(key, NOT_CHECKED)
-            } else if (AllAutoText.contains(viewId)) {
-                winePreferencesEditor.putString(key, "")
-                val autoView = findViewById<AutoCompleteTextView>(viewId)
-                autoView?.setText("")
-            } else if (AllAutoMultiText.contains(viewId)) {
-                winePreferencesEditor.putString(key, "")
-                val multiView = findViewById<MultiAutoCompleteTextView>(viewId)
-                multiView?.setText("")
+        mWinePreferences.edit {
+            for (key in allEntries.keys) {
+                val viewId = Helpers.castKey(key)
+                if (AllRadioGroups.contains(viewId)) {
+                    putInt(key, NONE_SELECTED)
+                } else if (AllCheckBoxes.contains(viewId)) {
+                    putInt(key, NOT_CHECKED)
+                } else if (AllSwitches.contains(viewId)) {
+                    putInt(key, NOT_CHECKED)
+                } else if (AllAutoText.contains(viewId)) {
+                    putString(key, "")
+                    val autoView = findViewById<AutoCompleteTextView>(viewId)
+                    autoView?.setText("")
+                } else if (AllAutoMultiText.contains(viewId)) {
+                    putString(key, "")
+                    val multiView = findViewById<MultiAutoCompleteTextView>(viewId)
+                    multiView?.setText("")
+                }
             }
         }
-        winePreferencesEditor.apply()
 
         mActivityPreferences.edit {
             if (mIsRedWine) {
@@ -631,7 +631,7 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         return wineFormSelections
     }
 
-    fun onSubmitFinalConclusion(view: View) {
+    fun onSubmitFinalConclusion() {
         isScoring(true)
         if (!validInputs()) {
             isScoring(false)

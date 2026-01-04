@@ -3,7 +3,6 @@ package com.wineguesser.deductive.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -127,7 +126,7 @@ class VarietyResultsActivity : AppCompatActivity() {
 
         binding.autoTextActualVintage.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                onButtonWineResultSave(v)
+                onButtonWineResultSave()
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -185,9 +184,9 @@ class VarietyResultsActivity : AppCompatActivity() {
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user != null) {
-                inputForm.setResultButtonText(getString(R.string.save_result))
+                inputForm.resultButtonText.value = getString(R.string.save_result)
             } else {
-                inputForm.setResultButtonText(getString(R.string.log_in_for_result_save))
+                inputForm.resultButtonText.value = getString(R.string.log_in_for_result_save)
             }
         }
 
@@ -199,7 +198,7 @@ class VarietyResultsActivity : AppCompatActivity() {
         mAuthListener?.let { mAuth.removeAuthStateListener(it) }
     }
 
-    fun onButtonWineResultSave(view: View?) {
+    fun onButtonWineResultSave() {
         if (!validInputs()) {
             return
         }
@@ -308,7 +307,7 @@ class VarietyResultsActivity : AppCompatActivity() {
         }
 
         if (actualQualityString.isNullOrEmpty()) {
-            inputForm.setActualQuality("None")
+            inputForm.actualQuality.value = "None"
         }
 
         if (parseInteger.isNullOrEmpty()) {

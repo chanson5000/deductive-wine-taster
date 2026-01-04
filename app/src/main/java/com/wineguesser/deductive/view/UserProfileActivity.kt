@@ -3,7 +3,6 @@ package com.wineguesser.deductive.view
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -175,7 +174,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickUpdateDetails(view: View) {
+    fun onClickUpdateDetails() {
         val user = mAuth.currentUser
 
         var updateDisplayName = false
@@ -292,7 +291,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickUpdatePassword(view: View) {
+    fun onClickUpdatePassword() {
         val user = mAuth.currentUser
 
         var updatePassword = false
@@ -373,7 +372,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickDeleteAccount(view: View) {
+    fun onClickDeleteAccount() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.up_confirm_account_deletion)
         builder.setPositiveButton(android.R.string.ok) { _, _ ->

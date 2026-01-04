@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -107,13 +106,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun buttonRedWine(view: View) {
+    fun buttonRedWine() {
         val intent = Intent(mContext, DeductionFormActivity::class.java)
         intent.putExtra(IS_RED_WINE, TRUE)
         startActivity(intent)
     }
 
-    fun buttonWhiteWine(view: View) {
+    fun buttonWhiteWine() {
         val intent = Intent(mContext, DeductionFormActivity::class.java)
         startActivity(intent)
     }
@@ -146,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onHistoryButtonClicked(view: View) {
+    fun onHistoryButtonClicked() {
         if (mUserLoggedIn) {
             val intent = Intent(mContext, HistoryActivity::class.java)
             startActivity(intent)

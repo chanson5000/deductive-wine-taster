@@ -26,26 +26,6 @@ class VarietyResultsViewModel : ViewModel() {
 
     val resultButtonText = MutableLiveData<String?>()
 
-    fun setUserVariety(userVariety: String?) {
-        this.userVariety.value = userVariety
-    }
-
-    fun setUserCountry(userCountry: String?) {
-        this.userCountry.value = userCountry
-    }
-
-    fun setUserRegion(userRegion: String?) {
-        this.userRegion.value = userRegion
-    }
-
-    fun setUserQuality(userQuality: String?) {
-        this.userQuality.value = userQuality
-    }
-
-    fun setUserVintage(userVintage: String?) {
-        this.userVintage.value = userVintage
-    }
-
     fun setAppVarietyById(isRedWine: Boolean, varietyId: String) {
         loadVariety(isRedWine, varietyId)
     }
@@ -59,31 +39,4 @@ class VarietyResultsViewModel : ViewModel() {
         }
     }
 
-    fun setActualLabel(actualLabel: String?) {
-        this.actualLabel.value = actualLabel
-    }
-
-    fun setActualVariety(actualVariety: String?) {
-        this.actualVariety.value = actualVariety
-    }
-
-    fun setActualCountry(actualCountry: String?) {
-        this.actualCountry.value = actualCountry
-    }
-
-    fun setActualRegion(actualRegion: String?) {
-        this.actualRegion.value = actualRegion
-    }
-
-    fun setActualQuality(actualQuality: String?) {
-        this.actualQuality.value = actualQuality
-    }
-
-    fun setActualVintage(actualVintage: String?) {
-        this.actualVintage.value = actualVintage
-    }
-
-    fun setResultButtonText(text: String?) {
-        this.resultButtonText.value = text
-    }
 }
