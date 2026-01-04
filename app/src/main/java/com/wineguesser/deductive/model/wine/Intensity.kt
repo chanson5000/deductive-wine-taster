@@ -1,14 +1,7 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Intensity {
-    private int delicate;
-    private int moderate;
-    private int powerful;
-}
+data class Intensity(
+    var delicate: Int = 0,
+    var moderate: Int = 0,
+    var powerful: Int = 0
+)

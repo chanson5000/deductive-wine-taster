@@ -1,16 +1,12 @@
-package com.wineguesser.deductive.model.wine.red;
+package com.wineguesser.deductive.model.wine.red
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class SecondaryColor {
-    private int orange;
-    private int blue;
-    private int ruby;
-    private int garnet;
-    private int brown;
-}
+data class SecondaryColor(
+    var orange: Int = 0,
+    var blue: Int = 0,
+    var ruby: Int = 0,
+    var garnet: Int = 0,
+    var brown: Int = 0,
+    var silver: Int = 0,
+    var green: Int = 0,
+    var copper: Int = 0
+)

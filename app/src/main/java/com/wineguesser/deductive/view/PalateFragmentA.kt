@@ -1,202 +1,171 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.Switch;
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.RadioGroup
+import android.widget.ScrollView
+import android.widget.Switch
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.wineguesser.deductive.databinding.FragmentPalateRedABinding
+import com.wineguesser.deductive.databinding.FragmentPalateWhiteABinding
+import com.wineguesser.deductive.util.AppExecutors
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+class PalateFragmentA : Fragment() {
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
+    private lateinit var mFragmentActivity: FragmentActivity
+    private lateinit var mActivityPreferences: SharedPreferences
+    private lateinit var mWinePreferences: SharedPreferences
+    private var mIsRedWine: Boolean = false
 
-import com.wineguesser.deductive.databinding.FragmentPalateRedABinding;
-import com.wineguesser.deductive.databinding.FragmentPalateWhiteABinding;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.AppExecutors;
-import com.wineguesser.deductive.util.Helpers;
+    private var redBinding: FragmentPalateRedABinding? = null
+    private var whiteBinding: FragmentPalateWhiteABinding? = null
 
-import java.util.Map;
-
-public class PalateFragmentA extends Fragment implements DeductionFormContract, DatabaseContract {
-
-    private FragmentActivity mFragmentActivity;
-    private SharedPreferences mActivityPreferences;
-    private SharedPreferences mWinePreferences;
-    private boolean mIsRedWine;
-
-    private FragmentPalateRedABinding redBinding;
-    private FragmentPalateWhiteABinding whiteBinding;
-
-    public PalateFragmentA() {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mFragmentActivity = requireActivity()
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mFragmentActivity = getActivity();
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE)
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        String wineColorPreferenceType;
+        val wineColorPreferenceType: String
         if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
-            mIsRedWine = true;
-            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
+            mIsRedWine = true
+            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES
         } else {
-            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
+            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES
         }
-        mWinePreferences = mFragmentActivity
-                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
+        mWinePreferences = mFragmentActivity.getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE)
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        if (mIsRedWine) {
-            redBinding = FragmentPalateRedABinding.inflate(inflater, container, false);
-            return redBinding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return if (mIsRedWine) {
+            redBinding = FragmentPalateRedABinding.inflate(inflater, container, false)
+            redBinding!!.root
         } else {
-            whiteBinding = FragmentPalateWhiteABinding.inflate(inflater, container, false);
-            return whiteBinding.getRoot();
-        }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        redBinding = null;
-        whiteBinding = null;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        saveScrollState();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSelectionState();
-        loadScrollState();
-    }
-
-    private ScrollView getScrollViewPalateA() {
-        if (mIsRedWine) {
-            return redBinding != null ? redBinding.scrollViewPalateA : null;
-        } else {
-            return whiteBinding != null ? whiteBinding.scrollViewPalateA : null;
+            whiteBinding = FragmentPalateWhiteABinding.inflate(inflater, container, false)
+            whiteBinding!!.root
         }
     }
 
-    private LinearLayout getWoodGroup() {
-        if (mIsRedWine) {
-            return redBinding != null ? redBinding.palateWood.groupPalateWood : null;
+    override fun onDestroyView() {
+        super.onDestroyView()
+        redBinding = null
+        whiteBinding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveScrollState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadSelectionState()
+        loadScrollState()
+    }
+
+    private fun getScrollViewPalateA(): ScrollView? {
+        return if (mIsRedWine) {
+            redBinding?.scrollViewPalateA
         } else {
-            return whiteBinding != null ? whiteBinding.palateWood.groupPalateWood : null;
+            whiteBinding?.scrollViewPalateA
         }
     }
 
-    private void saveScrollState() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        ScrollView scrollView = getScrollViewPalateA();
-        if (scrollView == null) return;
+    private fun getWoodGroup(): LinearLayout? {
+        return if (mIsRedWine) {
+            redBinding?.palateWood?.groupPalateWood
+        } else {
+            whiteBinding?.palateWood?.groupPalateWood
+        }
+    }
+
+    private fun saveScrollState() {
+        val editor = mActivityPreferences.edit()
+        val scrollView = getScrollViewPalateA() ?: return
 
         if (mIsRedWine) {
-            editor.putInt(RED_PALATE_A_Y_SCROLL, scrollView.getScrollY());
+            editor.putInt(RED_PALATE_A_Y_SCROLL, scrollView.scrollY)
         } else {
-            editor.putInt(WHITE_PALATE_A_Y_SCROLL, scrollView.getScrollY());
+            editor.putInt(WHITE_PALATE_A_Y_SCROLL, scrollView.scrollY)
         }
-        editor.apply();
+        editor.apply()
     }
 
-    private void loadScrollState() {
-        AppExecutors.getInstance().mainThread().execute(() -> {
-            ScrollView scrollView = getScrollViewPalateA();
-            if (scrollView == null) return;
+    private fun loadScrollState() {
+        AppExecutors.mainThread.execute {
+            val scrollView = getScrollViewPalateA() ?: return@execute
 
             if (mIsRedWine) {
-                scrollView.scrollTo(0, mActivityPreferences
-                        .getInt(RED_PALATE_A_Y_SCROLL, 0));
+                scrollView.scrollTo(0, mActivityPreferences.getInt(RED_PALATE_A_Y_SCROLL, 0))
             } else {
-                scrollView.scrollTo(0, mActivityPreferences
-                        .getInt(WHITE_PALATE_A_Y_SCROLL, 0));
+                scrollView.scrollTo(0, mActivityPreferences.getInt(WHITE_PALATE_A_Y_SCROLL, 0))
             }
-        });
+        }
     }
 
-    public void scrollToTop() {
-        AppExecutors.getInstance().mainThread().execute(() -> {
-            ScrollView scrollView = getScrollViewPalateA();
-            if (scrollView != null) {
-                scrollView.scrollTo(0, 0);
-            }
-        });
+    fun scrollToTop() {
+        AppExecutors.mainThread.execute {
+            getScrollViewPalateA()?.scrollTo(0, 0)
+        }
     }
 
-    private void loadSelectionState() {
-        Map<String, ?> allEntries = mWinePreferences.getAll();
-        View rootView = getView();
-        if (rootView == null) return;
+    private fun loadSelectionState() {
+        val allEntries = mWinePreferences.all
+        val rootView = view ?: return
 
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int viewId = Helpers.castKey(entry.getKey());
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val viewId = Helpers.castKey(key)
 
             if ((mIsRedWine && redPalateViewsA.contains(viewId)) ||
-                    !mIsRedWine && whitePalateViewsA.contains(viewId)) {
+                !mIsRedWine && whitePalateViewsA.contains(viewId)
+            ) {
 
-                View view = rootView.findViewById(viewId);
+                val view = rootView.findViewById<View>(viewId)
                 if (view != null) {
-                    if (view instanceof RadioGroup) {
-                        ((RadioGroup) view).check(Helpers.parseEntryValue(entry.getValue()));
-                    } else if (view instanceof CheckBox) {
-                        ((CheckBox) view).setChecked(Helpers.parseChecked(entry.getValue()));
-                    } else if (view instanceof Switch) {
-                        ((Switch) view).setChecked(Helpers.parseChecked(entry.getValue()));
+                    when (view) {
+                        is RadioGroup -> view.check(Helpers.parseEntryValue(value))
+                        is CheckBox -> view.isChecked = Helpers.parseChecked(value)
+                        is Switch -> view.isChecked = Helpers.parseChecked(value)
                     }
                 }
             }
         }
-        syncWoodRadioState(false);
+        syncWoodRadioState(false)
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private boolean getCheckBoxState(int key) {
-        return mWinePreferences.getInt(Integer.toString(key), NOT_CHECKED) == 1;
+    private fun getCheckBoxState(key: Int): Boolean {
+        return mWinePreferences.getInt(key.toString(), NOT_CHECKED) == 1
     }
 
-    public void syncWoodRadioState(boolean viewToggled) {
-        LinearLayout woodGroup = getWoodGroup();
-        if (woodGroup == null) return;
+    fun syncWoodRadioState(viewToggled: Boolean) {
+        val woodGroup = getWoodGroup() ?: return
 
         if (getCheckBoxState(SWITCH_PALATE_WOOD)) {
-            woodGroup.setVisibility(View.VISIBLE);
+            woodGroup.visibility = View.VISIBLE
             if (viewToggled) {
-                AppExecutors.getInstance().mainThread().execute(() -> {
-                    ScrollView scrollView = getScrollViewPalateA();
-                    if (scrollView != null) {
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-                });
+                AppExecutors.mainThread.execute {
+                    getScrollViewPalateA()?.fullScroll(ScrollView.FOCUS_DOWN)
+                }
             }
         } else {
-            woodGroup.setVisibility(View.GONE);
+            woodGroup.visibility = View.GONE
         }
     }
 }

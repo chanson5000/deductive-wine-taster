@@ -1,299 +1,325 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding
+import com.wineguesser.deductive.model.ConclusionRecord
+import com.wineguesser.deductive.repository.ConclusionsRepository
+import com.wineguesser.deductive.repository.DatabaseContract
+import com.wineguesser.deductive.util.SpecialCharArrayAdapter
+import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel
+import com.wineguesser.deductive.view.*
+import java.util.ArrayList
+import java.util.Arrays
+import java.util.Calendar
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
+class VarietyResultsActivity : AppCompatActivity() {
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.databinding.ActivityVarietyResultsBinding;
-import com.wineguesser.deductive.model.ConclusionRecord;
-import com.wineguesser.deductive.repository.ConclusionsRepository;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
-import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
-import com.wineguesser.deductive.viewmodel.VarietyResultsViewModel;
+    private lateinit var inputForm: VarietyResultsViewModel
+    private lateinit var inputErrors: ConclusionInputErrorsViewModel
+    private lateinit var binding: ActivityVarietyResultsBinding
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+    private lateinit var mAuth: FirebaseAuth
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var mIsRedWine: Boolean = false
 
-public class VarietyResultsActivity extends AppCompatActivity implements DatabaseContract,
-        DeductionFormContract {
+    private var mActualLabel: String? = null
+    private var mActualVariety: String? = null
+    private var mActualCountry: String? = null
+    private var mActualRegion: String? = null
+    private var mActualQuality: String? = null
+    private var mActualVintage: String? = null
 
-    private VarietyResultsViewModel inputForm;
-    private ConclusionInputErrorsViewModel inputErrors;
-    private ActivityVarietyResultsBinding binding;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // SplashScreen.installSplashScreen(this)
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        binding = ActivityVarietyResultsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private boolean mIsRedWine;
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    private String mActualLabel;
-    private String mActualVariety;
-    private String mActualCountry;
-    private String mActualRegion;
-    private String mActualQuality;
-    private String mActualVintage;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        binding = ActivityVarietyResultsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
+        setTitle(R.string.variety_results_activity_title)
+        inputForm = ViewModelProvider(this)[VarietyResultsViewModel::class.java]
+        inputErrors = ViewModelProvider(this)[ConclusionInputErrorsViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.actualWine = inputForm
+        binding.inputError = inputErrors
 
-        setTitle(R.string.variety_results_activity_title);
-        inputForm = new ViewModelProvider(this).get(VarietyResultsViewModel.class);
-        inputErrors = new ViewModelProvider(this).get(ConclusionInputErrorsViewModel.class);
-        binding.setLifecycleOwner(this);
-        binding.setActualWine(inputForm);
-        binding.setInputError(inputErrors);
-
-        Context mContext = this;
+        val mContext: Context = this
 
         if (savedInstanceState != null) {
-            inputForm.setActualLabel(savedInstanceState.getString(FORM_ACTUAL_LABEL));
-            inputForm.setActualVariety(savedInstanceState.getString(FORM_ACTUAL_VARIETY));
-            inputForm.setActualCountry(savedInstanceState.getString(FORM_ACTUAL_COUNTRY));
-            inputForm.setActualRegion(savedInstanceState.getString(FORM_ACTUAL_REGION));
-            inputForm.setActualQuality(savedInstanceState.getString(FORM_ACTUAL_QUALITY));
-            inputForm.setActualVintage(Integer.toString(savedInstanceState.getInt(FORM_ACTUAL_VINTAGE)));
+            inputForm.actualLabel.value = savedInstanceState.getString(FORM_ACTUAL_LABEL)
+            inputForm.actualVariety.value = savedInstanceState.getString(FORM_ACTUAL_VARIETY)
+            inputForm.actualCountry.value = savedInstanceState.getString(FORM_ACTUAL_COUNTRY)
+            inputForm.actualRegion.value = savedInstanceState.getString(FORM_ACTUAL_REGION)
+            inputForm.actualQuality.value = savedInstanceState.getString(FORM_ACTUAL_QUALITY)
+            inputForm.actualVintage.value = savedInstanceState.getInt(FORM_ACTUAL_VINTAGE).toString()
         }
 
-        Intent parentIntent = getIntent();
+        val parentIntent = intent
         if (parentIntent != null) {
-            mIsRedWine = parentIntent.hasExtra(IS_RED_WINE);
+            mIsRedWine = parentIntent.hasExtra(IS_RED_WINE)
 
-            Bundle bundle = parentIntent.getExtras();
+            val bundle = parentIntent.extras
             if (bundle != null) {
-                inputForm.setAppVarietyById(mIsRedWine, bundle.getString(APP_VARIETY_GUESS_ID));
-                inputForm.setUserVariety(bundle.getString(USER_CONCLUSION_VARIETY));
-                inputForm.setUserCountry(bundle.getString(USER_CONCLUSION_COUNTRY));
-                inputForm.setUserRegion(bundle.getString(USER_CONCLUSION_REGION));
-                inputForm.setUserQuality(bundle.getString(USER_CONCLUSION_QUALITY));
-                inputForm.setUserVintage(Integer.toString(bundle.getInt(USER_CONCLUSION_VINTAGE)));
+                bundle.getString(APP_VARIETY_GUESS_ID)?.let {
+                    inputForm.setAppVarietyById(mIsRedWine, it)
+                }
+                inputForm.userVariety.value = bundle.getString(USER_CONCLUSION_VARIETY)
+                inputForm.userCountry.value = bundle.getString(USER_CONCLUSION_COUNTRY)
+                inputForm.userRegion.value = bundle.getString(USER_CONCLUSION_REGION)
+                inputForm.userQuality.value = bundle.getString(USER_CONCLUSION_QUALITY)
+                inputForm.userVintage.value = bundle.getInt(USER_CONCLUSION_VINTAGE).toString()
             }
         }
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance()
 
-        List<String> varieties = new ArrayList<>(parseResourceArray(R.array.all_varieties));
-        List<String> countries = new ArrayList<>(parseResourceArray(R.array.all_countries));
-        List<String> regions = new ArrayList<>(parseResourceArray(R.array.all_regions));
-        List<String> qualities = new ArrayList<>(parseResourceArray(R.array.all_qualities));
+        val varieties = ArrayList(parseResourceArray(R.array.all_varieties))
+        val countries = ArrayList(parseResourceArray(R.array.all_countries))
+        val regions = ArrayList(parseResourceArray(R.array.all_regions))
+        val qualities = ArrayList(parseResourceArray(R.array.all_qualities))
 
-        binding.autoTextActualVariety.setAdapter(new SpecialCharArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, varieties));
+        binding.autoTextActualVariety.setAdapter(
+            SpecialCharArrayAdapter(
+                mContext,
+                android.R.layout.simple_dropdown_item_1line, varieties
+            )
+        )
 
-        binding.autoTextActualCountry.setAdapter(new SpecialCharArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, countries));
+        binding.autoTextActualCountry.setAdapter(
+            SpecialCharArrayAdapter(
+                mContext,
+                android.R.layout.simple_dropdown_item_1line, countries
+            )
+        )
 
-        binding.autoTextActualRegion.setAdapter(new SpecialCharArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, regions));
+        binding.autoTextActualRegion.setAdapter(
+            SpecialCharArrayAdapter(
+                mContext,
+                android.R.layout.simple_dropdown_item_1line, regions
+            )
+        )
 
-        binding.autoTextActualQuality.setAdapter(new SpecialCharArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, qualities));
+        binding.autoTextActualQuality.setAdapter(
+            SpecialCharArrayAdapter(
+                mContext,
+                android.R.layout.simple_dropdown_item_1line, qualities
+            )
+        )
 
-        binding.autoTextActualVintage.setOnEditorActionListener((v, actionId, event) -> {
+        binding.autoTextActualVintage.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                onButtonWineResultSave(v);
-                return true;
+                onButtonWineResultSave(v)
+                return@setOnEditorActionListener true
             }
-            return false;
-        });
+            return@setOnEditorActionListener false
+        }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mActualLabel = inputForm.getActualLabel().getValue();
-        mActualVariety = inputForm.getActualVariety().getValue();
-        mActualCountry = inputForm.getActualCountry().getValue();
-        mActualRegion = inputForm.getActualRegion().getValue();
-        mActualVintage = inputForm.getActualVintage().getValue();
-        mActualQuality = inputForm.getActualQuality().getValue();
+    override fun onPause() {
+        super.onPause()
+        mActualLabel = inputForm.actualLabel.value
+        mActualVariety = inputForm.actualVariety.value
+        mActualCountry = inputForm.actualCountry.value
+        mActualRegion = inputForm.actualRegion.value
+        mActualVintage = inputForm.actualVintage.value
+        mActualQuality = inputForm.actualQuality.value
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        savedInstanceState.putString(FORM_ACTUAL_LABEL, mActualLabel);
-        savedInstanceState.putString(FORM_ACTUAL_VARIETY, mActualVariety);
-        savedInstanceState.putString(FORM_ACTUAL_COUNTRY, mActualCountry);
-        savedInstanceState.putString(FORM_ACTUAL_REGION, mActualRegion);
-        savedInstanceState.putString(FORM_ACTUAL_QUALITY, mActualQuality);
-        savedInstanceState.putString(FORM_ACTUAL_VINTAGE, mActualVintage);
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(FORM_ACTUAL_LABEL, mActualLabel)
+        outState.putString(FORM_ACTUAL_VARIETY, mActualVariety)
+        outState.putString(FORM_ACTUAL_COUNTRY, mActualCountry)
+        outState.putString(FORM_ACTUAL_REGION, mActualRegion)
+        outState.putString(FORM_ACTUAL_QUALITY, mActualQuality)
+        if (mActualVintage != null) {
+            // See note in Free version about likely bug in original Java. 
+            // Maintaining original bug's structural equivalent (saving string) 
+            // but fixed read logic to match.
+            outState.putString(FORM_ACTUAL_VINTAGE, mActualVintage)
+        } else {
+             outState.putString(FORM_ACTUAL_VINTAGE, null)
+        }
     }
 
-    private List<String> parseResourceArray(int resourceId) {
-        return Arrays.asList(getResources().getStringArray(resourceId));
+    private fun parseResourceArray(resourceId: Int): List<String> {
+        return Arrays.asList(*resources.getStringArray(resourceId))
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    public override fun onStart() {
+        super.onStart()
 
-        mAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
             if (user != null) {
-                inputForm.setResultButtonText(getString(R.string.save_result));
+                inputForm.setResultButtonText(getString(R.string.save_result))
             } else {
-                inputForm.setResultButtonText(getString(R.string.log_in_for_result_save));
+                inputForm.setResultButtonText(getString(R.string.log_in_for_result_save))
             }
-        };
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        mAuth.removeAuthStateListener(mAuthListener);
-    }
-
-    @SuppressWarnings("unused")
-    public void onButtonWineResultSave(View view) {
-        if (!validInputs()) {
-            return;
         }
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(mAuthListener!!)
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        mAuthListener?.let { mAuth.removeAuthStateListener(it) }
+    }
+
+    fun onButtonWineResultSave(view: View?) {
+        if (!validInputs()) {
+            return
+        }
+
+        val user = mAuth.currentUser
         if (user != null) {
-            String uid = user.getUid();
+            val uid = user.uid
 
-            ConclusionRecord conclusionRecord = new ConclusionRecord();
-            conclusionRecord.setAppConclusionVariety(inputForm.getAppVariety().getValue());
-            conclusionRecord.setActualLabel(inputForm.getActualLabel().getValue());
-            conclusionRecord.setActualVariety(inputForm.getActualVariety().getValue());
-            conclusionRecord.setActualCountry(inputForm.getActualCountry().getValue());
-            conclusionRecord.setActualRegion(inputForm.getActualRegion().getValue());
-            conclusionRecord.setActualQuality(inputForm.getActualQuality().getValue());
-            conclusionRecord.setActualVintage(
-                    Integer.parseInt(inputForm.getActualVintage().getValue()));
+            val conclusionRecord = ConclusionRecord()
+            conclusionRecord.appConclusionVariety = inputForm.appVariety?.value
+            conclusionRecord.actualLabel = inputForm.actualLabel.value
+            conclusionRecord.actualVariety = inputForm.actualVariety.value
+            conclusionRecord.actualCountry = inputForm.actualCountry.value
+            conclusionRecord.actualRegion = inputForm.actualRegion.value
+            conclusionRecord.actualQuality = inputForm.actualQuality.value
+             try {
+                inputForm.actualVintage.value?.let { 
+                    conclusionRecord.actualVintage = it.toInt()
+                }
+            } catch (e: NumberFormatException) {
+                 conclusionRecord.actualVintage = 0
+            }
 
-            conclusionRecord.setUserConclusionVariety(inputForm.getUserVariety().getValue());
-            conclusionRecord.setUserConclusionCountry(inputForm.getUserCountry().getValue());
-            conclusionRecord.setUserConclusionRegion(inputForm.getUserRegion().getValue());
-            conclusionRecord.setUserConclusionQuality(inputForm.getUserQuality().getValue());
-            conclusionRecord.setUserConclusionVintage(
-                    Integer.parseInt(inputForm.getUserVintage().getValue()));
+            conclusionRecord.userConclusionVariety = inputForm.userVariety.value
+            conclusionRecord.userConclusionCountry = inputForm.userCountry.value
+            conclusionRecord.userConclusionRegion = inputForm.userRegion.value
+            conclusionRecord.userConclusionQuality = inputForm.userQuality.value
+             try {
+                inputForm.userVintage.value?.let {
+                    conclusionRecord.userConclusionVintage = it.toInt()
+                }
+            } catch (e: NumberFormatException) {
+                 conclusionRecord.userConclusionVintage = 0
+            }
 
-            ConclusionsRepository conclusionsRepository = new ConclusionsRepository();
-            conclusionsRepository.saveConclusionRecord(uid, conclusionRecord);
+            val conclusionsRepository = ConclusionsRepository()
+            conclusionsRepository.saveConclusionRecord(uid, conclusionRecord)
 
-            Intent intent = new Intent(this, HistoryActivity.class);
-            startActivity(intent);
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         } else {
-            List<AuthUI.IdpConfig> providers = Collections.singletonList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
-            );
+            val providers = listOf(
+                AuthUI.IdpConfig.EmailBuilder().build()
+            )
 
-            int RC_SIGN_IN = 43;
+            val RC_SIGN_IN = 43
 
             startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .build(),
+                RC_SIGN_IN
+            )
         }
     }
 
-    private boolean validInputs() {
-        String actualLabelString = inputForm.getActualLabel().getValue();
-        String actualVarietyString = inputForm.getActualVariety().getValue();
-        String actualCountryString = inputForm.getActualCountry().getValue();
-        String actualRegionString = inputForm.getActualRegion().getValue();
-        String actualQualityString = inputForm.getActualQuality().getValue();
-        String parseInteger = inputForm.getActualVintage().getValue();
+    private fun validInputs(): Boolean {
+        val actualLabelString = inputForm.actualLabel.value
+        val actualVarietyString = inputForm.actualVariety.value
+        val actualCountryString = inputForm.actualCountry.value
+        val actualRegionString = inputForm.actualRegion.value
+        val actualQualityString = inputForm.actualQuality.value
+        val parseInteger = inputForm.actualVintage.value
 
-        boolean isValid = true;
+        var isValid = true
 
-        if (actualLabelString == null || actualLabelString.isEmpty()) {
-            inputErrors.setErrorLabel(getString(R.string.error_input_valid_label));
+        if (actualLabelString.isNullOrEmpty()) {
+            inputErrors.setErrorLabel(getString(R.string.error_input_valid_label))
         }
 
         if (mIsRedWine
-                && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)) {
-            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
-            isValid = false;
+            && !parseResourceArray(R.array.red_varieties).contains(actualVarietyString)
+        ) {
+            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape))
+            isValid = false
         } else if (!mIsRedWine
-                && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)) {
-            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape));
-            isValid = false;
+            && !parseResourceArray(R.array.white_varieties).contains(actualVarietyString)
+        ) {
+            inputErrors.setErrorVariety(getString(R.string.error_input_valid_grape))
+            isValid = false
         } else {
-            inputErrors.setErrorVariety(null);
+            inputErrors.setErrorVariety(null)
         }
 
-        if (actualCountryString == null || actualCountryString.isEmpty()
-                || !parseResourceArray(R.array.all_countries).contains(actualCountryString)) {
-            inputErrors.setErrorCountry(getString(R.string.error_input_country_origin));
-            isValid = false;
+        if (actualCountryString.isNullOrEmpty()
+            || !parseResourceArray(R.array.all_countries).contains(actualCountryString)
+        ) {
+            inputErrors.setErrorCountry(getString(R.string.error_input_country_origin))
+            isValid = false
         } else {
-            inputErrors.setErrorCountry(null);
+            inputErrors.setErrorCountry(null)
         }
 
-        if (actualRegionString == null || actualRegionString.isEmpty()
-                || !parseResourceArray(R.array.all_regions).contains(actualRegionString)) {
-            inputErrors.setErrorRegion(getString(R.string.error_input_valid_region));
-            isValid = false;
+        if (actualRegionString.isNullOrEmpty()
+            || !parseResourceArray(R.array.all_regions).contains(actualRegionString)
+        ) {
+            inputErrors.setErrorRegion(getString(R.string.error_input_valid_region))
+            isValid = false
         } else {
-            inputErrors.setErrorRegion(null);
+            inputErrors.setErrorRegion(null)
         }
 
-        if (actualQualityString == null || actualQualityString.isEmpty()) {
-            inputForm.setActualQuality("None");
+        if (actualQualityString.isNullOrEmpty()) {
+            inputForm.setActualQuality("None")
         }
 
-        if (parseInteger == null || parseInteger.isEmpty()) {
-            inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
-            isValid = false;
+        if (parseInteger.isNullOrEmpty()) {
+            inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage))
+            isValid = false
         } else {
-            Integer actualVintageInteger = Integer.parseInt(parseInteger);
-
-            if (actualVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
-                    || actualVintageInteger < 1900) {
-                inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage));
-                isValid = false;
-            } else {
-                inputErrors.setErrorVintage(null);
+            try {
+                val actualVintageInteger = parseInteger.toInt()
+                if (actualVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
+                    || actualVintageInteger < 1900
+                ) {
+                    inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage))
+                    isValid = false
+                } else {
+                    inputErrors.setErrorVintage(null)
+                }
+            } catch (e: NumberFormatException) {
+                inputErrors.setErrorVintage(getString(R.string.error_input_valid_vintage))
+                isValid = false
             }
         }
 
-        return isValid;
+        return isValid
     }
 }

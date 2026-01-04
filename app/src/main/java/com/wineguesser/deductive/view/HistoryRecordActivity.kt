@@ -1,107 +1,97 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.Insets
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding
+import com.wineguesser.deductive.model.ConclusionRecord
+import com.wineguesser.deductive.repository.ConclusionsRepository
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel
 
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding;
-import com.wineguesser.deductive.model.ConclusionRecord;
-import com.wineguesser.deductive.repository.ConclusionsRepository;
-import com.wineguesser.deductive.util.Helpers;
-import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel;
+class HistoryRecordActivity : AppCompatActivity() {
 
+    private lateinit var historyRecord: HistoryRecordViewModel
+    private lateinit var mContext: Context
 
-public class HistoryRecordActivity extends AppCompatActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // SplashScreen.installSplashScreen(this)
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        mContext = this
+        val binding: ActivityHistoryRecordBinding = DataBindingUtil.setContentView(this, R.layout.activity_history_record)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    private HistoryRecordViewModel historyRecord;
-    private Context mContext;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        mContext = this;
-        ActivityHistoryRecordBinding binding = DataBindingUtil.setContentView(
-                this, R.layout.activity_history_record);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
+        title = getString(R.string.history_record_activity_title)
 
-        setTitle(R.string.history_record_activity_title);
+        historyRecord = ViewModelProvider(this).get(HistoryRecordViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.historyRecord = historyRecord
 
-        historyRecord = new ViewModelProvider(this).get(HistoryRecordViewModel.class);
-        binding.setLifecycleOwner((LifecycleOwner) this);
-        binding.setHistoryRecord(historyRecord);
-
-        Intent parentIntent = getIntent();
+        val parentIntent = intent
         if (parentIntent != null && parentIntent.hasExtra(Helpers.CONCLUSION_PARCEL)) {
-            ConclusionRecord conclusionRecord =
-                    parentIntent.getParcelableExtra(Helpers.CONCLUSION_PARCEL);
-            historyRecord.setConclusionRecord(conclusionRecord);
+            val conclusionRecord = parentIntent.getParcelableExtra<ConclusionRecord>(Helpers.CONCLUSION_PARCEL)
+            if (conclusionRecord != null) {
+                historyRecord.setConclusionRecord(conclusionRecord)
+            }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_history_record_activity, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_history_record_activity, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_history_record:
-                ConclusionsRepository repository = new ConclusionsRepository();
-                ConclusionRecord conclusionRecord = historyRecord.getConclusionRecord().getValue();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_history_record -> {
+                val repository = ConclusionsRepository()
+                val conclusionRecord = historyRecord.conclusionRecord.value
                 if (conclusionRecord != null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setCancelable(true);
-                    builder.setTitle(R.string.up_dialog_delete_conclusion_record);
-                    builder.setMessage(R.string.up_dialog_confirm_delete_record);
-                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                        repository.removeConclusionRecord(conclusionRecord.getUserId(), conclusionRecord);
-                        Helpers.makeToastShort(mContext, R.string.record_removed);
-                        onBackPressed();
-                    });
+                    val builder = AlertDialog.Builder(mContext)
+                    builder.setCancelable(true)
+                    builder.setTitle(R.string.up_dialog_delete_conclusion_record)
+                    builder.setMessage(R.string.up_dialog_confirm_delete_record)
+                    builder.setPositiveButton(R.string.yes) { _, _ ->
+                        conclusionRecord.userId?.let { uid ->
+                            repository.removeConclusionRecord(uid, conclusionRecord)
+                        }
+                        Helpers.makeToastShort(mContext, R.string.record_removed)
+                        onBackPressed()
+                    }
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
-                            Helpers.makeToastShort(mContext,
-                                    R.string.up_dialog_cancel_record_deletion));
+                    builder.setNegativeButton(android.R.string.cancel) { _, _ ->
+                        Helpers.makeToastShort(mContext, R.string.up_dialog_cancel_record_deletion)
+                    }
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    val dialog = builder.create()
+                    dialog.show()
                 }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

@@ -1,18 +1,11 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Fault {
-    private int tca;
-    private int hydrogenSulfide;
-    private int volatileAcidity;
-    private int ethylAcetate;
-    private int brett;
-    private int oxidization;
-    private int other;
-}
+data class Fault(
+    var tca: Int = 0,
+    var hydrogenSulfide: Int = 0,
+    var volatileAcidity: Int = 0,
+    var ethylAcetate: Int = 0,
+    var brett: Int = 0,
+    var oxidization: Int = 0,
+    var other: Int = 0
+)

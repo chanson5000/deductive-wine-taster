@@ -1,92 +1,76 @@
-package com.wineguesser.deductive.repository;
+package com.wineguesser.deductive.repository
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.wineguesser.deductive.model.ConclusionRecord;
+import androidx.lifecycle.LiveData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import com.wineguesser.deductive.model.ConclusionRecord
+import timber.log.Timber
+import java.util.Collections
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+class ConclusionsRepository : FirebaseRepository() {
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import timber.log.Timber;
+    private val mConclusionsReference: DatabaseReference = databaseInstance.getReference("conclusions")
 
-public class ConclusionsRepository extends FirebaseRepository {
-
-    private final DatabaseReference mConclusionsReference;
-
-    public ConclusionsRepository() {
-        mConclusionsReference = getDatabaseInstance().getReference("conclusions");
+    fun clearUserConclusions(uid: String) {
+        mConclusionsReference.child(uid).removeValue()
     }
 
-    public void clearUserConclusions(String uid) {
-        mConclusionsReference.child(uid).removeValue();
-    }
-
-    public void saveConclusionRecord(String uid, ConclusionRecord conclusionRecord) {
+    fun saveConclusionRecord(uid: String, conclusionRecord: ConclusionRecord) {
         // Get the reference of where our new conclusion record wil be pushed.
-        DatabaseReference newConclusionRecordReference
-                = mConclusionsReference.child(uid).push();
+        val newConclusionRecordReference = mConclusionsReference.child(uid).push()
 
         // Add the new conclusion record to the database.
-        newConclusionRecordReference.setValue(conclusionRecord);
+        newConclusionRecordReference.setValue(conclusionRecord)
     }
 
-    public void removeConclusionRecord(String userId, ConclusionRecord conclusionRecord) {
-        mConclusionsReference.child(userId).child(conclusionRecord.getConclusionId()).removeValue();
+    fun removeConclusionRecord(userId: String, conclusionRecord: ConclusionRecord) {
+        conclusionRecord.conclusionId?.let {
+            mConclusionsReference.child(userId).child(it).removeValue()
+        }
     }
 
-    public LiveData<List<ConclusionRecord>> getConclusionsForUser(String uid) {
-        return new ConclusionsList(uid);
+    fun getConclusionsForUser(uid: String): LiveData<List<ConclusionRecord>> {
+        return ConclusionsList(uid)
     }
 
-    class ConclusionsList extends LiveData<List<ConclusionRecord>> {
-        private final Query query;
-        private final MyValueEventListener listener = new MyValueEventListener();
+    inner class ConclusionsList(uid: String) : LiveData<List<ConclusionRecord>>() {
+        private val query: Query = mConclusionsReference.child(uid)
+        private val listener: MyValueEventListener = MyValueEventListener()
 
-        ConclusionsList(String uid) {
-            query = mConclusionsReference.child(uid);
+        override fun onActive() {
+            query.addValueEventListener(listener)
         }
 
-        @Override
-        protected void onActive() {
-            query.addValueEventListener(listener);
+        override fun onInactive() {
+            query.removeEventListener(listener)
         }
 
-        @Override
-        protected void onInactive() {
-            query.removeEventListener(listener);
-        }
-
-        private class MyValueEventListener implements ValueEventListener {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        private inner class MyValueEventListener : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
-                    List<ConclusionRecord> data = new ArrayList<>();
+                    val data = ArrayList<ConclusionRecord>()
 
-                    for (DataSnapshot entry : dataSnapshot.getChildren()) {
-                        String conclusionId = entry.getKey();
-                        ConclusionRecord conclusionRecord = entry.getValue(ConclusionRecord.class);
+                    for (entry in dataSnapshot.children) {
+                        val conclusionId = entry.key
+                        val conclusionRecord = entry.getValue(ConclusionRecord::class.java)
                         if (conclusionRecord != null) {
-                            conclusionRecord.setConclusionId(conclusionId);
+                            conclusionRecord.conclusionId = conclusionId
+                            data.add(conclusionRecord)
                         }
-                        data.add(conclusionRecord);
                     }
-                    Collections.reverse(data);
-                    setValue(data);
+                    Collections.reverse(data)
+                    value = data
                 } else {
-                    setValue(null);
+                    value = null
                 }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Timber.e(databaseError.toException());
-                setValue(null);
+            override fun onCancelled(databaseError: DatabaseError) {
+                Timber.e(databaseError.toException())
+                value = null
             }
         }
     }

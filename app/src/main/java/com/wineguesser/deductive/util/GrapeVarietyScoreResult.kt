@@ -1,6 +1,6 @@
-package com.wineguesser.deductive.util;
+package com.wineguesser.deductive.util
 
-public interface GrapeVarietyScoreResult {
-    void onGrapeResult(String topScoreVariety);
-    void onGrapeFailure();
+interface GrapeVarietyScoreResult {
+    fun onGrapeResult(topScoreVariety: String?)
+    fun onGrapeFailure()
 }

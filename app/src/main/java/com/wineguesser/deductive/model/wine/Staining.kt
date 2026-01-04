@@ -1,15 +1,8 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Staining {
-    private int none;
-    private int light;
-    private int medium;
-    private int heavy;
-}
+data class Staining(
+    var none: Int = 0,
+    var light: Int = 0,
+    var medium: Int = 0,
+    var heavy: Int = 0
+)

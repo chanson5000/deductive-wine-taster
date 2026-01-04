@@ -1,14 +1,7 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Concentration {
-    private int pale;
-    private int medium;
-    private int deep;
-}
+data class Concentration(
+    var pale: Int = 0,
+    var medium: Int = 0,
+    var deep: Int = 0
+)

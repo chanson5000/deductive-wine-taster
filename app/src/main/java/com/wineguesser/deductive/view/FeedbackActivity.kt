@@ -1,82 +1,73 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.view.View;
-import android.widget.EditText;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.Insets
 
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import com.wineguesser.deductive.R
 
-import com.wineguesser.deductive.R;
+class FeedbackActivity : AppCompatActivity() {
 
-public class FeedbackActivity extends AppCompatActivity {
+    private var mFeedbackText: String? = null
+    private lateinit var mEditTextFeedback: EditText
 
-    private static final String FEEDBACK_TEXT = "FEEDBACK_TEXT";
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // installSplashScreen()
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContentView(R.layout.activity_feedback)
 
-    private String mFeedbackText;
-    private EditText mEditTextFeedback;
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        setContentView(R.layout.activity_feedback);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
-
-        mEditTextFeedback = findViewById(R.id.editText_feedback);
+        mEditTextFeedback = findViewById(R.id.editText_feedback)
 
         if (savedInstanceState != null) {
-            mFeedbackText = savedInstanceState.getString(FEEDBACK_TEXT);
+            mFeedbackText = savedInstanceState.getString(FEEDBACK_TEXT)
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mFeedbackText = mEditTextFeedback.getText().toString();
+    override fun onPause() {
+        super.onPause()
+        mFeedbackText = mEditTextFeedback.text.toString()
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mEditTextFeedback.setText(mFeedbackText);
+    override fun onResume() {
+        super.onResume()
+        mEditTextFeedback.setText(mFeedbackText)
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        savedInstanceState.putString(FEEDBACK_TEXT, mFeedbackText);
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(FEEDBACK_TEXT, mFeedbackText)
     }
 
-    @SuppressWarnings("unused")
-    public void onClickSubmitFeedback(View view) {
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.feedback_email)});
-        email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject));
-        email.putExtra(Intent.EXTRA_TEXT, mEditTextFeedback.getText().toString());
-        email.setType("message/rfc822");
+    fun onClickSubmitFeedback(view: View) {
+        val email = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.feedback_email)))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject))
+            putExtra(Intent.EXTRA_TEXT, mEditTextFeedback.text.toString())
+            type = "message/rfc822"
+        }
 
-        startActivity(Intent.createChooser(email, getString(R.string.feedback_select_client)));
+        startActivity(Intent.createChooser(email, getString(R.string.feedback_select_client)))
+    }
+
+    companion object {
+        private const val FEEDBACK_TEXT = "FEEDBACK_TEXT"
     }
 }

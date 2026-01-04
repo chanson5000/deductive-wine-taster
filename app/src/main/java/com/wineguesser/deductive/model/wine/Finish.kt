@@ -1,33 +1,16 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Finish {
-
-    private int finishShort;
-    private int mediumMinus;
-    private int medium;
-    private int mediumPlus;
-    private int finishLong;
-
-    public int getShort() {
-        return finishShort;
-    }
-
-    public void setShort(int finishShort) {
-        this.finishShort = finishShort;
-    }
-
-    public int getLong() {
-        return finishLong;
-    }
-
-    public void setLong(int finishLong) {
-        this.finishLong = finishLong;
-    }
+data class Finish(
+    var finishShort: Int = 0,
+    var mediumMinus: Int = 0,
+    var medium: Int = 0,
+    var mediumPlus: Int = 0,
+    var finishLong: Int = 0
+) {
+    var short: Int
+        get() = finishShort
+        set(value) { finishShort = value }
+    var long: Int
+        get() = finishLong
+        set(value) { finishLong = value }
 }

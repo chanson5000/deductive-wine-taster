@@ -1,19 +1,12 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class NonFruit {
-    private int floral;
-    private int vegetal;
-    private int herbal;
-    private int spice;
-    private int animal;
-    private int barn;
-    private int petrol;
-    private int fermentation;
-}
+data class NonFruit(
+    var floral: Int = 0,
+    var vegetal: Int = 0,
+    var herbal: Int = 0,
+    var spice: Int = 0,
+    var animal: Int = 0,
+    var barn: Int = 0,
+    var petrol: Int = 0,
+    var fermentation: Int = 0
+)

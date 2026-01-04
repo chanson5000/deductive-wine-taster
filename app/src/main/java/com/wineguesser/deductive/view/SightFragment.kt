@@ -1,127 +1,109 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.RadioGroup
+import android.widget.ScrollView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.util.AppExecutors
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
 
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.AppExecutors;
-import com.wineguesser.deductive.util.Helpers;
+class SightFragment : Fragment() {
 
-import java.util.Map;
+    private lateinit var mFragmentActivity: FragmentActivity
+    private lateinit var mActivityPreferences: SharedPreferences
+    private lateinit var mWinePreferences: SharedPreferences
+    private var mIsRedWine: Boolean = false
+    private lateinit var mScrollViewSight: ScrollView
 
-public class SightFragment extends Fragment implements DeductionFormContract, DatabaseContract {
-
-    private FragmentActivity mFragmentActivity;
-    private SharedPreferences mActivityPreferences;
-    private SharedPreferences mWinePreferences;
-    private boolean mIsRedWine;
-
-    private ScrollView mScrollViewSight;
-
-    public SightFragment() {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mFragmentActivity = requireActivity()
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mFragmentActivity = getActivity();
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE)
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        String wineColorPreferenceType;
+        val wineColorPreferenceType: String
         if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
-            mIsRedWine = true;
-            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
+            mIsRedWine = true
+            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES
         } else {
-            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
+            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES
         }
-        mWinePreferences = mFragmentActivity
-                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
+        mWinePreferences = mFragmentActivity.getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE)
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val rootView = if (mIsRedWine) {
+            inflater.inflate(R.layout.fragment_sight_red, container, false)
+        } else {
+            inflater.inflate(R.layout.fragment_sight_white, container, false)
+        }
 
+        mScrollViewSight = rootView.findViewById(R.id.scrollView_sight)
+        return rootView
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveScrollState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadSelectionState()
+        loadScrollState()
+    }
+
+    private fun saveScrollState() {
+        val editor = mActivityPreferences.edit()
         if (mIsRedWine) {
-            rootView = inflater.inflate(R.layout.fragment_sight_red,
-                    container, false);
+            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
         } else {
-            rootView = inflater.inflate(R.layout.fragment_sight_white,
-                    container, false);
+            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.scrollY)
         }
-
-        mScrollViewSight = rootView.findViewById(R.id.scrollView_sight);
-
-        return rootView;
+        editor.apply()
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        saveScrollState();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSelectionState();
-        loadScrollState();
-    }
-
-    private void saveScrollState() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        if (mIsRedWine) {
-            editor.putInt(RED_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
-        } else {
-            editor.putInt(WHITE_SIGHT_Y_SCROLL, mScrollViewSight.getScrollY());
-        }
-        editor.apply();
-    }
-
-    private void loadScrollState() {
-        if (mIsRedWine) {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewSight.scrollTo(0, mActivityPreferences
-                            .getInt(RED_SIGHT_Y_SCROLL, 0)));
-        } else {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewSight.scrollTo(0, mActivityPreferences
-                            .getInt(WHITE_SIGHT_Y_SCROLL, 0)));
+    private fun loadScrollState() {
+        AppExecutors.mainThread.execute {
+            if (mIsRedWine) {
+                mScrollViewSight.scrollTo(0, mActivityPreferences.getInt(RED_SIGHT_Y_SCROLL, 0))
+            } else {
+                mScrollViewSight.scrollTo(0, mActivityPreferences.getInt(WHITE_SIGHT_Y_SCROLL, 0))
+            }
         }
     }
 
-    public void scrollToTop() {
-        AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewSight.scrollTo(0, 0));
+    fun scrollToTop() {
+        AppExecutors.mainThread.execute {
+            mScrollViewSight.scrollTo(0, 0)
+        }
     }
 
-    private void loadSelectionState() {
-        Map<String, ?> allEntries = mWinePreferences.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = Helpers.castKey(entry.getKey());
+    private fun loadSelectionState() {
+        val allEntries = mWinePreferences.all
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val viewId = Helpers.castKey(key)
 
-            if (mIsRedWine && redSightViews.contains(view) && AllRadioGroups.contains(view)) {
-                ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(Helpers.parseEntryValue(entry.getValue()));
-            } else if (!mIsRedWine && whiteSightViews.contains(view) && AllRadioGroups.contains(view)) {
-                ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(Helpers.parseEntryValue(entry.getValue()));
+            if (mIsRedWine && redSightViews.contains(viewId) && AllRadioGroups.contains(viewId)) {
+                mFragmentActivity.findViewById<RadioGroup>(viewId)?.check(Helpers.parseEntryValue(value))
+            } else if (!mIsRedWine && whiteSightViews.contains(viewId) && AllRadioGroups.contains(viewId)) {
+                mFragmentActivity.findViewById<RadioGroup>(viewId)?.check(Helpers.parseEntryValue(value))
             }
         }
     }

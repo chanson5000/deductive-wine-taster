@@ -1,64 +1,37 @@
-package com.wineguesser.deductive.viewmodel;
+package com.wineguesser.deductive.viewmodel
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-public class ConclusionInputErrorsViewModel extends ViewModel {
+class ConclusionInputErrorsViewModel : ViewModel() {
+    val errorVariety = MutableLiveData<String?>()
+    val errorCountry = MutableLiveData<String?>()
+    val errorRegion = MutableLiveData<String?>()
+    val errorQuality = MutableLiveData<String?>()
+    val errorVintage = MutableLiveData<String?>()
+    val errorLabel = MutableLiveData<String?>()
 
-    private final MutableLiveData<String> errorVariety = new MutableLiveData<>();
-    private final MutableLiveData<String> errorCountry = new MutableLiveData<>();
-    private final MutableLiveData<String> errorRegion = new MutableLiveData<>();
-    private final MutableLiveData<String> errorQuality = new MutableLiveData<>();
-    private final MutableLiveData<String> errorVintage = new MutableLiveData<>();
-    private final MutableLiveData<String> errorLabel = new MutableLiveData<>();
-
-    public LiveData<String> getErrorVariety() {
-        return errorVariety;
+    fun setErrorVariety(errorVariety: String?) {
+        this.errorVariety.value = errorVariety
     }
 
-    public void setErrorVariety(String errorVariety) {
-        this.errorVariety.setValue(errorVariety);
+    fun setErrorCountry(errorCountry: String?) {
+        this.errorCountry.value = errorCountry
     }
 
-    public LiveData<String> getErrorCountry() {
-        return errorCountry;
+    fun setErrorRegion(errorRegion: String?) {
+        this.errorRegion.value = errorRegion
     }
 
-    public void setErrorCountry(String errorCountry) {
-        this.errorCountry.setValue(errorCountry);
+    fun setErrorQuality(errorQuality: String?) {
+        this.errorQuality.value = errorQuality
     }
 
-    public LiveData<String> getErrorRegion() {
-        return errorRegion;
+    fun setErrorVintage(errorVintage: String?) {
+        this.errorVintage.value = errorVintage
     }
 
-    public void setErrorRegion(String errorRegion) {
-        this.errorRegion.setValue(errorRegion);
-    }
-
-    public LiveData<String> getErrorQuality() {
-        return errorQuality;
-    }
-
-    @SuppressWarnings("unused")
-    public void setErrorQuality(String errorQuality) {
-        this.errorQuality.setValue(errorQuality);
-    }
-
-    public LiveData<String> getErrorVintage() {
-        return errorVintage;
-    }
-
-    public void setErrorVintage(String errorVintage) {
-        this.errorVintage.setValue(errorVintage);
-    }
-
-    public LiveData<String> getErrorLabel() {
-        return errorLabel;
-    }
-
-    public void setErrorLabel(String errorLabel) {
-        this.errorLabel.setValue(errorLabel);
+    fun setErrorLabel(errorLabel: String?) {
+        this.errorLabel.value = errorLabel
     }
 }

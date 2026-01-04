@@ -1,224 +1,223 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding
+import com.wineguesser.deductive.util.AppExecutors
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.SpecialCharArrayAdapter
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel
+import com.wineguesser.deductive.viewmodel.FinalConclusionFragmentViewModel
+import java.util.Arrays
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
+class FinalConclusionFragment : Fragment() {
 
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.databinding.FragmentFinalConclusionBinding;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.AppExecutors;
-import com.wineguesser.deductive.util.Helpers;
-import com.wineguesser.deductive.util.SpecialCharArrayAdapter;
-import com.wineguesser.deductive.viewmodel.ConclusionInputErrorsViewModel;
-import com.wineguesser.deductive.viewmodel.FinalConclusionFragmentViewModel;
+    private lateinit var mFragmentActivity: FragmentActivity
+    private lateinit var mActivityPreferences: SharedPreferences
+    private lateinit var mWinePreferences: SharedPreferences
+    private lateinit var inputErrorsViewModel: ConclusionInputErrorsViewModel
+    private lateinit var finalConclusionFragmentViewModel: FinalConclusionFragmentViewModel
+    private var mIsRedWine: Boolean = false
+    private var _binding: FragmentFinalConclusionBinding? = null
+    private val binding get() = _binding!!
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-public class FinalConclusionFragment extends Fragment implements
-        DeductionFormContract, DatabaseContract {
-
-    private FragmentActivity mFragmentActivity;
-    private SharedPreferences mActivityPreferences;
-    private SharedPreferences mWinePreferences;
-    private ConclusionInputErrorsViewModel inputErrorsViewModel;
-    private FinalConclusionFragmentViewModel finalConclusionFragmentViewModel;
-    private boolean mIsRedWine;
-    private FragmentFinalConclusionBinding binding;
-
-    public FinalConclusionFragment() {
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mFragmentActivity = requireActivity()
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mFragmentActivity = getActivity();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE)
+
+        mIsRedWine = mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)
+
+        val wineColorPreferenceType = if (mIsRedWine) RED_WINE_FORM_PREFERENCES else WHITE_WINE_FORM_PREFERENCES
+
+        mWinePreferences = mFragmentActivity.getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE)
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFinalConclusionBinding.inflate(inflater, container, false)
+        inputErrorsViewModel = ViewModelProvider(mFragmentActivity)[ConclusionInputErrorsViewModel::class.java]
+        finalConclusionFragmentViewModel = ViewModelProvider(mFragmentActivity)[FinalConclusionFragmentViewModel::class.java]
 
-        mIsRedWine = mActivityPreferences.getBoolean(IS_RED_WINE, FALSE);
+        binding.lifecycleOwner = this
+        binding.inputError = inputErrorsViewModel
+        binding.self = finalConclusionFragmentViewModel
 
-        String wineColorPreferenceType = mIsRedWine
-                ? RED_WINE_FORM_PREFERENCES
-                : WHITE_WINE_FORM_PREFERENCES;
+        setAutoTextVarietyByType(mIsRedWine)
 
-        mWinePreferences = mFragmentActivity
-                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
+        return binding.root
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        binding = FragmentFinalConclusionBinding.inflate(inflater, container, false);
-        inputErrorsViewModel = new ViewModelProvider(mFragmentActivity)
-                .get(ConclusionInputErrorsViewModel.class);
-
-        finalConclusionFragmentViewModel = new ViewModelProvider(mFragmentActivity)
-                .get(FinalConclusionFragmentViewModel.class);
-
-        binding.setLifecycleOwner(this);
-        binding.setInputError(inputErrorsViewModel);
-        binding.setSelf(finalConclusionFragmentViewModel);
-
-        setAutoTextVarietyByType(mIsRedWine);
-
-        return binding.getRoot();
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    fun errorsFinalForm(): ConclusionInputErrorsViewModel {
+        return inputErrorsViewModel
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private fun parseResourceArray(resourceId: Int): List<String> {
+        return Arrays.asList(*resources.getStringArray(resourceId))
     }
 
-    ConclusionInputErrorsViewModel errorsFinalForm() {
-        return inputErrorsViewModel;
+    override fun onPause() {
+        super.onPause()
+        saveSelectionState()
+        saveScrollState()
     }
 
-    private List<String> parseResourceArray(int resourceId) {
-        return Arrays.asList(getResources().getStringArray(resourceId));
+    override fun onResume() {
+        super.onResume()
+        loadSelectionState()
+        loadScrollState()
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        saveSelectionState();
-        saveScrollState();
+    private fun saveScrollState() {
+        if (_binding == null) return
+        val sharedPreferencesEditor = mActivityPreferences.edit()
+        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), binding.scrollViewFinal.scrollY)
+        sharedPreferencesEditor.apply()
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSelectionState();
-        loadScrollState();
+    private fun getScrollType(isRedWine: Boolean): String {
+        return if (isRedWine) RED_FINAL_Y_SCROLL else WHITE_FINAL_Y_SCROLL
     }
 
-    private void saveScrollState() {
-        SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
-        sharedPreferencesEditor.putInt(getScrollType(mIsRedWine), binding.scrollViewFinal.getScrollY());
-        sharedPreferencesEditor.apply();
+    private fun loadScrollState() {
+        AppExecutors.mainThread.execute {
+            if (_binding == null) return@execute
+            val scrollY = mActivityPreferences.getInt(getScrollType(mIsRedWine), 0)
+            binding.scrollViewFinal.scrollTo(0, scrollY)
+        }
     }
 
-    private String getScrollType(boolean mIsRedWine) {
-        return mIsRedWine ? RED_FINAL_Y_SCROLL : WHITE_FINAL_Y_SCROLL;
+    fun scrollToTop() {
+        AppExecutors.mainThread.execute {
+            _binding?.scrollViewFinal?.scrollTo(0, 0)
+        }
     }
 
-    private void loadScrollState() {
-        AppExecutors.getInstance().mainThread().execute(() ->
-                binding.scrollViewFinal.scrollTo(0, mActivityPreferences
-                        .getInt(getScrollType(mIsRedWine), 0)));
+    private fun saveSelectionState() {
+        if (_binding == null) return
+        val editor = mWinePreferences.edit()
+        editor.putString(
+            resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
+            getTextViewString(binding.autoTextFinalGrapeVariety)
+        )
+        editor.putString(
+            resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
+            getTextViewString(binding.autoTextFinalCountry)
+        )
+        editor.putString(
+            resourceIdToString(TEXT_SINGLE_FINAL_REGION),
+            getTextViewString(binding.autoTextFinalRegion)
+        )
+        editor.putString(
+            resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
+            getTextViewString(binding.autoTextFinalQuality)
+        )
+        editor.putString(
+            resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
+            getTextViewString(binding.autoTextFinalVintage)
+        )
+        editor.apply()
     }
 
-    void scrollToTop() {
-        AppExecutors.getInstance().mainThread().execute(() ->
-                binding.scrollViewFinal.scrollTo(0, 0));
+    private fun getTextViewString(textView: TextView): String {
+        return textView.text.toString()
     }
 
-    private void saveSelectionState() {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_GRAPE_VARIETY),
-                getTextViewString(binding.autoTextFinalGrapeVariety));
-        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN),
-                getTextViewString(binding.autoTextFinalCountry));
-        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_REGION),
-                getTextViewString(binding.autoTextFinalRegion));
-        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_QUALITY),
-                getTextViewString(binding.autoTextFinalQuality));
-        editor.putString(resourceIdToString(TEXT_SINGLE_FINAL_VINTAGE),
-                getTextViewString(binding.autoTextFinalVintage));
-        editor.apply();
+    private fun resourceIdToString(resourceId: Int): String {
+        return resourceId.toString()
     }
 
-    private String getTextViewString(TextView textView) {
-        return textView.getText().toString();
-    }
+    private fun loadSelectionState() {
+        val allEntries = mWinePreferences.all
+        val rootView = view ?: return
 
-    private String resourceIdToString(int resourceId) {
-        return Integer.toString(resourceId);
-    }
-
-    private void loadSelectionState() {
-        Map<String, ?> allEntries = mWinePreferences.getAll();
-        View rootView = getView();
-        if (rootView == null) return;
-
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int viewId = Helpers.castKey(entry.getKey());
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val viewId = Helpers.castKey(key)
 
             if (finalConclusionViews.contains(viewId) && AllAutoText.contains(viewId)) {
-                View view = rootView.findViewById(viewId);
-                if (view instanceof AutoCompleteTextView) {
-                    ((AutoCompleteTextView) view).setText(entry.getValue().toString());
+                val view = rootView.findViewById<View>(viewId)
+                if (view is AutoCompleteTextView) {
+                    view.setText(value.toString())
                 }
             }
         }
     }
 
-    private void setAutoTextVarietyByType(Boolean isRedWine) {
+    private fun setAutoTextVarietyByType(isRedWine: Boolean) {
+        if (_binding == null) return
         binding.autoTextFinalGrapeVariety.setAdapter(
-                new SpecialCharArrayAdapter<>(
-                        mFragmentActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        getVarietiesList(isRedWine)));
+            SpecialCharArrayAdapter(
+                mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                getVarietiesList(isRedWine)
+            )
+        )
 
         binding.autoTextFinalCountry.setAdapter(
-                new SpecialCharArrayAdapter<>(
-                        mFragmentActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        getListFromArrayResourceId(R.array.all_countries)));
+            SpecialCharArrayAdapter(
+                mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                getListFromArrayResourceId(R.array.all_countries)
+            )
+        )
 
         binding.autoTextFinalRegion.setAdapter(
-                new SpecialCharArrayAdapter<>(
-                        mFragmentActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        getListFromArrayResourceId(R.array.all_regions)));
+            SpecialCharArrayAdapter(
+                mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                getListFromArrayResourceId(R.array.all_regions)
+            )
+        )
 
         binding.autoTextFinalQuality.setAdapter(
-                new SpecialCharArrayAdapter<>(
-                        mFragmentActivity,
-                        android.R.layout.simple_dropdown_item_1line,
-                        getListFromArrayResourceId(R.array.all_qualities)));
+            SpecialCharArrayAdapter(
+                mFragmentActivity,
+                android.R.layout.simple_dropdown_item_1line,
+                getListFromArrayResourceId(R.array.all_qualities)
+            )
+        )
     }
 
-    private List<String> getVarietiesList(boolean isRedWine) {
-        int varietyType = isRedWine ? R.array.red_varieties : R.array.white_varieties;
-        return getListFromArrayResourceId(varietyType);
+    private fun getVarietiesList(isRedWine: Boolean): MutableList<String> {
+        val varietyType = if (isRedWine) R.array.red_varieties else R.array.white_varieties
+        return getListFromArrayResourceId(varietyType)
     }
 
-    private List<String> getListFromArrayResourceId(int arrayId) {
-        return new ArrayList<>(parseResourceArray(arrayId));
+    private fun getListFromArrayResourceId(arrayId: Int): MutableList<String> {
+        return ArrayList(parseResourceArray(arrayId))
     }
 
-    void showLoadingIndicator() {
-        finalConclusionFragmentViewModel.setIsLoading(true);
+    fun showLoadingIndicator() {
+        finalConclusionFragmentViewModel.setIsLoading(true)
     }
 
-    void hideLoadingIndicator() {
-        finalConclusionFragmentViewModel.setIsLoading(false);
+    fun hideLoadingIndicator() {
+        finalConclusionFragmentViewModel.setIsLoading(false)
     }
 }

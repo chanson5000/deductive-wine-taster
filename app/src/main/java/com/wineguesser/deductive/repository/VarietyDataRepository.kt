@@ -1,74 +1,54 @@
-package com.wineguesser.deductive.repository;
+package com.wineguesser.deductive.repository
 
-import androidx.lifecycle.LiveData;
-import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_RED_VARIETAL_DATA
+import com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_WHITE_VARIETAL_DATA
+import timber.log.Timber
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+class VarietyDataRepository : FirebaseRepository() {
 
-import timber.log.Timber;
+    private val mRedReference: DatabaseReference = databaseInstance.getReference(DB_REFERENCE_RED_VARIETAL_DATA)
+    private val mWhiteReference: DatabaseReference = databaseInstance.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA)
 
-import static com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_RED_VARIETAL_DATA;
-import static com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_WHITE_VARIETAL_DATA;
-
-public class VarietyDataRepository extends FirebaseRepository {
-
-    private final DatabaseReference mRedReference;
-    private final DatabaseReference mWhiteReference;
-
-    public VarietyDataRepository() {
-        mRedReference = mDatabase.getReference(DB_REFERENCE_RED_VARIETAL_DATA);
-        mWhiteReference = mDatabase.getReference(DB_REFERENCE_WHITE_VARIETAL_DATA);
+    fun getRedVarietyNameById(id: String): LiveData<String> {
+        return VarietyName(mRedReference, id)
     }
 
-    public LiveData<String> getRedVarietyNameById(String id) {
-        return new VarietyName(mRedReference, id);
+    fun getWhiteVarietyNameById(id: String): LiveData<String> {
+        return VarietyName(mWhiteReference, id)
     }
 
-    public LiveData<String> getWhiteVarietyNameById(String id) {
-        return new VarietyName(mWhiteReference, id);
-    }
+    inner class VarietyName(reference: DatabaseReference, private val varietyId: String) : LiveData<String>() {
+        private val query: Query = reference
+        private val listener: MyValueEventListener = MyValueEventListener()
 
-    class VarietyName extends LiveData<String> {
-        private final Query query;
-        private final String varietyId;
-        private final MyValueEventListener listener = new MyValueEventListener();
-
-        VarietyName(DatabaseReference reference, String varietyId) {
-            query = reference;
-            this.varietyId = varietyId;
+        override fun onActive() {
+            query.addValueEventListener(listener)
         }
 
-        @Override
-        protected void onActive() {
-            query.addValueEventListener(listener);
+        override fun onInactive() {
+            query.removeEventListener(listener)
         }
 
-        @Override
-        protected void onInactive() {
-            query.removeEventListener(listener);
-        }
-
-        private class MyValueEventListener implements ValueEventListener {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Object dataObject =
-                        dataSnapshot.child(varietyId).child("variety").getValue();
+        private inner class MyValueEventListener : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val dataObject = dataSnapshot.child(varietyId).child("variety").value
                 if (dataObject != null) {
-                    setValue(dataObject.toString());
+                    value = dataObject.toString()
                 } else {
-                    Timber.e("Unable to retrieve variety name.");
-                    setValue(null);
+                    Timber.e("Unable to retrieve variety name.")
+                    value = null
                 }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Timber.e(databaseError.toException());
-                setValue(null);
+            override fun onCancelled(databaseError: DatabaseError) {
+                Timber.e(databaseError.toException())
+                value = null
             }
         }
     }

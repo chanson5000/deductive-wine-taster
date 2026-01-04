@@ -1,16 +1,13 @@
-package com.wineguesser.deductive;
+package com.wineguesser.deductive
 
-import android.app.Application;
+import android.app.Application
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.FirebaseDatabase;
-
-@SuppressWarnings("WeakerAccess")
-public class DeductiveWineTaster extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        FirebaseApp.initializeApp(this);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+class DeductiveWineTaster : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseApp.initializeApp(this)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 }

@@ -1,197 +1,318 @@
-package com.wineguesser.deductive.util;
+package com.wineguesser.deductive.util
 
-import android.util.SparseIntArray;
+import android.util.SparseIntArray
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ACID_HIGH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ACID_LOW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ACID_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ACID_MEDIUM_MINUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ACID_MEDIUM_PLUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_AGE_ASSESSMENT_DEVELOPING
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_AGE_ASSESSMENT_VINOUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_AGE_ASSESSMENT_YOUTHFUL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ALCOHOL_HIGH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ALCOHOL_LOW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ALCOHOL_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ALCOHOL_MEDIUM_MINUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_ALCOHOL_MEDIUM_PLUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_BALANCED_NO
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_BALANCED_YES
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_BODY_FULL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_BODY_LIGHT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_BODY_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CLARITY_CLEAR
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CLARITY_HAZY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CLARITY_TURBID
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_GARNET
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_GOLD
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_PURPLE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_RUBY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_STRAW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COLOR_YELLOW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COMPLEXITY_HIGH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COMPLEXITY_LOW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COMPLEXITY_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COMPLEXITY_MEDIUM_MINUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_COMPLEXITY_MEDIUM_PLUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CONCENTRATION_DEEP
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CONCENTRATION_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_CONCENTRATION_PALE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_EARTH_COMPOST
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_EARTH_FOREST_FLOOR
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_EARTH_MUSHROOMS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_EARTH_POTTING_SOIL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_BRETT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_ETHYL_ACETATE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_HYDROGEN_SULFIDE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_OTHER
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_OXIDIZATION
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_TCA
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FAULT_VOLATILE_ACIDITY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FINISH_LONG
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FINISH_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FINISH_MEDIUM_MINUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FINISH_MEDIUM_PLUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FINISH_SHORT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_APPLE_PEAR
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_BLACK
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_BLUE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_BAKED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_BRUISED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_DESICCATED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_DRIED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_FRESH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_JAMMY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_RIPE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_STEWED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CHARACTER_TART
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_CITRUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_MELON
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_RED
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_STONE_PIT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_FRUIT_TROPICAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_GAS_EVIDENCE_NO
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_GAS_EVIDENCE_YES
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_INTENSITY_DELICATE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_INTENSITY_MODERATE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_INTENSITY_POWERFUL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_CHALK
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_FLINT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_LIMESTONE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_MINERAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_SLATE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_MINERAL_WET_STONE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_ANIMAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_BARN
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_FERMENTATION
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_FLORAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_HERBAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_PETROL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_SPICE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_NON_FRUIT_VEGETAL
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_PHENOLIC_BITTER_NO
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_PHENOLIC_BITTER_YES
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_RIM_VARIATION_NO
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_RIM_VARIATION_YES
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_BLUE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_BROWN
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_COPPER
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_GARNET
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_GREEN
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_ORANGE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_RUBY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SECONDARY_COLOR_SILVER
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_STAINING_HEAVY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_STAINING_LIGHT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_STAINING_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_STAINING_NONE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_BONE_DRY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_DRY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_LUSCIOUSLY_SWEET
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_MEDIUM_SWEET
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_OFF_DRY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_SWEETNESS_SWEET
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TANNIN_HIGH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TANNIN_LOW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TANNIN_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TANNIN_MEDIUM_MINUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TANNIN_MEDIUM_PLUS
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEARING_HEAVY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEARING_LIGHT
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEARING_MEDIUM
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEXTURE_CREAMY
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEXTURE_LEAN
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_TEXTURE_ROUND
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_AMERICAN
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_FRENCH
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_LARGE
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_NEW
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_OLD
+import com.wineguesser.deductive.repository.DatabaseContract.KEY_WOOD_SMALL
+import com.wineguesser.deductive.view.*
 
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.view.DeductionFormContract;
+class FormMapper {
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class FormMapper implements DeductionFormContract, DatabaseContract {
-
-    public static final Map<Integer, String> FormToDbConversionMap = new HashMap<Integer, String>() {{
-
-        put(CHECK_FAULT_TCA, KEY_FAULT_TCA);
-        put(CHECK_FAULT_HYDROGEN_SULFIDE, KEY_FAULT_HYDROGEN_SULFIDE);
-        put(CHECK_FAULT_VOLATILE_ACIDITY, KEY_FAULT_VOLATILE_ACIDITY);
-        put(CHECK_FAULT_ETHYL_ACETATE, KEY_FAULT_ETHYL_ACETATE);
-        put(CHECK_FAULT_BRETT, KEY_FAULT_BRETT);
-        put(CHECK_FAULT_OXIDIZATION, KEY_FAULT_OXIDIZATION);
-        put(CHECK_FAULT_OTHER, KEY_FAULT_OTHER);
-        put(CHECK_NOSE_FRUIT_RED, KEY_FRUIT_RED);
-        put(CHECK_NOSE_FRUIT_BLUE, KEY_FRUIT_BLUE);
-        put(CHECK_NOSE_FRUIT_BLACK, KEY_FRUIT_BLACK);
-        put(CHECK_NOSE_FRUIT_CITRUS, KEY_FRUIT_CITRUS);
-        put(CHECK_NOSE_FRUIT_APPLE_PEAR, KEY_FRUIT_APPLE_PEAR);
-        put(CHECK_NOSE_FRUIT_STONE_PIT, KEY_FRUIT_STONE_PIT);
-        put(CHECK_NOSE_FRUIT_TROPICAL, KEY_FRUIT_TROPICAL);
-        put(CHECK_NOSE_FRUIT_MELON, KEY_FRUIT_MELON);
-        put(CHECK_NOSE_FRUIT_CHARACTER_RIPE, KEY_FRUIT_CHARACTER_RIPE);
-        put(CHECK_NOSE_FRUIT_CHARACTER_FRESH, KEY_FRUIT_CHARACTER_FRESH);
-        put(CHECK_NOSE_FRUIT_CHARACTER_TART, KEY_FRUIT_CHARACTER_TART);
-        put(CHECK_NOSE_FRUIT_CHARACTER_BAKED, KEY_FRUIT_CHARACTER_BAKED);
-        put(CHECK_NOSE_FRUIT_CHARACTER_STEWED, KEY_FRUIT_CHARACTER_STEWED);
-        put(CHECK_NOSE_FRUIT_CHARACTER_DRIED, KEY_FRUIT_CHARACTER_DRIED);
-        put(CHECK_NOSE_FRUIT_CHARACTER_DESICCATED, KEY_FRUIT_CHARACTER_DESICCATED);
-        put(CHECK_NOSE_FRUIT_CHARACTER_BRUISED, KEY_FRUIT_CHARACTER_BRUISED);
-        put(CHECK_NOSE_FRUIT_CHARACTER_JAMMY, KEY_FRUIT_CHARACTER_JAMMY);
-        put(CHECK_NOSE_NON_FRUIT_FLORAL, KEY_NON_FRUIT_FLORAL);
-        put(CHECK_NOSE_NON_FRUIT_HERBAL, KEY_NON_FRUIT_HERBAL);
-        put(CHECK_NOSE_NON_FRUIT_VEGETAL, KEY_NON_FRUIT_VEGETAL);
-        put(CHECK_NOSE_NON_FRUIT_SPICE, KEY_NON_FRUIT_SPICE);
-        put(CHECK_NOSE_NON_FRUIT_ANIMAL, KEY_NON_FRUIT_ANIMAL);
-        put(CHECK_NOSE_NON_FRUIT_BARN, KEY_NON_FRUIT_BARN);
-        put(CHECK_NOSE_NON_FRUIT_PETROL, KEY_NON_FRUIT_PETROL);
-        put(CHECK_NOSE_NON_FRUIT_FERMENTATION, KEY_NON_FRUIT_FERMENTATION);
-        put(CHECK_NOSE_EARTH_FOREST_FLOOR, KEY_EARTH_FOREST_FLOOR);
-        put(CHECK_NOSE_EARTH_COMPOST, KEY_EARTH_COMPOST);
-        put(CHECK_NOSE_EARTH_MUSHROOMS, KEY_EARTH_MUSHROOMS);
-        put(CHECK_NOSE_EARTH_POTTING_SOIL, KEY_EARTH_POTTING_SOIL);
-        put(CHECK_NOSE_MINERAL_MINERAL, KEY_MINERAL_MINERAL);
-        put(CHECK_NOSE_MINERAL_WET_STONE, KEY_MINERAL_WET_STONE);
-        put(CHECK_NOSE_MINERAL_LIMESTONE, KEY_MINERAL_LIMESTONE);
-        put(CHECK_NOSE_MINERAL_CHALK, KEY_MINERAL_CHALK);
-        put(CHECK_NOSE_MINERAL_SLATE, KEY_MINERAL_SLATE);
-        put(CHECK_NOSE_MINERAL_FLINT, KEY_MINERAL_FLINT);
-        put(CHECK_PALATE_FRUIT_RED, KEY_FRUIT_RED);
-        put(CHECK_PALATE_FRUIT_BLUE, KEY_FRUIT_BLUE);
-        put(CHECK_PALATE_FRUIT_BLACK, KEY_FRUIT_BLACK);
-        put(CHECK_PALATE_FRUIT_CITRUS, KEY_FRUIT_CITRUS);
-        put(CHECK_PALATE_FRUIT_APPLE_PEAR, KEY_FRUIT_APPLE_PEAR);
-        put(CHECK_PALATE_FRUIT_STONE_PIT, KEY_FRUIT_STONE_PIT);
-        put(CHECK_PALATE_FRUIT_TROPICAL, KEY_FRUIT_TROPICAL);
-        put(CHECK_PALATE_FRUIT_MELON, KEY_FRUIT_MELON);
-        put(CHECK_PALATE_FRUIT_CHARACTER_RIPE, KEY_FRUIT_CHARACTER_RIPE);
-        put(CHECK_PALATE_FRUIT_CHARACTER_FRESH, KEY_FRUIT_CHARACTER_FRESH);
-        put(CHECK_PALATE_FRUIT_CHARACTER_TART, KEY_FRUIT_CHARACTER_TART);
-        put(CHECK_PALATE_FRUIT_CHARACTER_BAKED, KEY_FRUIT_CHARACTER_BAKED);
-        put(CHECK_PALATE_FRUIT_CHARACTER_STEWED, KEY_FRUIT_CHARACTER_STEWED);
-        put(CHECK_PALATE_FRUIT_CHARACTER_DRIED, KEY_FRUIT_CHARACTER_DRIED);
-        put(CHECK_PALATE_FRUIT_CHARACTER_DESICCATED, KEY_FRUIT_CHARACTER_DESICCATED);
-        put(CHECK_PALATE_FRUIT_CHARACTER_BRUISED, KEY_FRUIT_CHARACTER_BRUISED);
-        put(CHECK_PALATE_FRUIT_CHARACTER_JAMMY, KEY_FRUIT_CHARACTER_JAMMY);
-        put(CHECK_PALATE_NON_FRUIT_FLORAL, KEY_NON_FRUIT_FLORAL);
-        put(CHECK_PALATE_NON_FRUIT_HERBAL, KEY_NON_FRUIT_HERBAL);
-        put(CHECK_PALATE_NON_FRUIT_VEGETAL, KEY_NON_FRUIT_VEGETAL);
-        put(CHECK_PALATE_NON_FRUIT_SPICE, KEY_NON_FRUIT_SPICE);
-        put(CHECK_PALATE_NON_FRUIT_ANIMAL, KEY_NON_FRUIT_ANIMAL);
-        put(CHECK_PALATE_NON_FRUIT_BARN, KEY_NON_FRUIT_BARN);
-        put(CHECK_PALATE_NON_FRUIT_PETROL, KEY_NON_FRUIT_PETROL);
-        put(CHECK_PALATE_NON_FRUIT_FERMENTATION, KEY_NON_FRUIT_FERMENTATION);
-        put(CHECK_PALATE_EARTH_FOREST_FLOOR, KEY_EARTH_FOREST_FLOOR);
-        put(CHECK_PALATE_EARTH_COMPOST, KEY_EARTH_COMPOST);
-        put(CHECK_PALATE_EARTH_MUSHROOMS, KEY_EARTH_MUSHROOMS);
-        put(CHECK_PALATE_EARTH_POTTING_SOIL, KEY_EARTH_POTTING_SOIL);
-        put(CHECK_PALATE_MINERAL_MINERAL, KEY_MINERAL_MINERAL);
-        put(CHECK_PALATE_MINERAL_WET_STONE, KEY_MINERAL_WET_STONE);
-        put(CHECK_PALATE_MINERAL_LIMESTONE, KEY_MINERAL_LIMESTONE);
-        put(CHECK_PALATE_MINERAL_CHALK, KEY_MINERAL_CHALK);
-        put(CHECK_PALATE_MINERAL_SLATE, KEY_MINERAL_SLATE);
-        put(CHECK_PALATE_MINERAL_FLINT, KEY_MINERAL_FLINT);
-        put(RADIO_CLARITY_CLEAR, KEY_CLARITY_CLEAR);
-        put(RADIO_CLARITY_HAZY, KEY_CLARITY_HAZY);
-        put(RADIO_CLARITY_TURBID, KEY_CLARITY_TURBID);
-        put(RADIO_CONCENTRATION_PALE, KEY_CONCENTRATION_PALE);
-        put(RADIO_CONCENTRATION_MEDIUM, KEY_CONCENTRATION_MEDIUM);
-        put(RADIO_CONCENTRATION_DEEP, KEY_CONCENTRATION_DEEP);
-        put(RADIO_COLOR_PURPLE, KEY_COLOR_PURPLE);
-        put(RADIO_COLOR_RUBY, KEY_COLOR_RUBY);
-        put(RADIO_COLOR_GARNET, KEY_COLOR_GARNET);
-        put(RADIO_COLOR_STRAW, KEY_COLOR_STRAW);
-        put(RADIO_COLOR_YELLOW, KEY_COLOR_YELLOW);
-        put(RADIO_COLOR_GOLD, KEY_COLOR_GOLD);
-        put(RADIO_SECONDARY_COLOR_ORANGE, KEY_SECONDARY_COLOR_ORANGE);
-        put(RADIO_SECONDARY_COLOR_BLUE, KEY_SECONDARY_COLOR_BLUE);
-        put(RADIO_SECONDARY_COLOR_RUBY, KEY_SECONDARY_COLOR_RUBY);
-        put(RADIO_SECONDARY_COLOR_GARNET, KEY_SECONDARY_COLOR_GARNET);
-        put(RADIO_SECONDARY_COLOR_BROWN, KEY_SECONDARY_COLOR_BROWN);
-        put(RADIO_SECONDARY_COLOR_SILVER, KEY_SECONDARY_COLOR_SILVER);
-        put(RADIO_SECONDARY_COLOR_GREEN, KEY_SECONDARY_COLOR_GREEN);
-        put(RADIO_SECONDARY_COLOR_COPPER, KEY_SECONDARY_COLOR_COPPER);
-        put(RADIO_RIM_VARIATION_YES, KEY_RIM_VARIATION_YES);
-        put(RADIO_RIM_VARIATION_NO, KEY_RIM_VARIATION_NO);
-        put(RADIO_STAIN_NONE, KEY_STAINING_NONE);
-        put(RADIO_STAIN_LIGHT, KEY_STAINING_LIGHT);
-        put(RADIO_STAIN_MEDIUM, KEY_STAINING_MEDIUM);
-        put(RADIO_STAIN_HEAVY, KEY_STAINING_HEAVY);
-        put(RADIO_TEARING_LIGHT, KEY_TEARING_LIGHT);
-        put(RADIO_TEARING_MEDIUM, KEY_TEARING_MEDIUM);
-        put(RADIO_TEARING_HEAVY, KEY_TEARING_HEAVY);
-        put(RADIO_GAS_EVIDENCE_YES, KEY_GAS_EVIDENCE_YES);
-        put(RADIO_GAS_EVIDENCE_NO, KEY_GAS_EVIDENCE_NO);
-        put(RADIO_INTENSITY_DELICATE, KEY_INTENSITY_DELICATE);
-        put(RADIO_INTENSITY_MODERATE, KEY_INTENSITY_MODERATE);
-        put(RADIO_INTENSITY_POWERFUL, KEY_INTENSITY_POWERFUL);
-        put(RADIO_AGE_ASSESSMENT_YOUTHFUL, KEY_AGE_ASSESSMENT_YOUTHFUL);
-        put(RADIO_AGE_ASSESSMENT_DEVELOPING, KEY_AGE_ASSESSMENT_DEVELOPING);
-        put(RADIO_AGE_ASSESSMENT_VINOUS, KEY_AGE_ASSESSMENT_VINOUS);
-        put(RADIO_NOSE_WOOD_OLD, KEY_WOOD_OLD);
-        put(RADIO_NOSE_WOOD_NEW, KEY_WOOD_NEW);
-        put(RADIO_NOSE_WOOD_LARGE, KEY_WOOD_LARGE);
-        put(RADIO_NOSE_WOOD_SMALL, KEY_WOOD_SMALL);
-        put(RADIO_NOSE_WOOD_FRENCH, KEY_WOOD_FRENCH);
-        put(RADIO_NOSE_WOOD_AMERICAN, KEY_WOOD_AMERICAN);
-        put(RADIO_SWEETNESS_BONE_DRY, KEY_SWEETNESS_BONE_DRY);
-        put(RADIO_SWEETNESS_DRY, KEY_SWEETNESS_DRY);
-        put(RADIO_SWEETNESS_OFF_DRY, KEY_SWEETNESS_OFF_DRY);
-        put(RADIO_SWEETNESS_MEDIUM_SWEET, KEY_SWEETNESS_MEDIUM_SWEET);
-        put(RADIO_SWEETNESS_SWEET, KEY_SWEETNESS_SWEET);
-        put(RADIO_SWEETNESS_LUSCIOUSLY_SWEET, KEY_SWEETNESS_LUSCIOUSLY_SWEET);
-        put(RADIO_PALATE_WOOD_OLD, KEY_WOOD_OLD);
-        put(RADIO_PALATE_WOOD_NEW, KEY_WOOD_NEW);
-        put(RADIO_PALATE_WOOD_LARGE, KEY_WOOD_LARGE);
-        put(RADIO_PALATE_WOOD_SMALL, KEY_WOOD_SMALL);
-        put(RADIO_PALATE_WOOD_FRENCH, KEY_WOOD_FRENCH);
-        put(RADIO_PALATE_WOOD_AMERICAN, KEY_WOOD_AMERICAN);
-        put(RADIO_PHENOLIC_BITTER_YES, KEY_PHENOLIC_BITTER_YES);
-        put(RADIO_PHENOLIC_BITTER_NO, KEY_PHENOLIC_BITTER_NO);
-        put(RADIO_TANNIN_LOW, KEY_TANNIN_LOW);
-        put(RADIO_TANNIN_MED_MINUS, KEY_TANNIN_MEDIUM_MINUS);
-        put(RADIO_TANNIN_MED, KEY_TANNIN_MEDIUM);
-        put(RADIO_TANNIN_MED_PLUS, KEY_TANNIN_MEDIUM_PLUS);
-        put(RADIO_TANNIN_HIGH, KEY_TANNIN_HIGH);
-        put(RADIO_ACID_LOW, KEY_ACID_LOW);
-        put(RADIO_ACID_MED_MINUS, KEY_ACID_MEDIUM_MINUS);
-        put(RADIO_ACID_MED, KEY_ACID_MEDIUM);
-        put(RADIO_ACID_MED_PLUS, KEY_ACID_MEDIUM_PLUS);
-        put(RADIO_ACID_HIGH, KEY_ACID_HIGH);
-        put(RADIO_ALCOHOL_LOW, KEY_ALCOHOL_LOW);
-        put(RADIO_ALCOHOL_MED_MINUS, KEY_ALCOHOL_MEDIUM_MINUS);
-        put(RADIO_ALCOHOL_MED, KEY_ALCOHOL_MEDIUM);
-        put(RADIO_ALCOHOL_MED_PLUS, KEY_ALCOHOL_MEDIUM_PLUS);
-        put(RADIO_ALCOHOL_HIGH, KEY_ALCOHOL_HIGH);
-        put(RADIO_BODY_LIGHT, KEY_BODY_LIGHT);
-        put(RADIO_BODY_MEDIUM, KEY_BODY_MEDIUM);
-        put(RADIO_BODY_FULL, KEY_BODY_FULL);
-        put(RADIO_TEXTURE_CREAMY, KEY_TEXTURE_CREAMY);
-        put(RADIO_TEXTURE_ROUND, KEY_TEXTURE_ROUND);
-        put(RADIO_TEXTURE_LEAN, KEY_TEXTURE_LEAN);
-        put(RADIO_BALANCED_YES, KEY_BALANCED_YES);
-        put(RADIO_BALANCED_NO, KEY_BALANCED_NO);
-        put(RADIO_FINISH_SHORT, KEY_FINISH_SHORT);
-        put(RADIO_FINISH_MED_MINUS, KEY_FINISH_MEDIUM_MINUS);
-        put(RADIO_FINISH_MED, KEY_FINISH_MEDIUM);
-        put(RADIO_FINISH_MED_PLUS, KEY_FINISH_MEDIUM_PLUS);
-        put(RADIO_FINISH_LONG, KEY_FINISH_LONG);
-        put(RADIO_COMPLEXITY_LOW, KEY_COMPLEXITY_LOW);
-        put(RADIO_COMPLEXITY_MED_MINUS, KEY_COMPLEXITY_MEDIUM_MINUS);
-        put(RADIO_COMPLEXITY_MED, KEY_COMPLEXITY_MEDIUM);
-        put(RADIO_COMPLEXITY_MED_PLUS, KEY_COMPLEXITY_MEDIUM_PLUS);
-        put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH);
-    }};
-
-    public Map<String, Integer> formToDbFormat(SparseIntArray wineProperties) {
-
-        Map<String, Integer> convertedData = new HashMap<>();
-
-        for (int i = 0; i < wineProperties.size(); i++) {
-            int key = wineProperties.keyAt(i);
-            int value = wineProperties.get(key);
-
-            convertedData.put(FormToDbConversionMap.get(key), value);
+    companion object {
+        val FormToDbConversionMap = HashMap<Int, String>().apply {
+            put(CHECK_FAULT_TCA, KEY_FAULT_TCA)
+            put(CHECK_FAULT_HYDROGEN_SULFIDE, KEY_FAULT_HYDROGEN_SULFIDE)
+            put(CHECK_FAULT_VOLATILE_ACIDITY, KEY_FAULT_VOLATILE_ACIDITY)
+            put(CHECK_FAULT_ETHYL_ACETATE, KEY_FAULT_ETHYL_ACETATE)
+            put(CHECK_FAULT_BRETT, KEY_FAULT_BRETT)
+            put(CHECK_FAULT_OXIDIZATION, KEY_FAULT_OXIDIZATION)
+            put(CHECK_FAULT_OTHER, KEY_FAULT_OTHER)
+            put(CHECK_NOSE_FRUIT_RED, KEY_FRUIT_RED)
+            put(CHECK_NOSE_FRUIT_BLUE, KEY_FRUIT_BLUE)
+            put(CHECK_NOSE_FRUIT_BLACK, KEY_FRUIT_BLACK)
+            put(CHECK_NOSE_FRUIT_CITRUS, KEY_FRUIT_CITRUS)
+            put(CHECK_NOSE_FRUIT_APPLE_PEAR, KEY_FRUIT_APPLE_PEAR)
+            put(CHECK_NOSE_FRUIT_STONE_PIT, KEY_FRUIT_STONE_PIT)
+            put(CHECK_NOSE_FRUIT_TROPICAL, KEY_FRUIT_TROPICAL)
+            put(CHECK_NOSE_FRUIT_MELON, KEY_FRUIT_MELON)
+            put(CHECK_NOSE_FRUIT_CHARACTER_RIPE, KEY_FRUIT_CHARACTER_RIPE)
+            put(CHECK_NOSE_FRUIT_CHARACTER_FRESH, KEY_FRUIT_CHARACTER_FRESH)
+            put(CHECK_NOSE_FRUIT_CHARACTER_TART, KEY_FRUIT_CHARACTER_TART)
+            put(CHECK_NOSE_FRUIT_CHARACTER_BAKED, KEY_FRUIT_CHARACTER_BAKED)
+            put(CHECK_NOSE_FRUIT_CHARACTER_STEWED, KEY_FRUIT_CHARACTER_STEWED)
+            put(CHECK_NOSE_FRUIT_CHARACTER_DRIED, KEY_FRUIT_CHARACTER_DRIED)
+            put(CHECK_NOSE_FRUIT_CHARACTER_DESICCATED, KEY_FRUIT_CHARACTER_DESICCATED)
+            put(CHECK_NOSE_FRUIT_CHARACTER_BRUISED, KEY_FRUIT_CHARACTER_BRUISED)
+            put(CHECK_NOSE_FRUIT_CHARACTER_JAMMY, KEY_FRUIT_CHARACTER_JAMMY)
+            put(CHECK_NOSE_NON_FRUIT_FLORAL, KEY_NON_FRUIT_FLORAL)
+            put(CHECK_NOSE_NON_FRUIT_HERBAL, KEY_NON_FRUIT_HERBAL)
+            put(CHECK_NOSE_NON_FRUIT_VEGETAL, KEY_NON_FRUIT_VEGETAL)
+            put(CHECK_NOSE_NON_FRUIT_SPICE, KEY_NON_FRUIT_SPICE)
+            put(CHECK_NOSE_NON_FRUIT_ANIMAL, KEY_NON_FRUIT_ANIMAL)
+            put(CHECK_NOSE_NON_FRUIT_BARN, KEY_NON_FRUIT_BARN)
+            put(CHECK_NOSE_NON_FRUIT_PETROL, KEY_NON_FRUIT_PETROL)
+            put(CHECK_NOSE_NON_FRUIT_FERMENTATION, KEY_NON_FRUIT_FERMENTATION)
+            put(CHECK_NOSE_EARTH_FOREST_FLOOR, KEY_EARTH_FOREST_FLOOR)
+            put(CHECK_NOSE_EARTH_COMPOST, KEY_EARTH_COMPOST)
+            put(CHECK_NOSE_EARTH_MUSHROOMS, KEY_EARTH_MUSHROOMS)
+            put(CHECK_NOSE_EARTH_POTTING_SOIL, KEY_EARTH_POTTING_SOIL)
+            put(CHECK_NOSE_MINERAL_MINERAL, KEY_MINERAL_MINERAL)
+            put(CHECK_NOSE_MINERAL_WET_STONE, KEY_MINERAL_WET_STONE)
+            put(CHECK_NOSE_MINERAL_LIMESTONE, KEY_MINERAL_LIMESTONE)
+            put(CHECK_NOSE_MINERAL_CHALK, KEY_MINERAL_CHALK)
+            put(CHECK_NOSE_MINERAL_SLATE, KEY_MINERAL_SLATE)
+            put(CHECK_NOSE_MINERAL_FLINT, KEY_MINERAL_FLINT)
+            put(CHECK_PALATE_FRUIT_RED, KEY_FRUIT_RED)
+            put(CHECK_PALATE_FRUIT_BLUE, KEY_FRUIT_BLUE)
+            put(CHECK_PALATE_FRUIT_BLACK, KEY_FRUIT_BLACK)
+            put(CHECK_PALATE_FRUIT_CITRUS, KEY_FRUIT_CITRUS)
+            put(CHECK_PALATE_FRUIT_APPLE_PEAR, KEY_FRUIT_APPLE_PEAR)
+            put(CHECK_PALATE_FRUIT_STONE_PIT, KEY_FRUIT_STONE_PIT)
+            put(CHECK_PALATE_FRUIT_TROPICAL, KEY_FRUIT_TROPICAL)
+            put(CHECK_PALATE_FRUIT_MELON, KEY_FRUIT_MELON)
+            put(CHECK_PALATE_FRUIT_CHARACTER_RIPE, KEY_FRUIT_CHARACTER_RIPE)
+            put(CHECK_PALATE_FRUIT_CHARACTER_FRESH, KEY_FRUIT_CHARACTER_FRESH)
+            put(CHECK_PALATE_FRUIT_CHARACTER_TART, KEY_FRUIT_CHARACTER_TART)
+            put(CHECK_PALATE_FRUIT_CHARACTER_BAKED, KEY_FRUIT_CHARACTER_BAKED)
+            put(CHECK_PALATE_FRUIT_CHARACTER_STEWED, KEY_FRUIT_CHARACTER_STEWED)
+            put(CHECK_PALATE_FRUIT_CHARACTER_DRIED, KEY_FRUIT_CHARACTER_DRIED)
+            put(CHECK_PALATE_FRUIT_CHARACTER_DESICCATED, KEY_FRUIT_CHARACTER_DESICCATED)
+            put(CHECK_PALATE_FRUIT_CHARACTER_BRUISED, KEY_FRUIT_CHARACTER_BRUISED)
+            put(CHECK_PALATE_FRUIT_CHARACTER_JAMMY, KEY_FRUIT_CHARACTER_JAMMY)
+            put(CHECK_PALATE_NON_FRUIT_FLORAL, KEY_NON_FRUIT_FLORAL)
+            put(CHECK_PALATE_NON_FRUIT_HERBAL, KEY_NON_FRUIT_HERBAL)
+            put(CHECK_PALATE_NON_FRUIT_VEGETAL, KEY_NON_FRUIT_VEGETAL)
+            put(CHECK_PALATE_NON_FRUIT_SPICE, KEY_NON_FRUIT_SPICE)
+            put(CHECK_PALATE_NON_FRUIT_ANIMAL, KEY_NON_FRUIT_ANIMAL)
+            put(CHECK_PALATE_NON_FRUIT_BARN, KEY_NON_FRUIT_BARN)
+            put(CHECK_PALATE_NON_FRUIT_PETROL, KEY_NON_FRUIT_PETROL)
+            put(CHECK_PALATE_NON_FRUIT_FERMENTATION, KEY_NON_FRUIT_FERMENTATION)
+            put(CHECK_PALATE_EARTH_FOREST_FLOOR, KEY_EARTH_FOREST_FLOOR)
+            put(CHECK_PALATE_EARTH_COMPOST, KEY_EARTH_COMPOST)
+            put(CHECK_PALATE_EARTH_MUSHROOMS, KEY_EARTH_MUSHROOMS)
+            put(CHECK_PALATE_EARTH_POTTING_SOIL, KEY_EARTH_POTTING_SOIL)
+            put(CHECK_PALATE_MINERAL_MINERAL, KEY_MINERAL_MINERAL)
+            put(CHECK_PALATE_MINERAL_WET_STONE, KEY_MINERAL_WET_STONE)
+            put(CHECK_PALATE_MINERAL_LIMESTONE, KEY_MINERAL_LIMESTONE)
+            put(CHECK_PALATE_MINERAL_CHALK, KEY_MINERAL_CHALK)
+            put(CHECK_PALATE_MINERAL_SLATE, KEY_MINERAL_SLATE)
+            put(CHECK_PALATE_MINERAL_FLINT, KEY_MINERAL_FLINT)
+            put(RADIO_CLARITY_CLEAR, KEY_CLARITY_CLEAR)
+            put(RADIO_CLARITY_HAZY, KEY_CLARITY_HAZY)
+            put(RADIO_CLARITY_TURBID, KEY_CLARITY_TURBID)
+            put(RADIO_CONCENTRATION_PALE, KEY_CONCENTRATION_PALE)
+            put(RADIO_CONCENTRATION_MEDIUM, KEY_CONCENTRATION_MEDIUM)
+            put(RADIO_CONCENTRATION_DEEP, KEY_CONCENTRATION_DEEP)
+            put(RADIO_COLOR_PURPLE, KEY_COLOR_PURPLE)
+            put(RADIO_COLOR_RUBY, KEY_COLOR_RUBY)
+            put(RADIO_COLOR_GARNET, KEY_COLOR_GARNET)
+            put(RADIO_COLOR_STRAW, KEY_COLOR_STRAW)
+            put(RADIO_COLOR_YELLOW, KEY_COLOR_YELLOW)
+            put(RADIO_COLOR_GOLD, KEY_COLOR_GOLD)
+            put(RADIO_SECONDARY_COLOR_ORANGE, KEY_SECONDARY_COLOR_ORANGE)
+            put(RADIO_SECONDARY_COLOR_BLUE, KEY_SECONDARY_COLOR_BLUE)
+            put(RADIO_SECONDARY_COLOR_RUBY, KEY_SECONDARY_COLOR_RUBY)
+            put(RADIO_SECONDARY_COLOR_GARNET, KEY_SECONDARY_COLOR_GARNET)
+            put(RADIO_SECONDARY_COLOR_BROWN, KEY_SECONDARY_COLOR_BROWN)
+            put(RADIO_SECONDARY_COLOR_SILVER, KEY_SECONDARY_COLOR_SILVER)
+            put(RADIO_SECONDARY_COLOR_GREEN, KEY_SECONDARY_COLOR_GREEN)
+            put(RADIO_SECONDARY_COLOR_COPPER, KEY_SECONDARY_COLOR_COPPER)
+            put(RADIO_RIM_VARIATION_YES, KEY_RIM_VARIATION_YES)
+            put(RADIO_RIM_VARIATION_NO, KEY_RIM_VARIATION_NO)
+            put(RADIO_STAIN_NONE, KEY_STAINING_NONE)
+            put(RADIO_STAIN_LIGHT, KEY_STAINING_LIGHT)
+            put(RADIO_STAIN_MEDIUM, KEY_STAINING_MEDIUM)
+            put(RADIO_STAIN_HEAVY, KEY_STAINING_HEAVY)
+            put(RADIO_TEARING_LIGHT, KEY_TEARING_LIGHT)
+            put(RADIO_TEARING_MEDIUM, KEY_TEARING_MEDIUM)
+            put(RADIO_TEARING_HEAVY, KEY_TEARING_HEAVY)
+            put(RADIO_GAS_EVIDENCE_YES, KEY_GAS_EVIDENCE_YES)
+            put(RADIO_GAS_EVIDENCE_NO, KEY_GAS_EVIDENCE_NO)
+            put(RADIO_INTENSITY_DELICATE, KEY_INTENSITY_DELICATE)
+            put(RADIO_INTENSITY_MODERATE, KEY_INTENSITY_MODERATE)
+            put(RADIO_INTENSITY_POWERFUL, KEY_INTENSITY_POWERFUL)
+            put(RADIO_AGE_ASSESSMENT_YOUTHFUL, KEY_AGE_ASSESSMENT_YOUTHFUL)
+            put(RADIO_AGE_ASSESSMENT_DEVELOPING, KEY_AGE_ASSESSMENT_DEVELOPING)
+            put(RADIO_AGE_ASSESSMENT_VINOUS, KEY_AGE_ASSESSMENT_VINOUS)
+            put(RADIO_NOSE_WOOD_OLD, KEY_WOOD_OLD)
+            put(RADIO_NOSE_WOOD_NEW, KEY_WOOD_NEW)
+            put(RADIO_NOSE_WOOD_LARGE, KEY_WOOD_LARGE)
+            put(RADIO_NOSE_WOOD_SMALL, KEY_WOOD_SMALL)
+            put(RADIO_NOSE_WOOD_FRENCH, KEY_WOOD_FRENCH)
+            put(RADIO_NOSE_WOOD_AMERICAN, KEY_WOOD_AMERICAN)
+            put(RADIO_SWEETNESS_BONE_DRY, KEY_SWEETNESS_BONE_DRY)
+            put(RADIO_SWEETNESS_DRY, KEY_SWEETNESS_DRY)
+            put(RADIO_SWEETNESS_OFF_DRY, KEY_SWEETNESS_OFF_DRY)
+            put(RADIO_SWEETNESS_MEDIUM_SWEET, KEY_SWEETNESS_MEDIUM_SWEET)
+            put(RADIO_SWEETNESS_SWEET, KEY_SWEETNESS_SWEET)
+            put(RADIO_SWEETNESS_LUSCIOUSLY_SWEET, KEY_SWEETNESS_LUSCIOUSLY_SWEET)
+            put(RADIO_PALATE_WOOD_OLD, KEY_WOOD_OLD)
+            put(RADIO_PALATE_WOOD_NEW, KEY_WOOD_NEW)
+            put(RADIO_PALATE_WOOD_LARGE, KEY_WOOD_LARGE)
+            put(RADIO_PALATE_WOOD_SMALL, KEY_WOOD_SMALL)
+            put(RADIO_PALATE_WOOD_FRENCH, KEY_WOOD_FRENCH)
+            put(RADIO_PALATE_WOOD_AMERICAN, KEY_WOOD_AMERICAN)
+            put(RADIO_PHENOLIC_BITTER_YES, KEY_PHENOLIC_BITTER_YES)
+            put(RADIO_PHENOLIC_BITTER_NO, KEY_PHENOLIC_BITTER_NO)
+            put(RADIO_TANNIN_LOW, KEY_TANNIN_LOW)
+            put(RADIO_TANNIN_MED_MINUS, KEY_TANNIN_MEDIUM_MINUS)
+            put(RADIO_TANNIN_MED, KEY_TANNIN_MEDIUM)
+            put(RADIO_TANNIN_MED_PLUS, KEY_TANNIN_MEDIUM_PLUS)
+            put(RADIO_TANNIN_HIGH, KEY_TANNIN_HIGH)
+            put(RADIO_ACID_LOW, KEY_ACID_LOW)
+            put(RADIO_ACID_MED_MINUS, KEY_ACID_MEDIUM_MINUS)
+            put(RADIO_ACID_MED, KEY_ACID_MEDIUM)
+            put(RADIO_ACID_MED_PLUS, KEY_ACID_MEDIUM_PLUS)
+            put(RADIO_ACID_HIGH, KEY_ACID_HIGH)
+            put(RADIO_ALCOHOL_LOW, KEY_ALCOHOL_LOW)
+            put(RADIO_ALCOHOL_MED_MINUS, KEY_ALCOHOL_MEDIUM_MINUS)
+            put(RADIO_ALCOHOL_MED, KEY_ALCOHOL_MEDIUM)
+            put(RADIO_ALCOHOL_MED_PLUS, KEY_ALCOHOL_MEDIUM_PLUS)
+            put(RADIO_ALCOHOL_HIGH, KEY_ALCOHOL_HIGH)
+            put(RADIO_BODY_LIGHT, KEY_BODY_LIGHT)
+            put(RADIO_BODY_MEDIUM, KEY_BODY_MEDIUM)
+            put(RADIO_BODY_FULL, KEY_BODY_FULL)
+            put(RADIO_TEXTURE_CREAMY, KEY_TEXTURE_CREAMY)
+            put(RADIO_TEXTURE_ROUND, KEY_TEXTURE_ROUND)
+            put(RADIO_TEXTURE_LEAN, KEY_TEXTURE_LEAN)
+            put(RADIO_BALANCED_YES, KEY_BALANCED_YES)
+            put(RADIO_BALANCED_NO, KEY_BALANCED_NO)
+            put(RADIO_FINISH_SHORT, KEY_FINISH_SHORT)
+            put(RADIO_FINISH_MED_MINUS, KEY_FINISH_MEDIUM_MINUS)
+            put(RADIO_FINISH_MED, KEY_FINISH_MEDIUM)
+            put(RADIO_FINISH_MED_PLUS, KEY_FINISH_MEDIUM_PLUS)
+            put(RADIO_FINISH_LONG, KEY_FINISH_LONG)
+            put(RADIO_COMPLEXITY_LOW, KEY_COMPLEXITY_LOW)
+            put(RADIO_COMPLEXITY_MED_MINUS, KEY_COMPLEXITY_MEDIUM_MINUS)
+            put(RADIO_COMPLEXITY_MED, KEY_COMPLEXITY_MEDIUM)
+            put(RADIO_COMPLEXITY_MED_PLUS, KEY_COMPLEXITY_MEDIUM_PLUS)
+            put(RADIO_COMPLEXITY_HIGH, KEY_COMPLEXITY_HIGH)
         }
+    }
 
-        return convertedData;
+    fun formToDbFormat(wineProperties: SparseIntArray): Map<String, Int> {
+        val convertedData = HashMap<String, Int>()
+
+        for (i in 0 until wineProperties.size()) {
+            val key = wineProperties.keyAt(i)
+            val value = wineProperties.get(key)
+            FormToDbConversionMap[key]?.let {
+                convertedData[it] = value
+            }
+        }
+        return convertedData
     }
 }

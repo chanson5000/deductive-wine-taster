@@ -1,822 +1,687 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.SparseIntArray;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.Switch;
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Bundle
+import android.util.SparseIntArray
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.CheckBox
+import android.widget.MultiAutoCompleteTextView
+import android.widget.RadioGroup
+import android.widget.ScrollView
+import android.widget.Switch
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.Insets
 
-import com.google.android.material.snackbar.Snackbar;
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.FormMapper;
-import com.wineguesser.deductive.util.GrapeVarietyScore;
-import com.wineguesser.deductive.util.GrapeVarietyScoreResult;
-import com.wineguesser.deductive.util.Helpers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.snackbar.Snackbar
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.util.FormMapper
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.GrapeVarietyScore
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.GrapeVarietyScoreResult
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+import java.util.Arrays
+import java.util.Calendar
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
 
-public class DeductionFormActivity extends AppCompatActivity implements DeductionFormContract,
-        DatabaseContract, GrapeVarietyScoreResult {
+    private lateinit var mPager: ViewPager
+    private lateinit var mWinePreferences: SharedPreferences
+    private lateinit var mActivityPreferences: SharedPreferences
+    private var mIsRedWine: Boolean = false
+    private var mLaunchingIntent: Boolean = false
 
-    private ViewPager mPager;
-    private SharedPreferences mWinePreferences;
-    private SharedPreferences mActivityPreferences;
-    private boolean mIsRedWine;
-    private boolean mLaunchingIntent;
+    private var menuShowWhiteScreen: MenuItem? = null
 
-    private MenuItem menuShowWhiteScreen;
+    private var mSharedPreferenceChangeListener: OnSharedPreferenceChangeListener? = null
+    private var mOnPageChangeListener: ViewPager.OnPageChangeListener? = null
 
-    // Set a strong reference to the listener so that it avoids garbage collection.
-    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
-    private ViewPager.OnPageChangeListener mOnPageChangeListener;
+    private lateinit var mContext: Context
+    private var mSightFragment: SightFragment? = null
+    private var mNoseFragment: NoseFragment? = null
+    private var mPalateFragmentA: PalateFragmentA? = null
+    private var mPalateFragmentB: PalateFragmentB? = null
+    private var mInitialFragment: InitialConclusionFragment? = null
+    private var mFinalFragment: FinalConclusionFragment? = null
 
-    private Context mContext;
-    private SightFragment mSightFragment;
-    private NoseFragment mNoseFragment;
-    private PalateFragmentA mPalateFragmentA;
-    private PalateFragmentB mPalateFragmentB;
-    private InitialConclusionFragment mInitialFragment;
-    private FinalConclusionFragment mFinalFragment;
+    private var mUserFinalVarietyString: String? = null
+    private var mUserFinalCountryString: String? = null
+    private var mUserFinalRegionString: String? = null
+    private var mUserFinalQualityString: String? = null
+    private var mUserFinalVintageInteger: Int? = null
 
-    private String mUserFinalVarietyString;
-    private String mUserFinalCountryString;
-    private String mUserFinalRegionString;
-    private String mUserFinalQualityString;
-    private Integer mUserFinalVintageInteger;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // installSplashScreen()
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        mContext = this
+        mActivityPreferences = getPreferences(Context.MODE_PRIVATE)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        mContext = this;
-        mActivityPreferences = getPreferences(Context.MODE_PRIVATE);
+        setSharedPreferences(intent, supportFragmentManager)
 
-        setSharedPreferences(getIntent(), getSupportFragmentManager());
+        setUpActionBar(findViewById(R.id.toolbar))
 
-        setUpActionBar(findViewById(R.id.toolbar));
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deduction_form_coordinator), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
-    }
-
-    private void setUpActionBar(Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.deduction_form_coordinator)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
         }
     }
 
-    private void setSharedPreferences(Intent parentIntent, FragmentManager mFragmentManager) {
-        SharedPreferences.Editor sharedPreferencesEditor = mActivityPreferences.edit();
+    private fun setUpActionBar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setSharedPreferences(parentIntent: Intent?, mFragmentManager: FragmentManager) {
+        val sharedPreferencesEditor = mActivityPreferences.edit()
         if (parentIntent != null && parentIntent.hasExtra(IS_RED_WINE)) {
-            setContentView(R.layout.activity_red_deduction_form);
+            setContentView(R.layout.activity_red_deduction_form)
 
-            sharedPreferencesEditor.putBoolean(IS_RED_WINE, TRUE);
-            mIsRedWine = true;
+            sharedPreferencesEditor.putBoolean(IS_RED_WINE, TRUE)
+            mIsRedWine = true
 
-            mWinePreferences =
-                    getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-            mPager = findViewById(R.id.view_pager_red_deduction);
-            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
-            mPager.setAdapter(pagerAdapter);
+            mWinePreferences = getSharedPreferences(RED_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE)
+            mPager = findViewById(R.id.view_pager_red_deduction)
         } else {
-            setContentView(R.layout.activity_white_deduction_form);
+            setContentView(R.layout.activity_white_deduction_form)
 
-            sharedPreferencesEditor.putBoolean(IS_RED_WINE, FALSE);
-            mIsRedWine = false;
+            sharedPreferencesEditor.putBoolean(IS_RED_WINE, FALSE)
+            mIsRedWine = false
 
-            mWinePreferences =
-                    getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE);
-            mPager = findViewById(R.id.view_pager_white_deduction);
-            PagerAdapter pagerAdapter = new DeductionFormPagerAdapter(mFragmentManager);
-            mPager.setAdapter(pagerAdapter);
+            mWinePreferences = getSharedPreferences(WHITE_WINE_FORM_PREFERENCES, Context.MODE_PRIVATE)
+            mPager = findViewById(R.id.view_pager_white_deduction)
         }
-        sharedPreferencesEditor.apply();
+        val pagerAdapter: PagerAdapter = DeductionFormPagerAdapter(mFragmentManager)
+        mPager.adapter = pagerAdapter
+        sharedPreferencesEditor.apply()
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        mOnPageChangeListener = createOnPageChangeListener();
-
-        mPager.addOnPageChangeListener(mOnPageChangeListener);
+    override fun onStart() {
+        super.onStart()
+        mOnPageChangeListener = createOnPageChangeListener()
+        mPager.addOnPageChangeListener(mOnPageChangeListener!!)
     }
 
-    private ViewPager.OnPageChangeListener createOnPageChangeListener() {
-        return new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    private fun createOnPageChangeListener(): ViewPager.OnPageChangeListener {
+        return object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageSelected(position: Int) {
+                syncCurrentTitle(position)
+                syncCurrentMenuOptions(position, menuShowWhiteScreen)
             }
 
-            @Override
-            public void onPageSelected(int position) {
-                syncCurrentTitle(position);
-                syncCurrentMenuOptions(position, menuShowWhiteScreen);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        };
+            override fun onPageScrollStateChanged(state: Int) {}
+        }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mPager.removeOnPageChangeListener(mOnPageChangeListener);
+    override fun onStop() {
+        super.onStop()
+        mOnPageChangeListener?.let { mPager.removeOnPageChangeListener(it) }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.wine_deduction_menu, menu);
-        menuShowWhiteScreen = menu.findItem(R.id.menu_show_white_screen);
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.wine_deduction_menu, menu)
+        menuShowWhiteScreen = menu.findItem(R.id.menu_show_white_screen)
         if (getCurrentPageFromPager() != SIGHT_PAGE) {
-            menuShowWhiteScreen.setVisible(false);
+            menuShowWhiteScreen?.isVisible = false
         }
-        return true;
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clear_selections:
-                resetSharedPreferences();
-                resetAllTopScroll();
-                resetCurrentPage();
-                resetWhiteScreen();
-                Helpers.makeToastShort(mContext, R.string.form_cleared);
-                return true;
-            case R.id.menu_show_white_screen:
-                toggleSightWhiteScreen();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.clear_selections -> {
+                resetSharedPreferences()
+                resetAllTopScroll()
+                resetCurrentPage()
+                resetWhiteScreen()
+                Helpers.makeToastShort(mContext, R.string.form_cleared)
+                true
+            }
+            R.id.menu_show_white_screen -> {
+                toggleSightWhiteScreen()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private void syncCurrentMenuOptions(int page, MenuItem menuItem) {
+    private fun syncCurrentMenuOptions(page: Int, menuItem: MenuItem?) {
         if (menuItem != null) {
-            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+            val sightScroll = findViewById<ScrollView>(R.id.scrollView_sight)
             if (page == SIGHT_PAGE) {
-                menuItem.setVisible(true);
-                if (sightScroll != null) {
-                    toggleWineEvaluationMode(menuItem, sightScroll);
-                }
+                menuItem.isVisible = true
+                sightScroll?.let { toggleWineEvaluationMode(menuItem, it) }
             } else {
-                menuShowWhiteScreen.setVisible(false);
-                if (sightScroll != null) {
-                    View root = sightScroll.getRootView();
-                    root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
-                }
+                menuShowWhiteScreen?.isVisible = false
+                sightScroll?.rootView?.setBackgroundColor(
+                    ContextCompat.getColor(mContext, R.color.colorPrimaryBackground)
+                )
             }
         }
     }
 
-    private void toggleWineEvaluationMode(MenuItem menuItem, ScrollView sightScroll) {
-        View root = sightScroll.getRootView();
-        if (sightScroll.getVisibility() == View.VISIBLE) {
-            menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px);
-            root.setBackgroundColor(ContextCompat
-                    .getColor(mContext, R.color.colorPrimaryBackground));
+    private fun toggleWineEvaluationMode(menuItem: MenuItem, sightScroll: ScrollView) {
+        val root = sightScroll.rootView
+        if (sightScroll.visibility == View.VISIBLE) {
+            menuItem.setIcon(R.drawable.ic_menu_visibility_off_24px)
+            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
         } else {
-            menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px);
-            root.setBackgroundColor(ContextCompat
-                    .getColor(mContext, R.color.white));
+            menuItem.setIcon(R.drawable.ic_menu_visibility_on_24px)
+            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
         }
     }
 
-    private void resetWhiteScreen() {
+    private fun resetWhiteScreen() {
         if (menuShowWhiteScreen != null && getCurrentPageFromPager() == SIGHT_PAGE) {
-            menuShowWhiteScreen.setVisible(true);
-            menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
-            ScrollView sightScroll = findViewById(R.id.scrollView_sight);
-            resetScrollView(sightScroll);
+            menuShowWhiteScreen!!.isVisible = true
+            menuShowWhiteScreen!!.setIcon(R.drawable.ic_menu_visibility_off_24px)
+            val sightScroll = findViewById<ScrollView>(R.id.scrollView_sight)
+            resetScrollView(sightScroll)
         }
     }
 
-    private void resetScrollView(ScrollView sightScroll) {
+    private fun resetScrollView(sightScroll: ScrollView?) {
         if (sightScroll != null) {
-            View root = sightScroll.getRootView();
-            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
-            sightScroll.setVisibility(View.VISIBLE);
+            val root = sightScroll.rootView
+            root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
+            sightScroll.visibility = View.VISIBLE
         }
     }
 
-    private void setSightWhiteScreen(boolean isEnabled, View view) {
+    private fun setSightWhiteScreen(isEnabled: Boolean, view: View?) {
         if (view != null) {
             if (isEnabled) {
-                menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_on_24px);
-                View root = view.getRootView();
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-                view.setVisibility(View.INVISIBLE);
-                Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine);
+                menuShowWhiteScreen?.setIcon(R.drawable.ic_menu_visibility_on_24px)
+                val root = view.rootView
+                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white))
+                view.visibility = View.INVISIBLE
+                Helpers.makeToastShort(mContext, R.string.da_toast_showing_screen_for_wine)
             } else {
-                menuShowWhiteScreen.setIcon(R.drawable.ic_menu_visibility_off_24px);
-                View root = view.getRootView();
-                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground));
-                view.setVisibility(View.VISIBLE);
-                Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine);
+                menuShowWhiteScreen?.setIcon(R.drawable.ic_menu_visibility_off_24px)
+                val root = view.rootView
+                root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryBackground))
+                view.visibility = View.VISIBLE
+                Helpers.makeToastShort(mContext, R.string.da_toast_hiding_screen_for_wine)
             }
         }
     }
 
-    private void toggleSightWhiteScreen() {
-        ScrollView sightScroll = findViewById(R.id.scrollView_sight);
+    private fun toggleSightWhiteScreen() {
+        val sightScroll = findViewById<ScrollView>(R.id.scrollView_sight)
         if (getCurrentPageFromPager() == SIGHT_PAGE && sightScroll != null) {
-            if (sightScroll.getVisibility() == View.VISIBLE) {
-                setSightWhiteScreen(true, sightScroll);
+            if (sightScroll.visibility == View.VISIBLE) {
+                setSightWhiteScreen(true, sightScroll)
             } else {
-                setSightWhiteScreen(false, sightScroll);
+                setSightWhiteScreen(false, sightScroll)
             }
         }
     }
 
-    private void resetCurrentPage() {
-        if (mPager.getCurrentItem() != SIGHT_PAGE) {
-            mPager.setCurrentItem(SIGHT_PAGE);
+    private fun resetCurrentPage() {
+        if (mPager.currentItem != SIGHT_PAGE) {
+            mPager.currentItem = SIGHT_PAGE
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        unRegisterSharedPreferencesListener();
+    override fun onPause() {
+        super.onPause()
+        unRegisterSharedPreferencesListener()
         if (!mLaunchingIntent) {
-            setCurrentPageInPreferences(getCurrentPageFromPager());
-            mLaunchingIntent = false;
+            setCurrentPageInPreferences(getCurrentPageFromPager())
+            mLaunchingIntent = false
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        int currentPage = getCurrentPageFromPreferences();
-        setCurrentPage(currentPage);
-        syncCurrentTitle(currentPage);
-        registerPreferencesListener();
+    override fun onResume() {
+        super.onResume()
+        val currentPage = getCurrentPageFromPreferences()
+        setCurrentPage(currentPage)
+        syncCurrentTitle(currentPage)
+        registerPreferencesListener()
     }
 
-    private void setCurrentPageInPreferences(int page) {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
+    private fun setCurrentPageInPreferences(page: Int) {
+        val editor = mActivityPreferences.edit()
         if (mIsRedWine) {
-            editor.putInt(CURRENT_PAGE_RED, page);
+            editor.putInt(CURRENT_PAGE_RED, page)
         } else {
-            editor.putInt(CURRENT_PAGE_WHITE, page);
+            editor.putInt(CURRENT_PAGE_WHITE, page)
         }
-        editor.apply();
+        editor.apply()
     }
 
-    private int getCurrentPageFromPreferences() {
-        if (mIsRedWine) {
-            return mActivityPreferences.getInt(CURRENT_PAGE_RED, 0);
+    private fun getCurrentPageFromPreferences(): Int {
+        return if (mIsRedWine) {
+            mActivityPreferences.getInt(CURRENT_PAGE_RED, 0)
         } else {
-            return mActivityPreferences.getInt(CURRENT_PAGE_WHITE, 0);
+            mActivityPreferences.getInt(CURRENT_PAGE_WHITE, 0)
         }
     }
 
-    private void setCurrentPage(int page) {
-        mPager.setCurrentItem(page);
+    private fun setCurrentPage(page: Int) {
+        mPager.currentItem = page
     }
 
-    private int getCurrentPageFromPager() {
-        return mPager.getCurrentItem();
+    private fun getCurrentPageFromPager(): Int {
+        return mPager.currentItem
     }
 
-    // Make the built in back press work with the view pager while the
-    // Toolbar back press will take you to the parent activity.
-    @Override
-    public void onBackPressed() {
+    override fun onBackPressed() {
         if (getCurrentPageFromPager() == 0) {
-            super.onBackPressed();
+            super.onBackPressed()
         } else {
-            setCurrentPage(getCurrentPageFromPager() - 1);
+            setCurrentPage(getCurrentPageFromPager() - 1)
         }
     }
 
-    public void onClickNext(View v) {
-        setCurrentPage(getCurrentPageFromPager() + 1);
+    fun onClickNext(v: View) {
+        setCurrentPage(getCurrentPageFromPager() + 1)
     }
 
-    // When shared preferences are changed, the view is also updated. This is most useful when
-    // clearing preferences
-    private void registerPreferencesListener() {
-        mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener
-                = ((sharedPreferences, key) -> {
-
-            View view = findViewById(Helpers.castKey(key));
+    private fun registerPreferencesListener() {
+        mSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == null) return@OnSharedPreferenceChangeListener
+            val viewId = Helpers.castKey(key)
+            val view = findViewById<View>(viewId)
 
             if (view != null) {
-                if (view instanceof RadioGroup) {
-                    ((RadioGroup) view).check(
-                            sharedPreferences.getInt(key, NONE_SELECTED));
-                } else if (view instanceof CheckBox) {
-                    ((CheckBox) view).setChecked(
-                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
-                } else if (view instanceof Switch) {
-                    ((Switch) view).setChecked(
-                            Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED)));
-                } else if (view instanceof MultiAutoCompleteTextView) {
-                    ((MultiAutoCompleteTextView) view).setText(
-                            sharedPreferences.getString(key, ""));
-                } else if (view instanceof AutoCompleteTextView) {
-                    ((AutoCompleteTextView) view).setText(
-                            sharedPreferences.getString(key, ""));
-                }
-            }
-        }));
-    }
-
-    private void unRegisterSharedPreferencesListener() {
-        mWinePreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
-    }
-
-    private void resetSharedPreferences() {
-        Map<String, ?> allEntries = mWinePreferences.getAll();
-        SharedPreferences.Editor winePreferencesEditor = mWinePreferences.edit();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int key = Helpers.castKey(entry.getKey());
-            if (AllRadioGroups.contains(key)) {
-                winePreferencesEditor.putInt(entry.getKey(), NONE_SELECTED);
-            } else if (AllCheckBoxes.contains(key)) {
-                winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
-            } else if (AllSwitches.contains(key)) {
-                winePreferencesEditor.putInt(entry.getKey(), NOT_CHECKED);
-            } else if (AllAutoText.contains(key)) {
-                winePreferencesEditor.putString(entry.getKey(), "");
-                AutoCompleteTextView autoView = findViewById(key);
-                if (autoView != null) {
-                    autoView.setText("");
-                }
-            } else if (AllAutoMultiText.contains(key)) {
-                winePreferencesEditor.putString(entry.getKey(), "");
-                MultiAutoCompleteTextView multiView = findViewById(key);
-                if (multiView != null) {
-                    multiView.setText("");
+                if (view is RadioGroup && key != null) {
+                    view.check(sharedPreferences.getInt(key, NONE_SELECTED))
+                } else if (view is CheckBox && key != null) {
+                    view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
+                } else if (view is Switch && key != null) {
+                    view.isChecked = Helpers.castChecked(sharedPreferences.getInt(key, NOT_CHECKED))
+                } else if (view is MultiAutoCompleteTextView) {
+                    view.setText(sharedPreferences.getString(key, ""))
+                } else if (view is AutoCompleteTextView) {
+                    view.setText(sharedPreferences.getString(key, ""))
                 }
             }
         }
-        winePreferencesEditor.apply();
+        mWinePreferences.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener)
+    }
 
-        SharedPreferences.Editor activityPreferencesEditor = mActivityPreferences.edit();
+    private fun unRegisterSharedPreferencesListener() {
+        mWinePreferences.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener)
+    }
+
+    private fun resetSharedPreferences() {
+        val allEntries = mWinePreferences.all
+        val winePreferencesEditor = mWinePreferences.edit()
+        for (key in allEntries.keys) {
+            val viewId = Helpers.castKey(key)
+            if (AllRadioGroups.contains(viewId)) {
+                winePreferencesEditor.putInt(key, NONE_SELECTED)
+            } else if (AllCheckBoxes.contains(viewId)) {
+                winePreferencesEditor.putInt(key, NOT_CHECKED)
+            } else if (AllSwitches.contains(viewId)) {
+                winePreferencesEditor.putInt(key, NOT_CHECKED)
+            } else if (AllAutoText.contains(viewId)) {
+                winePreferencesEditor.putString(key, "")
+                val autoView = findViewById<AutoCompleteTextView>(viewId)
+                autoView?.setText("")
+            } else if (AllAutoMultiText.contains(viewId)) {
+                winePreferencesEditor.putString(key, "")
+                val multiView = findViewById<MultiAutoCompleteTextView>(viewId)
+                multiView?.setText("")
+            }
+        }
+        winePreferencesEditor.apply()
+
+        val activityPreferencesEditor = mActivityPreferences.edit()
         if (mIsRedWine) {
-            activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(RED_NOSE_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(RED_PALATE_A_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(RED_PALATE_B_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(RED_INITIAL_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(RED_FINAL_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(RED_SIGHT_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(RED_NOSE_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(RED_PALATE_A_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(RED_PALATE_B_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(RED_INITIAL_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(RED_FINAL_Y_SCROLL, 0)
         } else {
-            activityPreferencesEditor.putInt(WHITE_SIGHT_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(WHITE_NOSE_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(WHITE_PALATE_A_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(WHITE_PALATE_B_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0);
-            activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0);
+            activityPreferencesEditor.putInt(WHITE_SIGHT_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(WHITE_NOSE_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(WHITE_PALATE_A_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(WHITE_PALATE_B_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(WHITE_INITIAL_Y_SCROLL, 0)
+            activityPreferencesEditor.putInt(WHITE_FINAL_Y_SCROLL, 0)
         }
-        activityPreferencesEditor.apply();
+        activityPreferencesEditor.apply()
     }
 
-    private void saveRadioGroupState(int key, int state) {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putInt(Integer.toString(key), state);
-        editor.apply();
+    private fun saveRadioGroupState(key: Int, state: Int) {
+        val editor = mWinePreferences.edit()
+        editor.putInt(key.toString(), state)
+        editor.apply()
     }
 
-    private void saveCheckBoxState(int key, int checkedInt) {
-        SharedPreferences.Editor editor = mWinePreferences.edit();
-        editor.putInt(Integer.toString(key), checkedInt);
-        editor.apply();
+    private fun saveCheckBoxState(key: Int, checkedInt: Int) {
+        val editor = mWinePreferences.edit()
+        editor.putInt(key.toString(), checkedInt)
+        editor.apply()
     }
 
-    // These click listeners are actually used.
-    @SuppressWarnings("unused")
-    public void onRadioButtonClicked(View view) {
-        RadioGroup radioGroup = (RadioGroup) view.getParent();
-        saveRadioGroupState(radioGroup.getId(), radioGroup.getCheckedRadioButtonId());
+    fun onRadioButtonClicked(view: View) {
+        val radioGroup = view.parent as RadioGroup
+        saveRadioGroupState(radioGroup.id, radioGroup.checkedRadioButtonId)
     }
 
-    @SuppressWarnings("unused")
-    public void onCheckBoxButtonClicked(View view) {
-        CheckBox checkBox = (CheckBox) view;
-        saveCheckBoxState(checkBox.getId(), Helpers.castChecked(checkBox.isChecked()));
+    fun onCheckBoxButtonClicked(view: View) {
+        val checkBox = view as CheckBox
+        saveCheckBoxState(checkBox.id, Helpers.castChecked(checkBox.isChecked))
     }
 
-    @SuppressWarnings("unused")
-    public void onSwitchToggleClicked(View view) {
-        Switch switchToggle = (Switch) view;
-        int switchId = switchToggle.getId();
-        boolean checked = switchToggle.isChecked();
-        saveCheckBoxState(switchId, Helpers.castChecked(checked));
+    fun onSwitchToggleClicked(view: View) {
+        val switchToggle = view as Switch
+        val switchId = switchToggle.id
+        val checked = switchToggle.isChecked
+        saveCheckBoxState(switchId, Helpers.castChecked(checked))
         if (switchId == SWITCH_NOSE_WOOD) {
-            mNoseFragment.syncWoodRadioState(true);
-
+            mNoseFragment?.syncWoodRadioState(true)
         } else if (switchId == SWITCH_PALATE_WOOD) {
-            mPalateFragmentA.syncWoodRadioState(true);
+            mPalateFragmentA?.syncWoodRadioState(true)
         }
     }
 
-    private void resetAllTopScroll() {
-        if (mSightFragment != null) {
-            mSightFragment.scrollToTop();
-        }
-        if (mNoseFragment != null) {
-            mNoseFragment.scrollToTop();
-        }
-        if (mPalateFragmentA != null) {
-            mPalateFragmentA.scrollToTop();
-        }
-        if (mPalateFragmentB != null) {
-            mPalateFragmentB.scrollToTop();
-        }
-        if (mInitialFragment != null) {
-            mInitialFragment.scrollToTop();
-        }
-        if (mFinalFragment != null) {
-            mFinalFragment.scrollToTop();
+    private fun resetAllTopScroll() {
+        mSightFragment?.scrollToTop()
+        mNoseFragment?.scrollToTop()
+        mPalateFragmentA?.scrollToTop()
+        mPalateFragmentB?.scrollToTop()
+        mInitialFragment?.scrollToTop()
+        mFinalFragment?.scrollToTop()
+    }
+
+    private fun syncCurrentTitle(page: Int) {
+        when (page) {
+            SIGHT_PAGE -> title = getString(R.string.sight_page_title)
+            NOSE_PAGE -> title = getString(R.string.nose_page_title)
+            PALATE_PAGE_A -> title = getString(R.string.palate_page_title)
+            PALATE_PAGE_B -> title = getString(R.string.palate_page_title)
+            INITIAL_CONCLUSION_PAGE -> title = getString(R.string.initial_conclusion_page_title)
+            FINAL_CONCLUSION_PAGE -> title = getString(R.string.final_conclusion_page_title)
+            else -> {}
         }
     }
 
-    private void syncCurrentTitle(int page) {
-        switch (page) {
-            case SIGHT_PAGE:
-                setTitle(R.string.sight_page_title);
-                break;
-            case NOSE_PAGE:
-                setTitle(R.string.nose_page_title);
-                break;
-            case PALATE_PAGE_A:
-                setTitle(R.string.palate_page_title);
-                break;
-            case PALATE_PAGE_B:
-                setTitle(R.string.palate_page_title);
-                break;
-            case INITIAL_CONCLUSION_PAGE:
-                setTitle(R.string.initial_conclusion_page_title);
-                break;
-            case FINAL_CONCLUSION_PAGE:
-                setTitle(R.string.final_conclusion_page_title);
-                break;
-            default:
-                break;
-        }
-    }
+    internal inner class DeductionFormPagerAdapter(fragmentManager: FragmentManager) :
+        FragmentPagerAdapter(fragmentManager) {
 
-    class DeductionFormPagerAdapter extends FragmentPagerAdapter {
-        DeductionFormPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+        override fun getCount(): Int {
+            return NUM_PAGES
         }
 
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case SIGHT_PAGE:
-                    return new SightFragment();
-                case NOSE_PAGE:
-                    return new NoseFragment();
-                case PALATE_PAGE_A:
-                    return new PalateFragmentA();
-                case PALATE_PAGE_B:
-                    return new PalateFragmentB();
-                case INITIAL_CONCLUSION_PAGE:
-                    return new InitialConclusionFragment();
-                case FINAL_CONCLUSION_PAGE:
-                    return new FinalConclusionFragment();
-                default:
-                    break;
+        override fun getItem(position: Int): Fragment {
+            return when (position) {
+                SIGHT_PAGE -> SightFragment()
+                NOSE_PAGE -> NoseFragment()
+                PALATE_PAGE_A -> PalateFragmentA()
+                PALATE_PAGE_B -> PalateFragmentB()
+                INITIAL_CONCLUSION_PAGE -> InitialConclusionFragment()
+                FINAL_CONCLUSION_PAGE -> FinalConclusionFragment()
+                else -> throw IllegalStateException("Unexpected position $position")
             }
-            return null;
         }
 
-        // Using this to save our fragment state/reference on view rotation.
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val createdFragment = super.instantiateItem(container, position) as Fragment
 
-            switch (position) {
-                case SIGHT_PAGE:
-                    mSightFragment = (SightFragment) createdFragment;
-                    break;
-                case NOSE_PAGE:
-                    mNoseFragment = (NoseFragment) createdFragment;
-                    break;
-                case PALATE_PAGE_A:
-                    mPalateFragmentA = (PalateFragmentA) createdFragment;
-                    break;
-                case PALATE_PAGE_B:
-                    mPalateFragmentB = (PalateFragmentB) createdFragment;
-                    break;
-                case INITIAL_CONCLUSION_PAGE:
-                    mInitialFragment = (InitialConclusionFragment) createdFragment;
-                    break;
-                case FINAL_CONCLUSION_PAGE:
-                    mFinalFragment = (FinalConclusionFragment) createdFragment;
-                    break;
-                default:
-                    break;
+            when (position) {
+                SIGHT_PAGE -> mSightFragment = createdFragment as SightFragment
+                NOSE_PAGE -> mNoseFragment = createdFragment as NoseFragment
+                PALATE_PAGE_A -> mPalateFragmentA = createdFragment as PalateFragmentA
+                PALATE_PAGE_B -> mPalateFragmentB = createdFragment as PalateFragmentB
+                INITIAL_CONCLUSION_PAGE -> mInitialFragment = createdFragment as InitialConclusionFragment
+                FINAL_CONCLUSION_PAGE -> mFinalFragment = createdFragment as FinalConclusionFragment
             }
-            return createdFragment;
+            return createdFragment
         }
     }
 
-    private boolean validInputs() {
-        AutoCompleteTextView singleTextViewFinalVariety =
-                findViewById(TEXT_SINGLE_FINAL_GRAPE_VARIETY);
-        AutoCompleteTextView singleTextViewFinalCountry =
-                findViewById(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN);
-        AutoCompleteTextView singleTextViewFinalRegion =
-                findViewById(TEXT_SINGLE_FINAL_REGION);
-        AutoCompleteTextView singleTextViewFinalQuality =
-                findViewById(TEXT_SINGLE_FINAL_QUALITY);
-        AutoCompleteTextView singleTextViewFinalVintage =
-                findViewById(TEXT_SINGLE_FINAL_VINTAGE);
+    private fun validInputs(): Boolean {
+        val singleTextViewFinalVariety = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_GRAPE_VARIETY)
+        val singleTextViewFinalCountry = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_COUNTRY_ORIGIN)
+        val singleTextViewFinalRegion = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_REGION)
+        val singleTextViewFinalQuality = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_QUALITY)
+        val singleTextViewFinalVintage = findViewById<AutoCompleteTextView>(TEXT_SINGLE_FINAL_VINTAGE)
 
-        mUserFinalVarietyString = singleTextViewFinalVariety.getText().toString();
-        mUserFinalCountryString = singleTextViewFinalCountry.getText().toString();
-        mUserFinalRegionString = singleTextViewFinalRegion.getText().toString();
-        mUserFinalQualityString = singleTextViewFinalQuality.getText().toString();
+        mUserFinalVarietyString = singleTextViewFinalVariety.text.toString()
+        mUserFinalCountryString = singleTextViewFinalCountry.text.toString()
+        mUserFinalRegionString = singleTextViewFinalRegion.text.toString()
+        mUserFinalQualityString = singleTextViewFinalQuality.text.toString()
 
-        mUserFinalVintageInteger = null;
-        String parseInteger = singleTextViewFinalVintage.getText().toString();
+        mUserFinalVintageInteger = null
+        val parseInteger = singleTextViewFinalVintage.text.toString()
 
-        mUserFinalVintageInteger = !parseInteger.isEmpty()
-                        ? Integer.parseInt(parseInteger)
-                        : 0;
+        mUserFinalVintageInteger = if (parseInteger.isNotEmpty()) {
+            Integer.parseInt(parseInteger)
+        } else {
+            0
+        }
 
-        boolean isValid = true;
+        var isValid = true
 
-        // Check that user has provided their conclusion of grape variety.
         if (mIsRedWine && !parseResourceArray(R.array.red_varieties).contains(mUserFinalVarietyString)) {
-            mFinalFragment.errorsFinalForm()
-                    .setErrorVariety(getString(R.string.error_input_valid_grape));
-            isValid = false;
+            mFinalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
+            isValid = false
         } else if (!mIsRedWine && !parseResourceArray(R.array.white_varieties).contains(mUserFinalVarietyString)) {
-            mFinalFragment.errorsFinalForm()
-                    .setErrorVariety(getString(R.string.error_input_valid_grape));
-            isValid = false;
+            mFinalFragment?.errorsFinalForm()?.setErrorVariety(getString(R.string.error_input_valid_grape))
+            isValid = false
         } else {
-            mFinalFragment.errorsFinalForm().setErrorVariety(null);
+            mFinalFragment?.errorsFinalForm()?.setErrorVariety(null)
         }
 
-        if (mUserFinalCountryString.isEmpty()) {
-            mFinalFragment.errorsFinalForm()
-                    .setErrorCountry(getString(R.string.error_input_country_origin));
-            isValid = false;
+        if (mUserFinalCountryString!!.isEmpty()) {
+            mFinalFragment?.errorsFinalForm()?.setErrorCountry(getString(R.string.error_input_country_origin))
+            isValid = false
         } else {
-            mFinalFragment.errorsFinalForm().setErrorCountry(null);
+            mFinalFragment?.errorsFinalForm()?.setErrorCountry(null)
         }
 
-        if (mUserFinalRegionString.isEmpty()) {
-            mFinalFragment.errorsFinalForm()
-                    .setErrorRegion(getString(R.string.error_input_valid_region));
-            isValid = false;
+        if (mUserFinalRegionString!!.isEmpty()) {
+            mFinalFragment?.errorsFinalForm()?.setErrorRegion(getString(R.string.error_input_valid_region))
+            isValid = false
         } else {
-            mFinalFragment.errorsFinalForm().setErrorRegion(null);
+            mFinalFragment?.errorsFinalForm()?.setErrorRegion(null)
         }
 
-        if (mUserFinalQualityString.isEmpty()) {
-            mUserFinalQualityString = "None";
+        if (mUserFinalQualityString!!.isEmpty()) {
+            mUserFinalQualityString = "None"
         }
 
-        if (mUserFinalVintageInteger > Calendar.getInstance().get(Calendar.YEAR)
-                || mUserFinalVintageInteger < 1900) {
-            mFinalFragment.errorsFinalForm()
-                    .setErrorVintage(getString(R.string.error_input_valid_vintage));
-            isValid = false;
+        val year = Calendar.getInstance().get(Calendar.YEAR)
+        if (mUserFinalVintageInteger!! > year || mUserFinalVintageInteger!! < 1900) {
+            mFinalFragment?.errorsFinalForm()?.setErrorVintage(getString(R.string.error_input_valid_vintage))
+            isValid = false
         } else {
-            mFinalFragment.errorsFinalForm().setErrorVintage(null);
+            mFinalFragment?.errorsFinalForm()?.setErrorVintage(null)
         }
 
-        Map<String, ?> allEntries = mWinePreferences.getAll();
+        val allEntries = mWinePreferences.all
+        val requiredKeysInPreferences = ArrayList<Int>()
 
-        List<Integer> requiredKeysInPreferences = new ArrayList<>();
+        var needNoseWoodRadios = false
+        var needPalateWoodRadios = false
+        var needSnackbar = false
 
-        boolean needNoseWoodRadios = false;
-        boolean needPalateWoodRadios = false;
-        boolean needSnackbar = false;
+        val radioGroups = if (mIsRedWine) AllRedRadioGroups else AllWhiteRadioGroups
 
-        // Determine if the form is red or white radio groups.
-        List<Integer> radioGroups = mIsRedWine ? AllRedRadioGroups : AllWhiteRadioGroups;
-
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Integer wineFormKey = Helpers.castKey(entry.getKey());
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val wineFormKey = Helpers.castKey(key)
             if (SWITCH_NOSE_WOOD == wineFormKey) {
-                boolean isChecked = Helpers.parseChecked(entry.getValue());
+                val isChecked = Helpers.parseChecked(value)
                 if (isChecked) {
-                    needNoseWoodRadios = true;
+                    needNoseWoodRadios = true
                 }
             } else if (SWITCH_PALATE_WOOD == wineFormKey) {
-                boolean isChecked = Helpers.parseChecked(entry.getValue());
+                val isChecked = Helpers.parseChecked(value)
                 if (isChecked) {
-                    needPalateWoodRadios = true;
+                    needPalateWoodRadios = true
                 }
             }
         }
 
-
-        // Here we are checking if all saved radio button values in preferences have a
-        // selection for validity.
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Integer wineFormKey = Helpers.castKey(entry.getKey());
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val wineFormKey = Helpers.castKey(key)
 
             if (radioGroups.contains(wineFormKey)) {
                 if (needNoseWoodRadios && NoseWoodRadioGroups.contains(wineFormKey)) {
-                    requiredKeysInPreferences.add(wineFormKey);
-                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    requiredKeysInPreferences.add(wineFormKey)
+                    val radioButtonSelection = Helpers.parseEntryValue(value)
                     if (radioButtonSelection == NONE_SELECTED) {
-                        isValid = false;
-                        needSnackbar = true;
+                        isValid = false
+                        needSnackbar = true
                     }
                 } else if (needPalateWoodRadios && PalateWoodRadioGroups.contains(wineFormKey)) {
-                    requiredKeysInPreferences.add(wineFormKey);
-                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
+                    requiredKeysInPreferences.add(wineFormKey)
+                    val radioButtonSelection = Helpers.parseEntryValue(value)
                     if (radioButtonSelection == NONE_SELECTED) {
-                        isValid = false;
-                        needSnackbar = true;
+                        isValid = false
+                        needSnackbar = true
                     }
                 } else if (!AllWoodRadioGroups.contains(wineFormKey)) {
-                    requiredKeysInPreferences.add(wineFormKey);
-                    int radioButtonSelection = Helpers.parseEntryValue(entry.getValue());
-                    // Checking to see if a selection has been made.
+                    requiredKeysInPreferences.add(wineFormKey)
+                    val radioButtonSelection = Helpers.parseEntryValue(value)
                     if (radioButtonSelection == NONE_SELECTED) {
-                        isValid = false;
-                        needSnackbar = true;
+                        isValid = false
+                        needSnackbar = true
                     }
                 }
             }
         }
 
         if (!needSnackbar) {
-            for (Integer key : radioGroups) {
+            for (key in radioGroups) {
                 if (!requiredKeysInPreferences.contains(key)) {
                     if (AllWoodRadioGroups.contains(key)) {
                         if (NoseWoodRadioGroups.contains(key) && needNoseWoodRadios) {
-                            isValid = false;
-                            needSnackbar = true;
-                            break;
+                            isValid = false
+                            needSnackbar = true
+                            break
                         } else if (PalateWoodRadioGroups.contains(key) && needPalateWoodRadios) {
-                            isValid = false;
-                            needSnackbar = true;
-                            break;
+                            isValid = false
+                            needSnackbar = true
+                            break
                         }
                     } else {
-                        isValid = false;
-                        needSnackbar = true;
-                        break;
+                        isValid = false
+                        needSnackbar = true
+                        break
                     }
                 }
             }
         }
 
         if (needSnackbar) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.deduction_form_coordinator),
-                    R.string.df_snackbar_make_selections, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.df_snackbar_dismiss, v -> snackbar.dismiss());
-            snackbar.show();
+            val snackbar = Snackbar.make(
+                findViewById(R.id.deduction_form_coordinator),
+                R.string.df_snackbar_make_selections, Snackbar.LENGTH_LONG
+            )
+            snackbar.setAction(R.string.df_snackbar_dismiss) { snackbar.dismiss() }
+            snackbar.show()
         }
 
-        return isValid;
+        return isValid
     }
 
-    private SparseIntArray retrieveSharedPreferencesValues() {
-        // Retrieve all the form selections from preferences.
-        Map<String, ?> allEntries = mWinePreferences.getAll();
+    private fun retrieveSharedPreferencesValues(): SparseIntArray {
+        val allEntries = mWinePreferences.all
+        val wineFormSelections = SparseIntArray()
 
-        // Create a SparseIntArray that will contain our normalized map of form selections.
-        // SparseIntArray uses less memory but is a little slower. There is no real specific
-        // reason for its use here other than seeing it in action as an alternative to HashMap.
-        // SparseArrays are an Android only component.
-        SparseIntArray wineFormSelections = new SparseIntArray();
-
-        // *** Combing through our form input keys and parsing for relevance. ***
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Integer wineFormKey = Helpers.castKey(entry.getKey());
-            // Radio groups and check boxes will be handled slightly differently because
-            // a radio group will return either an Id that will be included in our map or
-            // return -1 (for none selected) and result in no map put.
-            // Check boxes will just be looking for check or no check.
-
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val wineFormKey = Helpers.castKey(key)
             if (AllRadioGroups.contains(wineFormKey)) {
-                int radioButtonSelection = Integer.parseInt(entry.getValue().toString());
-                // Checking to see if a selection has been made.
+                val radioButtonSelection = Integer.parseInt(value.toString())
                 if (radioButtonSelection != NONE_SELECTED) {
-                    // If a selection has been made we add it as checked (value of 1)
-                    wineFormSelections.put(radioButtonSelection, CHECKED);
+                    wineFormSelections.put(radioButtonSelection, CHECKED)
                 }
             } else if (AllCheckBoxes.contains(wineFormKey)) {
-                int value = Integer.parseInt(entry.getValue().toString());
-                // Only adding to map if element has been checked.
-                if (value == CHECKED) {
-                    wineFormSelections.put(wineFormKey, value);
+                val checkValue = Integer.parseInt(value.toString())
+                if (checkValue == CHECKED) {
+                    wineFormSelections.put(wineFormKey, checkValue)
                 }
             }
         }
 
-        return wineFormSelections;
+        return wineFormSelections
     }
 
-    @SuppressWarnings("unused")
-    public void onSubmitFinalConclusion(View view) {
-        isScoring(true);
-        // Do nothing if inputs are not valid. validInputs() will display toasts for bad inputs.
+    fun onSubmitFinalConclusion(view: View) {
+        isScoring(true)
         if (!validInputs()) {
-            isScoring(false);
-            return;
+            isScoring(false)
+            return
         }
 
-        SparseIntArray formSelections = retrieveSharedPreferencesValues();
+        val formSelections = retrieveSharedPreferencesValues()
+        val scoreTask = GrapeVarietyScore(this, mIsRedWine)
+        val formMapper = FormMapper()
+        val varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections)
 
-        GrapeVarietyScore scoreTask = new GrapeVarietyScore(this, mIsRedWine);
-
-        FormMapper formMapper = new FormMapper();
-
-        Map varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections);
-
-        scoreTask.execute(varietyScoreDatabaseMap);
+        scoreTask.execute(varietyScoreDatabaseMap)
     }
 
-    public void onGrapeResult(String topScoreVariety) {
-        resetSharedPreferences();
-        resetAllTopScroll();
-        setCurrentPageInPreferences(SIGHT_PAGE);
-        mLaunchingIntent = true;
+    override fun onGrapeResult(topScoreVariety: String?) {
+        resetSharedPreferences()
+        resetAllTopScroll()
+        setCurrentPageInPreferences(SIGHT_PAGE)
+        mLaunchingIntent = true
 
-        Intent intent = new Intent(mContext, VarietyResultsActivity.class);
+        val intent = Intent(mContext, VarietyResultsActivity::class.java)
         if (mIsRedWine) {
-            intent.putExtra(IS_RED_WINE, TRUE);
+            intent.putExtra(IS_RED_WINE, TRUE)
         }
-        // We put our guess into the intent to be launched.
-        intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety);
-        // Putting the user's guess into the intent.
-        intent.putExtra(USER_CONCLUSION_VARIETY, mUserFinalVarietyString);
-        intent.putExtra(USER_CONCLUSION_COUNTRY, mUserFinalCountryString);
-        intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString);
-        intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString);
-        intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger);
-        isScoring(false);
-        // We can now launch the activity that will show results to the user.
-        startActivity(intent);
-        finish();
+        intent.putExtra(APP_VARIETY_GUESS_ID, topScoreVariety)
+        intent.putExtra(USER_CONCLUSION_VARIETY, mUserFinalVarietyString)
+        intent.putExtra(USER_CONCLUSION_COUNTRY, mUserFinalCountryString)
+        intent.putExtra(USER_CONCLUSION_REGION, mUserFinalRegionString)
+        intent.putExtra(USER_CONCLUSION_QUALITY, mUserFinalQualityString)
+        intent.putExtra(USER_CONCLUSION_VINTAGE, mUserFinalVintageInteger)
+        isScoring(false)
+        startActivity(intent)
+        finish()
     }
 
-    private void isScoring(Boolean loading) {
+    private fun isScoring(loading: Boolean) {
         if (loading) {
-            mFinalFragment.showLoadingIndicator();
+            mFinalFragment?.showLoadingIndicator()
         } else {
-            mFinalFragment.hideLoadingIndicator();
+            mFinalFragment?.hideLoadingIndicator()
         }
     }
 
-    public void onGrapeFailure() {
-        isScoring(false);
-        Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score);
+    override fun onGrapeFailure() {
+        isScoring(false)
+        Helpers.makeToastShort(mContext, R.string.da_toast_unable_to_score)
     }
 
-    private List<String> parseResourceArray(int resourceId) {
-        return Arrays.asList(getResources().getStringArray(resourceId));
+    private fun parseResourceArray(resourceId: Int): List<String> {
+        return Arrays.asList(*resources.getStringArray(resourceId))
     }
 }

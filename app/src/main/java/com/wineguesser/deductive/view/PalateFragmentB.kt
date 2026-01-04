@@ -1,128 +1,107 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.RadioGroup
+import android.widget.ScrollView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.util.AppExecutors
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+class PalateFragmentB : Fragment() {
 
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.AppExecutors;
-import com.wineguesser.deductive.util.Helpers;
+    private lateinit var mFragmentActivity: FragmentActivity
+    private lateinit var mActivityPreferences: SharedPreferences
+    private lateinit var mWinePreferences: SharedPreferences
+    private var mIsRedWine: Boolean = false
+    private lateinit var mScrollViewPalateB: ScrollView
 
-import java.util.Map;
-
-public class PalateFragmentB extends Fragment implements DeductionFormContract,
-        DatabaseContract {
-
-    private FragmentActivity mFragmentActivity;
-    private SharedPreferences mActivityPreferences;
-    private SharedPreferences mWinePreferences;
-    private boolean mIsRedWine;
-
-    private ScrollView mScrollViewPalateB;
-
-    public PalateFragmentB() {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mFragmentActivity = requireActivity()
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mFragmentActivity = getActivity();
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE)
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityPreferences = mFragmentActivity.getPreferences(Context.MODE_PRIVATE);
-
-        String wineColorPreferenceType;
-        if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
-            mIsRedWine = true;
-            wineColorPreferenceType = RED_WINE_FORM_PREFERENCES;
+        val wineColorPreferenceType: String = if (mActivityPreferences.getBoolean(IS_RED_WINE, FALSE)) {
+            mIsRedWine = true
+            RED_WINE_FORM_PREFERENCES
         } else {
-            wineColorPreferenceType = WHITE_WINE_FORM_PREFERENCES;
+            WHITE_WINE_FORM_PREFERENCES
         }
-        mWinePreferences = mFragmentActivity
-                .getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE);
+        mWinePreferences = mFragmentActivity.getSharedPreferences(wineColorPreferenceType, Context.MODE_PRIVATE)
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val rootView = if (mIsRedWine) {
+            inflater.inflate(R.layout.fragment_palate_red_b, container, false)
+        } else {
+            inflater.inflate(R.layout.fragment_palate_white_b, container, false)
+        }
 
+        mScrollViewPalateB = rootView.findViewById(R.id.scrollView_palate_b)
+        return rootView
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveScrollState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadSelectionState()
+        loadScrollState()
+    }
+
+    private fun saveScrollState() {
+        val editor = mActivityPreferences.edit()
         if (mIsRedWine) {
-            rootView = inflater.inflate(R.layout.fragment_palate_red_b,
-                    container, false);
+            editor.putInt(RED_PALATE_B_Y_SCROLL, mScrollViewPalateB.scrollY)
         } else {
-            rootView = inflater.inflate(R.layout.fragment_palate_white_b,
-                    container, false);
+            editor.putInt(WHITE_PALATE_B_Y_SCROLL, mScrollViewPalateB.scrollY)
         }
-
-        mScrollViewPalateB = rootView.findViewById(R.id.scrollView_palate_b);
-
-        return rootView;
+        editor.apply()
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        saveScrollState();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSelectionState();
-        loadScrollState();
-    }
-
-    private void saveScrollState() {
-        SharedPreferences.Editor editor = mActivityPreferences.edit();
-        if (mIsRedWine) {
-            editor.putInt(RED_PALATE_B_Y_SCROLL, mScrollViewPalateB.getScrollY());
-        } else {
-            editor.putInt(WHITE_PALATE_B_Y_SCROLL, mScrollViewPalateB.getScrollY());
-        }
-        editor.apply();
-    }
-
-    private void loadScrollState() {
-        if (mIsRedWine) {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateB.scrollTo(0, mActivityPreferences
-                            .getInt(RED_PALATE_B_Y_SCROLL, 0)));
-        } else {
-            AppExecutors.getInstance().mainThread().execute(() ->
-                    mScrollViewPalateB.scrollTo(0, mActivityPreferences
-                            .getInt(WHITE_PALATE_B_Y_SCROLL, 0)));
+    private fun loadScrollState() {
+        AppExecutors.mainThread.execute {
+            if (mIsRedWine) {
+                mScrollViewPalateB.scrollTo(0, mActivityPreferences.getInt(RED_PALATE_B_Y_SCROLL, 0))
+            } else {
+                mScrollViewPalateB.scrollTo(0, mActivityPreferences.getInt(WHITE_PALATE_B_Y_SCROLL, 0))
+            }
         }
     }
 
-    public void scrollToTop() {
-        AppExecutors.getInstance().mainThread().execute(() ->
-                mScrollViewPalateB.scrollTo(0, 0));
+    fun scrollToTop() {
+        AppExecutors.mainThread.execute {
+            mScrollViewPalateB.scrollTo(0, 0)
+        }
     }
 
-    private void loadSelectionState() {
-        Map<String, ?> allEntries = mWinePreferences.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            int view = Helpers.castKey(entry.getKey());
-
-            if (mIsRedWine && redPalateViewsB.contains(view) && AllRadioGroups.contains(view)) {
-                ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(Helpers.parseEntryValue(entry.getValue()));
-            } else if (!mIsRedWine && whitePalateViewsB.contains(view) && AllRadioGroups.contains(view)) {
-                ((RadioGroup) mFragmentActivity.findViewById(view))
-                        .check(Helpers.parseEntryValue(entry.getValue()));
+    private fun loadSelectionState() {
+        val allEntries = mWinePreferences.all
+        for (entry in allEntries) {
+            val key = entry.key
+            val value = entry.value ?: continue
+            val viewId = Helpers.castKey(key)
+            if (mIsRedWine && redPalateViewsB.contains(viewId) && AllRadioGroups.contains(viewId)) {
+                mFragmentActivity.findViewById<RadioGroup>(viewId)?.check(Helpers.parseEntryValue(value))
+            } else if (!mIsRedWine && whitePalateViewsB.contains(viewId) && AllRadioGroups.contains(viewId)) {
+                mFragmentActivity.findViewById<RadioGroup>(viewId)?.check(Helpers.parseEntryValue(value))
             }
         }
     }

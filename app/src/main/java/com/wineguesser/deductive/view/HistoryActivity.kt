@@ -1,155 +1,134 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.Insets
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.databinding.ActivityHistoryBinding;
-import com.wineguesser.deductive.model.ConclusionRecord;
-import com.wineguesser.deductive.repository.ConclusionsRepository;
-import com.wineguesser.deductive.repository.DatabaseContract;
-import com.wineguesser.deductive.util.Helpers;
-import com.wineguesser.deductive.view.adapter.ConclusionItemAdapter;
-import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel;
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.wineguesser.deductive.R
+import com.wineguesser.deductive.databinding.ActivityHistoryBinding
+import com.wineguesser.deductive.model.ConclusionRecord
+import com.wineguesser.deductive.repository.ConclusionsRepository
+import com.wineguesser.deductive.util.Helpers
+import com.wineguesser.deductive.view.*
+import com.wineguesser.deductive.view.adapter.ConclusionItemAdapter
+import com.wineguesser.deductive.viewmodel.HistoryActivityViewModel
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+class HistoryActivity : AppCompatActivity(), ConclusionItemAdapter.HistoryItemOnClickHandler {
 
-public class HistoryActivity extends AppCompatActivity implements DatabaseContract,
-        ConclusionItemAdapter.HistoryItemOnClickHandler {
+    private val mCurrentUser = FirebaseAuth.getInstance().currentUser
+    private lateinit var historyActivity: HistoryActivityViewModel
+    private lateinit var mContext: Context
 
-    private FirebaseUser mCurrentUser;
-    private HistoryActivityViewModel historyActivity;
-    private Context mContext;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // SplashScreen.installSplashScreen(this)
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        mContext = this
+        val binding: ActivityHistoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_history)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        mContext = this;
-        ActivityHistoryBinding binding = DataBindingUtil.setContentView(
-                this, R.layout.activity_history);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
+        title = getString(R.string.history_activity_title)
 
-        setTitle(R.string.history_activity_title);
+        historyActivity = ViewModelProvider(this).get(HistoryActivityViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.historyActivity = historyActivity
 
-        historyActivity = new ViewModelProvider(this).get(HistoryActivityViewModel.class);
-        binding.setLifecycleOwner((LifecycleOwner) this);
-        binding.setHistoryActivity(historyActivity);
+        val recyclerView = findViewById<RecyclerView>(R.id.conclusion_item_recycler_view)
 
-        RecyclerView recyclerView = findViewById(R.id.conclusion_item_recycler_view);
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels / displayMetrics.density
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        float width = displayMetrics.widthPixels / displayMetrics.density;
-
-        int columnCount;
-        if (width > 800) {
-            columnCount = 3;
-        } else if (width > 600) {
-            columnCount = 2;
-        } else {
-            columnCount = 1;
+        val columnCount: Int = when {
+            width > 800 -> 3
+            width > 600 -> 2
+            else -> 1
         }
 
         if (columnCount > 1) {
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL));
+            recyclerView.layoutManager = StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL)
         } else {
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.layoutManager = LinearLayoutManager(this)
         }
 
-        ConclusionItemAdapter conclusionAdapter =
-                new ConclusionItemAdapter(this, this);
-        recyclerView.setAdapter(conclusionAdapter);
+        val conclusionAdapter = ConclusionItemAdapter(this, this)
+        recyclerView.adapter = conclusionAdapter
 
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (mCurrentUser != null) {
-            String uid = mCurrentUser.getUid();
-
-            historyActivity.getUserConclusions(uid).observe((LifecycleOwner) this, conclusionRecords -> {
-                if (conclusionRecords != null && !conclusionRecords.isEmpty()) {
-                    historyActivity.setNoData(false);
-                    conclusionAdapter.setConclusionData(conclusionRecords);
+        mCurrentUser?.let { user ->
+            historyActivity.getUserConclusions(user.uid).observe(this) { conclusionRecords ->
+                if (!conclusionRecords.isNullOrEmpty()) {
+                    historyActivity.setNoData(false)
+                    conclusionAdapter.setConclusionData(conclusionRecords)
                 } else {
-                    historyActivity.setNoData(true);
-                    conclusionAdapter.setConclusionData(null);
+                    historyActivity.setNoData(true)
+                    conclusionAdapter.setConclusionData(null)
                 }
-            });
+            }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_history_activity, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_history_activity, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clear_history:
-                if (mCurrentUser != null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setCancelable(true);
-                    builder.setTitle(R.string.dialog_clear_history);
-                    builder.setMessage(R.string.dialog_clear_history_ask);
-                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                        ConclusionsRepository repository = new ConclusionsRepository();
-                        repository.clearUserConclusions(mCurrentUser.getUid());
-                        Helpers.makeToastShort(mContext, R.string.history_cleared);
-                    });
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.clear_history -> {
+                mCurrentUser?.let { user ->
+                    val builder = AlertDialog.Builder(mContext)
+                    builder.setCancelable(true)
+                    builder.setTitle(R.string.dialog_clear_history)
+                    builder.setMessage(R.string.dialog_clear_history_ask)
+                    builder.setPositiveButton(R.string.yes) { _, _ ->
+                        val repository = ConclusionsRepository()
+                        repository.clearUserConclusions(user.uid)
+                        Helpers.makeToastShort(mContext, R.string.history_cleared)
+                    }
 
-                    builder.setNegativeButton(android.R.string.cancel, (dialog, which) ->
-                            Helpers.makeToastShort(mContext, R.string.cancel_history_clear));
+                    builder.setNegativeButton(android.R.string.cancel) { _, _ ->
+                        Helpers.makeToastShort(mContext, R.string.cancel_history_clear)
+                    }
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    val dialog = builder.create()
+                    dialog.show()
                 }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    @Override
-    public void onHistoryItemClick(ConclusionRecord conclusionRecord) {
-        Intent intent = new Intent(this, HistoryRecordActivity.class);
-        conclusionRecord.setUserId(mCurrentUser.getUid());
-        intent.putExtra(Helpers.CONCLUSION_PARCEL, conclusionRecord);
-        startActivity(intent);
+    override fun onHistoryItemClick(conclusionRecord: ConclusionRecord) {
+        val intent = Intent(this, HistoryRecordActivity::class.java)
+        mCurrentUser?.let {
+            conclusionRecord.userId = it.uid
+        }
+        intent.putExtra(Helpers.CONCLUSION_PARCEL, conclusionRecord)
+        startActivity(intent)
     }
 }

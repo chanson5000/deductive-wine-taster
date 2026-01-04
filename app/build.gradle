@@ -1,9 +1,10 @@
-
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -19,7 +20,7 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdk 36
+    compileSdk = 36
     defaultConfig {
         applicationId 'com.wineguesser.deductive'
         minSdkVersion 25
@@ -35,7 +36,7 @@ android {
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
     }
@@ -63,10 +64,6 @@ android {
             dimension "tier"
         }
     }
-//    testOptions {
-//        unitTests.includeAndroidResources = true
-//        unitTests.returnDefaultValues = true
-//    }
     useLibrary 'android.test.runner'
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
@@ -100,6 +97,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:22.2.0'
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.8.7'
     testImplementation 'org.hamcrest:hamcrest-library:2.2'
     testImplementation 'junit:junit:4.13.2'
@@ -111,11 +109,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.6.1'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.6.1'
     implementation 'com.google.dagger:dagger:2.51.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.51.1'
+    kapt 'com.google.dagger:dagger-compiler:2.51.1'
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
     implementation 'androidx.core:core-splashscreen:1.0.1'
-
-    // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }

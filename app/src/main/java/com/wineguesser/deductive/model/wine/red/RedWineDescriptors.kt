@@ -1,18 +1,9 @@
-package com.wineguesser.deductive.model.wine.red;
+package com.wineguesser.deductive.model.wine.red
 
-import com.wineguesser.deductive.model.wine.WineDescriptors;
+import com.wineguesser.deductive.model.wine.WineDescriptors
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-@Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-class RedWineDescriptors extends WineDescriptors {
-    private Color color;
-    private SecondaryColor secondaryColor;
-    private Tannin tannin;
+class RedWineDescriptors : WineDescriptors() {
+    var color: Color? = null
+    var secondaryColor: SecondaryColor? = null
+    var tannin: Tannin? = null
 }

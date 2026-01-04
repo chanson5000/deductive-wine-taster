@@ -1,13 +1,6 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class BarrelSize {
-    private int large;
-    private int small;
-}
+data class BarrelSize(
+    var large: Int = 0,
+    var small: Int = 0
+)

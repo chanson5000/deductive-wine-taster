@@ -1,89 +1,23 @@
-package com.wineguesser.deductive.model;
+package com.wineguesser.deductive.model
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.os.Parcelable
+import com.google.firebase.database.Exclude
+import kotlinx.parcelize.Parcelize
 
-import com.google.firebase.database.Exclude;
-
-import androidx.annotation.NonNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ConclusionRecord implements Parcelable {
-
-    @Exclude
-    public String conclusionId;
-    @Exclude
-    public String userId;
-
-    public String actualLabel;
-    public String actualVariety;
-    public String actualCountry;
-    public String actualRegion;
-    public String actualQuality;
-    public Integer actualVintage;
-
-    public String userConclusionVariety;
-    public String userConclusionCountry;
-    public String userConclusionRegion;
-    public String userConclusionQuality;
-    public Integer userConclusionVintage;
-
-    public String appConclusionVariety;
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(conclusionId);
-        dest.writeString(userId);
-        dest.writeString(actualLabel);
-        dest.writeString(actualVariety);
-        dest.writeString(actualCountry);
-        dest.writeString(actualRegion);
-        dest.writeString(actualQuality);
-        dest.writeInt(actualVintage);
-        dest.writeString(userConclusionVariety);
-        dest.writeString(userConclusionCountry);
-        dest.writeString(userConclusionRegion);
-        dest.writeString(userConclusionQuality);
-        dest.writeInt(userConclusionVintage);
-        dest.writeString(appConclusionVariety);
-    }
-
-    public static final Creator<ConclusionRecord> CREATOR = new Creator<ConclusionRecord>() {
-        @Override
-        public ConclusionRecord createFromParcel(Parcel in) {
-            return new ConclusionRecord(in);
-        }
-
-        @Override
-        public ConclusionRecord[] newArray(int size) {
-            return new ConclusionRecord[size];
-        }
-    };
-
-    public ConclusionRecord(Parcel in) {
-        this.conclusionId = in.readString();
-        this.userId = in.readString();
-        this.actualLabel = in.readString();
-        this.actualVariety = in.readString();
-        this.actualCountry = in.readString();
-        this.actualRegion = in.readString();
-        this.actualQuality = in.readString();
-        this.actualVintage = in.readInt();
-        this.userConclusionVariety = in.readString();
-        this.userConclusionCountry = in.readString();
-        this.userConclusionRegion = in.readString();
-        this.userConclusionQuality = in.readString();
-        this.userConclusionVintage = in.readInt();
-        this.appConclusionVariety = in.readString();
-    }
-}
+@Parcelize
+data class ConclusionRecord(
+    @get:Exclude var conclusionId: String? = null,
+    @get:Exclude var userId: String? = null,
+    var actualLabel: String? = null,
+    var actualVariety: String? = null,
+    var actualCountry: String? = null,
+    var actualRegion: String? = null,
+    var actualQuality: String? = null,
+    var actualVintage: Int? = null,
+    var userConclusionVariety: String? = null,
+    var userConclusionCountry: String? = null,
+    var userConclusionRegion: String? = null,
+    var userConclusionQuality: String? = null,
+    var userConclusionVintage: Int? = null,
+    var appConclusionVariety: String? = null
+) : Parcelable

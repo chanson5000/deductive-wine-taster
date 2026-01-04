@@ -1,582 +1,274 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.wineguesser.deductive.util
 
-/*
- * Changes for Croatian language done by Stevica Kuharski, IT4U
- * Web: http://www.it4u.com.hr/en
- * E-mail: kstevica@gmail.com
- */
-package com.wineguesser.deductive.util;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.TextView
+import timber.log.Timber
+import java.util.ArrayList
+import java.util.Arrays
+import java.util.Collections
+import java.util.Comparator
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.TextView;
+class SpecialCharArrayAdapter<T> : BaseAdapter, Filterable {
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Comparator;
-import java.util.Collections;
+    private lateinit var mObjects: MutableList<T>
+    private val mLock = Any()
+    private var mResource: Int = 0
+    private var mDropDownResource: Int = 0
+    private var mFieldId = 0
+    private var mNotifyOnChange = true
+    private lateinit var mContext: Context
+    private var mOriginalValues: ArrayList<T>? = null
+    private var mFilter: HRArrayFilter? = null
+    private var mInflater: LayoutInflater? = null
 
-import timber.log.Timber;
-
-/**
- * A ListAdapter that manages a ListView backed by an array of arbitrary
- * objects.  By default this class expects that the provided resource id references
- * a single TextView.  If you want to use a more complex layout, use the constructors that
- * also takes a field id.  That field id should reference a TextView in the larger layout
- * resource.
- *
- * However the TextView is referenced, it will be filled with the toString() of each object in
- * the array. You can add lists or arrays of custom objects. Override the toString() method
- * of your objects to determine what text will be displayed for the item in the list.
- *
- * To use something other than TextViews for the array display, for instance, ImageViews,
- * or to have some of data besides toString() results fill the views,
- * override {@link #getView(int, View, ViewGroup)} to return the type of view you want.
- */
-public class SpecialCharArrayAdapter<T> extends BaseAdapter implements Filterable {
-    /**
-     * Contains the list of objects that represent the data of this ArrayAdapter.
-     * The content of this list is referred to as "the array" in the documentation.
-     */
-    private List<T> mObjects;
-
-    /**
-     * Lock used to modify the content of {@link #mObjects}. Any write operation
-     * performed on the array should be synchronized on this lock. This lock is also
-     * used by the filter (see {@link #getFilter()} to make a synchronized copy of
-     * the original array of data.
-     */
-    private final Object mLock = new Object();
-
-    /**
-     * The resource indicating what views to inflate to display the content of this
-     * array adapter.
-     */
-    private int mResource;
-
-    /**
-     * The resource indicating what views to inflate to display the content of this
-     * array adapter in a drop down widget.
-     */
-    private int mDropDownResource;
-
-    /**
-     * If the inflated resource is not a TextView, { #mFieldId} is used to find
-     * a TextView inside the inflated views hierarchy. This field must contain the
-     * identifier that matches the one defined in the resource file.
-     */
-    private int mFieldId = 0;
-
-    /**
-     * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever
-     * {@link #mObjects} is modified.
-     */
-    private boolean mNotifyOnChange = true;
-
-    private Context mContext;
-
-    private ArrayList<T> mOriginalValues;
-    private HRArrayFilter mFilter;
-
-    private LayoutInflater mInflater;
-
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param textViewResourceId The resource ID for a layout file containing a TextView to use when
-     *                 instantiating views.
-     */
-    public SpecialCharArrayAdapter(Context context, int textViewResourceId) {
-        init(context, textViewResourceId, 0, new ArrayList<>());
+    constructor(context: Context, textViewResourceId: Int) {
+        init(context, textViewResourceId, 0, ArrayList())
     }
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param resource The resource ID for a layout file containing a layout to use when
-     *                 instantiating views.
-     * @param textViewResourceId The id of the TextView within the layout resource to be populated
-     */
-    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId) {
-        init(context, resource, textViewResourceId, new ArrayList<>());
+    constructor(context: Context, resource: Int, textViewResourceId: Int) {
+        init(context, resource, textViewResourceId, ArrayList())
     }
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param textViewResourceId The resource ID for a layout file containing a TextView to use when
-     *                 instantiating views.
-     * @param objects The objects to represent in the ListView.
-     */
-    private SpecialCharArrayAdapter(Context context, int textViewResourceId, T[] objects) {
-        init(context, textViewResourceId, 0, Arrays.asList(objects));
+    constructor(context: Context, textViewResourceId: Int, objects: Array<T>) {
+        init(context, textViewResourceId, 0, Arrays.asList(*objects))
     }
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param resource The resource ID for a layout file containing a layout to use when
-     *                 instantiating views.
-     * @param textViewResourceId The id of the TextView within the layout resource to be populated
-     * @param objects The objects to represent in the ListView.
-     */
-    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects) {
-        init(context, resource, textViewResourceId, Arrays.asList(objects));
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: Array<T>) {
+        init(context, resource, textViewResourceId, Arrays.asList(*objects))
     }
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param textViewResourceId The resource ID for a layout file containing a TextView to use when
-     *                 instantiating views.
-     * @param objects The objects to represent in the ListView.
-     */
-    public SpecialCharArrayAdapter(Context context, int textViewResourceId, List<T> objects) {
-        init(context, textViewResourceId, 0, objects);
+    constructor(context: Context, textViewResourceId: Int, objects: MutableList<T>) {
+        init(context, textViewResourceId, 0, objects)
     }
 
-    /**
-     * Constructor
-     *
-     * @param context The current context.
-     * @param resource The resource ID for a layout file containing a layout to use when
-     *                 instantiating views.
-     * @param textViewResourceId The id of the TextView within the layout resource to be populated
-     * @param objects The objects to represent in the ListView.
-     */
-    public SpecialCharArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
-        init(context, resource, textViewResourceId, objects);
+    constructor(context: Context, resource: Int, textViewResourceId: Int, objects: MutableList<T>) {
+        init(context, resource, textViewResourceId, objects)
     }
 
-    /**
-     * Adds the specified object at the end of the array.
-     *
-     * @param object The object to add at the end of the array.
-     */
-    public void add(T object) {
+    private fun init(context: Context, resource: Int, textViewResourceId: Int, objects: MutableList<T>) {
+        mContext = context
+        mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        mDropDownResource = resource
+        mResource = resource
+        mObjects = objects
+        mFieldId = textViewResourceId
+    }
+
+    fun add(`object`: T) {
         if (mOriginalValues != null) {
-            synchronized (mLock) {
-                mOriginalValues.add(object);
-                if (mNotifyOnChange) notifyDataSetChanged();
+            synchronized(mLock) {
+                mOriginalValues!!.add(`object`)
+                if (mNotifyOnChange) notifyDataSetChanged()
             }
         } else {
-            mObjects.add(object);
-            if (mNotifyOnChange) notifyDataSetChanged();
+            mObjects.add(`object`)
+            if (mNotifyOnChange) notifyDataSetChanged()
         }
     }
 
-    /**
-     * Inserts the specified object at the specified index in the array.
-     *
-     * @param object The object to insert into the array.
-     * @param index The index at which the object must be inserted.
-     */
-    public void insert(T object, int index) {
+    fun insert(`object`: T, index: Int) {
         if (mOriginalValues != null) {
-            synchronized (mLock) {
-                mOriginalValues.add(index, object);
-                if (mNotifyOnChange) notifyDataSetChanged();
+            synchronized(mLock) {
+                mOriginalValues!!.add(index, `object`)
+                if (mNotifyOnChange) notifyDataSetChanged()
             }
         } else {
-            mObjects.add(index, object);
-            if (mNotifyOnChange) notifyDataSetChanged();
+            mObjects.add(index, `object`)
+            if (mNotifyOnChange) notifyDataSetChanged()
         }
     }
 
-    /**
-     * Removes the specified object from the array.
-     *
-     * @param object The object to remove.
-     */
-    public void remove(T object) {
+    fun remove(`object`: T) {
         if (mOriginalValues != null) {
-            synchronized (mLock) {
-                mOriginalValues.remove(object);
+            synchronized(mLock) {
+                mOriginalValues!!.remove(`object`)
             }
         } else {
-            mObjects.remove(object);
+            mObjects.remove(`object`)
         }
-        if (mNotifyOnChange) notifyDataSetChanged();
+        if (mNotifyOnChange) notifyDataSetChanged()
     }
 
-    /**
-     * Remove all elements from the list.
-     */
-    public void clear() {
+    fun clear() {
         if (mOriginalValues != null) {
-            synchronized (mLock) {
-                mOriginalValues.clear();
+            synchronized(mLock) {
+                mOriginalValues!!.clear()
             }
         } else {
-            mObjects.clear();
+            mObjects.clear()
         }
-        if (mNotifyOnChange) notifyDataSetChanged();
+        if (mNotifyOnChange) notifyDataSetChanged()
     }
 
-    /**
-     * Sorts the content of this adapter using the specified comparator.
-     *
-     * @param comparator The comparator used to sort the objects contained
-     *        in this adapter.
-     */
-    public void sort(Comparator<? super T> comparator) {
-        Collections.sort(mObjects, comparator);
-        if (mNotifyOnChange) notifyDataSetChanged();
+    fun sort(comparator: Comparator<in T>) {
+        Collections.sort(mObjects, comparator)
+        if (mNotifyOnChange) notifyDataSetChanged()
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        mNotifyOnChange = true;
+    override fun notifyDataSetChanged() {
+        super.notifyDataSetChanged()
+        mNotifyOnChange = true
     }
 
-    /**
-     * Control whether methods that change the list ({@link #add},
-     * {@link #insert}, {@link #remove}, {@link #clear}) automatically call
-     * {@link #notifyDataSetChanged}.  If set to false, caller must
-     * manually call notifyDataSetChanged() to have the changes
-     * reflected in the attached view.
-     *
-     * The default is true, and calling notifyDataSetChanged()
-     * resets the flag to true.
-     *
-     * @param notifyOnChange if true, modifications to the list will
-     *                       automatically call {@link
-     *                       #notifyDataSetChanged}
-     */
-    public void setNotifyOnChange(boolean notifyOnChange) {
-        mNotifyOnChange = notifyOnChange;
+    fun setNotifyOnChange(notifyOnChange: Boolean) {
+        mNotifyOnChange = notifyOnChange
     }
 
-    private void init(Context context, int resource, int textViewResourceId, List<T> objects) {
-        mContext = context;
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mResource = mDropDownResource = resource;
-        mObjects = objects;
-        mFieldId = textViewResourceId;
+    fun getContext(): Context {
+        return mContext
     }
 
-    /**
-     * Returns the context associated with this array adapter. The context is used
-     * to create views from the resource passed to the constructor.
-     *
-     * @return The Context associated with this adapter.
-     */
-    public Context getContext() {
-        return mContext;
+    override fun getCount(): Int {
+        return mObjects.size
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public int getCount() {
-        return mObjects.size();
+    override fun getItem(position: Int): T {
+        return mObjects[position]
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public T getItem(int position) {
-        return mObjects.get(position);
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    /**
-     * Returns the position of the specified item in the array.
-     *
-     * @param item The item to retrieve the position of.
-     *
-     * @return The position of the specified item.
-     */
-    public int getPosition(T item) {
-        return mObjects.indexOf(item);
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return createViewFromResource(position, convertView, parent, mResource)
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public long getItemId(int position) {
-        return position;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return createViewFromResource(position, convertView, parent, mResource);
-    }
-
-    private View createViewFromResource(int position, View convertView, ViewGroup parent,
-                                        int resource) {
-        View view;
-        TextView text;
+    private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup, resource: Int): View {
+        val view: View
+        val text: TextView
 
         if (convertView == null) {
-            view = mInflater.inflate(resource, parent, false);
+            view = mInflater!!.inflate(resource, parent, false)
         } else {
-            view = convertView;
+            view = convertView
         }
 
         try {
             if (mFieldId == 0) {
                 //  If no custom field is assigned, assume the whole resource is a TextView
-                text = (TextView) view;
+                text = view as TextView
             } else {
                 //  Otherwise, find the TextView field within the layout
-                text = view.findViewById(mFieldId);
+                text = view.findViewById(mFieldId)
             }
-        } catch (ClassCastException e) {
-            Timber.tag("ArrayAdapter").e("You must supply a resource ID for a TextView");
-            throw new IllegalStateException(
-                    "ArrayAdapter requires the resource ID to be a TextView", e);
+        } catch (e: ClassCastException) {
+            Timber.tag("ArrayAdapter").e("You must supply a resource ID for a TextView")
+            throw IllegalStateException("ArrayAdapter requires the resource ID to be a TextView", e)
         }
 
-        text.setText(getItem(position).toString());
+        val item = getItem(position)
+        if (item is CharSequence) {
+            text.text = item
+        } else {
+            text.text = item.toString()
+        }
 
-        return view;
+        return view
     }
 
-    /**
-     * <p>Sets the layout resource to create the drop down views.</p>
-     *
-     * @param resource the layout resource defining the drop down views
-     * @see #getDropDownView(int, android.view.View, android.view.ViewGroup)
-     */
-    public void setDropDownViewResource(int resource) {
-        this.mDropDownResource = resource;
+    fun setDropDownViewResource(resource: Int) {
+        this.mDropDownResource = resource
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return createViewFromResource(position, convertView, parent, mDropDownResource);
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return createViewFromResource(position, convertView, parent, mDropDownResource)
     }
 
-    /**
-     * Creates a new ArrayAdapter from external resources. The content of the array is
-     * obtained through {@link android.content.res.Resources#getTextArray(int)}.
-     *
-     * @param context The application's environment.
-     * @param textArrayResId The identifier of the array to use as the data source.
-     * @param textViewResId The identifier of the layout used to create views.
-     *
-     * @return An ArrayAdapter<CharSequence>.
-     */
-    public static SpecialCharArrayAdapter<CharSequence> createFromResource(Context context,
-                                                                           int textArrayResId, int textViewResId) {
-        CharSequence[] strings = context.getResources().getTextArray(textArrayResId);
-        return new SpecialCharArrayAdapter<>(context, textViewResId, strings);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public HRArrayFilter getFilter() {
+    override fun getFilter(): Filter {
         if (mFilter == null) {
-            mFilter = new HRArrayFilter();
+            mFilter = HRArrayFilter()
         }
-        return mFilter;
+        return mFilter!!
     }
 
-    /**
-     * <p>An array filter constrains the content of the array adapter with
-     * a prefix. Each item that does not start with the supplied prefix
-     * is removed from the list.</p>
-     */
-    private class HRArrayFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence prefix) {
-            FilterResults results = new FilterResults();
+    private inner class HRArrayFilter : Filter() {
+        override fun performFiltering(prefix: CharSequence?): FilterResults {
+            val results = FilterResults()
 
             if (mOriginalValues == null) {
-                synchronized (mLock) {
-                    mOriginalValues = new ArrayList<>(mObjects);
+                synchronized(mLock) {
+                    mOriginalValues = ArrayList(mObjects)
                 }
             }
 
-            if (prefix == null || prefix.length() == 0) {
-                synchronized (mLock) {
-                    ArrayList<T> list = new ArrayList<>(mOriginalValues);
-                    results.values = list;
-                    results.count = list.size();
+            if (prefix == null || prefix.length == 0) {
+                synchronized(mLock) {
+                    val list = ArrayList(mOriginalValues!!)
+                    results.values = list
+                    results.count = list.size
                 }
             } else {
-                String prefixString = prefix.toString().toLowerCase();
+                val prefixString = prefix.toString().lowercase()
 
-                ArrayList<T> values = mOriginalValues;
-                final int count = values.size();
+                val values = mOriginalValues!!
+                val count = values.size
 
-                final ArrayList<T> newValues = new ArrayList<>(count);
-                final ArrayList<String> noPalatals = new ArrayList<>();
+                val newValues = ArrayList<T>()
 
-                for (int i = 0; i < count; i++) {
-                    final T value = values.get(i);
-                    final String valueText = value.toString().toLowerCase();
-                    String valueTextNoPalatals = toNoPalatals(valueText);
-                    String prefixStringNoPalatals = toNoPalatals(prefixString);
+                for (i in 0 until count) {
+                    val value = values[i]
+                    val valueText = value.toString().lowercase()
+                    val valueTextNoPalatals = toNoPalatals(valueText)
+                    val prefixStringNoPalatals = toNoPalatals(prefixString)
 
-                    //Log.d( "DATA NORMAL", valueText + ", " + prefixString );
-                    //Log.d( "DATA NO PALATALS", valueTextNoPalatals + ", " + prefixStringNoPalatals );
-
-                    // First match against the whole, non-splitted value
                     if (valueText.startsWith(prefixString) || valueTextNoPalatals.startsWith(prefixStringNoPalatals)) {
-                        newValues.add(value);
+                        newValues.add(value)
                     } else {
-                        final String[] words = valueText.split(" ");
-                        final int wordCount = words.length;
+                        val words = valueText.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                        for (String word : words) {
+                        for (word in words) {
                             if (word.startsWith(prefixString)) {
-                                newValues.add(value);
-                                break;
+                                newValues.add(value)
+                                break
                             }
                         }
                     }
                 }
 
-                results.values = newValues;
-                results.count = newValues.size();
+                results.values = newValues
+                results.count = newValues.size
             }
 
-            return results;
+            return results
         }
 
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        override fun publishResults(constraint: CharSequence?, results: FilterResults) {
             //noinspection unchecked
-            mObjects = (List<T>) results.values;
+            mObjects = results.values as MutableList<T>
             if (results.count > 0) {
-                notifyDataSetChanged();
+                notifyDataSetChanged()
             } else {
-                notifyDataSetInvalidated();
+                notifyDataSetInvalidated()
             }
         }
 
-        private String toNoPalatals( String original )
-        {
-            // My uses.
-            original = original.replace("ñ", "n");
-            original = original.replace("ü", "u");
-            original = original.replace("é", "e");
-            original = original.replace("ô", "o");
-            original = original.replace("è", "e");
-            original = original.replace("ä", "a");
-            original = original.replace("â", "a");
-            original = original.replace("É", "E");
-            original = original.replace("ô", "o");
-            original = original.replace("í", "i");
+        private fun toNoPalatals(original: String): String {
+             var result = original
+            result = result.replace("ñ", "n")
+            result = result.replace("ü", "u")
+            result = result.replace("é", "e")
+            result = result.replace("ô", "o")
+            result = result.replace("è", "e")
+            result = result.replace("ä", "a")
+            result = result.replace("â", "a")
+            result = result.replace("É", "E")
+            result = result.replace("ô", "o")
+            result = result.replace("í", "i")
+            return result
+        }
+    }
 
-            // For Croation.
-//            original = original.replace("Č", "C");
-//            original = original.replace("Ć", "C");
-//            original = original.replace("Š ", "S");
-//            original = original.replace("Đ", "D");
-//            original = original.replace("Ž", "Z");
-//
-//            original = original.replace("č", "c");
-//            original = original.replace("ć", "c");
-//            original = original.replace("š", "s");
-//            original = original.replace("đ", "d");
-//            original = original.replace("ž", "z");
-
-            // For French
-//            original = original.replace("À ", "A");
-//            original = original.replace("à ", "a");
-//            original = original.replace("Â ", "A");
-//            original = original.replace("â ", "a");
-//            original = original.replace("Æ", "AE");
-//            original = original.replace("æ", "ae");
-//            original = original.replace("Ç", "C");
-//            original = original.replace("ç", "c");
-//            original = original.replace("È ", "E");
-//            original = original.replace("è", "e");
-//            original = original.replace("É ", "E");
-//            original = original.replace("é", "e");
-//            original = original.replace("Ê ", "E");
-//            original = original.replace("ê ", "e");
-//            original = original.replace("Ë ", "E");
-//            original = original.replace("ë ", "e");
-//            original = original.replace("Î ", "I");
-//            original = original.replace("î ", "i");
-//            original = original.replace("Ï ", "I");
-//            original = original.replace("ï ", "i");
-//            original = original.replace("Ô", "O");
-//            original = original.replace("ô", "o");
-//            original = original.replace("Œ", "OE");
-//            original = original.replace("œ", "oe");
-//            original = original.replace("Ù", "U");
-//            original = original.replace("ù", "u");
-//            original = original.replace("Û", "U");
-//            original = original.replace("û", "u");
-//            original = original.replace("Ü", "U");
-//            original = original.replace("ü", "u");
-
-            // For Polish
-//            original = original.replace("Ą", "A");
-//            original = original.replace("Ć", "C");
-//            original = original.replace("Ę", "E");
-//            original = original.replace("Ł", "L");
-//            original = original.replace("Ń", "N");
-//            original = original.replace("Ó", "O");
-//            original = original.replace("Ś ", "S");
-//            original = original.replace("Ź", "Z");
-//            original = original.replace("Ż", "Z");
-//
-//            original = original.replace("ą", "a");
-//            original = original.replace("ć", "c");
-//            original = original.replace("ę", "e");
-//            original = original.replace("ł", "l");
-//            original = original.replace("ń", "n");
-//            original = original.replace("ó", "o");
-//            original = original.replace("ś", "s");
-//            original = original.replace("ź", "z");
-//            original = original.replace("ż", "z");
-//            original = original.replace("ž", "z");
-
-            return original;
+    companion object {
+        fun createFromResource(context: Context, textArrayResId: Int, textViewResId: Int): SpecialCharArrayAdapter<CharSequence> {
+            val strings = context.resources.getTextArray(textArrayResId)
+            return SpecialCharArrayAdapter(context, textViewResId, strings)
         }
     }
 }
-
-// StackOverflow post can be found here:
-// https://stackoverflow.com/questions/4869392/diacritics-international-characters-in-autocompletetextview
-
-// This was a suggested addition:
-//final String[] words = valText.split(" ");
-//                        for (String word : words) {
-//                                if (word.startsWith(prefixString)||toNoPalatals(word).startsWith(prefixStringNoPalatals)) {
-//                                newValues.add(value);
-//                                break;
-//                                }
-//                                }
-//                                }

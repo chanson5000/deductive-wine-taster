@@ -1,146 +1,89 @@
-package com.wineguesser.deductive.viewmodel;
+package com.wineguesser.deductive.viewmodel
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.wineguesser.deductive.repository.VarietyDataRepository
 
-import com.wineguesser.deductive.repository.VarietyDataRepository;
+class VarietyResultsViewModel : ViewModel() {
+    private val varietyDataRepository: VarietyDataRepository = VarietyDataRepository()
 
-public class VarietyResultsViewModel extends ViewModel {
+    var appVariety: LiveData<String>? = null
+        private set
 
-    private final VarietyDataRepository varietyDataRepository;
+    val actualLabel = MutableLiveData<String?>()
+    val actualVariety = MutableLiveData<String?>()
+    val actualCountry = MutableLiveData<String?>()
+    val actualRegion = MutableLiveData<String?>()
+    val actualQuality = MutableLiveData<String?>()
+    val actualVintage = MutableLiveData<String?>()
 
-    private LiveData<String> appVariety;
+    val userVariety = MutableLiveData<String?>()
+    val userCountry = MutableLiveData<String?>()
+    val userRegion = MutableLiveData<String?>()
+    val userQuality = MutableLiveData<String?>()
+    val userVintage = MutableLiveData<String?>()
 
-    private final MutableLiveData<String> actualLabel = new MutableLiveData<>();
-    private final MutableLiveData<String> actualVariety = new MutableLiveData<>();
-    private final MutableLiveData<String> actualCountry = new MutableLiveData<>();
-    private final MutableLiveData<String> actualRegion = new MutableLiveData<>();
-    private final MutableLiveData<String> actualQuality = new MutableLiveData<>();
-    private final MutableLiveData<String> actualVintage = new MutableLiveData<>();
+    val resultButtonText = MutableLiveData<String?>()
 
-    private final MutableLiveData<String> userVariety = new MutableLiveData<>();
-    private final MutableLiveData<String> userCountry = new MutableLiveData<>();
-    private final MutableLiveData<String> userRegion = new MutableLiveData<>();
-    private final MutableLiveData<String> userQuality = new MutableLiveData<>();
-    private final MutableLiveData<String> userVintage = new MutableLiveData<>();
-
-    private final MutableLiveData<String> resultButtonText = new MutableLiveData<>();
-
-    public VarietyResultsViewModel() {
-        varietyDataRepository = new VarietyDataRepository();
+    fun setUserVariety(userVariety: String?) {
+        this.userVariety.value = userVariety
     }
 
-    public LiveData<String> getUserVariety() {
-        return userVariety;
+    fun setUserCountry(userCountry: String?) {
+        this.userCountry.value = userCountry
     }
 
-    public void setUserVariety(String userVariety) {
-        this.userVariety.setValue(userVariety);
+    fun setUserRegion(userRegion: String?) {
+        this.userRegion.value = userRegion
     }
 
-    public LiveData<String> getUserCountry() {
-        return userCountry;
+    fun setUserQuality(userQuality: String?) {
+        this.userQuality.value = userQuality
     }
 
-    public void setUserCountry(String userCountry) {
-        this.userCountry.setValue(userCountry);
+    fun setUserVintage(userVintage: String?) {
+        this.userVintage.value = userVintage
     }
 
-    public LiveData<String> getUserRegion() {
-        return userRegion;
-    }
-
-    public void setUserRegion(String userRegion) {
-        this.userRegion.setValue(userRegion);
-    }
-
-    public LiveData<String> getUserQuality() {
-        return userQuality;
-    }
-
-    public void setUserQuality(String userQuality) {
-        this.userQuality.setValue(userQuality);
-    }
-
-    public LiveData<String> getUserVintage() {
-        return userVintage;
-    }
-
-    public void setUserVintage(String userVintage) {
-        this.userVintage.setValue(userVintage);
-    }
-
-    public LiveData<String> getAppVariety() {
-        return appVariety;
-    }
-
-    public void setAppVarietyById(boolean isRedWine, String varietyId) {
-        loadVariety(isRedWine, varietyId);
+    fun setAppVarietyById(isRedWine: Boolean, varietyId: String) {
+        loadVariety(isRedWine, varietyId)
     }
 
     // Takes in boolean for red wine and the variety Id and retrieves the string from the
-    private void loadVariety(boolean isRedWine, String varietyId) {
-        if (isRedWine) {
-            this.appVariety = varietyDataRepository.getRedVarietyNameById(varietyId);
+    private fun loadVariety(isRedWine: Boolean, varietyId: String) {
+        appVariety = if (isRedWine) {
+            varietyDataRepository.getRedVarietyNameById(varietyId)
         } else {
-            this.appVariety = varietyDataRepository.getWhiteVarietyNameById(varietyId);
+            varietyDataRepository.getWhiteVarietyNameById(varietyId)
         }
     }
 
-    public MutableLiveData<String> getActualLabel() {
-        return actualLabel;
+    fun setActualLabel(actualLabel: String?) {
+        this.actualLabel.value = actualLabel
     }
 
-    public void setActualLabel(String actualLabel) {
-        this.actualLabel.setValue(actualLabel);
+    fun setActualVariety(actualVariety: String?) {
+        this.actualVariety.value = actualVariety
     }
 
-    public MutableLiveData<String> getActualVariety() {
-        return actualVariety;
+    fun setActualCountry(actualCountry: String?) {
+        this.actualCountry.value = actualCountry
     }
 
-    public void setActualVariety(String actualVariety) {
-        this.actualVariety.setValue(actualVariety);
+    fun setActualRegion(actualRegion: String?) {
+        this.actualRegion.value = actualRegion
     }
 
-    public MutableLiveData<String> getActualCountry() {
-        return actualCountry;
+    fun setActualQuality(actualQuality: String?) {
+        this.actualQuality.value = actualQuality
     }
 
-    public void setActualCountry(String actualCountry) {
-        this.actualCountry.setValue(actualCountry);
+    fun setActualVintage(actualVintage: String?) {
+        this.actualVintage.value = actualVintage
     }
 
-    public MutableLiveData<String> getActualRegion() {
-        return actualRegion;
-    }
-
-    public void setActualRegion(String actualRegion) {
-        this.actualRegion.setValue(actualRegion);
-    }
-
-    public MutableLiveData<String> getActualQuality() {
-        return actualQuality;
-    }
-
-    public void setActualQuality(String actualQuality) {
-        this.actualQuality.setValue(actualQuality);
-    }
-
-    public MutableLiveData<String> getActualVintage() {
-        return actualVintage;
-    }
-
-    public void setActualVintage(String actualVintage) {
-        this.actualVintage.setValue(actualVintage);
-    }
-
-    public void setResultButtonText(String text) {
-        this.resultButtonText.setValue(text);
-    }
-
-    public MutableLiveData<String> getResultButtonText() {
-        return resultButtonText;
+    fun setResultButtonText(text: String?) {
+        this.resultButtonText.value = text
     }
 }

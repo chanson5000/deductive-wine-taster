@@ -1,94 +1,42 @@
-package com.wineguesser.deductive.viewmodel;
+package com.wineguesser.deductive.viewmodel
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import com.wineguesser.deductive.model.ConclusionRecord
 
-import com.wineguesser.deductive.model.ConclusionRecord;
+class HistoryRecordViewModel : ViewModel() {
+    val conclusionRecord = MutableLiveData<ConclusionRecord>()
 
-public class HistoryRecordViewModel extends ViewModel {
+    val appConclusionVariety: LiveData<String?> =
+        conclusionRecord.map { it?.appConclusionVariety }
 
-    private final MutableLiveData<ConclusionRecord> conclusionRecord = new MutableLiveData<>();
+    val actualLabel: LiveData<String?> =
+        conclusionRecord.map { it?.actualLabel }
+    val actualVariety: LiveData<String?> =
+        conclusionRecord.map { it?.actualVariety }
+    val actualCountry: LiveData<String?> =
+        conclusionRecord.map { it?.actualCountry }
+    val actualRegion: LiveData<String?> =
+        conclusionRecord.map { it?.actualRegion }
+    val actualQuality: LiveData<String?> =
+        conclusionRecord.map { it?.actualQuality }
+    val actualVintage: LiveData<Int?> =
+        conclusionRecord.map { it?.actualVintage }
 
-    private final LiveData<String> appConclusionVariety =
-            Transformations.map(conclusionRecord, ConclusionRecord::getAppConclusionVariety);
+    val userConclusionVariety: LiveData<String?> =
+        conclusionRecord.map { it?.userConclusionVariety }
+    val userConclusionCountry: LiveData<String?> =
+        conclusionRecord.map { it?.userConclusionCountry }
+    val userConclusionRegion: LiveData<String?> =
+        conclusionRecord.map { it?.userConclusionRegion }
+    val userConclusionQuality: LiveData<String?> =
+        conclusionRecord.map { it?.userConclusionQuality }
+    val userConclusionVintage: LiveData<Int?> =
+        conclusionRecord.map { it?.userConclusionVintage }
 
-    private final LiveData<String> actualLabel =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualLabel);
-    private final LiveData<String> actualVariety =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualVariety);
-    private final LiveData<String> actualCountry =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualCountry);
-    private final LiveData<String> actualRegion =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualRegion);
-    private final LiveData<String> actualQuality =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualQuality);
-    private final LiveData<Integer> actualVintage =
-            Transformations.map(conclusionRecord, ConclusionRecord::getActualVintage);
-
-    private final LiveData<String> userConclusionVariety =
-            Transformations.map(conclusionRecord, ConclusionRecord::getUserConclusionVariety);
-    private final LiveData<String> userConclusionCountry =
-            Transformations.map(conclusionRecord, ConclusionRecord::getUserConclusionCountry);
-    private final LiveData<String> userConclusionRegion =
-            Transformations.map(conclusionRecord, ConclusionRecord::getUserConclusionRegion);
-    private final LiveData<String> userConclusionQuality =
-            Transformations.map(conclusionRecord, ConclusionRecord::getUserConclusionQuality);
-    private final LiveData<Integer> userConclusionVintage =
-            Transformations.map(conclusionRecord, ConclusionRecord::getUserConclusionVintage);
-
-    public MutableLiveData<ConclusionRecord> getConclusionRecord() {
-        return conclusionRecord;
-    }
-
-    public void setConclusionRecord(ConclusionRecord conclusionRecord) {
-        this.conclusionRecord.setValue(conclusionRecord);
-    }
-
-    public LiveData<String> getAppConclusionVariety() {
-        return appConclusionVariety;
-    }
-
-    public LiveData<String> getActualLabel() { return actualLabel; }
-
-    public LiveData<String> getActualVariety() {
-        return actualVariety;
-    }
-
-    public LiveData<String> getActualCountry() {
-        return actualCountry;
-    }
-
-    public LiveData<String> getActualRegion() {
-        return actualRegion;
-    }
-
-    public LiveData<String> getActualQuality() {
-        return actualQuality;
-    }
-
-    public LiveData<Integer> getActualVintage() {
-        return actualVintage;
-    }
-
-    public LiveData<String> getUserConclusionVariety() {
-        return userConclusionVariety;
-    }
-
-    public LiveData<String> getUserConclusionCountry() {
-        return userConclusionCountry;
-    }
-
-    public LiveData<String> getUserConclusionRegion() {
-        return userConclusionRegion;
-    }
-
-    public LiveData<String> getUserConclusionQuality() {
-        return userConclusionQuality;
-    }
-
-    public LiveData<Integer> getUserConclusionVintage() {
-        return userConclusionVintage;
+    fun setConclusionRecord(conclusionRecord: ConclusionRecord) {
+        this.conclusionRecord.value = conclusionRecord
     }
 }

@@ -1,18 +1,12 @@
-package com.wineguesser.deductive.viewmodel;
+package com.wineguesser.deductive.viewmodel
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-public class FinalConclusionFragmentViewModel extends ViewModel {
+class FinalConclusionFragmentViewModel : ViewModel() {
+    val isLoading = MutableLiveData<Boolean>()
 
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-
-    public LiveData<Boolean> isLoading() {
-        return isLoading;
-    }
-
-    public void setIsLoading(Boolean isLoading) {
-        this.isLoading.setValue(isLoading);
+    fun setIsLoading(isLoading: Boolean) {
+        this.isLoading.value = isLoading
     }
 }

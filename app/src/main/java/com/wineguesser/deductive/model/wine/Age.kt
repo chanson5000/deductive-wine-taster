@@ -1,14 +1,7 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Age {
-    private int youthful;
-    private int developing;
-    private int vinous;
-}
+data class Age(
+    var youthful: Int = 0,
+    var developing: Int = 0,
+    var vinous: Int = 0
+)

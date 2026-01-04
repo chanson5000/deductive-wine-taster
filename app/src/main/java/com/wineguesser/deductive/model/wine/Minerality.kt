@@ -1,17 +1,10 @@
-package com.wineguesser.deductive.model.wine;
+package com.wineguesser.deductive.model.wine
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Minerality {
-    private int mineral;
-    private int wetStone;
-    private int limestone;
-    private int chalk;
-    private int slate;
-    private int flint;
-}
+data class Minerality(
+    var mineral: Int = 0,
+    var wetStone: Int = 0,
+    var limestone: Int = 0,
+    var chalk: Int = 0,
+    var slate: Int = 0,
+    var flint: Int = 0
+)

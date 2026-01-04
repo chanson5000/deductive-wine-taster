@@ -1,37 +1,39 @@
-package com.wineguesser.deductive.util;
+package com.wineguesser.deductive.util
 
-import android.content.Context;
-import android.widget.Toast;
+import android.content.Context
+import android.widget.Toast
 
-public class Helpers {
+object Helpers {
 
-    public static final String CONCLUSION_PARCEL = "CONCLUSION_PARCEL";
+    const val CONCLUSION_PARCEL = "CONCLUSION_PARCEL"
 
-    public static int castKey(String key) { return Integer.parseInt(key); }
-
-    public static boolean castChecked(int checkedInt) {
-        return checkedInt == 1;
+    fun castKey(key: String): Int {
+        return Integer.parseInt(key)
     }
 
-    public static int castChecked(boolean checkedBoolean) {
-        int CHECKED = 1;
-        int NOT_CHECKED = 0;
-        if (checkedBoolean) {
-            return CHECKED;
+    fun castChecked(checkedInt: Int): Boolean {
+        return checkedInt == 1
+    }
+
+    fun castChecked(checkedBoolean: Boolean): Int {
+        val checked = 1
+        val notChecked = 0
+        return if (checkedBoolean) {
+            checked
         } else {
-            return NOT_CHECKED;
+            notChecked
         }
     }
 
-    public static int parseEntryValue(Object value) {
-        return Integer.parseInt(value.toString());
+    fun parseEntryValue(value: Any): Int {
+        return Integer.parseInt(value.toString())
     }
 
-    public static boolean parseChecked(Object value) {
-        return castChecked(parseEntryValue(value));
+    fun parseChecked(value: Any): Boolean {
+        return castChecked(parseEntryValue(value))
     }
 
-    public static void makeToastShort(Context context, int resId) {
-        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
+    fun makeToastShort(context: Context, resId: Int) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show()
     }
 }

@@ -1,197 +1,170 @@
-package com.wineguesser.deductive.view;
+package com.wineguesser.deductive.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.Insets
 
-import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import com.firebase.ui.auth.AuthUI
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.wineguesser.deductive.R
+class MainActivity : AppCompatActivity() {
 
-import androidx.appcompat.app.AppCompatActivity;
+    private lateinit var mContext: Context
+    private var mUserLoggedIn: Boolean = false
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuthListener: AuthStateListener
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+    private var mMenuAuthToggle: MenuItem? = null
+    private var mMenuProfile: MenuItem? = null
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // SplashScreen.installSplashScreen(this)
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContentView(R.layout.activity_main)
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.wineguesser.deductive.R;
-import com.wineguesser.deductive.repository.DatabaseContract;
+        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(myToolbar)
 
-import java.util.Collections;
-import java.util.List;
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.coordinator_main)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
+            windowInsets
+        }
 
-public class MainActivity extends AppCompatActivity implements
-        DeductionFormContract, DatabaseContract {
-
-    private Context mContext;
-    private boolean mUserLoggedIn;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private MenuItem mMenuAuthToggle;
-    private MenuItem mMenuProfile;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        setContentView(R.layout.activity_main);
-
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.coordinator_main), (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
-            return windowInsets;
-        });
-
-        mAuth = FirebaseAuth.getInstance();
-        mContext = this;
+        mAuth = FirebaseAuth.getInstance()
+        mContext = this
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
         // Set a listener for authentications so we may set states.
-        mAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                setUserLoggedIn(true);
-            } else {
-                setUserLoggedIn(false);
-            }
-        };
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_menu, menu);
-        mMenuAuthToggle = menu.findItem(R.id.auth_toggle);
-        mMenuProfile = menu.findItem(R.id.profile_settings);
-        if (mUserLoggedIn) {
-            setMenuLoggedIn(true);
-        } else {
-            setMenuLoggedIn(false);
+        mAuthListener = AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            setUserLoggedIn(user != null)
         }
-        return true;
+
+        mAuth.addAuthStateListener(mAuthListener)
     }
 
-    private void setMenuLoggedIn(boolean loggedIn) {
+    override fun onStop() {
+        super.onStop()
+        mAuth.removeAuthStateListener(mAuthListener)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_activity_menu, menu)
+        mMenuAuthToggle = menu.findItem(R.id.auth_toggle)
+        mMenuProfile = menu.findItem(R.id.profile_settings)
+        setMenuLoggedIn(mUserLoggedIn)
+        return true
+    }
+
+    private fun setMenuLoggedIn(loggedIn: Boolean) {
         if (loggedIn && mMenuAuthToggle != null) {
-            mMenuAuthToggle.setTitle(R.string.log_out);
-            mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            mMenuProfile.setVisible(true);
+            mMenuAuthToggle?.setTitle(R.string.log_out)
+            mMenuAuthToggle?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            mMenuProfile?.isVisible = true
         } else if (!loggedIn && mMenuAuthToggle != null) {
-            mMenuAuthToggle.setTitle(R.string.log_in);
-            mMenuAuthToggle.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            mMenuProfile.setVisible(false);
+            mMenuAuthToggle?.setTitle(R.string.log_in)
+            mMenuAuthToggle?.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            mMenuProfile?.isVisible = false
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.auth_toggle:
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.auth_toggle -> {
                 if (mUserLoggedIn) {
-                    signOutCurrentFirebaseUser();
+                    signOutCurrentFirebaseUser()
                 } else {
-                    startLoginUI();
+                    startLoginUI()
                 }
-                return true;
-            case R.id.profile_settings:
-                startActivity(new Intent(mContext, UserProfileActivity.class));
-                return true;
-            case R.id.feedback:
-                startActivity(new Intent(mContext, FeedbackActivity.class));
-                return true;
-            case R.id.privacy_policy:
-                startActivity(new Intent(mContext, PrivacyPolicyActivity.class));
-            default:
-                return super.onOptionsItemSelected(item);
+                true
+            }
+            R.id.profile_settings -> {
+                startActivity(Intent(mContext, UserProfileActivity::class.java))
+                true
+            }
+            R.id.feedback -> {
+                startActivity(Intent(mContext, FeedbackActivity::class.java))
+                true
+            }
+            R.id.privacy_policy -> {
+                startActivity(Intent(mContext, PrivacyPolicyActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    @SuppressWarnings("unused")
-    public void buttonRedWine(View view) {
-        Intent intent = new Intent(mContext, DeductionFormActivity.class);
-        intent.putExtra(IS_RED_WINE, TRUE);
-        startActivity(intent);
+    fun buttonRedWine(view: View) {
+        val intent = Intent(mContext, DeductionFormActivity::class.java)
+        intent.putExtra(IS_RED_WINE, TRUE)
+        startActivity(intent)
     }
 
-    @SuppressWarnings("unused")
-    public void buttonWhiteWine(View view) {
-        Intent intent = new Intent(mContext, DeductionFormActivity.class);
-        startActivity(intent);
+    fun buttonWhiteWine(view: View) {
+        val intent = Intent(mContext, DeductionFormActivity::class.java)
+        startActivity(intent)
     }
 
-    private void setUserLoggedIn(boolean loggedIn) {
-        if (loggedIn) {
-            mUserLoggedIn = true;
-            setMenuLoggedIn(true);
-        } else {
-            mUserLoggedIn = false;
-            setMenuLoggedIn(false);
-        }
+    private fun setUserLoggedIn(loggedIn: Boolean) {
+        mUserLoggedIn = loggedIn
+        setMenuLoggedIn(loggedIn)
     }
 
-    private void startLoginUI() {
-        FirebaseUser user = mAuth.getCurrentUser();
+    private fun startLoginUI() {
+        val user = mAuth.currentUser
         // Just any number required to identify if we were using a call back.
         // Using a listener instead.
-        int RC_SIGN_IN = 42;
+        val RC_SIGN_IN = 42
 
         if (user == null) {
-            // TODO: Decide if more providers are wanted.
-            List<AuthUI.IdpConfig> providers = Collections.singletonList(
-                    new AuthUI.IdpConfig.EmailBuilder().build()
-            );
+            val providers = listOf(
+                AuthUI.IdpConfig.EmailBuilder().build()
+            )
 
             startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .build(),
+                RC_SIGN_IN
+            )
         } else {
-            mAuth.signOut();
+            mAuth.signOut()
         }
     }
 
-    @SuppressWarnings("unused")
-    public void onHistoryButtonClicked(View view) {
+    fun onHistoryButtonClicked(view: View) {
         if (mUserLoggedIn) {
-            Intent intent = new Intent(mContext, HistoryActivity.class);
-            startActivity(intent);
+            val intent = Intent(mContext, HistoryActivity::class.java)
+            startActivity(intent)
         } else {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_main),
-                    R.string.snack_log_in, Snackbar.LENGTH_LONG);
-            snackbar.setAction(R.string.log_in, v -> startLoginUI());
-            snackbar.show();
+            val snackbar = Snackbar.make(
+                findViewById(R.id.coordinator_main),
+                R.string.snack_log_in, Snackbar.LENGTH_LONG
+            )
+            snackbar.setAction(R.string.log_in) { startLoginUI() }
+            snackbar.show()
         }
     }
 
-    private void signOutCurrentFirebaseUser() {
-        AuthUI.getInstance().signOut(mContext).addOnCompleteListener(task ->
-                setUserLoggedIn(false));
+    private fun signOutCurrentFirebaseUser() {
+        AuthUI.getInstance().signOut(mContext).addOnCompleteListener {
+            setUserLoggedIn(false)
+        }
     }
 }
