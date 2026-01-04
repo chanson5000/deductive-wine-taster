@@ -1,15 +1,12 @@
 package com.wineguesser.deductive.view
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.graphics.Insets
-
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,7 +17,6 @@ import com.wineguesser.deductive.databinding.ActivityHistoryRecordBinding
 import com.wineguesser.deductive.model.ConclusionRecord
 import com.wineguesser.deductive.repository.ConclusionsRepository
 import com.wineguesser.deductive.util.Helpers
-import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.viewmodel.HistoryRecordViewModel
 
 class HistoryRecordActivity : AppCompatActivity() {

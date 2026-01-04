@@ -1,24 +1,25 @@
 package com.wineguesser.deductive.util
 
-import android.os.AsyncTask
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_RED_VARIETY_DESCRIPTORS
 import com.wineguesser.deductive.repository.DatabaseContract.DB_REFERENCE_WHITE_VARIETY_DESCRIPTORS
+import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import java.util.Collections
 import java.util.HashMap
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
-class GrapeVarietyScore(
-    private val mContext: GrapeVarietyScoreResult,
-    isRedWine: Boolean
-) : AsyncTask<Map<String, Int>, Void, Void>() {
+class GrapeVarietyScore(isRedWine: Boolean) {
 
-    private val mDatabaseReference: DatabaseReference =
-        setDatabaseReference(isRedWine, FirebaseDatabase.getInstance())
+    private val databaseReference: DatabaseReference =
+        setDatabaseReference(isRedWine, Firebase.database)
 
     private fun setDatabaseReference(isRedWine: Boolean, database: FirebaseDatabase): DatabaseReference {
         return if (isRedWine) {
@@ -28,39 +29,35 @@ class GrapeVarietyScore(
         }
     }
 
-    override fun doInBackground(vararg descriptorsMap: Map<String, Int>): Void? {
-        val varietyScoresMap = HashMap<String, Int>()
+    suspend fun calculateScore(descriptorsMap: Map<String, Int>): String? {
+        return suspendCancellableCoroutine { continuation ->
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val varietyScoresMap = HashMap<String, Int>()
+                    for (varietyRecord in dataSnapshot.children) {
+                        val currentVarietyScore = getCurrentVarietyScore(varietyRecord, descriptorsMap)
+                        val varietyId = varietyRecord.key ?: continue
+                        Timber.d("Putting score: %s, %s", varietyId, currentVarietyScore)
+                        varietyScoresMap[varietyId] = currentVarietyScore
+                    }
 
-        val listener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (varietyRecord in dataSnapshot.children) {
-                    val currentVarietyScore = getCurrentVarietyScore(varietyRecord, descriptorsMap[0])
-                    val varietyId = varietyRecord.key ?: continue
-                    Timber.d("Putting score: %s, %s", varietyId, currentVarietyScore)
-                    varietyScoresMap[varietyId] = currentVarietyScore
+                    // Find the wine variety key with the highest score.
+                    val highestScoreId = getHighestScore(varietyScoresMap)
+                    Timber.d("Result of wine scoring: %s", highestScoreId)
+                    continuation.resume(highestScoreId)
                 }
 
-                // Find the wine variety key with the highest score.
-                val highestScoreId = getHighestScore(varietyScoresMap)
-
-                if (highestScoreId != null) {
-                    Timber.d("Result of wine scoring: %s", highestScoreId)
-                    // We now have a wine variety to call back;
-                    mContext.onGrapeResult(highestScoreId)
-                } else {
-                    mContext.onGrapeFailure()
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Timber.e(databaseError.toException())
+                    continuation.resumeWithException(databaseError.toException())
                 }
             }
+            databaseReference.addListenerForSingleValueEvent(listener)
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                mContext.onGrapeFailure()
-                Timber.e(databaseError.toString())
+            continuation.invokeOnCancellation {
+                databaseReference.removeEventListener(listener)
             }
         }
-        // The listener that is triggering the code block above. Only needed to trigger once.
-        mDatabaseReference.addListenerForSingleValueEvent(listener)
-
-        return null
     }
 
     private fun getHighestScore(varietyScoresMap: Map<String, Int>): String? {

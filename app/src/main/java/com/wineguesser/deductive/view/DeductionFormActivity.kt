@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
@@ -40,6 +41,7 @@ import com.wineguesser.deductive.util.GrapeVarietyScoreResult
 import com.wineguesser.deductive.view.*
 import com.wineguesser.deductive.util.Helpers
 import com.wineguesser.deductive.view.*
+import kotlinx.coroutines.launch
 import java.util.Arrays
 import java.util.Calendar
 
@@ -640,11 +642,18 @@ class DeductionFormActivity : AppCompatActivity(), GrapeVarietyScoreResult {
         }
 
         val formSelections = retrieveSharedPreferencesValues()
-        val scoreTask = GrapeVarietyScore(this, mIsRedWine)
+        val scoreTask = GrapeVarietyScore(mIsRedWine)
         val formMapper = FormMapper()
         val varietyScoreDatabaseMap = formMapper.formToDbFormat(formSelections)
 
-        scoreTask.execute(varietyScoreDatabaseMap)
+        lifecycleScope.launch {
+            try {
+                val topScoreVariety = scoreTask.calculateScore(varietyScoreDatabaseMap)
+                onGrapeResult(topScoreVariety)
+            } catch (e: Exception) {
+                onGrapeFailure()
+            }
+        }
     }
 
     override fun onGrapeResult(topScoreVariety: String?) {
