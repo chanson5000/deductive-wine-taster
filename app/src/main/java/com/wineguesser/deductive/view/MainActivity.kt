@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -26,6 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     private var mMenuAuthToggle: MenuItem? = null
     private var mMenuProfile: MenuItem? = null
+
+    private val signInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        // The AuthStateListener will handle the result of the sign-in,
+        // so no further action is needed here.
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,22 +133,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLoginUI() {
         val user = mAuth.currentUser
-        // Just any number required to identify if we were using a call back.
-        // Using a listener instead.
-        val RC_SIGN_IN = 42
 
         if (user == null) {
             val providers = listOf(
                 AuthUI.IdpConfig.EmailBuilder().build()
             )
 
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build(),
-                RC_SIGN_IN
-            )
+            val signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build()
+            signInLauncher.launch(signInIntent)
         } else {
             mAuth.signOut()
         }
